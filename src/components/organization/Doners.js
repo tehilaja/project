@@ -1,0 +1,72 @@
+import React from 'react';
+
+import {Redirect} from "react-router-dom";
+
+class Doners extends React.Component{
+    
+	/*const styles = {
+        fontStyle: "italic",
+        color: "rgb(30, 100, 121)"
+    }*/
+	
+	constructor(){
+		super()
+		this.state = {firstName: "", email: ""}
+		this.handleChange = this.handleChange.bind(this)
+	}
+	
+	handleChange(event){
+		const {name, value} = event.target
+		this.setState({[name]: value})
+	}
+	
+	handleSubmit(e){
+		e.preventDefault()
+		/*error: the page doesn't know how to rerender orgPage
+		
+		constructClassInstance
+
+		updateClassComponent
+
+		beginWork$1
+
+		callCallback
+		
+		maybe to do with lifeCycle of OrgPage?????
+
+		*/
+		/*return <Redirect to = {{
+				pathname: '/OrgPage',
+				state: {id: this.props.id, img: this.props.imgUrl, name: this.props.name }
+			}} />*/
+			
+		/*update info of who reffered me*/
+	}
+
+	render(){
+    return(
+        <div className = "doners">
+            <h4>Reffered to this organization by: </h4>
+            <form className="fillFormDoners" onSubmit={this.handleSubmit.bind(this)}> 
+                <lable>name: </lable>
+                <input 
+                name="firstName" 
+                onChange={this.handleChange} 
+                placeholder="First Name" 
+                />
+                <br /><br/>
+                <lable>email : </lable>
+                <input 
+                    name="email" 
+                    onChange={this.handleChange} 
+                    placeholder="Last Name" 
+                />
+                <br/>
+				<input type="submit" value="Submit" />                
+				<br/><br/>
+            </form>
+        </div>
+    )}
+}
+
+export default Doners;
