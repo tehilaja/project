@@ -23,60 +23,91 @@ class OrgBody extends React.Component {
             showUser: false,
             organization: orgData,
             btnDonateClicked: false,
-            confirmBtn: false
+            confirmBtn: false,
+            initialDonation : this.props.data.initialDonation,
+            color: "F33333"
 
         }
         this.handleChange = this.handleChange.bind(this)
         this.handleClick = this.handleClick.bind(this) 
         this.clickToDonate = this.clickToDonate.bind(this) 
+
+        this.increment = this.increment.bind(this)
+        this.decrement = this.decrement.bind(this)
     }
 
+    //---------increment +----------
+    increment() 
+    {
+            this.setState(prevState => {
+                return {
+                    initialDonation: prevState.initialDonation + 1
+                }
+            })
+    }
+    //---------decrement--------------
+    decrement()
+     {
+        if (this.state.initialDonation != this.props.data.initialDonation)
+        {
+            this.setState(prevState => {
+                return {
+                    initialDonation: prevState.initialDonation - 1
+                }
+            })
+        }
+    }
 
+    //---------componentDidUpdate-------
+    componentDidUpdate(prevProps, prevState) {
+        // const newColor = ''
+        if(prevState.initialDonation !== this.state.initialDonation) 
+        {
+            if(this.state.initialDonation ===this.props.data.initialDonation)
+                this.setState({color: '#F33333'})
+            else
+                this.setState({color: 'black'})
+        }
+    }
+
+    //----------handleClick-------------
     handleClick(id)
     {
+        alert("id: "+id )
         this.setState(prevState => {
             return {
                 clicked: !prevState.clicked
             } 
         })
     }
-
-    clickToDonate()
-    {
-        // alert("clickToDonate")
-        this.setState(prevState => {
-            return {
-                confirmBtn: !prevState.confirmBtn
-            } 
-        })
-    }
     
-        //  alert("id: "+id )
-        // this.setState(prevState => {
-        //     const updatedOrg = prevState.organization.map(org => {
-        //         if (org.id === id) {
-        //             alert("clicked" + id)
-        //             // todo.complated = !todo.complated
-        //             // return {
-        //             //     ...org,
-        //             //     clicked: !org.clicked  
-        //             // }
-        //         }
-        //         // return org
-        //     })
-        //     // return {
-        //     //     organization: updatedOrg
-        //     // }
-        // })
+    //---------onSumbit---------------
+    // onSumbit()
+    // {
+
+    // } 
+
+     //----------clickToDonate--------------------
+     clickToDonate()
+     {
+         // alert("clickToDonate")
+         this.setState(prevState => {
+             return {
+                 confirmBtn: !prevState.confirmBtn
+             } 
+         })
+     }
     
     handleChange(event){
         const {name, value} = event.target
         this.setState({[name]: value}) 
     }
+	
+	
 //----------render------------------
     render() 
     {
-        const nameDonateThrow = this.state.firstName
+        const nameDonateThrough = this.state.firstName
     //---------return------------------------------
         return(
             <div className = "orgBody">
@@ -90,29 +121,37 @@ class OrgBody extends React.Component {
                 {/* the data about specific organization */}
 				
                 <div className="org-spech-card">
-                    <h3>id = {this.props.data.id}</h3>
+                    {/* <h3>id = {this.props.data.id}</h3> */}
                     <h1> {this.props.data.name} </h1>
                     <img src={this.props.data.img}></img>
                 </div>
-
                 <br/>
 
+                {/* Donation amount */}
+                <div className = "initialDonation">
+                    <label > Donation amount (per month):</label>
+                    <lable className= "initialDonationValue" style={{color: this.state.color}}>{this.state.initialDonation} </lable>
+                    <lable>$  </lable>
+                    <button onClick={this.decrement}>-</button>
+                    <button onClick={this.increment} >+</button>
+                </div>
 
-                <button className ="btnOrg" onClick ={() => this.setState(prevState => {
+                <button className ="btnDonateOrg" onClick ={() => this.setState(prevState => {
                     return {
                         btnDonateClicked: !prevState.btnDonateClicked
                     }})}
                 >donate </button>
 
                 {this.state.btnDonateClicked && 
-                <Doners handleChange={this.handleChange}
+                <Doners 
+                        handleChange={this.handleChange}
 						clickToDonate = {this.clickToDonate}
 						data = {this.state}/> 
                     
                 }
                 {/* <p>{this.props.data.img}</p> */}
                 <h2>Entered information:</h2>
-                <h3>{nameDonateThrow}</h3>
+                <h3>{nameDonateThrough}</h3>
                 <p>Your name: {this.state.firstName} {this.state.email}</p>  
                 
             </div>
@@ -121,8 +160,5 @@ class OrgBody extends React.Component {
     
     
 }
-
-
-
 
 export default OrgBody

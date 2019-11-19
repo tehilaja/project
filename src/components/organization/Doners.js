@@ -40,13 +40,18 @@ class Doners extends React.Component{
 				state: {id: this.props.id, img: this.props.imgUrl, name: this.props.name }
 			}} />*/
 			
-		/*update info of who reffered me*/
+		/*update info of who referred me*/
 	}
 
 	render(){
+		const styles = 
+        {
+            fontStyle: "italic",
+            color: "rgb(30, 100, 121)"
+        }
     return(
         <div className = "doners">
-            <h4>Reffered to this organization by: </h4>
+            <h4 style ={styles} >Referred to this organization by: </h4>
             <form className="fillFormDoners" onSubmit={this.handleSubmit.bind(this)}> 
                 <lable>name: </lable>
                 <input 
@@ -62,7 +67,7 @@ class Doners extends React.Component{
                     placeholder="Last Name" 
                 />
                 <br/>
-				<input type="submit" value="Submit" />                
+				<input className="btnConfirm" type="submit" value="Submit" />                
 				<br/><br/>
             </form>
         </div>

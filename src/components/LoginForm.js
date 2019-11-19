@@ -7,7 +7,8 @@ import { async } from "q";
 class LoginForm extends React.Component {
 	constructor(){
 		super()
-		this.state = {userName: "", pswd: "", isAdmin: false, loggedIn: false}
+		this.state = 
+			{userName: "", pswd: "", isAdmin: false, loggedIn: false}
 		this.handleChange = this.handleChange.bind(this)
 	}
 	
@@ -19,12 +20,15 @@ class LoginForm extends React.Component {
 	
 	handleSubmit(e){
 		e.preventDefault()
-		if (this.state.userName == "") {
-            alert("Username Cannot be empty!");
-        }
-        if (this.state.pswd == "") {
-            alert("please fill in password field");
-        }
+		if (this.state.userName == "" && this.state.pswd != "") {
+			alert("Username Cannot be empty!");
+		}
+		if (this.state.pswd == "" && this.state.userName != "" ){
+			alert("please fill in password field");
+		}
+		if (this.state.pswd == "" && this.state.userName == ""  ){
+					alert("Username  and  password Cannot be empty!");
+		}
 		/*(async ()=> {
             const response = await axios.post(
                 '/userExists',

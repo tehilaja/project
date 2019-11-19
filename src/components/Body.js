@@ -22,7 +22,7 @@ class Body extends React.Component
 			isLoggedIn: false, 
 			organizations: orgData,
 			clickOrg: false,
-			id: "3"
+			// id: "3"
 		}
 		this.selectOrg = this.selectOrg.bind(this)
 		this.handleClick = this.handleClick.bind(this)
@@ -68,7 +68,7 @@ class Body extends React.Component
 		//---orgComponents (card)---
 		const orgComponents = this.state.organizations.map(org => {
 				return (
-			<OrgCard key={org.id} imgUrl={org.imgUrl} name={org.name} id= {org.id} />)
+			<OrgCard key={org.id} imgUrl={org.imgUrl} name={org.name} id= {org.id} initialDonation= {org.initialDonation}/>)
 		})
 		
 		//--- login

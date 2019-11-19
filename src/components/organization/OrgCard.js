@@ -24,7 +24,7 @@ class OrgCard extends React.Component{
         if (this.state.routeOrgPage === true){
 			return <Redirect to = {{
 				pathname: '/OrgPage',
-				state: {id: this.props.id, img: this.props.imgUrl, name: this.props.name }
+				state: {id: this.props.id, img: this.props.imgUrl, name: this.props.name, initialDonation:this.props.initialDonation}
 			}} />
         } 
     //-----------return---------------------- 
@@ -33,10 +33,12 @@ class OrgCard extends React.Component{
     
             <img src={this.props.imgUrl} 
                   onClick = {() => this.setState(prevState => {
-				  return {routeOrgPage: !prevState.routeOrgPage}})}>
+				  return {
+                      routeOrgPage: !prevState.routeOrgPage}
+                    })}>
             </img>
             <h3>{this.props.name}</h3>
-            <button className = "btnOrgCard " onClick = {() => this.handleClick(this.props.id)} >donate </button>
+            {/* <button className = "btnOrgCard " onClick = {() => this.handleClick(this.props.id)} >donate </button> */}
         </div>
         )
     }

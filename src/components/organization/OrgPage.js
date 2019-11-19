@@ -19,6 +19,9 @@ class OrgPage extends React.Component{
 			img: this.props.location.state.img,
 			name: this.props.location.state.name,
 			id: this.props.location.state.id,
+			initialDonation: this.props.location.state.initialDonation,
+
+
 			routeMain: false
 
 		}
@@ -52,7 +55,8 @@ class OrgPage extends React.Component{
 		return(
 			<div>
                 <HeaderOrg />
-				<OrgBody data = {this.state}/>
+				<OrgBody 
+					data = {this.state}/>
 				<Footer />
 			</div>
 		)
