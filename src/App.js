@@ -1,6 +1,8 @@
 import React from 'react';
 import { Route, Switch } from "react-router-dom";
 import {Redirect} from "react-router-dom";
+import axios from "axios";
+import { async } from "q";
 
 
 ////---------------
@@ -24,7 +26,23 @@ class App extends React.Component
 			org: null, 
 			user: null 
 
-		}	
+		}
+		this.check = this.check.bind(this)
+	}
+
+	check(){
+		/*add user to dataBase, login with new user*/
+		(
+			async () => {
+				alert('hi1')
+				const response = await axios.post(
+					'/add_user',
+					{userName: "tehila"},
+					{header:{'Content-Type': 'application/json'}}
+				)
+				console.log(response.data)
+			}
+		)();
 	}
 //---------render------------------
 	render() 
@@ -34,6 +52,7 @@ class App extends React.Component
 				<Header />
 				<Body />
 				<Footer />
+				<button onClick={this.check.bind(this)}>button</button>
 			</div>
 		)
 	}	
