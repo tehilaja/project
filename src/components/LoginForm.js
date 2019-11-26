@@ -19,7 +19,7 @@ class LoginForm extends React.Component {
 	}
 	
 	handleSubmit(e){
-		/*e.preventDefault()
+		e.preventDefault()
 		if (this.state.userName == "" && this.state.pswd != "") {
 			alert("Username Cannot be empty!");
 		}
@@ -29,7 +29,7 @@ class LoginForm extends React.Component {
 		if (this.state.pswd == "" && this.state.userName == ""  ){
 					alert("Username  and  password Cannot be empty!");
 		}
-		(async ()=> {
+		/*(async ()=> {
             const response = await axios.post(
                 '/userExists',
                 { userName: this.state.userName, pswd: this.state.pswd, isAdmin: this.state.isAdmin, loggedIn: false},
@@ -56,7 +56,7 @@ class LoginForm extends React.Component {
 		  password: <input type="password" name="pswd" onChange={this.handleChange.bind(this)}/><br />
 		  <input type="checkbox" name="isAdmin" checked={this.state.isAdmin} onChange={this.handleChange}/> Admin<br />
 		  <input type="submit" value="Submit" />
-		  <h1>{this.state.isAdmin ? this.state.pswd : this.state.userName} </h1>
+		  {/*<h1>{this.state.isAdmin ? this.state.pswd : this.state.userName} </h1>*/}
 		</form>
 		</div>
 		)

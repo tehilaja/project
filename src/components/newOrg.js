@@ -8,6 +8,9 @@ import {Redirect} from "react-router-dom";
 import HeaderOrg from './organization/HeaderOrg.js';
 import Footer from './organization/Footer.js';
 
+import LoginVsSignIn from './LoginVsSignIn.js';
+
+
 
 
 class newOrg extends React.Component{
@@ -63,10 +66,7 @@ class newOrg extends React.Component{
 
 				{/* info about Admin of organization */}
 				<h2>Sign up or sign in as organization Admin: </h2>
-				Admin UserName: <input type="text" name="userName" onChange={this.handleChange.bind(this)}/><br />
-				password: <input type="password" name="pswd" onChange={this.handleChange.bind(this)}/><br />
-				validate password: <input type="password" name="validPswd" onChange={this.handleChange.bind(this)}/><br />
-				
+				<LoginVsSignIn />
 				<h2>enter the name of your organization: </h2>
 				<input type="text" name="orgName" onChange={this.handleChange.bind(this)}/>
 				<h2>add photo for your organization:</h2>
