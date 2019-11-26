@@ -34,7 +34,7 @@ class newOrg extends React.Component{
 	}
 
 	handleSubmit(e){
-		//e.preventDefault()	
+		e.preventDefault()	
 	}
 	
 	 //---------increment + ----------
@@ -44,7 +44,7 @@ class newOrg extends React.Component{
                 return {
                     minDonation: prevState.minDonation + 1
                 }
-            })
+			})
     }
     //---------decrement - -------------
     decrement()
@@ -60,10 +60,17 @@ class newOrg extends React.Component{
 				<HeaderOrg />
 				<div  className = "doners">
 				<form className="fillFormDoners" onSubmit={this.handleSubmit.bind(this)}>
-				<h2>enter the name of your organization:</h2>
-				<input type="text" name="orgName" onChange={this.fileChanged}/>
+
+				{/* info about Admin of organization */}
+				<h2>Sign up or sign in as organization Admin: </h2>
+				Admin UserName: <input type="text" name="userName" onChange={this.handleChange.bind(this)}/><br />
+				password: <input type="password" name="pswd" onChange={this.handleChange.bind(this)}/><br />
+				validate password: <input type="password" name="validPswd" onChange={this.handleChange.bind(this)}/><br />
+				
+				<h2>enter the name of your organization: </h2>
+				<input type="text" name="orgName" onChange={this.handleChange.bind(this)}/>
 				<h2>add photo for your organization:</h2>
-				<input type="file" name="photo" accept=".jpg" onChange={this.fileChanged}/>
+				<input type="file" name="photo" accept=".jpg" onChange={this.handleChange.bind(this)}/>
 				<br />
 				
 				{/* set minimum donation per month */}
@@ -71,17 +78,12 @@ class newOrg extends React.Component{
                     <label > set minimum donation per month:</label>
 					<label > $ </label>
                     <lable name="minDonation">{this.state.minDonation}</lable>
-                    <button onClick={this.decrement}>-</button>
-                    <button onClick={this.increment}>+</button>
+                    <button onClick={this.decrement.bind(this)}>-</button>
+                    <button onClick={this.increment.bind(this)}>+</button>
                 </div>
 				
 				<br />
-				
-				{/* info about Admin of organization */}
-				Admin UserName: <input type="text" name="userName" onChange={this.handleChange}/><br />
-				password: <input type="password" name="pswd" onChange={this.handleChange}/><br />
-				validate password: <input type="password" name="validPswd" onChange={this.handleChange}/><br />
-				
+
 				<input type="submit" value="Submit" />
 				</form>
 				</div>

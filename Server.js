@@ -7,9 +7,10 @@ const app = express(); //library to shorten http requests
 
 app.use(bodyParser.json({extended: false}))
 
-console.log("connected!!!!!!!!!!!")
+console.log("connected")
 
 app.post('/add_user', function(req,res){
+  //let sql1 = 'INSERT INTO Users (user_id, user_name, pswd, email, credit_info_id, is_admin) VALUES (req.body.user_id, req.body.user_name, req.body.pswd, req.body.email, req.body.credit_info_id, req.body.is_admin);'
   console.log("in add_user")
   res.send("added succesfully!") //response
 });

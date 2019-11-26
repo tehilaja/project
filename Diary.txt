@@ -3,7 +3,7 @@ Tehila Jacobs and Avital Spector
 Magdilim
 
 30/3/2019 
-meeting with client who disccused his idea of this project
+meeting with client who discussed his idea of this project
 
 05/05/2019-12/06/2019
 working on researching different option for languages of development. working on porposal form for project.
@@ -71,5 +71,13 @@ attempting to connect to client - complicated errors...
 
 Nov 22, 2019
 working on connection between Server and client
+
+Nov 24, 2019
+Alpha, sending it to Eli to look at what was already done
+
+Nov 25, 2019
+Alpha, researching payment methods online (such as tranzila)
+sequence diagram for project
+writing writing testing program for project
  
 

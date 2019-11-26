@@ -18,11 +18,11 @@ class UserProfileForm extends React.Component {
 		})
 	}
 	
-	handleSubmit(){
-		 alert('hi')
+	handleSubmit(e){
+		e.preventDefault()
+		 alert("hiii")
 		 /*add user to dataBase, login with new user*/
-		 (
-		 	async () => {
+		(async () => {
 		 		alert('hi1')
 		 		const response = await axios.post(
 		 			'/add_user',
