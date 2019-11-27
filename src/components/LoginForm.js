@@ -29,12 +29,13 @@ class LoginForm extends React.Component {
 		if (this.state.pswd == "" && this.state.userName == ""  ){
 					alert("Username  and  password Cannot be empty!");
 		}
-		/*(async ()=> {
+		(async ()=> {
             const response = await axios.post(
-                '/userExists',
+                '/login',
                 { userName: this.state.userName, pswd: this.state.pswd, isAdmin: this.state.isAdmin, loggedIn: false},
                 { headers: { 'Content-Type': 'application/json' } }
-              )
+			  )
+			  console.log("resp",response)
               alert(response.data)
               if(response.data === 'Success'){
                 this.setState({loggedIn: true})
@@ -45,7 +46,7 @@ class LoginForm extends React.Component {
               }
         })();
 		
-		//log in with user name*/
+		//log in with user name
 	}
 	
 	render(){

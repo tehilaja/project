@@ -10,7 +10,12 @@ app.use(bodyParser.json({extended: false}))
 console.log("connected")
 
 app.post('/add_user', function(req,res){
-  //let sql1 = 'INSERT INTO Users (user_id, user_name, pswd, email, credit_info_id, is_admin) VALUES (req.body.user_id, req.body.user_name, req.body.pswd, req.body.email, req.body.credit_info_id, req.body.is_admin);'
+
+  //todo- make sure email and user_name dosent exists.
+  console.log("req",req.body);
+  let sql1 = `INSERT INTO Users ( user_name, pswd, email, credit_info_id, is_admin) VALUES ("${req.body.user_name}", "${req.body.pswd}", "${req.body.email}", 1, ${req.body.is_admin});`
+  console.log("quert is",sql1,"\n");
+  db.query(sql1)
   console.log("in add_user")
   res.send("added succesfully!") //response
 });
@@ -30,6 +35,24 @@ db.connect((err)=>{
   else
   console.log('mysql connected...');
 });
+
+app.post('/login',(req, res)=>{
+  let query = `SELECT * FROM Users WHERE user_name="${req.body.userName}"`
+  console.log("req body",req.body)
+  db.query(query,(err,result,fields)=>{
+    if(!err){
+      if(result.length && result[0].pswd==req.body.pswd){
+        let resToSend={...result[0]}
+        delete resToSend.pswd
+        res.send(resToSend)
+      }
+      else return res.send("user dosent exist")
+    }
+    res.send("fail")
+  console.log(result)})
+  
+
+})
 
 /*
  app.get('/abc', (req, res)=>{

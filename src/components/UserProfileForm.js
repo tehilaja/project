@@ -6,8 +6,8 @@ import { async } from "q";
 
 class UserProfileForm extends React.Component {
 	
-	constructor(){
-		super()
+	constructor(props){
+		super(props)
 		this.state = {userName: "", pswd: "", valid_pswd: "", email: ""}
 		this.handleChange = this.handleChange.bind(this)
 	}
@@ -18,26 +18,28 @@ class UserProfileForm extends React.Component {
 		})
 	}
 	
-	handleSubmit(e){
-		e.preventDefault()
-		 alert("hiii")
+	handleSubmit=(e)=>{
+		e.preventDefault();
 		 /*add user to dataBase, login with new user*/
 		(async () => {
-		 		alert('hi1')
 		 		const response = await axios.post(
 		 			'/add_user',
-		 			{userName: "tehila"},
+		 			{ //todo- send real data
+						user_name:this.state.userName, pswd:this.state.pswd, email:this.state.email, credit_info_id:1,
+						 is_admin:false
+					 },
 		 			{header:{'Content-Type': 'application/json'}}
-		 		)
+		 		);
 		 		console.log(response.data)
 		 	}
 		)();
+
 	}
 	
 	render(){
 		return(
 		<div className="App-header-form">
-		<form onSubmit={this.handleSubmit.bind(this)}>
+		<form onSubmit={this.handleSubmit}>
 		  User name: <input type="text" name="userName"></input><br></br>
 		  password: <input type="password" name="pswd"></input><br></br>
 		  validate password: <input type="password" name="valid_pswd"></input><br></br>
