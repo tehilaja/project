@@ -46,7 +46,7 @@ app.post('/login',(req, res)=>{
         let resToSend={...result[0]}
         delete resToSend.pswd
         console.log(resToSend)
-        res.send(resToSend)
+        res.send("found user")
       }
       else return res.send("user dosent exist")
     }

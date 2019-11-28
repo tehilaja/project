@@ -45,7 +45,7 @@ class LoginForm extends React.Component {
                 this.setState({loggedIn: false})
                 alert("Please make sure to click the correct button, and that you typed in the correct username and password ")
 			  }
-			  else {
+			  else if(response.data === "found user"){
                 this.setState({loggedIn: true})
               }
               
@@ -62,7 +62,8 @@ class LoginForm extends React.Component {
 		  password: <input type="password" name="pswd" onChange={this.handleChange.bind(this)}/><br />
 		  <input type="checkbox" name="isAdmin" checked={this.state.isAdmin} onChange={this.handleChange}/> Admin<br />
 		  <input type="submit" value="Submit" />
-		  <h1>{!this.state.loggedIn ? ":(" : "hello"} </h1>
+		  {this.state.loggedIn && <h1>Hello {this.state.userName}</h1>} 
+		  {/*<h1>{!this.state.loggedIn ? ":(" : "hello"} </h1>*/}
 		</form>
 		</div>
 		)
