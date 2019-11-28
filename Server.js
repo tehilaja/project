@@ -41,17 +41,17 @@ app.post('/login',(req, res)=>{
   console.log("req body",req.body)
   db.query(query,(err,result,fields)=>{
     if(!err){
+      console.log("found user")
       if(result.length && result[0].pswd==req.body.pswd){
         let resToSend={...result[0]}
         delete resToSend.pswd
+        console.log(resToSend)
         res.send(resToSend)
       }
       else return res.send("user dosent exist")
     }
     res.send("fail")
   console.log(result)})
-  
-
 })
 
 /*

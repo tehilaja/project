@@ -40,12 +40,13 @@ class UserProfileForm extends React.Component {
 		return(
 		<div className="App-header-form">
 		<form onSubmit={this.handleSubmit}>
-		  User name: <input type="text" name="userName"></input><br></br>
-		  password: <input type="password" name="pswd"></input><br></br>
-		  validate password: <input type="password" name="valid_pswd"></input><br></br>
-		  email: <input type="email" name="email"></input><br></br>
+		  User name: <input type="text" name="userName" onChange={this.handleChange.bind(this)}></input><br></br>
+		  password: <input type="password" name="pswd" onChange={this.handleChange.bind(this)}></input><br></br>
+		  validate password: <input type="password" name="valid_pswd" onChange={this.handleChange.bind(this)}></input><br></br>
+		  email: <input type="email" name="email" onChange={this.handleChange.bind(this)}></input><br></br>
 		  <input type="submit" value="Submit"></input>
 		</form>
+		<h1>{this.state.userName + this.state.pswd+this.state.email}</h1>
 		</div>
 		)
 	}

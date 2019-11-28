@@ -30,20 +30,25 @@ class LoginForm extends React.Component {
 					alert("Username  and  password Cannot be empty!");
 		}
 		(async ()=> {
+			alert("login in!!")
             const response = await axios.post(
                 '/login',
                 { userName: this.state.userName, pswd: this.state.pswd, isAdmin: this.state.isAdmin, loggedIn: false},
                 { headers: { 'Content-Type': 'application/json' } }
 			  )
 			  console.log("resp",response)
-              alert(response.data)
-              if(response.data === 'Success'){
-                this.setState({loggedIn: true})
-              }
-              else if(response.data ==='Failed'){
+			  alert(response.data)
+			  if(response.data === "fail"){
+				  alert("failed to login user")
+			  }
+              else if(response.data ==="user dosent exist"){
                 this.setState({loggedIn: false})
                 alert("Please make sure to click the correct button, and that you typed in the correct username and password ")
+			  }
+			  else {
+                this.setState({loggedIn: true})
               }
+              
         })();
 		
 		//log in with user name
@@ -57,7 +62,7 @@ class LoginForm extends React.Component {
 		  password: <input type="password" name="pswd" onChange={this.handleChange.bind(this)}/><br />
 		  <input type="checkbox" name="isAdmin" checked={this.state.isAdmin} onChange={this.handleChange}/> Admin<br />
 		  <input type="submit" value="Submit" />
-		  {/*<h1>{this.state.isAdmin ? this.state.pswd : this.state.userName} </h1>*/}
+		  <h1>{!this.state.loggedIn ? ":(" : "hello"} </h1>
 		</form>
 		</div>
 		)

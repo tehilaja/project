@@ -79,5 +79,15 @@ Nov 25, 2019
 Alpha, researching payment methods online (such as tranzila)
 sequence diagram for project
 writing writing testing program for project
- 
+
+********************not in Wiki****************************
+
+Nov 26, 2019
+Working on alpha
+
+Nov 27, 2019
+installing Postman to work on connection between server and client
+finding bug. 
+writing a few http request - including inserting data about user into user table in db
+
 

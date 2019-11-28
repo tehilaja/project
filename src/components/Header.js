@@ -9,12 +9,13 @@ import {Redirect} from "react-router-dom";
 
 class Header extends React.Component 
 {
-		constructor()
+		constructor(props)
 		{
-		super()
+		super(props)
 		this.state = {
-			 newOrgFlag: false
-			}
+			 newOrgFlag: false,
+			 loggedIn: false
+		}
 	}
 	
 	/*conditional rendering based on what was clicked*/
@@ -28,7 +29,8 @@ class Header extends React.Component
 				<img src={logo} className="App-logo" alt="logo" />
 				<div>
 					<button name = "btnOrgJoin" onClick={() => this.setState({newOrgFlag: true})}> Join as organization</button> 
-					<LoginVsSignIn />
+					{!this.state.loggedIn && <LoginVsSignIn />}
+					{this.state.loggedIn && <h1>hello</h1>}
 				</div>
 			  </header>
 			</div>
