@@ -12,21 +12,17 @@ import Footer from './Footer.js';
 
 class OrgPage extends React.Component{
 	constructor(props) {
-		super(props)
-
-		
+		alert("in org page");
+		super(props)	
 		this.state = {
 			img: this.props.location.state.img,
 			name: this.props.location.state.name,
 			id: this.props.location.state.id,
 			initialDonation: this.props.location.state.initialDonation,
-
-
-			routeMain: false
-
+			routeMain: false,
+			loggedIn: false,
+			userName: ""
 		}
-
-
 	}
 	
 	componentWillReceiveProps(nextProps){
@@ -48,13 +44,9 @@ class OrgPage extends React.Component{
 	// function 
 
 	render() {
-		
-		// const data = this.props.location.state
-		// const and calculation
-
 		return(
 			<div>
-                <HeaderOrg />
+                <HeaderOrg data={{userName: this.state.userName, loggedIn: this.state.loggedIn}}/>
 				<OrgBody 
 					data = {this.state}/>
 				<Footer />

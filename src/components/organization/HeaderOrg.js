@@ -9,22 +9,21 @@ import logo from './magdilim_logo.jpg';
 // import LoginForm from './LoginForm.js';
 // import UserProfile from './UserProfile.js';
 
-class Header extends React.Component {
-		constructor(){
-		super()
+class HeaderOrg extends React.Component {
+		constructor(props){
+		super(props)
 		this.state = {
-			showLogin: false, 
-			showUser: false,
 			routeMain: false,
-			userName: ""
+			loggedIn: this.props.data.loggedIn,
+			userName: this.props.data.userName
 		}
 	}
 		render() {
 
 			if (this.state.routeMain === true){
 				return <Redirect to = {{
-					pathname: '/'
-					// state: this.onClickOrg
+					pathname: '/',
+					state: {userName: this.state.userName, loggedIn: this.state.loggedIn}
 				}} />
 			} 
 
@@ -35,10 +34,10 @@ class Header extends React.Component {
 					return {
 						routeMain: !prevState.routeMain
 					}})} >back to home page</button>
-					{this.state.showUser && <h1>hello {this.state.userName}</h1>}
+					{this.state.loggedIn && <h1>Hello {this.state.userName} :)</h1>}
 				</div>
 			)
 	}
 }
 
-export default Header
+export default HeaderOrg;

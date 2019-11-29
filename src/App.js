@@ -22,16 +22,24 @@ class App extends React.Component
 		super(props)
 		this.state = 
 		{
-			isLoggedIn: false,
+			loggedIn: false,
 			org: null, 
-			user: null 
+			userName: ""
 
 		}
-		this.check = this.check.bind(this)
+		this.handlerClick = this.handlerClick.bind(this);
+
 	}
 
-	check(){
-		/*add user to dataBase, login with new user*/
+	handlerClick(user_name) {
+        this.setState({
+			userName: user_name,
+			loggedIn: true
+        });
+    }
+
+	/*check(){
+		//add user to dataBase, login with new user
 		(
 			async () => {
 				alert('hi1')
@@ -43,16 +51,16 @@ class App extends React.Component
 				console.log(response.data)
 			}
 		)();
-	}
+	}*/
 //---------render------------------
 	render() 
 	{
 		return(
 			<div>
-				<Header />
-				<Body />
+				<Header record={this.handlerClick} data={{loggedIn: this.state.loggedIn, userName: this.state.userName}}/>
+				<Body data={{loggedIn: this.state.loggedIn, userName: this.state.userName}}/>
 				<Footer />
-				<button onClick={this.check.bind(this)}>button</button>
+				{/*<button onClick={this.check.bind(this)}>button</button>*/}
 			</div>
 		)
 	}	

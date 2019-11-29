@@ -13,29 +13,23 @@ import orgData from './organization/orgData.js'
 class Body extends React.Component
 {
 //-----------constructor----------------------
-	constructor()
+	constructor(props)
 	{
-		super()
+		super(props)
 		//------state--
 		this.state = 
 		{
-			isLoggedIn: false, 
+			loggedIn: this.props.data.loggedIn, 
+			userName: this.props.data.userName, 
 			organizations: orgData,
 			clickOrg: false,
 			// id: "3"
 		}
 		this.selectOrg = this.selectOrg.bind(this)
 		this.handleClick = this.handleClick.bind(this)
-		this.clickedOrg = this.clickedOrg.bind(this)
 	}
 //------------function-------------------------
 	
-	
-	//--------------------
-	clickedOrg()
-	{
-		alert("hi")
-	}
 
 	//------------------
 	selectOrg(event) 
@@ -50,7 +44,6 @@ class Body extends React.Component
         //     [name]: value
 		// }) 
 		const {id} = event.target
-		alert()
 	}
 
 	//----------------------
@@ -73,7 +66,7 @@ class Body extends React.Component
 		
 		//--- login
 		let loggedStatus
-		if(this.state.isLoggedIn)
+		if(this.state.loggedIn)
 		{
 			loggedStatus = "Hello " + this.props.user
 		}

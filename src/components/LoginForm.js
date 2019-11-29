@@ -5,8 +5,8 @@ import axios from "axios";
 import { async } from "q";
 
 class LoginForm extends React.Component {
-	constructor(){
-		super()
+	constructor(props){
+		super(props)
 		this.state = 
 			{userName: "", pswd: "", isAdmin: false, loggedIn: false}
 		this.handleChange = this.handleChange.bind(this)
@@ -30,14 +30,12 @@ class LoginForm extends React.Component {
 					alert("Username  and  password Cannot be empty!");
 		}
 		(async ()=> {
-			alert("login in!!")
             const response = await axios.post(
                 '/login',
                 { userName: this.state.userName, pswd: this.state.pswd, isAdmin: this.state.isAdmin, loggedIn: false},
                 { headers: { 'Content-Type': 'application/json' } }
 			  )
 			  console.log("resp",response)
-			  alert(response.data)
 			  if(response.data === "fail"){
 				  alert("failed to login user")
 			  }
@@ -46,7 +44,8 @@ class LoginForm extends React.Component {
                 alert("Please make sure to click the correct button, and that you typed in the correct username and password ")
 			  }
 			  else if(response.data === "found user"){
-                this.setState({loggedIn: true})
+				this.setState({loggedIn: true})
+				this.props.record(this.state.userName)
               }
               
         })();
@@ -60,7 +59,7 @@ class LoginForm extends React.Component {
 		<form onSubmit={this.handleSubmit.bind(this)}>
 		  User name: <input type="text" name="userName" onChange={this.handleChange.bind(this)}/><br />
 		  password: <input type="password" name="pswd" onChange={this.handleChange.bind(this)}/><br />
-		  <input type="checkbox" name="isAdmin" checked={this.state.isAdmin} onChange={this.handleChange}/> Admin<br />
+		  {/*<input type="checkbox" name="isAdmin" checked={this.state.isAdmin} onChange={this.handleChange}/> Admin<br />*/}
 		  <input type="submit" value="Submit" />
 		  {this.state.loggedIn && <h1>Hello {this.state.userName}</h1>} 
 		  {/*<h1>{!this.state.loggedIn ? ":(" : "hello"} </h1>*/}

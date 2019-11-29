@@ -7,21 +7,34 @@ import UserProfileForm from './UserProfileForm.js';
 
 class LoginVsSignIn extends React.Component 
 {
-		constructor()
+		constructor(props)
 		{
-		super()
+		super(props)
 		this.state = {
 			showLogin: false,
 			showUser: false,
-			showBackButton: false
+			showBackButton: false,
+			loggedIn: this.props.data.loggedIn,
+			userName: this.props.data.userName
 			}
+		this.handlerClick = this.handlerClick.bind(this);
+
 	}
+
+	handlerClick(user_name) {
+        this.setState({
+			showLogin: false,
+			showUser: false,
+			loggedIn: true,
+		});
+		this.props.record(user_name)
+    }
 	
     /*conditional rendering based on what was clicked*/
     render(){
 	return(
 			<div>
-                {this.state.showLogin && <LoginForm />}
+                {this.state.showLogin && <LoginForm record={this.handlerClick}/>}
                 {this.state.showUser && <UserProfileForm />}
                 {!this.state.showLogin && !this.state.showUser && <div>
                 <button name = "btnUserJoin" onClick={() => this.setState({showLogin: false, showUser: true, showBackButton: true})}> Create account</button> 

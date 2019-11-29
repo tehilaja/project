@@ -15,16 +15,18 @@ import LoginVsSignIn from './LoginVsSignIn.js';
 
 class newOrg extends React.Component{
 
-	constructor(){
-		super()
+	constructor(props){
+		super(props)
+		alert("newOrg constructor"+ this.props)
+		//alert("in new org. logged: " + this.props.data.loggedIn + "name: " + this.props.data.userName);
 		this.state ={ orgName:"",
-						  photo:"", 
-						  minDonation:10,
-						  userName: "", 
-						  pswd: "", 
-						  validPswd: false,
-						  loggedIn: false
-						  }
+						photo:"", 
+						minDonation:10,
+						pswd: "", 
+						validPswd: false,
+						loggedIn: false, //this.props.data.loggedIn,
+						userName: "" //this.props.data.userName
+					 }
 					  
 		this.handleChange = this.handleChange.bind(this)
 		this.increment = this.increment.bind(this)
@@ -60,13 +62,13 @@ class newOrg extends React.Component{
 	render() {
 		return(
 			<div>
-				<HeaderOrg />
+				<HeaderOrg data={{userName:this.state.userName, loggedIn:this.state.loggedIn}}/>
 				<div  className = "doners">
 				<form className="fillFormDoners" onSubmit={this.handleSubmit.bind(this)}>
 
 				{/* info about Admin of organization */}
 				<h2>Sign up or sign in as organization Admin: </h2>
-				<LoginVsSignIn />
+				<LoginVsSignIn data={{userName:this.state.userName, loggedIn:this.state.loggedIn}}/>
 				<h2>enter the name of your organization: </h2>
 				<input type="text" name="orgName" onChange={this.handleChange.bind(this)}/>
 				<h2>add photo for your organization:</h2>
