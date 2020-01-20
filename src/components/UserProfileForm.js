@@ -18,19 +18,21 @@ class UserProfileForm extends React.Component {
 		})
 	}
 	
+	// ---- add user
 	handleSubmit=(e)=>{
 		e.preventDefault();
 		 /*add user to dataBase, login with new user*/
 		(async () => {
 		 		const response = await axios.post(
-		 			'/add_user',
+					 '/add_user',
 		 			{ //todo- send real data
-						user_name:this.state.userName, pswd:this.state.pswd, email:this.state.email, credit_info_id:1,
-						 is_admin:false
+						user_name:this.state.userName, pswd:this.state.pswd, email:this.state.email, credit_info_id:1,// ---- req
+						is_admin:false
 					 },
 		 			{header:{'Content-Type': 'application/json'}}
 		 		);
-		 		console.log(response.data)
+				 console.log(response.data)
+				 
 		 	}
 		)();
 

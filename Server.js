@@ -2,23 +2,15 @@ const express = require('express');
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
 const app = express(); //library to shorten http requests
+var user = ""
+
+
 
 ///maybe- check loopback?
 
 app.use(bodyParser.json({extended: false}))
 
 console.log("connected")
-
-app.post('/add_user', function(req,res){
-
-  //todo- make sure email and user_name dosent exists.
-  console.log("req",req.body);
-  let sql1 = `INSERT INTO Users ( user_name, pswd, email, credit_info_id, is_admin) VALUES ("${req.body.user_name}", "${req.body.pswd}", "${req.body.email}", 1, ${req.body.is_admin});`
-  console.log("quert is",sql1,"\n");
-  db.query(sql1)
-  console.log("in add_user")
-  res.send("added succesfully!") //response
-});
 
 
 const db = mysql.createConnection({
@@ -36,6 +28,25 @@ db.connect((err)=>{
   console.log('mysql connected...');
 });
 
+
+
+//-~~~~~~~~~~~~~~~~~~ code ~~~~~~~~~~~~~~~~~~
+
+//-----add user ------
+app.post('/add_user', function(req,res){
+
+  //todo- make sure email and user_name dosent exists.
+  console.log("req",req.body);
+  let sql1 = `INSERT INTO Users ( user_name, pswd, email, credit_info_id, is_admin) VALUES ("${req.body.user_name}", "${req.body.pswd}", "${req.body.email}", 1, ${req.body.is_admin});`
+  console.log("quert is",sql1,"\n");
+  db.query(sql1)
+  console.log("in add_user")
+  res.send("added succesfully!") //response
+
+  // TODO : login for this user 
+});
+
+//-------login --------
 app.post('/login',(req, res)=>{
   let query = `SELECT * FROM Users WHERE user_name="${req.body.userName}"`
   console.log("req body",req.body)
@@ -46,13 +57,94 @@ app.post('/login',(req, res)=>{
         let resToSend={...result[0]}
         delete resToSend.pswd
         console.log(resToSend)
-        res.send("found user")
+        user = resToSend
+        console.log("user", user.user_name)
+        res.end("found user")
       }
-      else return res.send("user dosent exist")
+      else return res.end("user dosent exist")
     }
-    res.send("fail")
+    else
+      res.send("fail")
   console.log(result)})
 })
+
+
+//-------donation ----
+
+app.post('/donation',(req, res)=>{
+  
+  // var userID = req.body.user_id
+  console.log("the user: ", user)
+  if(user != "")
+  {
+    console.log("user", user.user_id)
+    let queryD = `INSERT INTO Donersinorg (user_id, org_id, monthly_donation, leveled, referred_by) VALUES (${user.user_id} , ${req.body.org_id}, ${req.body.monthly_donation}, ${req.body.level},(select user_id from Users where user_name = "${req.body.referred_by}" ));`
+    console.log("quert is",queryD,"\n")
+    db.query(query,(err,result,fields)=>
+    {
+      if(!err){
+        console.log("in donation")
+        res.end("added succesfully!") //response
+      }
+      else
+        res.end("fail")
+    console.log(result)
+    })
+  // })
+  }
+  else
+    res.end("no conection")
+})
+  
+  
+
+// insert into Donersinorg (user_id, org_id, monthly_donation, leveled, referred_by) values (5, 1, 12, 1, (select user_id from Users where user_name = "elchanan" ));
+
+
+
+
+// app.post('/donation',(req, res)=>{
+  
+//   // var userID = req.body.user_id
+//   console.log("the user: ", user)
+//   if(user != "")
+//    {
+//       console.log("user", user.user_id)
+//       let queryD = `INSERT INTO Donersinorg (user_id, org_id, monthly_donation, leveled, referred_by) VALUES (${user.user_id} , ${req.body.org_id}, ${req.body.monthly_donation}, ${req.body.level},(select user_id from Users where user_name = "${req.body.referred_by}" ));`
+//       //  "${req.body.referred_by}" 
+//       // todo : check referred_by exist
+//       console.log("quert is",queryD,"\n");
+//       db.query(queryD)
+//       console.log("in donation")
+//       res.end("added succesfully!") //response
+//    }
+//   else
+//     res.end("no conection")
+// })
+
+
+
+//------------- ??? -------
+ //---findDuser ---
+ app.post('/findDuser',(req, res)=>{
+   console.log(req.body.userD)
+  let query = `SELECT * FROM Users WHERE user_name="${req.body.userD}"`
+  console.log("req body",req.body)
+  console.log(query)
+  db.query(query,(err,result,fields)=>{
+    if(!err){
+      console.log("found user " + result[0].user_id)
+      res.end((result[0].user_id).toString())
+     
+    }
+    else
+      res.end("fail")
+  console.log(result)})
+})
+
+
+
+
 
 /*
  app.get('/abc', (req, res)=>{

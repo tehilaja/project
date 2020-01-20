@@ -35,6 +35,7 @@ class HeaderOrg extends React.Component {
 						routeMain: !prevState.routeMain
 					}})} >back to home page</button>
 					{this.state.loggedIn && <h1>Hello {this.state.userName} :)</h1>}
+					<h3>Hello {this.state.userName} :)</h3>
 				</div>
 			)
 	}

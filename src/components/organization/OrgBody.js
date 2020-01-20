@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from "axios";
 
 import OrgCard from './OrgCard.js'
 import orgData from './orgData.js'
@@ -17,21 +18,31 @@ class OrgBody extends React.Component {
         // }
         this.state = 
         {
-            firstName: "",
-            email: "",
+            // firstName: "",
+            // email: "",
             showLogin: false,
             showUser: false,
             organization: orgData,
             btnDonateClicked: false,
             confirmBtn: false,
             initialDonation : this.props.data.initialDonation,
-            color: "F33333"
+            color: "F33333",
+            userName: "a", // -
+            DuserName: "",
+            DuserId: "",
+            userEmail: "", // -
+            user_id: 5 // todo : real info
 
         }
+        // this.user = {
+        //     userName : "avital"
+        // }
+
         this.handleChange = this.handleChange.bind(this)
         this.handleClick = this.handleClick.bind(this) 
         this.clickToDonate = this.clickToDonate.bind(this) 
 
+        // this.findDuser = this.findDuser.bind(this)
         this.increment = this.increment.bind(this)
         this.decrement = this.decrement.bind(this)
     }
@@ -81,11 +92,73 @@ class OrgBody extends React.Component {
         })
     }
     
+
+    // ---- add Donation
+	handleSubmit=(e)=>{
+        e.preventDefault();
+        alert("s", this.state.DuserName)
+         /*add donation to dataBase */
+        if (this.state.DuserName != "") // TODO: if find in db (func findDuser)
+        {
+            (async () => {
+		 		const response = await axios.post(
+					 '/donation',
+         			{ 
+                        // todo- level(update +1), 
+						user_id:this.state.user_id, org_id:this.props.data.id, monthly_donation:this.state.initialDonation,  // ---- req
+                        level:1, referred_by:this.state.DuserName
+                    },
+                     {header:{'Content-Type': 'application/json'}}
+                     )
+                    console.log("resp",response)
+                    if(response.data == "no conection"){
+                        alert("you need to login...")
+                    }
+                    else if(response.data =="added succesfully!"){
+                    // this.setState({loggedIn: false})
+                        alert("the donation " + this.state.initialDonation+ "$ added succesfully ")
+                     }
+                    else if(response.data =="fail"){
+                        alert("the referred by is incorrect")
+                    }
+               })();  
+        }
+        else
+            alert("please enter Referred detiles")
+        // this.set
+		
+	}
     //---------onSumbit---------------
     // onSumbit()
     // {
 
     // } 
+
+
+    //-------- findDuser ---------
+    // findDuser(){
+    //     if(this.state.DuserName!="")
+    //     {
+    //         (async () => {
+    //             const response = await axios.post(
+    //                 '/findDuser',
+    //                 {userD:this.state.DuserName},
+    //                 {header:{'Content-Type': 'application/json'}}
+    //                 )
+    //                 console.log("resp",response)
+    //                 if(response.data == "fail"){
+    //                     alert("the user not found")
+    //                 }
+    //                 else if(response.data != " "){
+    //                 // this.setState({loggedIn: false})
+    //                 this.setState({DuserId: response.data})
+    //                 alert("id " + this.state.DuserId)
+    //                 }
+    //             })(); 
+    //     }
+    //     else
+    //         alert("you must to enter a name that you Referred to this organization by")
+    // }
 
      //----------clickToDonate--------------------
      clickToDonate()
@@ -98,15 +171,23 @@ class OrgBody extends React.Component {
          })
      }
     
-    handleChange(event){
-        const {name, value} = event.target
-        this.setState({[name]: value}) 
-    }
+     handleChange(event){
+		this.setState({
+			[event.target.name]: event.target.value
+        })
+        // this.findDuser() // find the throw donate
+        // alert(this.state.DuserId)
+	}
 	
 	
 //----------render------------------
     render() 
     {
+        const styles = 
+        {
+            fontStyle: "italic",
+            color: "rgb(30, 100, 121)"
+        }
         const nameDonateThrough = this.state.firstName
     //---------return------------------------------
         return(
@@ -142,22 +223,71 @@ class OrgBody extends React.Component {
                     }})}
                 >donate </button>
 
+                {/* Donation throw information... */}
                 {this.state.btnDonateClicked && 
+                    <div className = "doners">
+                        <h4 style ={styles} >Referred to this organization by: </h4>
+                        <form className="fillFormDoners" onSubmit={this.handleSubmit}>
+                            <lable>name: </lable>
+                            <input 
+                                type="text" name="DuserName" onChange={this.handleChange.bind(this)} 
+                                placeholder="user Name" 
+                            /><br /><br/>
+                            <lable>email: </lable>
+                            <input 
+                                input type="email"
+                                name="userEmail" 
+                                onChange={this.handleChange.bind(this)}
+                                placeholder="email" 
+                            /> <br/><br/>
+                            
+                            <input className="btnConfirm"  type="submit" value="Submit"></input>             
+                            <br/><br/>
+                        </form>
+                    </div>
+                }
+
+
+            {/* <div className = "doners">
+                <h4 style ={styles} >Referred to this organization by: </h4>
+                <form className="fillFormDoners" onSubmit={this.handleSubmit.bind(this)}> 
+                    <lable>name: </lable>
+                    <input 
+                    name="firstName" 
+                    onChange={this.handleChange} 
+                    placeholder="First Name" 
+                    />
+                    <br /><br/>
+                    <lable>email : </lable>
+                    <input 
+                        name="email" 
+                        onChange={this.handleChange} 
+                        placeholder="Last Name" 
+                    />
+                    <br/>
+                    <input className="btnConfirm" type="submit" value="Submit" />                
+                    <br/><br/>
+                </form>
+            </div> */}
+
+
+
+
+                {/* {this.state.btnDonateClicked && 
                 <Doners 
                         handleChange={this.handleChange}
 						clickToDonate = {this.clickToDonate}
 						data = {this.state}/> 
-                    
-                }
+                } */}
+
                 {/* <p>{this.props.data.img}</p> */}
                 <h2>Entered information:</h2>
                 <h3>{nameDonateThrough}</h3>
-                <p>Your name: {this.state.firstName} {this.state.email}</p>  
+                <p>Your name: {this.state.DuserName} {this.state.userEmail}</p>  
                 
             </div>
         )
     }
-    
     
 }
 

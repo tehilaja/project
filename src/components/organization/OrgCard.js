@@ -37,7 +37,11 @@ class OrgCard extends React.Component{
                       routeOrgPage: !prevState.routeOrgPage}
                     })}>
             </img>
-            <h3>{this.props.name}</h3>
+            <div>
+                {/* <h3>{this.props.name}</h3> */}
+                <h5>initial Donation: {this.props.initialDonation} $</h5>
+            </div>
+            
             {/* <button className = "btnOrgCard " onClick = {() => this.handleClick(this.props.id)} >donate </button> */}
         </div>
         )
