@@ -96,7 +96,7 @@ class OrgBody extends React.Component {
     // ---- add Donation
 	handleSubmit=(e)=>{
         e.preventDefault();
-        alert("s", this.state.DuserName)
+        // alert("s", this.state.DuserName)
          /*add donation to dataBase */
         if (this.state.DuserName != "") // TODO: if find in db (func findDuser)
         {
@@ -111,14 +111,14 @@ class OrgBody extends React.Component {
                      {header:{'Content-Type': 'application/json'}}
                      )
                     console.log("resp",response)
-                    if(response.data == "no conection"){
+                    if(response.data === "no conection"){
                         alert("you need to login...")
                     }
-                    else if(response.data =="added succesfully!"){
+                    else if(response.data ==="added succesfully!"){
                     // this.setState({loggedIn: false})
                         alert("the donation " + this.state.initialDonation+ "$ added succesfully ")
                      }
-                    else if(response.data =="fail"){
+                    else if(response.data ==="fail"){
                         alert("the referred by is incorrect")
                     }
                })();  
@@ -279,9 +279,6 @@ class OrgBody extends React.Component {
 						clickToDonate = {this.clickToDonate}
 						data = {this.state}/> 
                 } */}
-
-                {/* <p>{this.props.data.img}</p> */}
-                <h2>Entered information:</h2>
                 <h3>{nameDonateThrough}</h3>
                 <p>Your name: {this.state.DuserName} {this.state.userEmail}</p>  
                 

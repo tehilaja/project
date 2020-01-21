@@ -3,7 +3,6 @@ import React from 'react';
 import {Redirect} from "react-router-dom";
 
 
-
 import HeaderOrg from './HeaderOrg.js';
 import OrgBody from './OrgBody.js';
 import Footer from './Footer.js';
@@ -22,6 +21,9 @@ class OrgPage extends React.Component{
 			routeMain: false,
 			loggedIn: false,
 			userName: ""
+		}
+		this.user = {
+			userName: "avital"
 		}
 	}
 	

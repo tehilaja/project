@@ -37,7 +37,8 @@ app.post('/add_user', function(req,res){
 
   //todo- make sure email and user_name dosent exists.
   console.log("req",req.body);
-  let sql1 = `INSERT INTO Users ( user_name, pswd, email, credit_info_id, is_admin) VALUES ("${req.body.user_name}", "${req.body.pswd}", "${req.body.email}", 1, ${req.body.is_admin});`
+  // * change
+  let sql1 = `INSERT INTO Users ( user_name, first_name, last_name, pswd, email, credit_info_id, is_admin) VALUES ("${req.body.user_name}", "${req.body.first_name}", "${req.body.last_name}" ,"${req.body.pswd}", "${req.body.email}", 1, ${req.body.is_admin});`
   console.log("quert is",sql1,"\n");
   db.query(sql1)
   console.log("in add_user")
@@ -77,10 +78,25 @@ app.post('/donation',(req, res)=>{
   console.log("the user: ", user)
   if(user != "")
   {
+    let id = 0 
     console.log("user", user.user_id)
+    let qDuser = `(select user_id from Users where user_name = "${req.body.referred_by}" );`
+    console.log("qDuser",qDuser )
+    db.query(qDuser,(err,result,fields)=>
+    {
+      if(!err){
+        console.log("add level")
+        id = result[0].user_id
+        console.log("id,",id)
+      }
+      else
+        res.end("fail")
+    console.log(result)
+    })
+
     let queryD = `INSERT INTO Donersinorg (user_id, org_id, monthly_donation, leveled, referred_by) VALUES (${user.user_id} , ${req.body.org_id}, ${req.body.monthly_donation}, ${req.body.level},(select user_id from Users where user_name = "${req.body.referred_by}" ));`
     console.log("quert is",queryD,"\n")
-    db.query(query,(err,result,fields)=>
+    db.query(queryD,(err,result,fields)=>
     {
       if(!err){
         console.log("in donation")
@@ -95,6 +111,40 @@ app.post('/donation',(req, res)=>{
   else
     res.end("no conection")
 })
+
+
+
+
+
+
+
+
+
+
+// app.post('/donation',(req, res)=>{
+  
+//   // var userID = req.body.user_id
+//   console.log("the user: ", user)
+//   if(user != "")
+//   {
+//     console.log("user", user.user_id)
+//     let queryD = `INSERT INTO Donersinorg (user_id, org_id, monthly_donation, leveled, referred_by) VALUES (${user.user_id} , ${req.body.org_id}, ${req.body.monthly_donation}, ${req.body.level},(select user_id from Users where user_name = "${req.body.referred_by}" ));`
+//     console.log("quert is",queryD,"\n")
+//     db.query(queryD,(err,result,fields)=>
+//     {
+//       if(!err){
+//         console.log("in donation")
+//         res.end("added succesfully!") //response
+//       }
+//       else
+//         res.end("fail")
+//     console.log(result)
+//     })
+//   // })
+//   }
+//   else
+//     res.end("no conection")
+// })
   
   
 
@@ -141,8 +191,6 @@ app.post('/donation',(req, res)=>{
       res.end("fail")
   console.log(result)})
 })
-
-
 
 
 

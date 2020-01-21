@@ -53,7 +53,7 @@ class Body extends React.Component
 			alert("id: " +id )
 		
 	}
-
+	// logout()
 
 //--------------render------------------------
 	render()
@@ -70,6 +70,7 @@ class Body extends React.Component
 		{
 			loggedStatus = "Hello " + this.props.user
 		}
+
 		
 
 		// //-----Redirect--------

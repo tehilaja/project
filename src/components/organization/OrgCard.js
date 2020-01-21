@@ -9,7 +9,11 @@ class OrgCard extends React.Component{
     constructor(props){
         super(props)
         this.state ={
-            routeOrgPage: false
+            routeOrgPage: false,
+            loginStatus: ""
+        }
+        this.user = {
+            name: ""
         }
 
         this.handleClick = this.handleClick.bind(this) 
