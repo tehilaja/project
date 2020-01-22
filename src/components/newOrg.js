@@ -17,8 +17,6 @@ class newOrg extends React.Component{
 
 	constructor(props){
 		super(props)
-		alert("newOrg constructor"+ this.props)
-		//alert("in new org. logged: " + this.props.data.loggedIn + "name: " + this.props.data.userName);
 		this.state ={ orgName:"",
 						photo:"", 
 						minDonation:10,

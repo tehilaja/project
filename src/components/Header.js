@@ -45,7 +45,11 @@ class Header extends React.Component
                       newOrgFlag: !prevState.newOrgFlag}
                     })} > Join as organization</button> 
 					{!this.state.loggedIn && <LoginVsSignIn record={this.handlerClick} data={{userName:this.state.userName, loggedIn:this.state.loggedIn}}/>}
-					{this.state.loggedIn && <h1>Hello {this.state.userName} :)</h1>}
+					{this.state.loggedIn && <div>
+						<button name = "btnLogOut" onClick={() => this.setState({			
+						loggedIn: false,
+						userName: ""})}>Log Out</button>
+					<h1>Hello {this.state.userName} :)</h1></div>}
 				</div>
 			  </header>
 			</div>

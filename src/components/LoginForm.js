@@ -22,12 +22,15 @@ class LoginForm extends React.Component {
 		e.preventDefault()
 		if (this.state.userName == "" && this.state.pswd != "") {
 			alert("Username Cannot be empty!");
+			return;
 		}
 		if (this.state.pswd == "" && this.state.userName != "" ){
 			alert("please fill in password field");
+			return;
 		}
 		if (this.state.pswd == "" && this.state.userName == ""  ){
-					alert("Username  and  password Cannot be empty!");
+			alert("Username and password Cannot be empty!");
+			return;
 		}
 		(async ()=> {
             const response = await axios.post(
@@ -37,11 +40,13 @@ class LoginForm extends React.Component {
 			  )
 			  console.log("resp",response)
 			  if(response.data === "fail"){
-				  alert("failed to login user")
+				  alert("failed to login user");
+				  return;
 			  }
               else if(response.data ==="user dosent exist"){
                 this.setState({loggedIn: false})
-                alert("Please make sure to click the correct button, and that you typed in the correct username and password ")
+				alert("Please make sure to click the correct button, and that you typed in the correct username and password ");
+				return;
 			  }
 			  else if(response.data === "found user"){
 				this.setState({loggedIn: true})
@@ -49,8 +54,6 @@ class LoginForm extends React.Component {
               }
               
         })();
-		
-		//log in with user name
 	}
 	
 	render(){

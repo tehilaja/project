@@ -41,7 +41,7 @@ class LoginVsSignIn extends React.Component
                 <button name = "btnLogin" onClick={() => this.setState({showLogin: true, showUser: false, showBackButton: true})}> Login</button> 
                 </div>}
                 {this.state.showBackButton && <button name = "btnBack" onClick={() => this.setState({showLogin: false, showUser: false, showBackButton: false})}> Back</button>}
-            </div>
+			</div>
 		)	
 	}
 }
