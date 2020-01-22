@@ -29,6 +29,7 @@ class newOrg extends React.Component{
 					 }
 					  
 		this.handleChange = this.handleChange.bind(this)
+		this.handlerClick = this.handlerClick.bind(this);
 		this.increment = this.increment.bind(this)
         this.decrement = this.decrement.bind(this)
 	}
@@ -41,6 +42,15 @@ class newOrg extends React.Component{
 	handleSubmit(e){
 		e.preventDefault()	
 	}
+
+	//function to deal with passing state to parent component:
+	handlerClick(user_name) {
+        this.setState({
+			loggedIn: true,
+			userName: user_name
+		});
+		this.props.record(user_name)
+    }
 	
 	 //---------increment + ----------
     increment() 
@@ -62,10 +72,13 @@ class newOrg extends React.Component{
 	render() {
 		return(
 			<div>				
-				{/*	{!this.state.loggedIn && <LoginVsSignIn record={this.handlerClick} data={{userName:this.state.userName, loggedIn:this.state.loggedIn}}/>}
-				{this.state.loggedIn && <h1>Hello {this.state.userName} :)</h1>}*/}
-				<HeaderOrg data={{userName:this.state.userName, loggedIn:this.state.loggedIn}}/>
-				<div  className = "doners">
+				<HeaderOrg record={this.handlerClick} data={{userName:this.state.userName, loggedIn:this.state.loggedIn}}/>
+				
+				{/*if user isn't signed in, will ask him to sign in*/}
+				{!this.state.loggedIn && <h2>Please sign up or login! :) </h2>}
+
+				{/*will only show the form to sign up a new org if the user is logged in*/}
+				{this.state.loggedIn && <div  className = "doners">
 				<form className="fillFormDoners" onSubmit={this.handleSubmit.bind(this)}>
 
 				<h2>Thank you for using us for your organization!</h2>
@@ -90,7 +103,7 @@ class newOrg extends React.Component{
 
 				<input type="submit" value="Submit" />
 				</form>
-				</div>
+				</div>}
 				<Footer />
 			</div>
 		)
