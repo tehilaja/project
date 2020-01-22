@@ -61,14 +61,16 @@ class newOrg extends React.Component{
 
 	render() {
 		return(
-			<div>
+			<div>				
+				{/*	{!this.state.loggedIn && <LoginVsSignIn record={this.handlerClick} data={{userName:this.state.userName, loggedIn:this.state.loggedIn}}/>}
+				{this.state.loggedIn && <h1>Hello {this.state.userName} :)</h1>}*/}
 				<HeaderOrg data={{userName:this.state.userName, loggedIn:this.state.loggedIn}}/>
 				<div  className = "doners">
 				<form className="fillFormDoners" onSubmit={this.handleSubmit.bind(this)}>
 
-				{/* info about Admin of organization */}
-				<h2>Sign up or sign in as organization Admin: </h2>
-				<LoginVsSignIn data={{userName:this.state.userName, loggedIn:this.state.loggedIn}}/>
+				<h2>Thank you for using us for your organization!</h2>
+
+				{/* info about organization */}
 				<h2>enter the name of your organization: </h2>
 				<input type="text" name="orgName" onChange={this.handleChange.bind(this)}/>
 				<h2>add photo for your organization:</h2>

@@ -17,8 +17,6 @@ class Header extends React.Component
 			 loggedIn: this.props.data.loggedIn,
 			 userName: this.props.data.userName
 		}
-
-
 		this.handlerClick = this.handlerClick.bind(this);
 	}
 
@@ -32,7 +30,6 @@ class Header extends React.Component
 	/*conditional rendering based on what was clicked*/
 	render(){
 		if (this.state.newOrgFlag === true){
-			alert("in header render")
 			return <Redirect to = {{
 				pathname: '/newOrg',
 				data: {userName: this.state.userName, loggedIn: this.state.loggedIn}

@@ -11,7 +11,6 @@ import Footer from './Footer.js';
 
 class OrgPage extends React.Component{
 	constructor(props) {
-		alert("in org page");
 		super(props)	
 		this.state = {
 			img: this.props.location.state.img,
@@ -19,16 +18,12 @@ class OrgPage extends React.Component{
 			id: this.props.location.state.id,
 			initialDonation: this.props.location.state.initialDonation,
 			routeMain: false,
-			loggedIn: false,
-			userName: ""
-		}
-		this.user = {
-			userName: "avital"
+			loggedIn: this.props.location.state.loggedIn,
+			userName: this.props.location.state.userName
 		}
 	}
 	
 	componentWillReceiveProps(nextProps){
-		alert("*********")
 		nextProps= this.props
 	}
 
