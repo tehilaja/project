@@ -76,6 +76,14 @@ app.post('/logout', function(req,res){
 });
 
 
+//--------------check if user is logged in -----------------
+app.post('/is_logged_in', function(req,res){
+  console.log("in is logged")
+  if (user == "")
+    res.end("no user")
+  res.send(user.user_name)
+});
+
 //-------donation ----
 
 app.post('/donation',(req, res)=>{

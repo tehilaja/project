@@ -3,6 +3,9 @@ import React from 'react';
 import {Redirect} from "react-router-dom";
 
 
+import axios from "axios";
+import { async } from "q";
+
 import HeaderOrg from './HeaderOrg.js';
 import OrgBody from './OrgBody.js';
 import Footer from './Footer.js';
@@ -18,8 +21,8 @@ class OrgPage extends React.Component{
 			id: this.props.location.state.id,
 			initialDonation: this.props.location.state.initialDonation,
 			routeMain: false,
-			loggedIn: this.props.location.state.loggedIn,
-			userName: this.props.location.state.userName
+			// loggedIn: this.props.location.state.loggedIn,
+			// userName: this.props.location.state.userName
 		}
 	}
 	
@@ -28,15 +31,23 @@ class OrgPage extends React.Component{
 	}
 
 	
-	/*componentDidMount(){
-		this.state = {
-			img: this.props.location.state.img,
-			name: this.props.location.state.name,
-			id: this.props.location.state.id,
-			routeMain: false
-
-		}
-	}*/
+	componentDidMount(){
+		(async ()=> {
+            const response = await axios.post(
+                '/is_logged_in',
+                { headers: { 'Content-Type': 'application/json' } }
+			  )
+			  if(response.data === "no user"){
+				this.state={
+					loggedIn: false,
+					userName: ""}
+			}
+			else{
+				this.state={
+					loggedIn: true,
+					userName: response.data}
+			}
+	})();}
 
 	// function 
 
