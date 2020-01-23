@@ -59,7 +59,6 @@ class UserProfileForm extends React.Component {
 			email: <input type="email" name="email" onChange={this.handleChange.bind(this)}></input><br></br>
 		  <input type="submit" value="Submit"></input>
 		</form>
-		<h1>{this.state.userName + this.state.pswd+this.state.email}</h1>
 		</div>
 		)
 	}

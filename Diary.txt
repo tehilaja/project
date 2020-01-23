@@ -107,3 +107,8 @@ JAN 19, 2020
 שמירה ששל משתמש בכניסה למשתנה גלובי שדרכו ניתן לגשת תמיד לאילתות
 סיום תרומה- שמירה דרך מי התרמנו (הוספה לשאילתה ומציאת קוד לפי שם משתמש)
 
+Jan 22, 2020
+sign in from all different pages. passing state to different components
+
+Jan 23, 2020
+continued working on code and on Alpha document - use case diagram

@@ -69,6 +69,12 @@ app.post('/login',(req, res)=>{
   console.log(result)})
 })
 
+//------------logout----------
+app.post('/logout', function(req,res){
+  user = "";
+  res.send("logged out")
+});
+
 
 //-------donation ----
 
