@@ -21,14 +21,14 @@ class OrgPage extends React.Component{
 			id: this.props.location.state.id,
 			initialDonation: this.props.location.state.initialDonation,
 			routeMain: false,
-			// loggedIn: this.props.location.state.loggedIn,
-			// userName: this.props.location.state.userName
+			loggedIn: this.props.location.state.loggedIn,
+			userName: this.props.location.state.userName
 		}
 	}
 	
-	componentWillReceiveProps(nextProps){
-		nextProps= this.props
-	}
+	// componentWillReceiveProps(nextProps){
+	// 	nextProps= this.props
+	// }
 
 	
 	componentDidMount(){
@@ -37,15 +37,18 @@ class OrgPage extends React.Component{
                 '/is_logged_in',
                 { headers: { 'Content-Type': 'application/json' } }
 			  )
-			  if(response.data === "no user"){
-				this.state={
+			if(response.data === "no user"){
+				this.setState({
 					loggedIn: false,
-					userName: ""}
+					userName: ""})
+				//return;
 			}
 			else{
-				this.state={
+				this.setState({
 					loggedIn: true,
-					userName: response.data}
+					userName: response.data});
+				this.forceUpdate();
+				//alert("loggedIn "+this.state.loggedIn + " userName "+ this.state.userName);
 			}
 	})();}
 
@@ -54,7 +57,7 @@ class OrgPage extends React.Component{
 	render() {
 		return(
 			<div>
-                <HeaderOrg data={{userName: this.state.userName, loggedIn: this.state.loggedIn}}/>
+                <HeaderOrg data={{loggedIn: this.state.loggedIn, userName: this.state.userName}}/>
 				<OrgBody 
 					data = {this.state}/>
 				<Footer />

@@ -5,7 +5,8 @@ import logo from './magdilim_logo.jpg';
 import LoginVsSignIn from './LoginVsSignIn.js';
 
 import {Redirect} from "react-router-dom";
-
+import axios from "axios";
+import { async } from "q";
 
 class Header extends React.Component 
 {
@@ -18,14 +19,37 @@ class Header extends React.Component
 			 userName: this.props.data.userName
 		}
 		this.handlerClick = this.handlerClick.bind(this);
+		this.handlerLogoutClick = this.handlerLogoutClick.bind(this);
+
 	}
 
-	handlerClick(user_name) {
+	    
+	handlerLogoutClick(user_name) {
+		        //http - sign out        
+		(async ()=> {            
+			const response = await axios.post( 
+				'/logout',             
+				{ headers: { 'Content-Type': 'application/json' } } 
+				             )              
+				console.log("resp",response)              
+				if(response.data === "logged out"){
+					this.setState({			
+						loggedIn: false,
+						userName: ""})              
+					return;              
+				}              
+				else{
+					 alert("failed to log out")
+				            }
+			})();
+	}
+
+		handlerClick(user_name) {
         this.setState({
 			loggedIn: true,
 			userName: user_name
         });
-    }
+	}
 	
 	/*conditional rendering based on what was clicked*/
 	render(){
@@ -46,9 +70,7 @@ class Header extends React.Component
                     })} > Join as organization</button> 
 					{!this.state.loggedIn && <LoginVsSignIn record={this.handlerClick} data={{userName:this.state.userName, loggedIn:this.state.loggedIn}}/>}
 					{this.state.loggedIn && <div>
-						<button name = "btnLogOut" onClick={() => this.setState({			
-						loggedIn: false,
-						userName: ""})}>Log Out</button>
+						<button name = "btnLogOut" onClick={() => this.handlerLogoutClick()}>Log Out</button>
 					<h1>Hello {this.state.userName} :)</h1></div>}
 				</div>
 			  </header>

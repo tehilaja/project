@@ -2,7 +2,7 @@ const express = require('express');
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
 const app = express(); //library to shorten http requests
-var user = ""
+var my_user = null
 
 
 
@@ -49,39 +49,41 @@ app.post('/add_user', function(req,res){
 
 //-------login --------
 app.post('/login',(req, res)=>{
+  console.log("login");
   let query = `SELECT * FROM Users WHERE user_name="${req.body.userName}"`
-  console.log("req body",req.body)
   db.query(query,(err,result,fields)=>{
     if(!err){
       console.log("found user")
       if(result.length && result[0].pswd==req.body.pswd){
         let resToSend={...result[0]}
         delete resToSend.pswd
-        console.log(resToSend)
-        user = resToSend
-        console.log("user", user.user_name)
+        my_user = resToSend
+        console.log("user: ", my_user.user_name)
         res.end("found user")
       }
       else return res.end("user dosent exist")
     }
     else
       res.send("fail")
-  console.log(result)})
+  })
 })
 
 //------------logout----------
 app.post('/logout', function(req,res){
-  user = "";
+  my_user = null;
+  console.log("in logout")
   res.send("logged out")
 });
 
 
 //--------------check if user is logged in -----------------
 app.post('/is_logged_in', function(req,res){
-  console.log("in is logged")
-  if (user == "")
-    res.end("no user")
-  res.send(user.user_name)
+  if (my_user == null)
+    res.end("no user");
+  else{
+    console.log("in is logged. my_user: " + my_user.user_name)
+    res.end(my_user.user_name)
+  }
 });
 
 //-------donation ----
@@ -89,11 +91,11 @@ app.post('/is_logged_in', function(req,res){
 app.post('/donation',(req, res)=>{
   
   // var userID = req.body.user_id
-  console.log("the user: ", user)
-  if(user != "")
+  console.log("the user: ", my_user)
+  if(my_user !== null)
   {
     let id = 0 
-    console.log("user", user.user_id)
+    console.log("user", my_user.user_id)
     let qDuser = `(select user_id from Users where user_name = "${req.body.referred_by}" );`
     console.log("qDuser",qDuser )
     db.query(qDuser,(err,result,fields)=>
@@ -108,7 +110,7 @@ app.post('/donation',(req, res)=>{
     console.log(result)
     })
 
-    let queryD = `INSERT INTO Donersinorg (user_id, org_id, monthly_donation, leveled, referred_by) VALUES (${user.user_id} , ${req.body.org_id}, ${req.body.monthly_donation}, ${req.body.level},(select user_id from Users where user_name = "${req.body.referred_by}" ));`
+    let queryD = `INSERT INTO Donersinorg (user_id, org_id, monthly_donation, leveled, referred_by) VALUES (${my_user.user_id} , ${req.body.org_id}, ${req.body.monthly_donation}, ${req.body.level},(select user_id from Users where user_name = "${req.body.referred_by}" ));`
     console.log("quert is",queryD,"\n")
     db.query(queryD,(err,result,fields)=>
     {
@@ -139,7 +141,7 @@ app.post('/donation',(req, res)=>{
   
 //   // var userID = req.body.user_id
 //   console.log("the user: ", user)
-//   if(user != "")
+//   if(user !== "")
 //   {
 //     console.log("user", user.user_id)
 //     let queryD = `INSERT INTO Donersinorg (user_id, org_id, monthly_donation, leveled, referred_by) VALUES (${user.user_id} , ${req.body.org_id}, ${req.body.monthly_donation}, ${req.body.level},(select user_id from Users where user_name = "${req.body.referred_by}" ));`
@@ -171,7 +173,7 @@ app.post('/donation',(req, res)=>{
   
 //   // var userID = req.body.user_id
 //   console.log("the user: ", user)
-//   if(user != "")
+//   if(user !== "")
 //    {
 //       console.log("user", user.user_id)
 //       let queryD = `INSERT INTO Donersinorg (user_id, org_id, monthly_donation, leveled, referred_by) VALUES (${user.user_id} , ${req.body.org_id}, ${req.body.monthly_donation}, ${req.body.level},(select user_id from Users where user_name = "${req.body.referred_by}" ));`
