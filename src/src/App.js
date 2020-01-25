@@ -22,13 +22,16 @@ class App extends React.Component
 		{
 			isLoggedIn: false,
 			org: null, 
-			user: null 
+			user: null,
+			check_login_status: false
 
 		}	
 	}
 //---------render------------------
 	render() 
 	{
+		if(!this.state.check_login_status)
+			return(<h1>loading...</h1>)
 		return(
 			<div>
 				<Header />

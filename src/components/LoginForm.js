@@ -32,6 +32,7 @@ class LoginForm extends React.Component {
 			alert("Username and password Cannot be empty!");
 			return;
 		}
+		//login user to server
 		(async ()=> {
             const response = await axios.post(
                 '/login',
@@ -62,10 +63,8 @@ class LoginForm extends React.Component {
 		<form onSubmit={this.handleSubmit.bind(this)}>
 		  User name: <input type="text" name="userName" onChange={this.handleChange.bind(this)}/><br />
 		  password: <input type="password" name="pswd" onChange={this.handleChange.bind(this)}/><br />
-		  {/*<input type="checkbox" name="isAdmin" checked={this.state.isAdmin} onChange={this.handleChange}/> Admin<br />*/}
 		  <input type="submit" value="Submit" />
 		  {this.state.loggedIn && <h1>Hello {this.state.userName}</h1>} 
-		  {/*<h1>{!this.state.loggedIn ? ":(" : "hello"} </h1>*/}
 		</form>
 		</div>
 		)

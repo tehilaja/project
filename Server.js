@@ -129,6 +129,22 @@ app.post('/donation',(req, res)=>{
 })
 
 
+//----------fetch organization data from data base-----------
+//-------login --------
+app.post('/fetch_org_data',(req, res)=>{
+  console.log("fetch_org_data");
+  let query = `SELECT * FROM Organization`
+  db.query(query,(err,result,fields)=>{
+    if(!err){
+      console.log("found organizations")
+      //check what result actually sends...
+      return res.end(result);
+    }
+    else
+      res.send("failed to get org data")
+  })
+})
+
 
 
 

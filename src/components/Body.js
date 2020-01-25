@@ -2,12 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {Redirect} from "react-router-dom";
 
+import axios from "axios";
+import { async } from "q";
 
 import OrgCard from './organization/OrgCard.js'
 import orgData from './organization/orgData.js'
 
-// import OrgCard from "./OrgCard"
-// import orgData from "./orgData"
 
 
 class Body extends React.Component
@@ -27,9 +27,32 @@ class Body extends React.Component
 		}
 		this.selectOrg = this.selectOrg.bind(this)
 		this.handleClick = this.handleClick.bind(this)
+		this.fetch_org_data();
 	}
 //------------function-------------------------
-	
+
+	//the function below has Server fetch data about organizations from datbase: 
+	fetch_org_data(){
+	(async ()=> {
+		const response = await axios.post(
+			'/fetch_org_data',
+			{ headers: { 'Content-Type': 'application/json' } }
+		)
+		alert(response.data);
+		if(response.data === "failed to get org data"){
+			alert("failed to get org data");
+			return;
+		}
+		else {
+			if(response.data != null){
+				this.setState({organizations: response.data});
+			}
+			else{
+			this.setState({organizations: orgData});
+		}
+	}
+		
+	})();}
 
 	//------------------
 	selectOrg(event) 
