@@ -27,7 +27,7 @@ class Body extends React.Component
 		}
 		this.selectOrg = this.selectOrg.bind(this)
 		this.handleClick = this.handleClick.bind(this)
-		this.fetch_org_data();
+		//this.fetch_org_data();
 	}
 //------------function-------------------------
 
@@ -87,14 +87,6 @@ class Body extends React.Component
 			<OrgCard key={org.id} imgUrl={org.imgUrl} name={org.name} id= {org.id} initialDonation= {org.initialDonation}/>)
 		})
 		
-		//--- login
-		let loggedStatus
-		if(this.state.loggedIn)
-		{
-			loggedStatus = "Hello " + this.props.user
-		}
-
-		
 
 		// //-----Redirect--------
 		// if (this.state.clickOrg === true){
@@ -108,7 +100,6 @@ class Body extends React.Component
 		return(
 			<div>
 				{/* <myButton /> */}
-				<h1>{loggedStatus}</h1>
 				{orgComponents}
 			</div>
 		)

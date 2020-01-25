@@ -24,12 +24,35 @@ class App extends React.Component
 		{
 			loggedIn: false,
 			org: null, 
-			userName: ""
-
+			userName: "",
+			check_login_status: false
 		}
 		this.handlerClick = this.handlerClick.bind(this);
-
+		this.function_log_status();
 	}
+
+	//the function below checks if the user is already logged in before rendering page
+	function_log_status(){
+		(async ()=> {
+            const response = await axios.post(
+                '/is_logged_in',
+                { headers: { 'Content-Type': 'application/json' } }
+			  )
+			if(response.data === "no user"){
+				this.setState({
+					loggedIn: false,
+					userName: ""})
+			}
+			else{
+				this.setState({
+					loggedIn: true,
+					userName: response.data});
+				this.forceUpdate();
+				//alert("loggedIn "+this.state.loggedIn + " userName "+ this.state.userName);
+			}
+			this.setState({check_login_status:true})
+	})();
+}
 
 	handlerClick(user_name) {
         this.setState({
@@ -38,23 +61,12 @@ class App extends React.Component
         });
     }
 
-	/*check(){
-		//add user to dataBase, login with new user
-		(
-			async () => {
-				alert('hi1')
-				const response = await axios.post(
-					'/add_user',
-					{userName: "tehila"},
-					{header:{'Content-Type': 'application/json'}}
-				)
-				console.log(response.data)
-			}
-		)();
-	}*/
 //---------render------------------
 	render() 
 	{
+		if(!this.state.check_login_status)
+			return(<h1>loading...</h1>)
+		else{
 		return(
 			<div>
 				<Header record={this.handlerClick} data={{loggedIn: this.state.loggedIn, userName: this.state.userName}}/>
@@ -62,7 +74,7 @@ class App extends React.Component
 				<Footer />
 				{/*<button onClick={this.check.bind(this)}>button</button>*/}
 			</div>
-		)
+		)}
 	}	
 }
 export default App;

@@ -49,7 +49,7 @@ class OrgPage extends React.Component{
 				this.forceUpdate();
 				//alert("loggedIn "+this.state.loggedIn + " userName "+ this.state.userName);
 			}
-			this.setState({flag:true})
+			this.setState({check_login_status:true})
 	})();
 }
 

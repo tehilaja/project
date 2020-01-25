@@ -2,7 +2,8 @@
 import React from 'react';
 import {Redirect} from "react-router-dom";
 
-
+import axios from "axios";
+import { async } from "q";
 
 ////---------------
 import HeaderOrg from './organization/HeaderOrg.js';
@@ -23,13 +24,37 @@ class newOrg extends React.Component{
 						pswd: "", 
 						validPswd: false,
 						loggedIn: false, //this.props.data.loggedIn,
-						userName: "" //this.props.data.userName
-					 }
-					  
+						userName: "", //this.props.data.userName
+						check_login_status: false
+					}			  
 		this.handleChange = this.handleChange.bind(this)
 		this.handlerClick = this.handlerClick.bind(this);
 		this.increment = this.increment.bind(this)
-        this.decrement = this.decrement.bind(this)
+		this.decrement = this.decrement.bind(this)
+		this.function_log_status();
+	}
+
+		//the function below checks if the user is already logged in before rendering page
+		function_log_status(){
+			(async ()=> {
+				const response = await axios.post(
+					'/is_logged_in',
+					{ headers: { 'Content-Type': 'application/json' } }
+				  )
+				if(response.data === "no user"){
+					this.setState({
+						loggedIn: false,
+						userName: ""})
+				}
+				else{
+					this.setState({
+						loggedIn: true,
+						userName: response.data});
+					this.forceUpdate();
+					//alert("loggedIn "+this.state.loggedIn + " userName "+ this.state.userName);
+				}
+				this.setState({check_login_status:true})
+		})();
 	}
 
 	handleChange(event){
@@ -68,6 +93,8 @@ class newOrg extends React.Component{
 	
 
 	render() {
+		if(!this.state.check_login_status)
+			return(<h1>loading...</h1>)
 		return(
 			<div>				
 				<HeaderOrg record={this.handlerClick} data={{userName:this.state.userName, loggedIn:this.state.loggedIn}}/>
