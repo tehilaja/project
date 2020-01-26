@@ -214,7 +214,9 @@ class OrgBody extends React.Component {
                 {/* Donation amount */}
                 <div className = "initialDonation">
                     <label > Donation amount (per month):</label>
-                    <lable className= "initialDonationValue" style={{color: this.state.color}}>{this.state.initialDonation} </lable>
+                    <label className= "initialDonationValue"  type="text" style={{color: this.state.color}}> {this.state.initialDonation}</label>
+                    {/* <input className= "initialDonationValue"  type="text" style={{color: this.state.color, width:25}} placeholder = {this.state.initialDonation}></input> */}
+
                     <lable>$  </lable>
                     <button onClick={this.decrement}>-</button>
                     <button onClick={this.increment} >+</button>

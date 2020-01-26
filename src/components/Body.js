@@ -73,7 +73,7 @@ class Body extends React.Component
 
 		componentDidMount () {
 
-
+// ~~~~~~~~~~ get (select *) 
 		let self = this;
         fetch('/data', {
             method: 'GET'

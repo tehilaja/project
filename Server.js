@@ -140,6 +140,19 @@ app.get('/data', function(req, res, next) {
   });
 });
 
+// -- userProfile 
+app.get('/userProfile ', function(req, res, next) {
+  db.query(`SELECT * FROM Users WHERE user_name="${my_user.user_id}"`, function (error, results, fields) {
+      if(error) throw error;
+      res.send(JSON.stringify(results));
+  });
+});
+
+
+
+
+
+
 //----------fetch organization data from data base-----------
 app.post('/fetch_org_data',(req, res)=>{
   console.log("fetch_org_data");
@@ -175,6 +188,7 @@ app.post('/fetch_org_data',(req, res)=>{
       res.send("failed to get org data")
   })
 })
+
 
 
 

@@ -20,10 +20,30 @@ class Header extends React.Component
 		}
 		this.handlerClick = this.handlerClick.bind(this);
 		this.handlerLogoutClick = this.handlerLogoutClick.bind(this);
+		this.userProfile = this.userProfile.bind(this);
 
 	}
+// --------- userProfile 
+	userProfile ()
+	{
+		alert("in userprofile")
+		let self = this;
+        fetch('/userProfile ', {
+            method: 'GET'
+        }).then(function(response) {
+            if (response.status >= 400) {
+                throw new Error("Bad response from server");
+            }
+            return response.json();
+        }).then(function(data) {
+            self.setState({organizations: data});
+        }).catch(err => {
+        console.log('caught it!',err);
+		})
+		
+	} 
 
-	    
+
 	handlerLogoutClick(user_name) {
 		        //http - sign out        
 		(async ()=> {            
@@ -71,6 +91,7 @@ class Header extends React.Component
 					{!this.state.loggedIn && <LoginVsSignIn record={this.handlerClick} data={{userName:this.state.userName, loggedIn:this.state.loggedIn}}/>}
 					{this.state.loggedIn && <div>
 						<button name = "btnLogOut" onClick={() => this.handlerLogoutClick()}>Log Out</button>
+						<button name = "btnUserProfile" onClick={() => this.userProfile()}>my profile</button>
 					<h1>Hello {this.state.userName} :)</h1></div>}
 				</div>
 			  </header>
