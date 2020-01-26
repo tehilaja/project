@@ -1,0 +1,192 @@
+-- ~~~~~~~~~~ FIRST TINSERT  ~~~~~~~~~~~~~~~~~
+
+USe magdilimdb;
+
+ -- city 
+INSERT INTO city (country_id,city_name) VALUE (1, "TEL_aviv"),(1, "Jerusalem"),(2, "Maiami"),(1, "Bnei_brak");
+
+-- country
+INSERT INTO country (country_ID, country_name) VALUE(1,"Israel"), (2,"Usa");
+
+-- Users
+
+-- TODO: address??
+INSERT INTO Users (user_name, first_name, last_name, pswd, email, address_id,num_phone) VALUES
+	("Avital","Avital", "b", "123456", "avital@gmail.com",1, 050123456 ), 
+	("Tehila","Tehila","j", "1234", "tehila@gmail.com",2,054123456),
+	("Elchanan","Elchanan","b", "12345", "elchanan@gmail.com",3,058123456);
+
+SELECT * FROM Users
+-- DELETE  FROM Credit_info   
+-- where credit_id = 1234;
+
+-- Credit_info
+INSERT Into Credit_info (user_id,numbers) VALUES (1,1234),(1,1244);
+
+
+ -- organization
+INSERT INTO organization (org_name,admin_name,description,field_of_acctivity,org_pic,min_donation,org_num,branch,account_num,bank_num,founding_year,working,volunteers,friends,city_id,building,street,p_code) VALUES 
+("איחוד הצלה ישראל","אליהו פולק", "ן (אירועים רבי נפגעים), חולים ונפגעים. רכישת ציוד רפואי בסיסי ומתקדם לצורך פעילות המתנדבים. רכישת רכבי חירום והצלה, כגון אמבולנסים ואופנועים, ומימון הוצאות אחזקת רכבי החירום. הכשרת אזרחים לפעילות בקהילה לסיוע ומניעה של תאונות דרכים, פגיעות ומחלות","טיפול באסונות ומצבי חירוםהצלת חיים",
+"https://upload.wikimedia.org/wikipedia/commons/b/bc/UHNewLogo.svg",12,580465979,910,102346,10,2006,231,5400,12,1,78,"ירמיהו",9446758),
+("עזר מציון", "הרב חנניה צ'ולק","וסעודית. סיוע, שיקום ושירותים לנכי בריאות הנפש. סיוע לניצולי שואה. סיוע לחולי סרטן. הפעלת מגוון שרותים לאוכלוסיית הגמלאים והקשישים ודאגה לזכויותיהם. סיוע, ייעוץ, טיפול ושיקום לבעלי צרכים מיוחדים בכל סוגי הנכויות לרבות נכויות חושיות כגון לקויות שמיעה, לקויות דיבור ולקויות ראיה. הפעלת מסגרות חינוכיות וטיפוליות. הפעלת שירותי רווחה. סיוע לנפגעי טרור להקים קרן גמילות חסדים. לעזור לחולים נזקקים בריפוי ועזרה רפואית",
+"בריאות והצלת חיים - כללי שירותי רווחה לאוכלוסיות שונות","https://www.ami.org.il/media/1047/logo.png",10,580079978,911,123456,10,1985,8434,30078,5,4,5,"הרב רבינוב",5156316),
+("יד שרה","משה אורי כהן","להשאיל ציוד ומכשור רפואי ללא תמורה לתקנו ולתחזקו. לעודד, להפעיל, להדריך ולהכשיר מתנדבים וארגוני מתנדבים למתן מענה לצרכים קהילתיים. להעניק שירותי בית וקהילה מגוונים לחולים ונזקקים.להלוות כסף ללא ריבית לנצרכים, לעמותות המסייעות לנצרכים ולכל גוף ציבורי המסייע לנצרכים בכל אופן שהוא. להעניק לנצרכים מעוטי יכולת כסף ו/או מכשירים לריפוי וסיוע. לאחוז ולנקוט בכל האמצעים הנדרשים או שידרשו לצורך מימוש המטרות הנ ל וכן כל פעולה אחרת שתראה לועד העמותה ואשר מגמתה הינה עזרה לזולת", "בריאות והצלת חיים - כללי",
+"https://yad-sarah.net/wp-content/uploads/2019/04/logoys.png",15,580030104,900,123456,10,1983,330,7000,11,1,124,"שדרות הרצל",9618722); 
+
+-- leveled
+insert into leveled (org_id,l_name,min_people,min_sum) values(1,"כסף",50,5000);
+insert into leveled (org_id,l_name,min_people,min_sum) values(1,"זהב",150,50000);
+insert into leveled (org_id,l_name,min_people,min_sum) values(1,"יהלום",1000,100000);
+
+-- SELECT * FROM Gifts;
+
+-- Gifts
+--  STR_TO_DATE() to convert string to date format
+insert into gifts (gift_description,gift_pic,level_id,g_date) values("רכב 7 מקומות","",3,"2020-03-23");
+insert into gifts (gift_description,gift_pic,level_id,auto) values ("דיסק","",1,TRUE);
+
+-- donation_status
+insert into donation_status (description) values("מאושר"),("מבוטל");
+
+
+-- ~~~~~~~~~~~~~~ not must ~~~~~~~~~~~~
+-- admin
+INSERT INTO admin(admin_id,org_id,admin_pswd) VALUE(1,1, 123456);
+
+-- SELECT * FROM doners_in_org
+-- Doners_in_org
+ INSERT INTO doners_in_org (user_id, org_id, monthly_donation, referred_by,d_title, d_description,is_anonim,status_id) VALUES 
+ (3, 1,15,2,"תודות לארגון","נתרם עקב העזרה הרבה אשר הארגון מסייע לכלל ישראל ישר כוח!",TRUE,1), (3, 1,15,2,"לזכות עמי","",0,1);
+ 
+
+    
+-- https://github.com/tehilaja/project
+-- ~~~~~~~~~~~~ CREATE TABLE ~~~~~~~~~~~~~~~~ --
+
+ -- ~~~~ DROP
+-- DROP TABLE admin;
+-- DROP TABLE country;
+-- DROP TABLE city;
+-- DROP TABLE credit_info;
+-- DROP TABLE donation_status;
+-- DROP TABLE doners_in_org;
+-- DROP TABLE leveld_in_org;
+-- DROP TABLE gifts;
+-- DROP TABLE leveled;
+-- DROP TABLE organization;
+-- DROP TABLE users;
+
+
+-- city --
+CREATE TABLE IF NOT EXISTS City (
+  city_id int(11) AUTO_INCREMENT PRIMARY KEY,
+  country_id int(11),
+  city_name varchar(50)
+);
+
+-- Country --
+CREATE TABLE IF NOT EXISTS Country  (
+  country_id int(11) AUTO_INCREMENT PRIMARY KEY,
+  country_name varchar(50)
+);
+
+-- Users --
+CREATE TABLE IF NOT EXISTS Users (
+  user_id int(11) AUTO_INCREMENT PRIMARY KEY,
+  user_name varchar(50) NOT NULL,
+  first_name varchar(50) ,
+  last_name varchar(50) ,
+  pswd varchar(8) NOT NULL ,
+  email varchar(25),
+  address_id int(11),
+  num_phone int(9)
+);
+
+-- Admin --
+CREATE TABLE IF NOT EXISTS Admin (
+  admin_id int(11) PRIMARY KEY,
+  org_id int(11),
+  admin_pswd int (11)
+);
+
+-- DROP TABLE Organization;
+-- Organization --
+CREATE TABLE IF NOT EXISTS Organization (
+  org_id int(11) AUTO_INCREMENT PRIMARY KEY,
+  org_name varchar(255),
+  admin_name varchar(255),
+  description varchar(3000),
+  field_of_acctivity varchar(2000),
+  org_pic varchar(250),
+  min_donation int(11),
+  org_num int(11),
+  branch int(5),
+  account_num int(11),
+  bank_num int(3),
+  founding_year int(4),
+  working int(11),
+  volunteers int(11),
+  friends int(11),
+  city_id int(11),
+  building varchar(4),
+  street varchar(50),
+  p_code int(11)
+);
+
+-- Leveled ---
+CREATE TABLE IF NOT EXISTS Leveled (
+  level_id int(11) AUTO_INCREMENT PRIMARY KEY,
+  org_id int(11),
+  l_name varchar(25),
+  min_people int(11),
+  min_sum int(11)
+);
+
+-- DROP TABLE Gifts;
+-- Gifts --
+CREATE TABLE IF NOT EXISTS Gifts (
+  gift_id int(11) AUTO_INCREMENT PRIMARY KEY,
+  gift_description varchar(1000),
+  gift_pic varchar(250),
+  level_id int(11),
+  g_date DATE,
+  auto BOOLEAN NOT NULL DEFAULT FALSE
+);
+
+-- DROP TABLE Doners_in_org
+-- Doners_in_org --
+CREATE TABLE IF NOT EXISTS Doners_in_org (
+  d_i_o_id int(11) AUTO_INCREMENT PRIMARY KEY,
+  user_id int(11),
+  org_id int(11),
+  monthly_donation int(11),
+  referred_by int(11) NOT NULL,
+  d_title varchar(250),
+  d_description TEXT,
+  is_anonim BOOLEAN NOT NULL DEFAULT FALSE,
+  d_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  status_id int(4)
+);
+
+-- Donation_status --
+CREATE TABLE IF NOT EXISTS Donation_status (
+  status_id int(11) AUTO_INCREMENT PRIMARY KEY,
+  description varchar(50)
+);
+
+-- Leveld_in_org --
+CREATE TABLE IF NOT EXISTS Leveld_in_org (
+  leveld_id int(11) AUTO_INCREMENT PRIMARY KEY,
+  fk_d_i_o_id int(11),
+  num_people int(11)
+);
+-- הערה: טריגר רק אם לא קיים ייצור טבלה אחרת נחשוב איך לעדכן בתרומה שאדם תורם
+
+ -- Credit_info --
+CREATE TABLE IF NOT EXISTS Credit_info (
+  credit_id int AUTO_INCREMENT PRIMARY KEY,
+  user_id int(11),
+  numbers int(6)
+);
+
+
