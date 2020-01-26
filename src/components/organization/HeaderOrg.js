@@ -7,7 +7,7 @@ import { async } from "q";
 
 import logo from './magdilim_logo.jpg';
 //---------------------need to work out hirarchy of the files so we don't need to use specific directory like here....
-import LoginVsSignIn from 'C:/Users/Tehila/magdilim/src/components/LoginVsSignIn';
+import LoginVsSignIn from 'C:/Users/אביטל ספקטור/Desktop/magdilim/src/components/LoginVsSignIn';
 
 // import LoginForm from './LoginForm.js';
 // import UserProfile from './UserProfile.js';

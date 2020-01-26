@@ -2,7 +2,7 @@ import React from 'react';
 import axios from "axios";
 
 import OrgCard from './OrgCard.js'
-import orgData from './orgData.js'
+// import orgData from './orgData.js'
 import OrgSpechCard from './OrgSpechCard.js'
 
 
@@ -22,7 +22,7 @@ class OrgBody extends React.Component {
             // email: "",
             showLogin: false,
             showUser: false,
-            organization: orgData,
+            // organization: orgData,
             btnDonateClicked: false,
             confirmBtn: false,
             initialDonation : this.props.data.initialDonation,
@@ -31,12 +31,10 @@ class OrgBody extends React.Component {
             DuserName: "",
             DuserId: "",
             userEmail: "", // -
-            user_id: 5 // todo : real info
+            // user_id: 5 // todo : real info
 
         }
-        // this.user = {
-        //     userName : "avital"
-        // }
+     
 
         this.handleChange = this.handleChange.bind(this)
         this.handleClick = this.handleClick.bind(this) 
@@ -105,7 +103,9 @@ class OrgBody extends React.Component {
 					 '/donation',
          			{ 
                         // todo- level(update +1), 
-						user_id:this.state.user_id, org_id:this.props.data.id, monthly_donation:this.state.initialDonation,  // ---- req
+						// user_id:this.state.user_id, org_id:this.props.data.id, monthly_donation:this.state.initialDonation,  // ---- req
+                        // level:1, referred_by:this.state.DuserName
+                        org_id:this.props.data.id, monthly_donation:this.state.initialDonation,  // ---- req
                         level:1, referred_by:this.state.DuserName
                     },
                      {header:{'Content-Type': 'application/json'}}
@@ -118,8 +118,11 @@ class OrgBody extends React.Component {
                     // this.setState({loggedIn: false})
                         alert("the donation " + this.state.initialDonation+ "$ added succesfully ")
                      }
-                    else if(response.data ==="fail"){
+                    else if(response.data ==="fail2"){
                         alert("the referred by is incorrect")
+                    }
+                    else if(response.data ==="fail1"){
+                        alert("the level")
                     }
                })();  
         }
@@ -226,6 +229,7 @@ class OrgBody extends React.Component {
                 {/* Donation throw information... */}
                 {this.state.btnDonateClicked && 
                     <div className = "doners">
+                        {/* * TODO: if no Referred to */}
                         <h4 style ={styles} >Referred to this organization by: </h4>
                         <form className="fillFormDoners" onSubmit={this.handleSubmit}>
                             <lable>name: </lable>
@@ -233,13 +237,13 @@ class OrgBody extends React.Component {
                                 type="text" name="DuserName" onChange={this.handleChange.bind(this)} 
                                 placeholder="user Name" 
                             /><br /><br/>
-                            <lable>email: </lable>
+                            {/* <lable>email: </lable>
                             <input 
                                 input type="email"
                                 name="userEmail" 
                                 onChange={this.handleChange.bind(this)}
                                 placeholder="email" 
-                            /> <br/><br/>
+                            /> <br/><br/> */}
                             
                             <input className="btnConfirm"  type="submit" value="Submit"></input>             
                             <br/><br/>

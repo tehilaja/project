@@ -96,21 +96,23 @@ app.post('/donation',(req, res)=>{
   {
     let id = 0 
     console.log("user", my_user.user_id)
-    let qDuser = `(select user_id from Users where user_name = "${req.body.referred_by}" );`
-    console.log("qDuser",qDuser )
-    db.query(qDuser,(err,result,fields)=>
-    {
-      if(!err){
-        console.log("add level")
-        id = result[0].user_id
-        console.log("id,",id)
-      }
-      else
-        res.end("fail")
-    console.log(result)
-    })
+    // let qDuser = `(select user_id from Users where user_name = "${req.body.referred_by}" );`
+    // console.log("qDuser",qDuser )
+    // db.query(qDuser,(err,result,fields)=>
+    // {
+    //   if(!err){
+    //     console.log("add level")
+    //     id = result[0].user_id
+    //     console.log("id,",id)
+    //   }
+    //   else
+    //     res.end("fail1")
+    // console.log(result)
+    // })
 
-    let queryD = `INSERT INTO Donersinorg (user_id, org_id, monthly_donation, leveled, referred_by) VALUES (${my_user.user_id} , ${req.body.org_id}, ${req.body.monthly_donation}, ${req.body.level},(select user_id from Users where user_name = "${req.body.referred_by}" ));`
+    // if(${req.body.referred_by}) // TODO: if no Referred to
+      
+    let queryD = `INSERT INTO Doners_in_org (user_id, org_id, monthly_donation, referred_by) VALUES (${my_user.user_id} , ${req.body.org_id}, ${req.body.monthly_donation},(select user_id from Users where user_name = "${req.body.referred_by}" ));`
     console.log("quert is",queryD,"\n")
     db.query(queryD,(err,result,fields)=>
     {
@@ -119,7 +121,7 @@ app.post('/donation',(req, res)=>{
         res.end("added succesfully!") //response
       }
       else
-        res.end("fail")
+        res.end("fail2")
     console.log(result)
     })
   // })
@@ -129,16 +131,45 @@ app.post('/donation',(req, res)=>{
 })
 
 
+
+// -- data 
+app.get('/data', function(req, res, next) {
+  db.query('select * from Organization', function (error, results, fields) {
+      if(error) throw error;
+      res.send(JSON.stringify(results));
+  });
+});
+
 //----------fetch organization data from data base-----------
-//-------login --------
 app.post('/fetch_org_data',(req, res)=>{
   console.log("fetch_org_data");
+
+
+  // let {query} = await stripe.charges.create({
+  //   amount: 2000,
+  //   currency: "usd",
+  //   description: "An example charge",
+  //   source: req.body
+  // });
+
+  // res.json({status});
+
+
+
   let query = `SELECT * FROM Organization`
   db.query(query,(err,result,fields)=>{
     if(!err){
+      console.log("the query is: \n", query)
       console.log("found organizations")
       //check what result actually sends...
-      return res.end(result);
+      console.log(result)
+      // console.log(fields)
+
+      console.log("type: ", typeof result)
+      console.log("try json", JSON.stringify(result))
+
+      // return res.json(result);
+      res.end(JSON.stringify(result));
     }
     else
       res.send("failed to get org data")
@@ -146,6 +177,23 @@ app.post('/fetch_org_data',(req, res)=>{
 })
 
 
+
+// let {query} = `SELECT * FROM Organization`
+// db.query(query,(err,result,fields)=>{
+//   if(!err){
+//     console.log("the query is: \n", query)
+//     console.log("found organizations")
+//     //check what result actually sends...
+//     console.log(result)
+//     console.log("type: ", typeof result)
+//     console.log("try json", JSON.stringify(result))
+
+//     res.json({status});
+//     return res.end(JSON.stringify(result));
+//   }
+//   else
+//     res.send("failed to get org data")
+// })
 
 
 
@@ -160,7 +208,7 @@ app.post('/fetch_org_data',(req, res)=>{
 //   if(user !== "")
 //   {
 //     console.log("user", user.user_id)
-//     let queryD = `INSERT INTO Donersinorg (user_id, org_id, monthly_donation, leveled, referred_by) VALUES (${user.user_id} , ${req.body.org_id}, ${req.body.monthly_donation}, ${req.body.level},(select user_id from Users where user_name = "${req.body.referred_by}" ));`
+//     let queryD = `INSERT INTO Doners_in_org (user_id, org_id, monthly_donation, leveled, referred_by) VALUES (${user.user_id} , ${req.body.org_id}, ${req.body.monthly_donation}, ${req.body.level},(select user_id from Users where user_name = "${req.body.referred_by}" ));`
 //     console.log("quert is",queryD,"\n")
 //     db.query(queryD,(err,result,fields)=>
 //     {
@@ -180,7 +228,7 @@ app.post('/fetch_org_data',(req, res)=>{
   
   
 
-// insert into Donersinorg (user_id, org_id, monthly_donation, leveled, referred_by) values (5, 1, 12, 1, (select user_id from Users where user_name = "elchanan" ));
+// insert into Doners_in_org (user_id, org_id, monthly_donation, leveled, referred_by) values (5, 1, 12, 1, (select user_id from Users where user_name = "elchanan" ));
 
 
 
@@ -192,7 +240,7 @@ app.post('/fetch_org_data',(req, res)=>{
 //   if(user !== "")
 //    {
 //       console.log("user", user.user_id)
-//       let queryD = `INSERT INTO Donersinorg (user_id, org_id, monthly_donation, leveled, referred_by) VALUES (${user.user_id} , ${req.body.org_id}, ${req.body.monthly_donation}, ${req.body.level},(select user_id from Users where user_name = "${req.body.referred_by}" ));`
+//       let queryD = `INSERT INTO Doners_in_org (user_id, org_id, monthly_donation, leveled, referred_by) VALUES (${user.user_id} , ${req.body.org_id}, ${req.body.monthly_donation}, ${req.body.level},(select user_id from Users where user_name = "${req.body.referred_by}" ));`
 //       //  "${req.body.referred_by}" 
 //       // todo : check referred_by exist
 //       console.log("quert is",queryD,"\n");
