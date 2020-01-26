@@ -112,3 +112,15 @@ sign in from all different pages. passing state to different components
 
 Jan 23, 2020
 continued working on code and on Alpha document - use case diagram
+
+Jan 24th, 2020
+Using one login in Server and using it from all different pages. Synchronization problems.
+using flags to get over the problems that accured.
+
+Jan 25th, 2020
+Server getting the information on the main home page from the DataBAse instead of file.
+working on the video for Alpha. 
+
+Jan 26th, 2020
+adding features to code, organizing everthing to give in for Alpha.
+recording the Prototype.
