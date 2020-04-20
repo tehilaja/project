@@ -1,0 +1,55 @@
+/*card for a specific org on homepage*/
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+import {Redirect} from "react-router-dom";
+
+
+class OrgCard extends React.Component{
+    constructor(props){
+        super(props)
+        this.state ={
+            routeOrgPage: false,
+            loginStatus: ""
+        }
+        this.user = {
+            name: ""
+        }
+
+        this.handleClick = this.handleClick.bind(this) 
+    }
+
+    handleClick(id)
+    {
+        alert("hi: " +`${id}`)
+    }
+//-------------render----------------
+    render(){
+        if (this.state.routeOrgPage === true){
+			return <Redirect to = {{
+				pathname: '/OrgPage',
+				state: {id: this.props.id, img: this.props.imgUrl, name: this.props.name, initialDonation:this.props.initialDonation}
+			}} />
+        } 
+    //-----------return---------------------- 
+	    return( 
+        <div className="org-card">
+    
+            <img className="pic-border" src={this.props.imgUrl} 
+                  onClick = {() => this.setState(prevState => {
+				  return {
+                      routeOrgPage: !prevState.routeOrgPage}
+                    })}>
+            </img>
+            <div>
+                {/* <h3>{this.props.name}</h3> */}
+                <h5>initial Donation: {this.props.initialDonation} $</h5>
+            </div>
+            
+            {/* <button className = "btnOrgCard " onClick = {() => this.handleClick(this.props.id)} >donate </button> */}
+        </div>
+        )
+    }
+}
+
+export default OrgCard

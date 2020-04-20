@@ -1,0 +1,63 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 20vmin;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 30vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+.App-header-form {
+  background-color: #616D7E;
+  flex-direction: column;
+  font-size: calc(10px + 2vmin);
+  color: white;
+  
+}
+
+.org-card {
+	color: #282c34;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	display: flex;
+	font-size: calc(10px + 2vmin);
+}
+
+.pic-border{
+	padding:30px;
+    border:5px solid #999;
+	box-shadow:
+    /* The top layer shadow */
+        -2px -5px 10px 7px rgba(0,0,0,0.25),
+            /* The second layer */
+        0 10px 10px 5px #eee,
+            /* The second layer shadow */
+        0 10px 1px -4px rgba(0,0,0,0.25),
+            /* The third layer */
+        0 20px 0 -10px #eee,
+            /* The third layer shadow */
+        0 20px 1px -9px rgba(0,0,0,0.25);
+}
+
+
+.App-body {
+	color: #282c34;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	display: flex;
+}
+
+.App-link {
+  color: #EAC117;
+}

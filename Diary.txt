@@ -3,7 +3,7 @@ Tehila Jacobs and Avital Spector
 Magdilim
 
 30/3/2019 
-meeting with client who discussed his idea of this project
+meeting with client who disccused his idea of this project
 
 05/05/2019-12/06/2019
 working on researching different option for languages of development. working on porposal form for project.
@@ -14,13 +14,7 @@ Meeting with Eli Issac to disscuss our research on different development options
 12/06/2019
 meeting with Eli Issac to go over the proposal form
 
-/**************learning react**************/
-Sep 12, 2019
-finding info on react
-
-Oct 23, 2019
-short meeting (14:00-16:00)
-finding info on react
+/*************learning react**************/
 
 Oct 30, 2019 
 first and very basic react app
@@ -54,73 +48,7 @@ Adding page to add organization.
 updating data.
 reresearching server and db.
 
-/***********************MYSQL***********************/
+/************************Server*********************/
 
-Nov 20, 2019
-working on tables for sql
-trying to find appropriate MySql Hosts.
-creating mySql db (soon to learn it was not correct)
+ 
 
-
-/***********************Server***********************/
-Nov 21, 2019
-building connection mySqlDB 
-drawing (fixing) tables for DataBase
-building server and connecting it to mySql
-attempting to connect to client - complicated errors...
-
-Nov 22, 2019
-working on connection between Server and client
-
-Nov 24, 2019
-Alpha, sending it to Eli to look at what was already done
-
-Nov 25, 2019
-Alpha, researching payment methods online (such as tranzila)
-sequence diagram for project
-writing writing testing program for project
-
-********************not in Wiki****************************
-
-Nov 26, 2019
-Working on alpha
-
-Nov 27, 2019
-installing Postman to work on connection between server and client
-finding bug. 
-writing a few http request - including inserting data about user into user table in db
-
-JAV 16 ,2020
-ישבנו בייחד לסכם הכל עד עכשיו, לראות שהכל רץ על שני המחשבים
-סיכום והחלטה מה להתקדם
-
-JA 17, 2020
-חזרה על הקוד והבנה של צד שרת ולקוח
-הכנסת נתונים לDB 
-תחילת עבודה עם תרומות - שמירתם בDB וגישה ראשונית לשרת
-
-JAN 18, 2020
-סקירה ל משתמשים על דרכי שיפור
-תיקון באגים בקריאה לשרת (שינוי לend( 
-המך עבודה על בקשות http תרומה
-JAN 19, 2020
-שמירה ששל משתמש בכניסה למשתנה גלובי שדרכו ניתן לגשת תמיד לאילתות
-סיום תרומה- שמירה דרך מי התרמנו (הוספה לשאילתה ומציאת קוד לפי שם משתמש)
-
-Jan 22, 2020
-sign in from all different pages. passing state to different components
-
-Jan 23, 2020
-continued working on code and on Alpha document - use case diagram
-
-Jan 24th, 2020
-Using one login in Server and using it from all different pages. Synchronization problems.
-using flags to get over the problems that accured.
-
-Jan 25th, 2020
-Server getting the information on the main home page from the DataBAse instead of file.
-working on the video for Alpha. 
-
-Jan 26th, 2020
-adding features to code, organizing everthing to give in for Alpha.
-recording the Prototype.
