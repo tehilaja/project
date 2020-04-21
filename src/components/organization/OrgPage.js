@@ -6,7 +6,7 @@ import {Redirect} from "react-router-dom";
 import axios from "axios";
 import { async } from "q";
 
-import HeaderOrg from './HeaderOrg.js';
+import Header from '../Header.js';
 import OrgBody from './OrgBody.js';
 import Footer from './Footer.js';
 
@@ -60,7 +60,7 @@ class OrgPage extends React.Component{
 			return(<h1>loading...</h1>)
 		return(
 			<div>
-                <HeaderOrg data={{loggedIn: this.state.loggedIn, userName: this.state.userName}}/>
+                <Header data={{loggedIn: this.state.loggedIn, userName: this.state.userName}}/>
 				<OrgBody 
 					data = {this.state}/>
 				<Footer />

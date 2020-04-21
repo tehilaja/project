@@ -1,3 +1,6 @@
+//import { signInButton, registerButton } from '../project-master/src/Clients/cognito_client';
+const cognitoClient = require('../magdilim/cognito_client');
+
 const express = require('express');
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
@@ -12,7 +15,6 @@ var pic = "https://yad-sarah.net/wp-content/uploads/2019/04/logoys.png"
 app.use(bodyParser.json({extended: false}))
 
 console.log("connected")
-
 
 const db = mysql.createConnection({
   host: 'localhost',
@@ -35,38 +37,47 @@ db.connect((err)=>{
 
 //-----add user ------
 app.post('/add_user', function(req,res){
+console.log("start signup");
+try {
+  cognitoClient.registerButton(req.body.user_name, req.body.pswd);
+} catch (error) {
+  console.log(JSON.stringify(error));  
+}
+  
 
-  //todo- make sure email and user_name dosent exists.
-  console.log("req",req.body);
-  // * change
-  let sql1 = `INSERT INTO Users ( user_name, first_name, last_name, pswd, email, credit_info_id, is_admin) VALUES ("${req.body.user_name}", "${req.body.first_name}", "${req.body.last_name}" ,"${req.body.pswd}", "${req.body.email}", 1, ${req.body.is_admin});`
-  console.log("quert is",sql1,"\n");
-  db.query(sql1)
-  console.log("in add_user")
-  res.send("added succesfully!") //response
+  // //todo- make sure email and user_name dosent exists.
+  // console.log("req",req.body);
+  // // * change
+  // let sql1 = `INSERT INTO Users ( user_name, first_name, last_name, pswd, email, credit_info_id, is_admin) VALUES ("${req.body.user_name}", "${req.body.first_name}", "${req.body.last_name}" ,"${req.body.pswd}", "${req.body.email}", 1, ${req.body.is_admin});`
+  // console.log("quert is",sql1,"\n");
+  // db.query(sql1)
+  // console.log("in add_user")
+  // res.send("added succesfully!") //response
 
-  // TODO : login for this user 
+  // // TODO : login for this user 
 });
 
 //-------login --------
 app.post('/login',(req, res)=>{
-  console.log("login");
-  let query = `SELECT * FROM Users WHERE user_name="${req.body.userName}"`
-  db.query(query,(err,result,fields)=>{
-    if(!err){
-      console.log("found user")
-      if(result.length && result[0].pswd==req.body.pswd){
-        let resToSend={...result[0]}
-        delete resToSend.pswd
-        my_user = resToSend
-        console.log("user: ", my_user.user_name)
-        res.end("found user")
-      }
-      else return res.end("user dosent exist")
-    }
-    else
-      res.send("fail")
-  })
+  alert(1)
+  cognitoClient.signInButton(req.body.userName, req.body.pswd);
+  // console.log("login");
+  // let query = `SELECT * FROM Users WHERE user_name="${req.body.userName}"`
+  // db.query(query,(err,result,fields)=>{
+  //   if(!err){
+  //     console.log("found user")
+  //     if(result.length && result[0].pswd==req.body.pswd){
+  //       let resToSend={...result[0]}
+  //       delete resToSend.pswd
+  //       my_user = resToSend
+  //       console.log("user: ", my_user.user_name)
+  //       res.end("found user")
+  //     }
+  //     else return res.end("user dosent exist")
+  //   }
+  //   else
+  //     res.send("fail")
+  // })
 })
 
 //------------logout----------

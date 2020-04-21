@@ -3,7 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import {Redirect} from "react-router-dom";
-
+import { Card, Icon, Image } from 'semantic-ui-react'
 
 class OrgCard extends React.Component{
     constructor(props){
@@ -33,23 +33,29 @@ class OrgCard extends React.Component{
         } 
     //-----------return---------------------- 
 	    return( 
-        <div className="org-card">
-    
-            <img className="pic-border" src={this.props.imgUrl} 
-                  onClick = {() => this.setState(prevState => {
-				  return {
-                      routeOrgPage: !prevState.routeOrgPage}
-                    })}>
-            </img>
-            <div>
-                {/* <h3>{this.props.name}</h3> */}
-                <h5>initial Donation: {this.props.initialDonation} $</h5>
-            </div>
-            
-            {/* <button className = "btnOrgCard " onClick = {() => this.handleClick(this.props.id)} >donate </button> */}
-        </div>
+            <Card onClick = {() => this.setState(prevState => {
+                return {
+                    routeOrgPage: !prevState.routeOrgPage}
+                  })}>
+            <Image src={this.props.imgUrl} wrapped ui={false} />
+            <Card.Content>
+              <Card.Header>{this.props.name}</Card.Header>
+              <Card.Meta>
+                <span className='date'>Monthy Donation: {this.props.initialDonation} $</span>
+              </Card.Meta>
+              <Card.Description>
+                organization desciption
+              </Card.Description>
+            </Card.Content>
+            <Card.Content extra>
+              <a>
+                <Icon name='gift' />
+                last prize winner
+              </a>
+            </Card.Content>
+          </Card>
         )
     }
 }
 
-export default OrgCard
+export default OrgCard;

@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-const action = "learning react"
+const action = "program started running"
 
 const date = new Date();
 

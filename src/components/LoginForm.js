@@ -4,6 +4,8 @@ import ReactDOM from 'react-dom';
 import axios from "axios";
 import { async } from "q";
 
+import { Button, Divider, Form, Grid, Segment } from 'semantic-ui-react'
+
 class LoginForm extends React.Component {
 	constructor(props){
 		super(props)
@@ -13,9 +15,9 @@ class LoginForm extends React.Component {
 	}
 	
 	handleChange(event){
-		const {name, value, type, checked} = event.target
-		type === "checkbox" ? this.setState({[name]: checked }) : this.setState({[name]: value})
-
+		this.setState({
+			[event.target.name]: event.target.value
+		})
 	}
 	
 	handleSubmit(e){
@@ -59,16 +61,49 @@ class LoginForm extends React.Component {
 	
 	render(){
 		return(
-		<div className="App-header-form">
-		<form onSubmit={this.handleSubmit.bind(this)}>
-		  User name: <input type="text" name="userName" onChange={this.handleChange.bind(this)}/><br />
-		  password: <input type="password" name="pswd" onChange={this.handleChange.bind(this)}/><br />
-		  <input type="submit" value="Submit" />
-		  {this.state.loggedIn && <h1>Hello {this.state.userName}</h1>} 
-		</form>
-		</div>
+			<Segment placeholder>
+			<Grid columns={2} relaxed='very' stackable>
+			<Grid.Column>
+				<Form onSubmit={this.handleSubmit.bind(this)}>
+				<Form.Input
+					icon='user'
+					iconPosition='left'
+					label='Username'
+					placeholder='Username'
+					name="userName"
+					onChange={this.handleChange.bind(this)}
+				/>
+				<Form.Input
+					icon='lock'
+					iconPosition='left'
+					label='Password'
+					type='password'
+					name="pswd"
+					onChange={this.handleChange.bind(this)}
+				/>
+
+				<Button content='Login' primary />
+				</Form>
+			</Grid.Column>
+			
+			<Grid.Column verticalAlign='middle'>
+				<Button content='Sign up' icon='signup' size='big' />
+			</Grid.Column>
+			</Grid>
+
+			<Divider vertical>Or</Divider>
+		</Segment>
 		)
 	}
 }
 
 export default LoginForm;
+
+// 		<div className="App-header-form">
+// 		<form onSubmit={this.handleSubmit.bind(this)}>
+// 		  User name: <input type="text" name="userName" onChange={this.handleChange.bind(this)}/><br />
+// 		  password: <input type="password" name="pswd" onChange={this.handleChange.bind(this)}/><br />
+// 		  <input type="submit" value="Submit" />
+// 		  {this.state.loggedIn && <h1>Hello {this.state.userName}</h1>} 
+// 		</form>
+// 		</div>

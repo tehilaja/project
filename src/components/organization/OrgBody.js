@@ -32,7 +32,7 @@ class OrgBody extends React.Component {
             DuserId: "",
             userEmail: "", // -
             // user_id: 5 // todo : real info
-
+            connect_to_klika: false
         }
      
 
@@ -128,14 +128,10 @@ class OrgBody extends React.Component {
         }
         else
             alert("please enter Referred detiles")
-        // this.set
+        // in the funture we will connect to another credit card handling company:
+        this.setState({connect_to_klika:true})
 		
 	}
-    //---------onSumbit---------------
-    // onSumbit()
-    // {
-
-    // } 
 
 
     //-------- findDuser ---------
@@ -246,6 +242,13 @@ class OrgBody extends React.Component {
                                 onChange={this.handleChange.bind(this)}
                                 placeholder="email" 
                             /> <br/><br/> */}
+                            {/* <lable>donation in honor of: </lable>
+                            <input 
+                                input type="text"
+                                name="honor" 
+                                onChange={this.handleChange.bind(this)}
+                                placeholder="honor" 
+                            /> <br/><br/> */}
                             
                             <input className="btnConfirm"  type="submit" value="Submit"></input>             
                             <br/><br/>
@@ -286,8 +289,9 @@ class OrgBody extends React.Component {
 						data = {this.state}/> 
                 } */}
                 <h3>{nameDonateThrough}</h3>
-                <p>Your name: {this.state.DuserName} {this.state.userEmail}</p>  
-                
+                {this.state.connect_to_klika && <p>In future will connect to credit card company</p> }
+                {/* this is a temporary photo to show that in future will connect to a klika company */}
+                {this.state.connect_to_klika && <img className="pic-border"     width= '40%' height= '40%' src="https://image.freepik.com/free-psd/credit-card-psd-payment-icons-set_60-2560.jpg"></img>}
             </div>
         )
     }
