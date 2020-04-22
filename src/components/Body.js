@@ -55,11 +55,6 @@ class Body extends React.Component
 			clickOrg: false,
 
 
-
-
-
-
-
 			// **
 			isFetchingData: false,
 			data: null
