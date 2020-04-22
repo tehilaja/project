@@ -1,6 +1,10 @@
 import React from 'react';
 import axios from "axios";
 
+// import 'semantic-ui-css/semantic.min.css' // css libary
+import { Header, Icon, Image, Label, Menu, Tab,Grid ,Segment, Button, Feed, Accordion} from 'semantic-ui-react'
+
+
 import OrgCard from './OrgCard.js'
 // import orgData from './orgData.js'
 import OrgSpechCard from './OrgSpechCard.js'
@@ -26,13 +30,15 @@ class OrgBody extends React.Component {
             btnDonateClicked: false,
             confirmBtn: false,
             initialDonation : this.props.data.initialDonation,
+
+
             color: "F33333",
             userName: "a", // -
             DuserName: "",
             DuserId: "",
             userEmail: "", // -
             // user_id: 5 // todo : real info
-
+            activeIndex: 0 // to active >
         }
      
 
@@ -43,6 +49,8 @@ class OrgBody extends React.Component {
         // this.findDuser = this.findDuser.bind(this)
         this.increment = this.increment.bind(this)
         this.decrement = this.decrement.bind(this)
+
+        // css
     }
 
     //---------increment +----------
@@ -57,7 +65,7 @@ class OrgBody extends React.Component {
     //---------decrement--------------
     decrement()
      {
-        if (this.state.initialDonation != this.props.data.initialDonation)
+        if (this.state.initialDonation !== this.props.data.initialDonation)
         {
             this.setState(prevState => {
                 return {
@@ -96,7 +104,7 @@ class OrgBody extends React.Component {
         e.preventDefault();
         // alert("s", this.state.DuserName)
          /*add donation to dataBase */
-        if (this.state.DuserName != "") // TODO: if find in db (func findDuser)
+        if (this.state.DuserName !== "") // TODO: if find in db (func findDuser)
         {
             (async () => {
 		 		const response = await axios.post(
@@ -180,8 +188,19 @@ class OrgBody extends React.Component {
         })
         // this.findDuser() // find the throw donate
         // alert(this.state.DuserId)
-	}
-	
+    }
+    
+    //## ------ css ------ ##
+
+  
+    // ## 
+    handleClick = (e, titleProps) => {
+        const { index } = titleProps
+        const { activeIndex } = this.state
+        const newIndex = activeIndex === index ? -1 : index
+    
+        this.setState({ activeIndex: newIndex })
+      }
 	
 //----------render------------------
     render() 
@@ -192,102 +211,254 @@ class OrgBody extends React.Component {
             color: "rgb(30, 100, 121)"
         }
         const nameDonateThrough = this.state.firstName
-    //---------return------------------------------
-        return(
-            <div className = "orgBody">
-                {/* need to change from orgBody */}
-                {/* < OrgSpechCard 
-                    // id = {this.props.id}
-                    id= {this.props.data.id}
-                    imgUrl= {this.props.data.img}
-                    name= {this.props.data.name}
-                /> */}
-                {/* the data about specific organization */}
-				
-                <div className="org-spech-card">
-                    {/* <h3>id = {this.props.data.id}</h3> */}
-                    <h1> {this.props.data.name} </h1>
-                    <img src={this.props.data.img}></img>
-                </div>
+        const { activeIndex } = this.state
+
+
+        //------  menu bar
+        const panes = [
+            {
+            // ~~~~~~~~~~~~~~ about ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+              menuItem: { key:'about', icon: 'users', content: 'about as' },
+              render: () => 
+              <Tab.Pane> 
+                   <div>
+                        <Segment style={{ padding: '0.5em 0em' }} vertical>
+                            <Grid container stackable verticalAlign='middle'>
+                                <Grid.Row>
+                                    <Grid.Column width={8}>
+                                        <Header as='h3' style={{ fontSize: '1.3em' }}>
+                                           : תחום הפעילות 
+                                        </Header>
+                                        <p style={{ fontSize: '1em' }}>
+                                            {this.props.data.field_of_acctivity}
+                                        </p>
+                                       
+                                        {/* // option to hide text */}
+                                        <Accordion>
+                                            <Accordion.Title
+                                                active={activeIndex === 0}
+                                                index={0}
+                                                onClick={this.handleClick}
+                                                style={{fontSize: '1.3em' }}
+                                            >
+                                            <Icon name='dropdown' />
+                                               : תאור
+                                            </Accordion.Title>
+                                            <Accordion.Content active={activeIndex === 0}>
+                                            <p style={{fontSize: '1em' }}>
+                                                {this.props.data.description}
+                                            </p>
+                                            </Accordion.Content>
+                                        </Accordion>
+                                        
+                                    </Grid.Column>
+                                    <Grid.Column floated='right' width={6}>
+                                        <Grid.Row>
+                                            <Grid.Column>
+                                                <Image  floated='right'  size='large' src={this.props.data.img} style={{ padding: '3em 3em' }} />
+                                            </Grid.Column> 
+                                            <Grid.Column>
+
+
+                                            <Header as='h3' style={{ fontSize: '1.3em' }}>
+                                            : מספר חברה
+                                            </Header>
+                                            <p style={{ fontSize: '1em' }}>
+                                                {this.props.data.org_num}
+                                            </p>
+                                            <Header as='h3' style={{ fontSize: '1.3em' }}>
+                                             :שם מנהל
+                                            </Header>
+                                            <p style={{ fontSize: '1em' }}>
+                                                {this.props.data.admin_name}
+                                            </p>
+                                            <Header as='h3' style={{ fontSize: '1.3em' }}>
+                                                : שנת הקמה
+                                            </Header>
+                                            <p style={{ fontSize: '1em' }}>
+                                                {this.props.data.founding_year} 
+                                            </p>
+
+
+                                            </Grid.Column>  
+                                        
+                                        </Grid.Row>
+                                    </Grid.Column>
+                                </Grid.Row>
+                                
+                                <Grid.Row>
+                                    <Grid.Column textAlign='center'>
+                                        <Button size='huge'>Check Them Out</Button>
+                                    </Grid.Column>
+                                </Grid.Row>
+                            </Grid>
+                        </Segment>
+                    </div>
+                   
+                 
+                
                 <br/>
 
-                {/* Donation amount */}
-                <div className = "initialDonation">
-                    <label > Donation amount (per month):</label>
-                    <label className= "initialDonationValue"  type="text" style={{color: this.state.color}}> {this.state.initialDonation}</label>
-                    {/* <input className= "initialDonationValue"  type="text" style={{color: this.state.color, width:25}} placeholder = {this.state.initialDonation}></input> */}
 
-                    <lable>$  </lable>
-                    <button onClick={this.decrement}>-</button>
-                    <button onClick={this.increment} >+</button>
-                </div>
+              </Tab.Pane>,
+            },
+            {
+              menuItem: (
+                <Menu.Item key='messages'>
+                  Messages<Label>15</Label>
+                </Menu.Item>
+              ),
+              render: () => <Tab.Pane  attached={false} >Tab 2 Content</Tab.Pane>,
+            },
 
-                <button className ="btnDonateOrg" onClick ={() => this.setState(prevState => {
-                    return {
-                        btnDonateClicked: !prevState.btnDonateClicked
-                    }})}
-                >donate </button>
+            // ~~~~~~~~~~~~~~ donate ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            {
+                menuItem: { key:'donate', icon: 'money bill alternate outline', content: 'Donate' },
+                // <Menu.Item key='comments'>
+                //     Messages<Label>15</Label>
+                //   </Menu.Item>
+                // ),
+                render: () => <Tab.Pane  attached={false} >
+                    {/* -- Donation amount */}
+                    <div className = "initialDonation">
+                        <label > Donation amount (per month):</label>
+                        <label className= "initialDonationValue"  type="text" style={{color: this.state.color}}> {this.state.initialDonation}</label>
+                        {/* <input className= "initialDonationValue"  type="text" style={{color: this.state.color, width:25}} placeholder = {this.state.initialDonation}></input> */}
 
-                {/* Donation throw information... */}
-                {this.state.btnDonateClicked && 
-                    <div className = "doners">
-                        {/* * TODO: if no Referred to */}
-                        <h4 style ={styles} >Referred to this organization by: </h4>
-                        <form className="fillFormDoners" onSubmit={this.handleSubmit}>
-                            <lable>name: </lable>
-                            <input 
-                                type="text" name="DuserName" onChange={this.handleChange.bind(this)} 
-                                placeholder="user Name" 
-                            /><br /><br/>
-                            {/* <lable>email: </lable>
-                            <input 
-                                input type="email"
-                                name="userEmail" 
-                                onChange={this.handleChange.bind(this)}
-                                placeholder="email" 
-                            /> <br/><br/> */}
-                            
-                            <input className="btnConfirm"  type="submit" value="Submit"></input>             
-                            <br/><br/>
-                        </form>
+                        <lable>$  </lable>
+                        <button onClick={this.decrement}>-</button>
+                        <button onClick={this.increment} >+</button>
                     </div>
-                }
+
+                    <button className ="btnDonateOrg" onClick ={() => this.setState(prevState => {
+                        return {
+                            btnDonateClicked: !prevState.btnDonateClicked
+                        }})}>donate 
+                    </button>
 
 
-            {/* <div className = "doners">
-                <h4 style ={styles} >Referred to this organization by: </h4>
-                <form className="fillFormDoners" onSubmit={this.handleSubmit.bind(this)}> 
-                    <lable>name: </lable>
-                    <input 
-                    name="firstName" 
-                    onChange={this.handleChange} 
-                    placeholder="First Name" 
-                    />
-                    <br /><br/>
-                    <lable>email : </lable>
-                    <input 
-                        name="email" 
-                        onChange={this.handleChange} 
-                        placeholder="Last Name" 
-                    />
-                    <br/>
-                    <input className="btnConfirm" type="submit" value="Submit" />                
-                    <br/><br/>
-                </form>
-            </div> */}
+                     {/* Donation throw information... */}
+                    {this.state.btnDonateClicked && 
+                        <div className = "doners">
+                            {/* * TODO: if no Referred to */}
+                            <h4 style ={styles} >Referred to this organization by: </h4>
+                            <form className="fillFormDoners" onSubmit={this.handleSubmit}>
+                                <lable htmlFor = "dname">name: </lable>
+                                <input id = "dname"
+                                    type="text" name="DuserName" onChange={this.handleChange.bind(this)} 
+                                    placeholder="user Name" 
+                                /><br /><br/>
+                                {/* <lable>email: </lable>
+                                <input 
+                                    input type="email"
+                                    name="userEmail" 
+                                    onChange={this.handleChange.bind(this)}
+                                    placeholder="email" 
+                                /> <br/><br/> */}
+                                
+                                <input className="btnConfirm"  type="submit" value="Submit"></input>             
+                                <br/><br/>
+                            </form>
+                        </div>
+                    }
+
+                </Tab.Pane>,
+              },
+
+            // ~~~~~~~~~~~~~~ gift ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+              {
+                menuItem: { key:'gifts', icon: 'gift', content: 'Gifts' },
+                
+                render: () => <Tab.Pane  attached={false} >
+                   <Grid columns={3} divided>
+                        <Grid.Row>
+                                
+                            <Grid.Column >
+                                <p>
+                                {this.props.data.description}
+                                
+                                </p>
+                                ghcvdhcvghvhgdv hjjjjjjjjjjjjjjjjjjjjjj
+                            </Grid.Column>
+
+                            <Grid.Column >
+                                <div className="org-spech-card">
+                                    {/* <h3>id = {this.props.data.id}</h3> */}
+                                    <h1> {this.props.data.name} </h1>
+                                    <img src = {this.props.data.img}></img>
+                                </div>
+                                {/* <Image src='https://react.semantic-ui.com/images/wireframe/image.png' /> */}
+                            </Grid.Column>
+
+                        </Grid.Row>
+                    </Grid>
+                </Tab.Pane>,
+                
+              },
+
+               // ~~~~~~~~~~~~~~ comment ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+              {
+                menuItem: { key:'comment', icon: 'comment', content: 'comment' },                
+                render: () => <Tab.Pane  attached={false} >
+                    <Feed>
+                    ` <Feed.Event>
+                        <Feed.Label>
+                            <img src='/images/avatar/small/elliot.jpg' />
+                        </Feed.Label>
+                        <Feed.Content>
+                            <Feed.Summary>
+                            <Feed.User>Elliot Fu</Feed.User> added you as a friend
+                            <Feed.Date>1 Hour Ago</Feed.Date>
+                            </Feed.Summary>
+                            <Feed.Meta>
+                            <Feed.Like>
+                                <Icon name='like' />4 Likes
+                            </Feed.Like>
+                            </Feed.Meta>
+                        </Feed.Content>
+                        </Feed.Event>`
+                    </Feed>
+                </Tab.Pane>,
+              },
+
+           
+
+          ]
+
+    //---------return------------------------------
+        return(
+            <div className = "orgBody_css">
+                    
+                    {/* users
+                    group */}
+                <Header dividing textAlign='right' style={{ fontSize: '2em', padding:'0.5em, 5em', marginTop:'0.5em'}}>
+                    {this.props.data.name}
+                    <  Icon  style={{ marginLeft: '0.7em' , marginRight: '1.5em', color:'blue'}} name='group' circular /> 
+                {/* fontStyle: "italic" */}
+                     {/* {this.props.data.name} */}
+                     {/* <Image size='massive' src={this.props.data.img} style={{marginLeft: '3em' }}/> */}
+                </Header>
+
+                {/* // menu bar side */}
+                <Tab style={{ padding: '1em 0em' }} menu={{ color:'blue' ,vertical: true, inverted: true, attached: true, tabular: true, pointing: true}} panes={panes} />
+
+                 {/* --------------- css --  */}
+                
+        
+
+               
 
 
 
 
-                {/* {this.state.btnDonateClicked && 
-                <Doners 
-                        handleChange={this.handleChange}
-						clickToDonate = {this.clickToDonate}
-						data = {this.state}/> 
-                } */}
+
+
+           
+
+                {/* //
                 <h3>{nameDonateThrough}</h3>
                 <p>Your name: {this.state.DuserName} {this.state.userEmail}</p>  
-                
+                 */}
             </div>
         )
     }

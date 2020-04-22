@@ -34,7 +34,7 @@ class LoginVsSignIn extends React.Component
     render(){
 	return(
 			<div>
-                {this.state.showLogin && <LoginForm record={this.handlerClick}/>}
+				{this.state.showLogin && <LoginForm record={this.handlerClick}/>}
                 {this.state.showUser && <UserProfileForm />}
                 {!this.state.showLogin && !this.state.showUser && <div>
                 <button name = "btnUserJoin" onClick={() => this.setState({showLogin: false, showUser: true, showBackButton: true})}> Create account</button> 
