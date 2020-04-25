@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-class UserProfileForm extends React.Component {
+class UserRegistrationForm extends React.Component {
 	
 	constructor(){
 		super()
@@ -34,4 +34,4 @@ class UserProfileForm extends React.Component {
 	}
 }
 
-export default UserProfileForm;
+export default UserRegistrationForm;

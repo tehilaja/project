@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import logo from './magdilim_logo.jpg';
 
 import LoginForm from './LoginForm.js';
-import UserProfileForm from './UserProfileForm.js';
+import UserRegistrationForm from './UserRegistrationForm.js';
 
 import {Redirect} from "react-router-dom";
 
@@ -30,7 +30,7 @@ class Header extends React.Component
 			  <header className="App-header">
 				<img src={logo} className="App-logo" alt="logo" />
 				{this.state.showLogin && <LoginForm />}
-				{this.state.showUser && <UserProfileForm />}
+				{this.state.showUser && <UserRegistrationForm />}
 				{!this.state.showLogin && !this.state.showUser && <div>
 				<button name = "btnOrgJoin" onClick={() => this.setState({newOrgFlag: true})}> Join as organization</button> 
 				<button name = "btnUserJoin" onClick={() => this.setState({showLogin: false, showUser: true})}> Join to donate</button> 

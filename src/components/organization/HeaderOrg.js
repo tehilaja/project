@@ -3,7 +3,7 @@
 import {Redirect} from "react-router-dom";
 
 import LoginForm from '../LoginForm.js';
-import UserProfileForm from '../UserProfileForm.js';
+import UserRegistrationForm from '../UserRegistrationForm.js';
 
 // import axios from "axios";
 // import { async } from "q";
@@ -244,7 +244,7 @@ render() {
 			  <Menu.Item as='a'>Prizes</Menu.Item>
 			  <Menu.Item position='right'>
 			  {this.state.showLogin && <LoginForm record={this.handlerClick}/>}
-                {this.state.showUser && <UserProfileForm />}
+                {this.state.showUser && <UserRegistrationForm />}
 				{!this.state.showLogin && !this.state.showUser &&
 				<div>
 				<Button as='a' inverted={!fixed} onClick={() => this.setState({showLogin: true, showUser: false, showBackButton: true})}>

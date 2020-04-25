@@ -1,5 +1,10 @@
 //import { signInButton, registerButton } from '../project-master/src/Clients/cognito_client';
-const cognitoClient = require('../magdilim/cognito_client');
+const cognitoClient = require('../project/cognito_client');
+const cognitoServiceFile = require('./src/cognito/cognito.service');
+const userRegistrationFile = require('./src/cognito/user-registration.service');
+const cognitoUtil = cognitoServiceFile.data.cognitoUtil;
+const userRestirationService = userRegistrationFile.data.userRegistrationService;
+
 
 const express = require('express');
 const mysql = require('mysql');
@@ -37,11 +42,11 @@ db.connect((err)=>{
 
 //-----add user ------
 app.post('/add_user', function(req,res){
-console.log("start signup");
+console.log("start signup....");console.log("callback in server: "+req.body.callback);
 try {
-  cognitoClient.registerButton(req.body.user_name, req.body.pswd);
+  userRestirationService.register(req.body.user, req.body.callback);
 } catch (error) {
-  console.log(JSON.stringify(error));  
+  console.log("error: "+JSON.stringify(error));  
 }
   
 
