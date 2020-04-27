@@ -30,6 +30,7 @@ class UserRegistrationForm extends React.Component {
 			valid_pswd: "",
 			email: "",
 			phone: "",
+			confirmation_code: "",
 			status: Status.PreRegistration,
 		}
 		this.handleChange = this.handleChange.bind(this)
@@ -44,6 +45,20 @@ class UserRegistrationForm extends React.Component {
 	// ---- add user
 	handleSubmit = (e) => {
 		e.preventDefault();
+		
+		switch (this.state.status)
+		{
+			case Status.PreRegistration:
+				this.register();
+				break;
+			
+			case Status.PreConfirmation:
+				this.confirmUser();
+				break;
+		}
+	}
+
+	register() {
 		const user = {
 			email: this.state.email,
 			firstName: this.state.first_name,
@@ -67,13 +82,30 @@ class UserRegistrationForm extends React.Component {
 			alert("response: "+JSON.stringify(response))
 			console.log("response: "+JSON.stringify(response))
 			console.log(response.data);
-			this.cognitoCallback(response.data.message, response.data.result);
+			this.registrationCallback(response.data.message, response.data.result);
 		}
 		)();
-
 	}
 
-	cognitoCallback(message, result) {console.log("cognito callback")
+	confirmUser() {
+		(async () => {
+			const response = await axios.post(
+				'/confirm_registerd_user',
+				{
+					user_name: this.state.email,
+					confirmation_code: this.state.confirmation_code,
+				},
+				{ header: { 'Content-Type': 'application/json' } }
+			)
+			console.log("after confirmation")
+			alert("response: "+JSON.stringify(response))
+			console.log("response: "+JSON.stringify(response))
+			console.log(response.data);
+		}
+		)();
+	}
+
+	registrationCallback(message, result) {console.log("cognito callback")
 		if (message != null) { //error
             this.errorMessage = message;
             console.log("result: " + this.errorMessage);
@@ -84,66 +116,98 @@ class UserRegistrationForm extends React.Component {
         }
 	}
 
+	confirmationCallback() {
+		this.state.status = Status.PostConfirmation;
+	}
+
 	render() {
 		return (
 			<Segment placeholder>
 				{
-					this.state.status === Status.PreRegistration && <div>
-						<Grid relaxed='very' stackable>
-							<Grid.Column>
-								<Form onSubmit={this.handleSubmit}>
-									<Form.Input
-										icon='user'
-										iconPosition='left'
-										placeholder='First name'
-										name="first_name"
-										onChange={this.handleChange.bind(this)}
-									/>
-									<Form.Input
-										icon='user'
-										iconPosition='left'
-										placeholder='Last name'
-										name="last_name"
-										onChange={this.handleChange.bind(this)}
-									/>
-									<Form.Input
-										icon='lock'
-										iconPosition='left'
-										placeholder='Password'
-										type='password'
-										name="pswd"
-										onChange={this.handleChange.bind(this)}
-									/>
-									<Form.Input
-										icon='lock'
-										iconPosition='left'
-										placeholder='Validate password'
-										type='password'
-										name="valid_pswd"
-										onChange={this.handleChange.bind(this)}
-									/>
-									<Form.Input
-										icon='phone'
-										iconPosition='left'
-										placeholder='Phone number'
-										name="first_name"
-										onChange={this.handleChange.bind(this)}
-									/>
-									<Form.Input
-										icon='envelope'
-										iconPosition='left'
-										type='email'
-										placeholder='email'
-										name="email"
-										onChange={this.handleChange.bind(this)}
-									/>
-									<Button content='Sign Up' primary />
-								</Form>
-							</Grid.Column>
-						</Grid>
-					</div>}
+					this.state.status === Status.PreRegistration && this.preRegistrationRender() ||
+					this.state.status === Status.PreConfirmation && this.preConfirmationRender()
+				}
 			</Segment>
 		)
+	}
+
+	preRegistrationRender() {
+		return <div>
+		<Grid relaxed='very' stackable>
+			<Grid.Column>
+				<Form onSubmit={this.handleSubmit}>
+					<Form.Input
+						icon='user'
+						iconPosition='left'
+						placeholder='First name'
+						name="first_name"
+						onChange={this.handleChange.bind(this)}
+					/>
+					<Form.Input
+						icon='user'
+						iconPosition='left'
+						placeholder='Last name'
+						name="last_name"
+						onChange={this.handleChange.bind(this)}
+					/>
+					<Form.Input
+						icon='lock'
+						iconPosition='left'
+						placeholder='Password'
+						type='password'
+						name="pswd"
+						onChange={this.handleChange.bind(this)}
+					/>
+					<Form.Input
+						icon='lock'
+						iconPosition='left'
+						placeholder='Validate password'
+						type='password'
+						name="valid_pswd"
+						onChange={this.handleChange.bind(this)}
+					/>
+					<Form.Input
+						icon='phone'
+						iconPosition='left'
+						placeholder='Phone number'
+						name="first_name"
+						onChange={this.handleChange.bind(this)}
+					/>
+					<Form.Input
+						icon='envelope'
+						iconPosition='left'
+						type='email'
+						placeholder='email'
+						name="email"
+						onChange={this.handleChange.bind(this)}
+					/>
+					<Button content='Sign Up' primary />
+				</Form>
+			</Grid.Column>
+		</Grid>
+	</div>;
+	}
+
+	
+
+	preConfirmationRender() {
+		return <div>
+		<Grid relaxed='very' stackable>
+			<Grid.Column>
+				<Form onSubmit={this.handleSubmit}>
+					<Form.Input
+						icon='lock'
+						iconPosition='left'
+						placeholder='Confirmation Code'
+						type='password'
+						name="confirmation_code"
+						onChange={this.handleChange.bind(this)}
+					/>
+					<Button content='Confirm' primary />
+				</Form>
+			</Grid.Column>
+		</Grid>
+	</div>;
 	}
 }
 

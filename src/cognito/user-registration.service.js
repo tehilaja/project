@@ -61,10 +61,10 @@ class UserRegistrationService {
         let cognitoUser = new CognitoUser(userData);
 
         cognitoUser.confirmRegistration(confirmationCode, true, function (err, result) {
-            if (err) {
-                callback.cognitoCallback(err.message, null);
-            } else {
-                callback.cognitoCallback(null, result);
+            if (err) {console.log("error confirming: "+JSON.stringify(err))
+                // callback.cognitoCallback(err.message, null);
+            } else {console.log("success confirming: "+JSON.stringify(result))
+                // callback.cognitoCallback(null, result);
             }
         });
     }

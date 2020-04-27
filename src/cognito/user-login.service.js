@@ -1,10 +1,14 @@
 //import { DynamoDBService } from "./ddb.service";
-import { CognitoCallback, CognitoUtil, LoggedInCallback } from "./cognito.service";
-import { AuthenticationDetails, CognitoUser, CognitoUserSession } from "amazon-cognito-identity-js";
-import * as AWS from "aws-sdk/global";
-import * as STS from "aws-sdk/clients/sts";
 
-export class UserLoginService {
+const cognitoIdentityFile = require("amazon-cognito-identity-js");
+const cognitoServiceFile = require("./cognito.service");
+const AuthenticationDetails = cognitoIdentityFile.AuthenticationDetails;
+const CognitoUser = cognitoIdentityFile.CognitoUser;
+const CognitoUserAttribute = cognitoIdentityFile.CognitoUserAttribute;
+const AWS = require("aws-sdk/global");
+const STS = require("aws-sdk/clients/sts");
+
+class UserLoginService {
 
     cognitoUtil;
 
@@ -28,7 +32,7 @@ export class UserLoginService {
         let sts = new STS(clientParams);
         sts.getCallerIdentity(function (err, data) {
             console.log("UserLoginService: Successfully set the AWS credentials");
-            callback.cognitoCallback(null, session);
+            // callback.cognitoCallback(null, session);
         });
     }
 
@@ -58,8 +62,13 @@ export class UserLoginService {
         let cognitoUser = new CognitoUser(userData);
         console.log("UserLoginService: config is " + AWS.config);
         cognitoUser.authenticateUser(authenticationDetails, {
-            newPasswordRequired: (userAttributes, requiredAttributes) => callback.cognitoCallback(`User needs to set password.`, null),
-            onSuccess: result => this.onLoginSuccess(callback, result),
+            newPasswordRequired: (userAttributes, requiredAttributes) => {console.log("newPasswordRequired")
+                return "newPasswordRequired";
+                // callback.cognitoCallback(`User needs to set password.`, null)
+            },
+            onSuccess: result => {console.log("success login before onloginsuccess")
+                this.onLoginSuccess(callback, result);                
+            },
             onFailure: err => this.onLoginError(callback, err),
             // mfaRequired: (challengeName, challengeParameters) => {
             //     callback.handleMFAStep(challengeName, challengeParameters, (confirmationCode: string) => {
@@ -139,4 +148,8 @@ export class UserLoginService {
             callback.isLoggedIn("Can't retrieve the CurrentUser", false);
         }
     }
+}
+
+exports.data = {
+    userLoginService: new UserLoginService(cognitoServiceFile.data.cognitoUtil),
 }

@@ -2,8 +2,10 @@
 const cognitoClient = require('../project/cognito_client');
 const cognitoServiceFile = require('./src/cognito/cognito.service');
 const userRegistrationFile = require('./src/cognito/user-registration.service');
+const userLoginFile = require('./src/cognito/user-login.service');
 const cognitoUtil = cognitoServiceFile.data.cognitoUtil;
 const userRestirationService = userRegistrationFile.data.userRegistrationService;
+const userLoginService = userLoginFile.data.userLoginService;
 
 
 const express = require('express');
@@ -42,9 +44,10 @@ db.connect((err)=>{
 
 //-----add user ------
 app.post('/add_user', function(req,res){
-console.log("start signup....");console.log("callback in server: "+req.body.callback);
+console.log("start signup....");
 try {
-  userRestirationService.register(req.body.user, req.body.callback);
+  const response = userRestirationService.register(req.body.user);
+  res.send(response);
 } catch (error) {
   console.log("error: "+JSON.stringify(error));  
 }
@@ -62,10 +65,21 @@ try {
   // // TODO : login for this user 
 });
 
+//-----confirm registerd user ------
+app.post('/confirm_registerd_user', function(req,res){
+  console.log("start confirmation....");
+  try {
+    const response = userRestirationService.confirmRegistration(req.body.user_name, req.body.confirmation_code);
+    res.send(response);
+  } catch (error) {
+    console.log("error: "+JSON.stringify(error));  
+  }
+});
+
+
 //-------login --------
 app.post('/login',(req, res)=>{
-  alert(1)
-  cognitoClient.signInButton(req.body.userName, req.body.pswd);
+  const response = userLoginService.authenticate(req.body.userName, req.body.pswd);
   // console.log("login");
   // let query = `SELECT * FROM Users WHERE user_name="${req.body.userName}"`
   // db.query(query,(err,result,fields)=>{
