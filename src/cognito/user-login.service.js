@@ -10,9 +10,9 @@ const STS = require("aws-sdk/clients/sts");
 
 class UserLoginService {
 
-    cognitoUtil;
+    // cognitoUtil;
 
-    onLoginSuccess = (callback, session) => {
+    onLoginSuccess(callback, session){
 
         console.log("In authenticateUser onSuccess callback");
 
@@ -36,7 +36,7 @@ class UserLoginService {
         });
     }
 
-    onLoginError = (callback, err) => {
+    onLoginError(callback, err){
         callback.cognitoCallback(err.message, null);
     }
 

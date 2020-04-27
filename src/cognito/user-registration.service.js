@@ -8,7 +8,7 @@ const AWS = require("aws-sdk/global");
 
 class UserRegistrationService {
 
-    cognitoUtil;
+    // cognitoUtil;
 
     constructor(cognitoUtil) {
         this.cognitoUtil = cognitoUtil;
@@ -131,19 +131,6 @@ class UserRegistrationService {
     }
 }
 
-class RegistrationUser {
-    firstName;
-    lastName;
-    email;
-    phone;
-    password;
-}
-
-class NewPasswordUser {
-    username;
-    existingPassword;
-    password;
-}
 
 exports.data = {
     userRegistrationService: new UserRegistrationService(cognitoServiceFile.data.cognitoUtil),

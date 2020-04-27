@@ -30,21 +30,20 @@ const CognitoIdentity = require("aws-sdk/lib/service");
 
 //     callbackWithParam(result: any): void;
 // }
+ const _REGION = 'us-east-1';
+ const _IDENTITY_POOL_ID = 'us-east-1:f555c51e-02d5-4ec2-b01d-21c1a5d384dd';
+ const _USER_POOL_ID = 'us-east-1_59QU60Ow5';
+ const _CLIENT_ID = '6h48jv6h366u8q7ce29k2u59mp';
+
+ const _POOL_DATA = {
+     UserPoolId: _USER_POOL_ID,
+     ClientId: _CLIENT_ID
+ };
+
+//  cognitoCreds;
 
 class CognitoUtil {
 
-    static _REGION = 'us-east-1';
-
-    static _IDENTITY_POOL_ID = 'us-east-1:f555c51e-02d5-4ec2-b01d-21c1a5d384dd';
-    static _USER_POOL_ID = 'us-east-1_59QU60Ow5';
-    static _CLIENT_ID = '6h48jv6h366u8q7ce29k2u59mp';
-
-    static _POOL_DATA = {
-        UserPoolId: CognitoUtil._USER_POOL_ID,
-        ClientId: CognitoUtil._CLIENT_ID
-    };
-
-    cognitoCreds;
 
     getUserPool() {
     //     if (environment.cognito_idp_endpoint) {
