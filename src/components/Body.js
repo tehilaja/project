@@ -8,6 +8,28 @@ import { async } from "q";
 import OrgCard from './organization/OrgCard.js'
 import orgData from './organization/orgData.js'
 
+import { Carousel } from 'react-responsive-carousel';
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+
+
+
+import {
+	Button,
+	Container,
+	Divider,
+	Grid,
+	Header,
+	Icon,
+	Image,
+	List,
+	Menu,
+	Responsive,
+	Segment,
+	Sidebar,
+	Step,
+	Visibility,
+  } from 'semantic-ui-react'
+
 
 // class YourComponent extends React.Component {
 // 	constructor(props) {
@@ -54,7 +76,6 @@ class Body extends React.Component
 			organizations: [],
 			clickOrg: false,
 
-
 			// **
 			isFetchingData: false,
 			data: null
@@ -82,28 +103,12 @@ class Body extends React.Component
         }).catch(err => {
         console.log('caught it!',err);
         })
- 
-
-			// this.fetch_org_data()
-		//   this.setState({ isFetchingData: true });
-		//   apiCall().then((data) => {
-		// 	this.setState({
-		// 	  isFetchingData: true,
-		// 	  data
-		// 	});
-		//   });
 	}
 
 
 
 	//the function below has Server fetch data about organizations from datbase: 
 	// fetch_org_data(){
-
-
-
-
-
-
 	// (async ()=> {
 	// 	const response = await axios.post(
 	// 		'/fetch_org_data',
@@ -191,7 +196,22 @@ class Body extends React.Component
 			return(
 				<OrgCard key={org.org_id} imgUrl={org.org_pic} name={org.org_name} id= {org.org_id} initialDonation= {org.min_donation}/>)
 		})
+
+		// const carouselOrganizations = this.orgComponents.map(org =>{
+		// 	<Carousel>
+		// 	<div>
+		// 		org
+		// 	</div>
+		// </Carousel>
+		// })
 			
+		const settings = {
+			dots: true,
+			infinite: true,
+			speed: 500,
+			slidesToShow: 1,
+			slidesToScroll: 1
+		  };
 			 
 
 		// ---orgComponents (card)---
@@ -214,8 +234,97 @@ class Body extends React.Component
 	//-----------return------------------------------
 		return(
 			<div>
-				<myButton /> 
-				{orgComponents}
+				<Segment style={{ padding: '8em 0em' }} vertical>
+			<Grid container stackable verticalAlign='middle'>
+				<Grid.Row>
+				<Grid.Column width={8}>
+					{/*putting organizations into home page:*/}
+					{orgComponents}
+					{/* <carousel /> */}
+					<Header as='h3' style={{ fontSize: '2em' }}>
+					We Make Bananas That Can Dance
+					</Header>
+					<p style={{ fontSize: '1.33em' }}>
+					Yes that's right, you thought it was the stuff of dreams, but even bananas can be
+					bioengineered.
+					</p>
+				</Grid.Column>
+				<Grid.Column floated='right' width={6}>
+				<Header as='h3' style={{ fontSize: '2em' }}>
+					Create an online platform for ongoing donations
+					</Header>
+					<Image bordered rounded size='large' src='https://i.insider.com/5ab2a71c5851aebb008b46da?width=3100&format=jpeg&auto=webp' />
+					<Button primary size='huge'>
+						Get Started
+						<Icon name='right arrow' />
+					</Button>
+				</Grid.Column>
+				</Grid.Row>
+				<Grid.Row>
+				<Grid.Column textAlign='center'>
+					<Button size='huge'>Check Them Out</Button>
+				</Grid.Column>
+				</Grid.Row>
+			</Grid>
+			</Segment>
+			
+			<Segment style={{ padding: '0em' }} vertical>
+			<Grid celled='internally' columns='equal' stackable>
+				<Grid.Row textAlign='center'>
+				<Grid.Column style={{ paddingBottom: '5em', paddingTop: '5em' }}>
+					<Header as='h3' style={{ fontSize: '2em' }}>
+					"What a Company"
+					</Header>
+					<p style={{ fontSize: '1.33em' }}>That is what they all say about us</p>
+				</Grid.Column>
+				<Grid.Column style={{ paddingBottom: '5em', paddingTop: '5em' }}>
+					<Header as='h3' style={{ fontSize: '2em' }}>
+					"I shouldn't have gone with their competitor."
+					</Header>
+					<p style={{ fontSize: '1.33em' }}>
+					<Image avatar src='/images/avatar/large/nan.jpg' />
+					<b>Nan</b> Chief Fun Officer Acme Toys
+					</p>
+				</Grid.Column>
+				</Grid.Row>
+			</Grid>
+			</Segment>
+			<Segment style={{ padding: '8em 0em' }} vertical>
+			<Container text>
+				<Header as='h3' style={{ fontSize: '2em' }}>
+				Breaking The Grid, Grabs Your Attention
+				</Header>
+				<p style={{ fontSize: '1.33em' }}>
+				Instead of focusing on content creation and hard work, we have learned how to master the
+				art of doing nothing by providing massive amounts of whitespace and generic content that
+				can seem massive, monolithic and worth your attention.
+				</p>
+				<Button as='a' size='large'>
+				Read More
+				</Button>
+
+				<Divider
+				as='h4'
+				className='header'
+				horizontal
+				style={{ margin: '3em 0em', textTransform: 'uppercase' }}
+				>
+				<a href='#'>Case Studies</a>
+				</Divider>
+
+				<Header as='h3' style={{ fontSize: '2em' }}>
+				Did We Tell You About Our Bananas?
+				</Header>
+				<p style={{ fontSize: '1.33em' }}>
+				Yes I know you probably disregarded the earlier boasts as non-sequitur filler content, but
+				it's really true. It took years of gene splicing and combinatory DNA research, but our
+				bananas can really dance.
+				</p>
+				<Button as='a' size='large'>
+				I'm Still Quite Interested
+				</Button>
+			</Container>
+			</Segment>
 			</div>
 		)
 	}

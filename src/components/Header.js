@@ -161,52 +161,49 @@ const style = {
  * such things.
  */
 const HomepageHeading = ({ mobile }) => (
-	<Container text>
-	  <Header
+<Container text>
+	<Header
 		as='h1'
 		content='MAGDILIM'
 		inverted
 		style={{
-		  fontSize: mobile ? '2em' : '4em',
-		  fontWeight: 'normal',
-		  marginBottom: 0,
-		  marginTop: mobile ? '1.5em' : '3em',
+			fontSize: mobile ? '2em' : '4em',
+			fontWeight: 'normal',
+			marginBottom: 0,
+			marginTop: mobile ? '1.5em' : '3em',
 		}}
-	  />
-	  <Header
+	/>
+	<Header
 		as='h2'
 		content='Multilevl crowd fundraising platform.'
 		inverted
 		style={{
-		  fontSize: mobile ? '1.5em' : '1.7em',
-		  fontWeight: 'normal',
-		  marginTop: mobile ? '0.5em' : '1.5em',
+			fontSize: mobile ? '1.5em' : '1.7em',
+			fontWeight: 'normal',
+			marginTop: mobile ? '0.5em' : '1.5em',
 		}}
-	  />
-  
-  
-		  {/*responsive steps:*/}
-		  <Container style={style.last}>
-		  <Step.Group fluid>
-			<Step icon='user' title='Sign Up' description='Become a magdilim member' />
-			<Step icon='dollar' title='Donate' description='Choose and donate to organization' />
-			<Step
-				active
-			  icon='gift'
-			  title='Win a prize'
-			  description='Join the raffles'
-			/>
-		  </Step.Group>
-		</Container>
-  
+	/>
+	{/*responsive steps:*/}
+	<Container style={style.last}>
+	<Step.Group fluid>
+	<Step icon='user' title='Sign Up' description='Become a magdilim member' />
+	<Step icon='dollar' title='Donate' description='Choose and donate to organization' />
+	<Step
+		active
+		icon='gift'
+		title='Win a prize'
+		description='Join the raffles'
+	/>
+	</Step.Group>
 	</Container>
-  )
+</Container>
+)
 
   HomepageHeading.propTypes = {
 	mobile: PropTypes.bool,
   }
 
-class HeaderOrg extends React.Component 
+class DesktopContainer extends React.Component 
 {
 	constructor(props){
 		super(props)
@@ -219,7 +216,7 @@ class HeaderOrg extends React.Component
 	//this.handlerLogoutClick = this.handlerLogoutClick.bind(this);
 	}
 
-		handlerClick(user_name) {
+	handlerClick(user_name) {
         this.setState({
 			loggedIn: true,
 			userName: user_name
@@ -232,6 +229,9 @@ class HeaderOrg extends React.Component
 	  
 render() {
 
+	const { children } = this.props
+    const { fixed } = this.state
+
 	//redirecting to Home
 	if (this.state.routeMain === true){
 		return <Redirect to = {{
@@ -239,10 +239,6 @@ render() {
 			state: {userName: this.state.userName, loggedIn: this.state.loggedIn}
 		}} />
 	} 
-
-
-	const { children } = this.props
-	const { fixed } = this.state
 	
   return (
 	<Responsive getWidth={getWidth} minWidth={Responsive.onlyTablet.minWidth}>
@@ -298,7 +294,110 @@ render() {
 
 	  {children}
 	</Responsive>
-  )}
+  )
+}
 }
 
-export default HeaderOrg;
+DesktopContainer.propTypes = {
+	children: PropTypes.node,
+}
+
+class MobileContainer extends Component {
+	constructor(props){
+		super(props)
+		this.state = {
+			routeMain: false,
+			loggedIn: this.props.data.loggedIn,
+			userName: this.props.data.userName
+		}
+	this.handlerClick = this.handlerClick.bind(this);
+	//this.handlerLogoutClick = this.handlerLogoutClick.bind(this);
+	}
+
+	handlerClick(user_name) {
+        this.setState({
+			loggedIn: true,
+			userName: user_name
+		});
+		this.props.record(user_name)
+	}
+  
+	handleSidebarHide = () => this.setState({ sidebarOpened: false })
+  
+	handleToggle = () => this.setState({ sidebarOpened: true })
+  
+	render() {
+	  const { children } = this.props
+	  const { sidebarOpened } = this.state
+  
+	  return (
+		<Responsive
+		  as={Sidebar.Pushable}
+		  getWidth={getWidth}
+		  maxWidth={Responsive.onlyMobile.maxWidth}
+		>
+		  <Sidebar
+			as={Menu}
+			animation='push'
+			inverted
+			onHide={this.handleSidebarHide}
+			vertical
+			visible={sidebarOpened}
+		  >
+			<Menu.Item as='a' active>
+			  Home
+			</Menu.Item>
+			<Menu.Item as='a'>Organizations</Menu.Item>
+			<Menu.Item as='a'>Prizes</Menu.Item>
+			<Menu.Item as='a'>Log in</Menu.Item>
+			<Menu.Item as='a'>Sign Up</Menu.Item>
+		  </Sidebar>
+  
+		  <Sidebar.Pusher dimmed={sidebarOpened}>
+			<Segment
+			  inverted
+			  textAlign='center'
+			  style={{ minHeight: 350, padding: '1em 0em' }}
+			  vertical
+			>
+			  <Container>
+				<Menu inverted pointing secondary size='large'>
+				  <Menu.Item onClick={this.handleToggle}>
+					<Icon name='sidebar' />
+				  </Menu.Item>
+				  <Menu.Item position='right'>
+					<Button as='a' inverted>
+					  Log in
+					</Button>
+					<Button as='a' inverted style={{ marginLeft: '0.5em' }}>
+					  Sign Up
+					</Button>
+				  </Menu.Item>
+				</Menu>
+			  </Container>
+			  <HomepageHeading mobile />
+			</Segment>
+  
+			{children}
+		  </Sidebar.Pusher>
+		</Responsive>
+	  )
+	}
+  }
+  
+  MobileContainer.propTypes = {
+	children: PropTypes.node,
+  }
+  
+  const ResponsiveContainer = ({ children }) => (
+	<div>
+	  <DesktopContainer>{children}</DesktopContainer>
+	  <MobileContainer>{children}</MobileContainer>
+	</div>
+  )
+  
+  ResponsiveContainer.propTypes = {
+	children: PropTypes.node,
+  }
+
+export default DesktopContainer;

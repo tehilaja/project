@@ -12,9 +12,9 @@ import { async } from "q";
 
 ////---------------
 
-import HeaderOrg from './organization/HeaderOrg.js';
+import Header from './Header.js';
 
-import Footer from './organization/Footer.js';
+import Footer from './Footer.js';
 
 
 
@@ -312,7 +312,7 @@ class newOrg extends React.Component{
 
 			<div>			
 
-				<HeaderOrg record={this.handlerClick} data={{userName:this.state.userName, loggedIn:this.state.loggedIn}}/>
+				<Header record={this.handlerClick} data={{userName:this.state.userName, loggedIn:this.state.loggedIn}}/>
 
 				
 
