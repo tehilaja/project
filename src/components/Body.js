@@ -5,8 +5,8 @@ import {Redirect} from "react-router-dom";
 import axios from "axios";
 import { async } from "q";
 
-import OrgCard from './organization/OrgCard.js'
-import orgData from './organization/orgData.js'
+import OrgCard from './OrgComponents/OrgCard.js'
+import orgData from './OrgComponents/orgData.js'
 
 import { Carousel } from 'react-responsive-carousel';
 import "react-responsive-carousel/lib/styles/carousel.min.css";

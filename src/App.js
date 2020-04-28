@@ -347,7 +347,6 @@ const HomepageLayout = () => (
     {/* <HeaderFile data={{loggedIn: false, userName: ""}}/> */}
     <Body data={{loggedIn: false, userName: ""}}/>
     <Footer />
-
   </ResponsiveContainer>
 )
 

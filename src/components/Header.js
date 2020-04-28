@@ -349,8 +349,10 @@ class MobileContainer extends Component {
 			</Menu.Item>
 			<Menu.Item as='a'>Organizations</Menu.Item>
 			<Menu.Item as='a'>Prizes</Menu.Item>
-			<Menu.Item as='a'>Log in</Menu.Item>
-			<Menu.Item as='a'>Sign Up</Menu.Item>
+			{!this.state.loggedIn && 
+			<Menu.Item as='a'>Log in</Menu.Item> &&
+			<Menu.Item as='a'>Sign Up</Menu.Item>}
+			{this.state.loggedIn && <Menu.Item as='a'>My Profile</Menu.Item>}
 		  </Sidebar>
   
 		  <Sidebar.Pusher dimmed={sidebarOpened}>
