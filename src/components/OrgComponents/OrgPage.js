@@ -1,3 +1,4 @@
+
 import React from 'react';
 import {Redirect} from "react-router-dom";
 
@@ -7,7 +8,8 @@ import { async } from "q";
 
 import Header from '../Header.js';
 import OrgBody from './OrgBody.js';
-import Footer from '../Footer.js';
+import Footer from './Footer.js';
+
 
 class OrgPage extends React.Component{
 	constructor(props) {
@@ -71,6 +73,10 @@ class OrgPage extends React.Component{
 		return(
 			<div>
                 <Header data={{loggedIn: this.state.loggedIn, userName: this.state.userName}}/>
+				{/* <header>
+					<img src = {this.state.img} ></img>
+				</header> */}
+
 				<OrgBody 
 					data = {this.state}/>
 				<Footer />

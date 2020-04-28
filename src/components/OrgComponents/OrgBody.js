@@ -9,6 +9,9 @@ import OrgCard from './OrgCard.js'
 // import orgData from './orgData.js'
 import OrgSpechCard from './OrgSpechCard.js'
 
+// donate
+import Donate from './Donate.js'
+
 
 import Doners from "./Doners.js"
 
@@ -45,6 +48,7 @@ class OrgBody extends React.Component {
         this.handleChange = this.handleChange.bind(this)
         this.handleClick = this.handleClick.bind(this) 
         this.clickToDonate = this.clickToDonate.bind(this) 
+        this.handleClickAcording = this.handleClickAcording.bind(this)
 
         // this.findDuser = this.findDuser.bind(this)
         this.increment = this.increment.bind(this)
@@ -194,13 +198,17 @@ class OrgBody extends React.Component {
 
   
     // ## 
-    handleClick = (e, titleProps) => {
+    handleClickAcording = (e, titleProps) => {
         const { index } = titleProps
         const { activeIndex } = this.state
         const newIndex = activeIndex === index ? -1 : index
     
         this.setState({ activeIndex: newIndex })
       }
+
+      // step (donation)
+
+    //   handleClick = (e, { title }) => this.setState({ active: title })
 	
 //----------render------------------
     render() 
@@ -212,6 +220,10 @@ class OrgBody extends React.Component {
         }
         const nameDonateThrough = this.state.firstName
         const { activeIndex } = this.state
+
+        // for step (donation)
+        // const { active } = this.state
+
 
 
         //------  menu bar
@@ -225,6 +237,9 @@ class OrgBody extends React.Component {
                         <Segment style={{ padding: '0.5em 0em' }} vertical>
                             <Grid container stackable verticalAlign='middle'>
                                 <Grid.Row>
+                                    <Header as='h2' icon='address card outline' content='About' />
+                                </Grid.Row>
+                                <Grid.Row>
                                     <Grid.Column width={8}>
                                         <Header as='h3' style={{ fontSize: '1.3em' }}>
                                            : תחום הפעילות 
@@ -232,13 +247,13 @@ class OrgBody extends React.Component {
                                         <p style={{ fontSize: '1em' }}>
                                             {this.props.data.field_of_acctivity}
                                         </p>
-                                       
+                                       5
                                         {/* // option to hide text */}
                                         <Accordion>
                                             <Accordion.Title
                                                 active={activeIndex === 0}
                                                 index={0}
-                                                onClick={this.handleClick}
+                                                onClick={this.handleClickAcording}
                                                 style={{fontSize: '1.3em' }}
                                             >
                                             <Icon name='dropdown' />
@@ -318,50 +333,94 @@ class OrgBody extends React.Component {
                 //     Messages<Label>15</Label>
                 //   </Menu.Item>
                 // ),
-                render: () => <Tab.Pane  attached={false} >
-                    {/* -- Donation amount */}
-                    <div className = "initialDonation">
-                        <label > Donation amount (per month):</label>
-                        <label className= "initialDonationValue"  type="text" style={{color: this.state.color}}> {this.state.initialDonation}</label>
-                        {/* <input className= "initialDonationValue"  type="text" style={{color: this.state.color, width:25}} placeholder = {this.state.initialDonation}></input> */}
+                render: () => <Tab.Pane >
 
-                        <lable>$  </lable>
-                        <button onClick={this.decrement}>-</button>
-                        <button onClick={this.increment} >+</button>
-                    </div>
+                    <div className = "donate" >
+                    <Segment style={{ padding: '0.5em 1.5em' }} vertical>
+                        <Grid>
+                            <Grid.Row>
+                                <Header as='h2' icon='handshake outline' content='Donate' />
+                            </Grid.Row>
+                            <Grid.Row>
 
-                    <button className ="btnDonateOrg" onClick ={() => this.setState(prevState => {
-                        return {
-                            btnDonateClicked: !prevState.btnDonateClicked
-                        }})}>donate 
-                    </button>
-
-
-                     {/* Donation throw information... */}
-                    {this.state.btnDonateClicked && 
-                        <div className = "doners">
-                            {/* * TODO: if no Referred to */}
-                            <h4 style ={styles} >Referred to this organization by: </h4>
-                            <form className="fillFormDoners" onSubmit={this.handleSubmit}>
-                                <lable htmlFor = "dname">name: </lable>
-                                <input id = "dname"
-                                    type="text" name="DuserName" onChange={this.handleChange.bind(this)} 
-                                    placeholder="user Name" 
-                                /><br /><br/>
-                                {/* <lable>email: </lable>
-                                <input 
-                                    input type="email"
-                                    name="userEmail" 
-                                    onChange={this.handleChange.bind(this)}
-                                    placeholder="email" 
-                                /> <br/><br/> */}
+                           
+                                <div>
+                                    <Donate data={{initialDonation: this.state.initialDonation}} />
+                                    {/* <Step.Group>
+                                    <Step
+                                        active={active === 'Shipping'}
+                                        icon='truck'
+                                        link
+                                        onClick={this.handleClick}
+                                        title='Shipping'
+                                        description='Choose your shipping options'
+                                    />
+                                    <Step
+                                        active={active === 'Billing'}
+                                        icon='credit card'
+                                        link
+                                        onClick={this.handleClick}
+                                        title='Billing'
+                                        description='Enter billing information'
+                                    />
+                                    </Step.Group> */}
+                                </div>
+                                                            
+                            </Grid.Row>
+                            <Grid.Row>
                                 
-                                <input className="btnConfirm"  type="submit" value="Submit"></input>             
-                                <br/><br/>
-                            </form>
-                        </div>
-                    }
+                                
+                            </Grid.Row>
+                        </Grid>
 
+                    
+                            
+
+                            {/* -- Donation amount */}
+                            <div className = "initialDonation">
+                                <label > Donation amount (per month):</label>
+                                <label className= "initialDonationValue"  type="text" style={{color: this.state.color}}> {this.state.initialDonation}</label>
+                                {/* <input className= "initialDonationValue"  type="text" style={{color: this.state.color, width:25}} placeholder = {this.state.initialDonation}></input> */}
+
+                                <lable>$  </lable>
+                                <button onClick={this.decrement}>-</button>
+                                <button onClick={this.increment} >+</button>
+                            </div>
+
+                            <button className ="btnDonateOrg" onClick ={() => this.setState(prevState => {
+                                return {
+                                    btnDonateClicked: !prevState.btnDonateClicked
+                                }})}>donate 
+                            </button>
+
+
+                            {/* Donation throw information... */}
+                            {this.state.btnDonateClicked && 
+                                <div className = "doners">
+                                    {/* * TODO: if no Referred to */}
+                                    <h4 style ={styles} >Referred to this organization by: </h4>
+                                    <form className="fillFormDoners" onSubmit={this.handleSubmit}>
+                                        <lable htmlFor = "dname">name: </lable>
+                                        <input id = "dname"
+                                            type="text" name="DuserName" onChange={this.handleChange.bind(this)} 
+                                            placeholder="user Name" 
+                                        /><br /><br/>
+                                        {/* <lable>email: </lable>
+                                        <input 
+                                            input type="email"
+                                            name="userEmail" 
+                                            onChange={this.handleChange.bind(this)}
+                                            placeholder="email" 
+                                        /> <br/><br/> */}
+                                        
+                                        <input className="btnConfirm"  type="submit" value="Submit"></input>             
+                                        <br/><br/>
+                                    </form>
+                                </div>
+                            }
+                        </Segment>
+                    </div>
+                    
                 </Tab.Pane>,
               },
 
@@ -371,6 +430,9 @@ class OrgBody extends React.Component {
                 
                 render: () => <Tab.Pane  attached={false} >
                    <Grid columns={3} divided>
+                        <Grid.Row>
+                            <Header as='h2' icon='gift' content='Gift' />
+                        </Grid.Row>
                         <Grid.Row>
                                 
                             <Grid.Column >
@@ -399,9 +461,10 @@ class OrgBody extends React.Component {
                // ~~~~~~~~~~~~~~ comment ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
               {
                 menuItem: { key:'comment', icon: 'comment', content: 'comment' },                
-                render: () => <Tab.Pane  attached={false} >
+                render: () => <Tab.Pane   >
+                    <Header as='h2' icon='comment' content='Comment' />
                     <Feed>
-                    ` <Feed.Event>
+                        <Feed.Event>
                         <Feed.Label>
                             <img src='/images/avatar/small/elliot.jpg' />
                         </Feed.Label>
@@ -431,16 +494,50 @@ class OrgBody extends React.Component {
                     
                     {/* users
                     group */}
-                <Header dividing textAlign='right' style={{ fontSize: '2em', padding:'0.5em, 5em', marginTop:'0.5em'}}>
-                    {this.props.data.name}
-                    <  Icon  style={{ marginLeft: '0.7em' , marginRight: '1.5em', color:'blue'}} name='group' circular /> 
+                {/* <Header dividing textAlign='right' style={{ fontSize: '2em', padding:'0.5em, 5em', marginTop:'0.5em'}}>
+                    {this.props.data.name} */}
+                    {/* <  Icon  style={{ marginLeft: '0.7em' , marginRight: '1.5em', color:'blue'}} name='group' circular />  */}
                 {/* fontStyle: "italic" */}
                      {/* {this.props.data.name} */}
                      {/* <Image size='massive' src={this.props.data.img} style={{marginLeft: '3em' }}/> */}
-                </Header>
+                {/* </Header> */}
 
+
+                {/* <image src = {this.props.data.img} ></image> */}
+
+
+
+                <Segment style={{ }} vertical>
+                            <Grid>
+                                <Grid.Row>
+                                    <header style ={{backgroundColor: "rgb(10, 100, 121)" ,backgroundImage : this.props.data.img ,width:'100%',height: '20em' ,padding: '2em ,2em'}}>
+                                    {/* background-color: green;0.3; */}
+                                        <img  src={this.props.data.img} style = {{display: 'block',marginLeft: 'auto',marginRight: 'auto',width: '28%'}}/>
+                                        
+                                        {/* style={{ padding: '3em 3em' }} */}
+                                        
+                                    </header>
+                                    {/* <Image  floated='right'  size='large' src={this.props.data.img} style={{ padding: '3em 3em' }} fluid /> */}
+
+
+                                </Grid.Row>
+
+                                <Grid.Row>
+                                    <Tab style={{ padding: '0em 0.2em' }} defaultActiveIndex={2} menu={{ color:'blue' ,vertical: true, inverted: true, attached: true, tabular: true, pointing: true}} panes={panes} />
+
+                                </Grid.Row>
+                               
+                            </Grid>
+                </Segment>
+
+
+
+                <Header>
+                    <Image  floated='right'  size='large' src={this.props.data.img} style={{ padding: '3em 3em' }} />
+
+                </Header>
                 {/* // menu bar side */}
-                <Tab style={{ padding: '1em 0em' }} menu={{ color:'blue' ,vertical: true, inverted: true, attached: true, tabular: true, pointing: true}} panes={panes} />
+                {/* <Tab style={{ padding: '1em 0em' }} menu={{ color:'blue' ,vertical: true, inverted: true, attached: true, tabular: true, pointing: true}} panes={panes} /> */}
 
                  {/* --------------- css --  */}
                 

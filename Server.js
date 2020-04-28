@@ -1,5 +1,9 @@
 //import { signInButton, registerButton } from '../project-master/src/Clients/cognito_client';
-const cognitoClient = require('../project/cognito_client');
+const cognitoClient = require('./cognito_client');
+
+//  --- CHANGES
+// const cognitoClient = require('../project/cognito_client');
+
 const cognitoServiceFile = require('./src/cognito/cognito.service');
 const userRegistrationFile = require('./src/cognito/user-registration.service');
 const userLoginFile = require('./src/cognito/user-login.service');
