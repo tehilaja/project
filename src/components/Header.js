@@ -175,7 +175,7 @@ const HomepageHeading = ({ mobile }) => (
 	/>
 	<Header
 		as='h2'
-		content='Multilevl crowd fundraising platform.'
+		content='Multilevel crowd fundraising platform.'
 		inverted
 		style={{
 			fontSize: mobile ? '1.5em' : '1.7em',
@@ -424,5 +424,17 @@ class MobileContainer extends Component {
   ResponsiveContainer.propTypes = {
 	children: PropTypes.node,
   }
+
+//   const HeaderLayout = () => (
+// 	<ResponsiveContainer>
+	  
+// 	  {/* <HeaderFile data={{loggedIn: false, userName: ""}}/> */}
+// 	  <Body data={{loggedIn: false, userName: ""}}/>
+// 	  <Footer />
+// 	</ResponsiveContainer>
+//   )
+  
+//   export default HeaderLayout;
+  
 
 export default DesktopContainer;

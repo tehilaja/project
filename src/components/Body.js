@@ -21,6 +21,7 @@ import {
 	Header,
 	Icon,
 	Image,
+	Label,
 	List,
 	Menu,
 	Responsive,
@@ -253,6 +254,9 @@ class Body extends React.Component
 				<Header as='h3' style={{ fontSize: '2em' }}>
 					Create an online platform for ongoing donations
 					</Header>
+					<Label as='a' color='red' tag>
+				Create Your Own!
+				</Label>
 					<Image bordered rounded size='large' src='https://i.insider.com/5ab2a71c5851aebb008b46da?width=3100&format=jpeg&auto=webp' />
 					<Button primary size='huge'>
 						Get Started

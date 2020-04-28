@@ -9,7 +9,6 @@ import Header from '../Header.js';
 import OrgBody from './OrgBody.js';
 import Footer from '../Footer.js';
 
-
 class OrgPage extends React.Component{
 	constructor(props) {
 		super(props)	

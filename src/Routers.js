@@ -8,7 +8,7 @@ import App from './App'
 import OrgPage from './components/OrgComponents/OrgPage.js';
 import OrgBody from './components/OrgComponents/OrgBody.js';
 import UserPage from './components/UserComponents/UserPage.js'
-import newOrg from './components/newOrg.js'
+import newOrg from './components/OrgComponents/newOrg.js'
 
 
 class Routers extends React.Component{
