@@ -28,6 +28,7 @@ import {
   Label,
   List,
   Menu,
+  Radio,
   Responsive,
   Segment,
   Sidebar,
@@ -243,6 +244,62 @@ class newOrg extends React.Component{
 					horizontal
 					style={{ margin: '3em 0em', textTransform: 'uppercase' }}
 					>
+					<a href='#'>Organization Contact Info:</a>
+					</Divider>
+					<Form.Input
+						label= 'Phone number:'
+						icon='phone'
+						iconPosition='left'
+						placeholder='Phone number'
+						name="phone"
+						onChange={this.handleChange.bind(this)}
+					/>
+					<Form.Input
+						label= 'email:'
+						icon='envelope'
+						iconPosition='left'
+						placeholder='email'
+						name="email"
+						onChange={this.handleChange.bind(this)}
+					/>
+					<Divider
+				as='h4'
+				className='header'
+				horizontal
+				style={{ margin: '3em 0em', textTransform: 'uppercase' }}
+				>
+				<a href='#'>Mailing Address</a>
+				</Divider>
+					<Form.Input
+						label= 'Building:'
+						placeholder='Building'
+						name="building"
+						onChange={this.handleChange.bind(this)}
+					/>
+						<Form.Input
+						label= 'street:'
+						placeholder='street'
+						name="street"
+						onChange={this.handleChange.bind(this)}
+					/>
+					<Form.Input
+						label= 'city:'
+						placeholder='city'
+						name="city"
+						onChange={this.handleChange.bind(this)}
+					/>
+					<Form.Input
+						label= 'postal code:'
+						placeholder='postal code'
+						name="p_code"
+						onChange={this.handleChange.bind(this)}
+					/>	
+					<Divider
+					as='h4'
+					className='header'
+					horizontal
+					style={{ margin: '3em 0em', textTransform: 'uppercase' }}
+					>
 					<a href='#'>Upload a Photo:</a>
 					</Divider>
 					<Segment raised>
@@ -258,34 +315,26 @@ class newOrg extends React.Component{
 					{/* // TODO : STYLE height */}
 					{/* set minimum donation per month */}
 					<div>
-						<label className= "newOrgLable"> set minimum donation per month:  </label>
+					<Divider
+					as='h4'
+					className='header'
+					horizontal
+					style={{ margin: '3em 0em', textTransform: 'uppercase' }}
+					>
+					<a href='#'>Set minimum monthly doation</a>
+					</Divider>
+
 						<label > $ </label>
 						<lable name="minDonation">{this.state.minDonation}  </lable>
 						<button onClick={this.decrement.bind(this)}>-</button>
 						<button onClick={this.increment.bind(this)}>+</button>
 					</div>
-					{/* city,building,street,p_code */}
-					<Divider
-				as='h4'
-				className='header'
-				horizontal
-				style={{ margin: '3em 0em', textTransform: 'uppercase' }}
-				>
-				<a href='#'>Address</a>
-				</Divider>
-					<lable className= "newOrgLable"> city: </lable>
-					<input type="text" name="city" onChange={this.handleChange.bind(this)}/>
-					<br/>
-					<lable className= "newOrgLable"> building: </lable>
-					<input type="text" name="building" onChange={this.handleChange.bind(this)}/>
-					<br/>
-					<lable className= "newOrgLable"> street: </lable>
-					<input type="text" name="street" onChange={this.handleChange.bind(this)}/>
-					<br/>
-					<lable className= "newOrgLable"> postal code: </lable>
-					<input type="text" name="p_code" onChange={this.handleChange.bind(this)}/>					<br/>
-					{/*,city_id,building,street,p_code */}
-					<Divider
+					<br></br>
+					<br></br>
+					<Radio toggle 
+					label="Allow One-time Donations"/>
+					{/* TODO: work out how payment will be done! */}
+					{/* <Divider
 					as='h4'
 					className='header'
 					horizontal
@@ -305,7 +354,7 @@ class newOrg extends React.Component{
 					<lable className= "newOrgLable"> bank_num: </lable>
 					<input type="text" name="bank_num" onChange={this.handleChange.bind(this)}/>
 					<br/>
-					{/* more details */}
+					more details */}
 					<Divider
 					as='h4'
 					className='header'
