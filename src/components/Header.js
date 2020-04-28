@@ -208,9 +208,10 @@ class DesktopContainer extends React.Component
 	constructor(props){
 		super(props)
 		this.state = {
-			routeMain: false,
 			loggedIn: this.props.data.loggedIn,
-			userName: this.props.data.userName
+			userName: this.props.data.userName,
+			routeMain: false,
+			routeUserProfile: false
 		}
 	this.handlerClick = this.handlerClick.bind(this);
 	//this.handlerLogoutClick = this.handlerLogoutClick.bind(this);
@@ -236,6 +237,14 @@ render() {
 	if (this.state.routeMain === true){
 		return <Redirect to = {{
 			pathname: '/',
+			state: {userName: this.state.userName, loggedIn: this.state.loggedIn}
+		}} />
+	} 
+
+	//redirecting to User Profile ToDo: route to corect page!
+	if (this.state.routeUserProfile === true){
+		return <Redirect to = {{
+			pathname: '/UserPage',
 			state: {userName: this.state.userName, loggedIn: this.state.loggedIn}
 		}} />
 	} 
@@ -265,10 +274,16 @@ render() {
 				  return {
 						routeMain: !prevState.routeMain
 					}})}>
-				Home
+					Home
 			  </Menu.Item>
 			  <Menu.Item as='a'>Organizations</Menu.Item>
 			  <Menu.Item as='a'>Prizes</Menu.Item>
+			  <Menu.Item as='a' active onClick ={() => this.setState(prevState => {
+				  return {
+						routeUserProfile: !prevState.routeUserProfile
+					}})}>
+					My Profile
+				</Menu.Item>
 			  <Menu.Item position='right'>
 			  {this.state.showLogin && <LoginForm record={this.handlerClick}/>}
                 {this.state.showUser && <UserRegistrationForm />}
@@ -307,6 +322,7 @@ class MobileContainer extends Component {
 		super(props)
 		this.state = {
 			routeMain: false,
+			routeUserProfile: false,
 			loggedIn: this.props.data.loggedIn,
 			userName: this.props.data.userName
 		}
@@ -352,7 +368,14 @@ class MobileContainer extends Component {
 			{!this.state.loggedIn && 
 			<Menu.Item as='a'>Log in</Menu.Item> &&
 			<Menu.Item as='a'>Sign Up</Menu.Item>}
-			{this.state.loggedIn && <Menu.Item as='a'>My Profile</Menu.Item>}
+
+			{/* allow showing profile only when signed in */}
+			{this.state.loggedIn && <Menu.Item as='a' active onClick ={() => this.setState(prevState => {
+				  return {
+						routeUserProfile: !prevState.routeUserProfile
+					}})}>
+					My Profile
+			</Menu.Item>}
 		  </Sidebar>
   
 		  <Sidebar.Pusher dimmed={sidebarOpened}>
