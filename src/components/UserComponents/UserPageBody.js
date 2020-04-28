@@ -17,6 +17,7 @@ import {
 	Header,
 	Icon,
 	Image,
+	Label,
 	List,
 	Menu,
 	Responsive,
@@ -134,7 +135,7 @@ render()
 					Your profile page
 					</Header>
 					<p style={{ fontSize: '1.33em' }}>
-						Show list of people I brought to this specific organiztion:
+					Show list of people I brought to this specific organiztion:
 					</p>
 				</Grid.Column>
 				{/* <Grid.Column floated='right' width={6}>
@@ -150,6 +151,9 @@ render()
 				</Grid.Row>
 				<Grid.Row>
 				<Grid.Column textAlign='center'>
+				<Label color='red' floating>
+					22
+				</Label>
 				<Tree data={verdicalTreeData} />
 				<Button size='huge'>Check Them Out</Button>
 				</Grid.Column>

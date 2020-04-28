@@ -12,9 +12,6 @@ import { GoOrganization } from "react-icons/ai";
 
 ////---------------
 
-// import Header from '../Header.js';
-
-import Footer from '../Footer.js';
 
 import {
   Button,
@@ -36,7 +33,7 @@ import {
   Visibility,
 } from 'semantic-ui-react'
 
-class newOrg extends React.Component{
+class NewOrg extends React.Component{
 
 	constructor(props){
 		super(props)
@@ -190,18 +187,26 @@ class newOrg extends React.Component{
 		// if(!this.state.check_login_status)
 		// 	return(<h1>loading...</h1>)
 		return(
-			<div>				
+			<div>
+				<Segment style={{ padding: '8em 0em' }} vertical>
+				<Grid container stackable verticalAlign='middle'>		
 				<br></br>
+				<Label as='a' color='teal' ribbon left>
+				Get Started!
+				</Label>
 				<Header as='h3' style={{ fontSize: '2em' }}>
 				Thank you for using us for your organization!
 				</Header>
+				<Segment>
 				<p style={{ fontSize: '1.33em' }}>
 						We will provide you with the design and software necessary to create an online platform for ongoing donations.
 						All we left for you to do, is focus on content that will be appealing and attract your ongoing doners.
 				</p>
-				{/* <Label as='a' color='teal' ribbon>
-				Get Started!
-				</Label> */}
+				</Segment>
+				<br></br>
+				<br></br>
+				{/* <Grid relaxed='very' stackable centered> */}
+				<Form onSubmit={this.handleSubmit.bind(this)}>
 				<Divider
 				as='h4'
 				className='header'
@@ -210,8 +215,6 @@ class newOrg extends React.Component{
 				>
 				<a href='#'>Enter the Details Bellow:</a>
 				</Divider>
-				<Grid relaxed='very' stackable centered>
-				<Form onSubmit={this.handleSubmit.bind(this)}>
 					{/* info about organization */}
 					<h4></h4>
 					<Form.Field>
@@ -361,6 +364,7 @@ class newOrg extends React.Component{
 					horizontal
 					style={{ margin: '3em 0em', textTransform: 'uppercase' }}
 					>
+					{/* TODO: see which details are actually necessay for us */}
 					<a href='#'>More Details:</a>
 					</Divider>
 					<br/><br/>
@@ -380,13 +384,14 @@ class newOrg extends React.Component{
 					<input type="text" name="friends" onChange={this.handleChange.bind(this)}/>
 					<br/><br/>
 					<br />
-					<input className="btnConfirm"  type="submit" value="Submit"></input> 
-				</Form>
+					<Button content='Submit' primary />				
+					</Form>
+				{/* </Grid> */}
 				</Grid>
-				<Footer />
+				</Segment>	
 			</div>
 		)
 	}	
 }
 
-export default newOrg;
+export default NewOrg;

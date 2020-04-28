@@ -79,8 +79,9 @@ class Body extends React.Component
 
 			// **
 			isFetchingData: false,
-			data: null
+			data: null,
 			// id: "3"
+			routerCreateOrgPage: false
 		}
 		this.selectOrg = this.selectOrg.bind(this)
 		this.handleClick = this.handleClick.bind(this)
@@ -193,6 +194,16 @@ class Body extends React.Component
 		// 	return <p>Loading data</p>;
 		// }
 
+		//redirecting to create organization page
+		//TODO: make sure the user is signed in! take care of other option!
+		if (this.state.routerCreateOrgPage === true){
+			return <Redirect to = {{
+				pathname: '/NewOrgPage',
+				// state: {userName: this.state.userName, loggedIn: this.state.loggedIn}
+				state: {userName: 'Tehila', loggedIn: true}
+			}} />
+		} 
+
 		const orgComponents = this.state.organizations.map(org =>{
 			return(
 				<OrgCard key={org.org_id} imgUrl={org.org_pic} name={org.org_name} id= {org.org_id} initialDonation= {org.min_donation}/>)
@@ -235,7 +246,7 @@ class Body extends React.Component
 	//-----------return------------------------------
 		return(
 			<div>
-				<Segment style={{ padding: '8em 0em' }} vertical>
+			<Segment style={{ padding: '8em 0em' }} vertical>
 			<Grid container stackable verticalAlign='middle'>
 				<Grid.Row>
 				<Grid.Column width={8}>
@@ -258,7 +269,10 @@ class Body extends React.Component
 				Create Your Own!
 				</Label>
 					<Image bordered rounded size='large' src='https://i.insider.com/5ab2a71c5851aebb008b46da?width=3100&format=jpeg&auto=webp' />
-					<Button primary size='huge'>
+					<Button primary size='huge' onClick ={() => this.setState(prevState => {
+						return {
+								routerCreateOrgPage: !prevState.routerCreateOrgPage
+							}})}>
 						Get Started
 						<Icon name='right arrow' />
 					</Button>

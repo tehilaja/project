@@ -8,7 +8,7 @@ import App from './App'
 import OrgPage from './components/OrgComponents/OrgPage.js';
 import OrgBody from './components/OrgComponents/OrgBody.js';
 import UserPage from './components/UserComponents/UserPage.js'
-import newOrg from './components/OrgComponents/newOrg.js'
+import NewOrgPage from './components/NewOrgComponents/NewOrgPage.js'
 
 
 class Routers extends React.Component{
@@ -23,7 +23,7 @@ class Routers extends React.Component{
                             <Route  path="/UserPage" component={UserPage}/>
                             <Route  path="/OrgPage" component={OrgPage}/>
                             <Route path ="/OrgBody" component={OrgBody} />
-							<Route path ="/newOrg" component={newOrg} />
+							<Route path ="/NewOrgPage" component={NewOrgPage} />
                             {/* <Route path ="/App" component={App} /> */}
                         </div>
                     </BrowserRouter>
