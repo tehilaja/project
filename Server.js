@@ -51,7 +51,8 @@ app.post('/add_user', function(req,res){
 console.log("start signup....");
 try {
   const response = userRestirationService.register(req.body.user);
-  res.send(response);
+  // res.send(response);
+  res.send("success");
 } catch (error) {
   console.log("error: "+JSON.stringify(error));  
 }
@@ -75,7 +76,7 @@ app.post('/confirm_registerd_user', function(req,res){
   console.log("start confirmation....");
   try {
     const response = userRestirationService.confirmRegistration(req.body.user_name, req.body.confirmation_code);
-    res.send(response);
+    res.send("confirmed");
   } catch (error) {
     console.log("error: "+JSON.stringify(error));  
   }

@@ -39,6 +39,14 @@ class UserRegistrationService {
         attributeList.push(new CognitoUserAttribute(firstName));
         attributeList.push(new CognitoUserAttribute(lastName));
         attributeList.push(new CognitoUserAttribute(phone));
+        //TODO: send value of phone number
+        console.log("AttributeList: "+JSON.stringify(attributeList));
+        try {
+            const const_user_pool = this.cognitoUtil.getUserPool();
+            console.log("user pool: "+JSON.stringify(const_user_pool));
+        } catch (error) {
+            console.log("error getting user pool"+JSON.stringify(error))
+        }
         this.cognitoUtil.getUserPool().signUp(user.email, user.password, attributeList, null, function (err, result) {
             if (err) {
                 console.log("UserRegistrationService: error: " + JSON.stringify(err))

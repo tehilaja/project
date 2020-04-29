@@ -49,7 +49,7 @@ class CognitoUtil {
     //     if (environment.cognito_idp_endpoint) {
     //         CognitoUtil._POOL_DATA.endpoint = environment.cognito_idp_endpoint;
     //     }
-        return new CognitoUserPool(CognitoUtil._POOL_DATA);    
+        return new CognitoUserPool(_POOL_DATA);    
     }
 
     getCurrentUser() {
@@ -74,14 +74,14 @@ class CognitoUtil {
     // to avoid unnecessary calls to setCognitoCreds.
 
     buildCognitoCreds(idTokenJwt) {
-        let url = 'cognito-idp.' + CognitoUtil._REGION.toLowerCase() + '.amazonaws.com/' + CognitoUtil._USER_POOL_ID;
+        let url = 'cognito-idp.' + _REGION.toLowerCase() + '.amazonaws.com/' + _USER_POOL_ID;
         // if (environment.cognito_idp_endpoint) {
-        //     url = environment.cognito_idp_endpoint + '/' + CognitoUtil._USER_POOL_ID;
+        //     url = environment.cognito_idp_endpoint + '/' + _USER_POOL_ID;
         // }
         let logins = {};
         logins[url] = idTokenJwt;
         let params = {
-            IdentityPoolId: CognitoUtil._IDENTITY_POOL_ID, /* required */
+            IdentityPoolId: _IDENTITY_POOL_ID, /* required */
             Logins: logins
         };
         let serviceConfigs = {};

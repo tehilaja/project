@@ -80,6 +80,11 @@ class UserRegistrationForm extends React.Component {
 			)
 			console.log("after registration")
 			alert("response: "+JSON.stringify(response))
+			if (response.data === "success") {
+				this.setState({status: Status.PreConfirmation})
+			} else {
+				
+			}
 			console.log("response: "+JSON.stringify(response))
 			console.log(response.data);
 			this.registrationCallback(response.data.message, response.data.result);
@@ -97,6 +102,22 @@ class UserRegistrationForm extends React.Component {
 				},
 				{ header: { 'Content-Type': 'application/json' } }
 			)
+			if (response.data === "confirmed") {
+				this.setState({status: Status.PostConfirmation})
+				//login confimed user:
+				(async () => {
+					const response = await axios.post(
+						'/login',
+						{
+							userName: this.state.email,
+							pswd: this.state.pswd,
+						},
+						{ header: { 'Content-Type': 'application/json' } }
+					)
+				});
+			} else {
+				
+			}
 			console.log("after confirmation")
 			alert("response: "+JSON.stringify(response))
 			console.log("response: "+JSON.stringify(response))
