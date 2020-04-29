@@ -377,34 +377,35 @@ class OrgBody extends React.Component {
                             
 
                             {/* -- Donation amount */}
-                            <div className = "initialDonation">
+                            {/* <div className = "initialDonation">
                                 <label > Donation amount (per month):</label>
-                                <label className= "initialDonationValue"  type="text" style={{color: this.state.color}}> {this.state.initialDonation}</label>
+                                <label className= "initialDonationValue"  type="text" style={{color: this.state.color}}> {this.state.initialDonation}</label> */}
                                 {/* <input className= "initialDonationValue"  type="text" style={{color: this.state.color, width:25}} placeholder = {this.state.initialDonation}></input> */}
 
-                                <lable>$  </lable>
+                                {/* <lable>$  </lable>
                                 <button onClick={this.decrement}>-</button>
                                 <button onClick={this.increment} >+</button>
-                            </div>
+                            </div> */}
 
-                            <button className ="btnDonateOrg" onClick ={() => this.setState(prevState => {
+                            {/* <button className ="btnDonateOrg" onClick ={() => this.setState(prevState => {
                                 return {
                                     btnDonateClicked: !prevState.btnDonateClicked
                                 }})}>donate 
-                            </button>
+                            </button> */}
 
 
                             {/* Donation throw information... */}
+{/*                             
                             {this.state.btnDonateClicked && 
-                                <div className = "doners">
+                                <div className = "doners"> */}
                                     {/* * TODO: if no Referred to */}
-                                    <h4 style ={styles} >Referred to this organization by: </h4>
+                                    {/* <h4 style ={styles} >Referred to this organization by: </h4>
                                     <form className="fillFormDoners" onSubmit={this.handleSubmit}>
                                         <lable htmlFor = "dname">name: </lable>
                                         <input id = "dname"
                                             type="text" name="DuserName" onChange={this.handleChange.bind(this)} 
                                             placeholder="user Name" 
-                                        /><br /><br/>
+                                        /><br /><br/> */}
                                         {/* <lable>email: </lable>
                                         <input 
                                             input type="email"
@@ -413,11 +414,11 @@ class OrgBody extends React.Component {
                                             placeholder="email" 
                                         /> <br/><br/> */}
                                         
-                                        <input className="btnConfirm"  type="submit" value="Submit"></input>             
+                                        {/* <input className="btnConfirm"  type="submit" value="Submit"></input>             
                                         <br/><br/>
                                     </form>
-                                </div>
-                            }
+                                </div> */}
+                            {/* } */}
                         </Segment>
                     </div>
                     
@@ -508,9 +509,11 @@ class OrgBody extends React.Component {
 
 
                 <Segment style={{ }} vertical>
-                            <Grid>
+                            <Grid >
+                            {/* <Grid style = {{margin: '2em, 0.7em'}}> */}
+
                                 <Grid.Row>
-                                    <header style ={{backgroundColor: "rgb(10, 100, 121)" ,backgroundImage : this.props.data.img ,width:'100%',height: '20em' ,padding: '2em ,2em'}}>
+                                    <header style ={{backgroundColor: '#20B2AA' ,backgroundImage : this.props.data.img ,width:'100%',height: '20em' ,padding: '2em ,2em', margin: ''}}>
                                     {/* background-color: green;0.3; */}
                                         <img  src={this.props.data.img} style = {{display: 'block',marginLeft: 'auto',marginRight: 'auto',width: '28%'}}/>
                                         
