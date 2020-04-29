@@ -217,12 +217,12 @@ class DesktopContainer extends React.Component
 	//this.handlerLogoutClick = this.handlerLogoutClick.bind(this);
 	}
 
-	handlerClick(user_name) {
+	handlerClick(userName) {
         this.setState({
 			loggedIn: true,
-			userName: user_name
+			userName: userName
 		});
-		this.props.record(user_name)
+		this.props.record(userName)
 	}
 
 	hideFixedMenu = () => this.setState({ fixed: false })
@@ -330,12 +330,12 @@ class MobileContainer extends Component {
 	//this.handlerLogoutClick = this.handlerLogoutClick.bind(this);
 	}
 
-	handlerClick(user_name) {
+	handlerClick(userName) {
         this.setState({
 			loggedIn: true,
-			userName: user_name
+			userName: userName
 		});
-		this.props.record(user_name)
+		this.props.record(userName)
 	}
   
 	handleSidebarHide = () => this.setState({ sidebarOpened: false })

@@ -51,7 +51,9 @@ class LoginForm extends React.Component {
 				alert("Please make sure to click the correct button, and that you typed in the correct username and password ");
 				return;
 			  }
-			  else if(response.data === "found user"){
+			  else if(response.data === "loggedIn"){
+				console.log("response from server")
+				// alert("Hello: "+this.state.userName)
 				this.setState({loggedIn: true})
 				this.props.record(this.state.userName)
               }

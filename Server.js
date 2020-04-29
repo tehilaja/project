@@ -57,9 +57,6 @@ try {
   console.log("error: "+JSON.stringify(error));  
 }
   
-
-  // //todo- make sure email and user_name dosent exists.
-  // console.log("req",req.body);
   // // * change
   // let sql1 = `INSERT INTO Users ( user_name, first_name, last_name, pswd, email, credit_info_id, is_admin) VALUES ("${req.body.user_name}", "${req.body.first_name}", "${req.body.last_name}" ,"${req.body.pswd}", "${req.body.email}", 1, ${req.body.is_admin});`
   // console.log("quert is",sql1,"\n");
@@ -85,7 +82,13 @@ app.post('/confirm_registerd_user', function(req,res){
 
 //-------login --------
 app.post('/login',(req, res)=>{
-  const response = userLoginService.authenticate(req.body.userName, req.body.pswd);
+  try {
+    const response = userLoginService.authenticate(req.body.userName, req.body.pswd);
+    console.log("in server log in success")
+    res.send("loggedIn");
+  } catch (error) {
+    console.log("error: "+JSON.stringify(error));  
+  }
   // console.log("login");
   // let query = `SELECT * FROM Users WHERE user_name="${req.body.userName}"`
   // db.query(query,(err,result,fields)=>{
