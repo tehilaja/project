@@ -303,7 +303,7 @@ export default class Donate extends Component {
                            
                         <Form.Input
                             width={4}
-                            label= 'dedicated to:'
+                            label= 'In Honor of:'
                             icon='heart'
                             iconPosition='left'
                             placeholder='name'
@@ -312,7 +312,7 @@ export default class Donate extends Component {
 					    />
                         <Form.TextArea 
                             width={12}
-                            label= 'Write a dedicated'
+                            label= 'Write a Dedication:'
                             rows={3} 
                             placeholder='Text'
                             name="more"
