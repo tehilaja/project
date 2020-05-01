@@ -19,6 +19,7 @@ class UserPage extends React.Component{
 			routeMain: false,
 			check_login_status: false
 		}
+		alert(JSON.stringify(this.state))
 		this.function_log_status();
 		this.get_current_user();
 
@@ -89,7 +90,8 @@ get_current_user(){
 			return(<h1>loading...</h1>)
 		return(
 			<div>
-                <Header data={{loggedIn: this.state.loggedIn, userName: this.state.userName}}/>
+                {/* <Header data={{loggedIn: this.state.loggedIn, userName: this.state.userName}}/> */}
+				<Header data={{loggedIn: true, userName: "Tehila"}}/>
 				<UserPageBody 
 					data = {this.state}/>
 				<Footer />

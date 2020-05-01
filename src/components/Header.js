@@ -208,11 +208,17 @@ class DesktopContainer extends React.Component
 	constructor(props){
 		super(props)
 		this.state = {
-			loggedIn: this.props.loggedIn,
-			userName: this.props.userName,
+			loggedIn: this.props.data.loggedIn,
+			userName: this.props.data.userName,
+			// loggedIn: false,
+			// userName: "",
 			routeMain: false,
-			routeUserProfile: false
+			routeUserProfile: false, 
+			routeOrgSearch: false,
+			routePrizes: false
 		}
+		alert("in Header Desktop:"+JSON.stringify(this.state))
+
 	this.handlerClick = this.handlerClick.bind(this);
 	//this.handlerLogoutClick = this.handlerLogoutClick.bind(this);
 	}
@@ -229,7 +235,7 @@ class DesktopContainer extends React.Component
 	showFixedMenu = () => this.setState({ fixed: true })
 	  
 render() {
-
+	// alert("in desktop render:"+ JSON.stringify(this.state))
 	const { children } = this.props
     const { fixed } = this.state
 
@@ -248,6 +254,21 @@ render() {
 			state: {userName: this.state.userName, loggedIn: this.state.loggedIn}
 		}} />
 	} 
+
+	//redirecting to Prizes
+	if (this.state.routePrizes === true){
+		return <Redirect to = {{
+			pathname: '/Prizes',
+			state: {userName: this.state.userName, loggedIn: this.state.loggedIn}
+		}} />
+	} 
+		//redirecting to OrgSearch page
+		if (this.state.routeOrgSearch === true){
+			return <Redirect to = {{
+				pathname: '/OrgSearch',
+				state: {userName: this.state.userName, loggedIn: this.state.loggedIn}
+			}} />
+		} 
 	
   return (
 	<Responsive getWidth={getWidth} minWidth={Responsive.onlyTablet.minWidth}>
@@ -276,18 +297,25 @@ render() {
 					}})}>
 					Home
 			  </Menu.Item>
-			  <Menu.Item as='a'>Organizations</Menu.Item>
-			  <Menu.Item as='a'>Prizes</Menu.Item>
+			  <Menu.Item as='a' onClick ={() => this.setState(prevState => {
+				  return {
+						routeOrgSearch: !prevState.routeOrgSearch
+					}})}>Organizations</Menu.Item>
+			  <Menu.Item as='a' onClick ={() => this.setState(prevState => {
+				  return {
+						routePrizes: !prevState.routePrizes
+					}})}>Prizes</Menu.Item>
+			  {this.state.loggedIn &&
 			  <Menu.Item as='a' active onClick ={() => this.setState(prevState => {
 				  return {
 						routeUserProfile: !prevState.routeUserProfile
 					}})}>
 					My Profile
-				</Menu.Item>
+				</Menu.Item>}
 			  <Menu.Item position='right'>
 			  {this.state.showLogin && <LoginForm record={this.handlerClick} data={{userName:this.state.userName, loggedIn:this.state.loggedIn}}/>}
                 {this.state.showUser && <UserRegistrationForm record={this.handlerClick} data={{userName:this.state.userName, loggedIn:this.state.loggedIn}}/>}
-				{!this.state.showLogin && !this.state.showUser &&
+				{!this.state.loggedIn &&
 				<div>
 				<Button as='a' inverted={!fixed} onClick={() => this.setState({showLogin: true, showUser: false, showBackButton: true})}>
 				  Log in
@@ -323,9 +351,13 @@ class MobileContainer extends Component {
 		this.state = {
 			routeMain: false,
 			routeUserProfile: false,
+			routeOrgSearch: false,
+			routePrizes: false,
 			loggedIn: this.props.loggedIn,
 			userName: this.props.userName
 		}
+		alert("in Header Mobile:"+JSON.stringify(this.state))
+
 	this.handlerClick = this.handlerClick.bind(this);
 	//this.handlerLogoutClick = this.handlerLogoutClick.bind(this);
 	}
@@ -427,7 +459,7 @@ class MobileContainer extends Component {
 	children: PropTypes.node,
   }
   
-  const ResponsiveContainer = ({ children }) => (
+  const ResponsiveContainer = ({ children } ) => (
 	<div>
 	  <DesktopContainer>{children}</DesktopContainer>
 	  <MobileContainer>{children}</MobileContainer>
