@@ -179,3 +179,10 @@ Square: *work in israel?*
 Tranzila:
 making plans for code:
 **fix header not supported by the mobile display option**
+
+1/5/2020 
+9:00 - 16:30
+trying to deal with errors in connecting server to get current user
+dealing with header components throwing error not able to get state
+creating page for organization and for prizes - routing the pages.
+
