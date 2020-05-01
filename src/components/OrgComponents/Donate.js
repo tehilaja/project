@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { Step, Segment, Image , Button, Grid,Form,Checkbox, Icon, Input, Label,Accordion, Message, Modal} from 'semantic-ui-react'
 // const Isemail = require('isemail');
 
+//  try to git
+
 export default class Donate extends Component {
     constructor(props)
     {
