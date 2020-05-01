@@ -55,7 +55,7 @@ class LoginForm extends React.Component {
 				console.log("response from server")
 				// alert("Hello: "+this.state.userName)
 				this.setState({loggedIn: true})
-				this.props.record(this.state.userName)
+				// this.props.record(this.state.userName)
               }
               
         })();

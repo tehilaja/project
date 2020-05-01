@@ -20,6 +20,8 @@ class NewOrgPage extends React.Component{
 			check_login_status: false
 		}
 		this.function_log_status();
+		this.handlerClick = this.handlerClick.bind(this);
+
 	}
 	
 	// componentWillReceiveProps(nextProps){
@@ -50,6 +52,14 @@ class NewOrgPage extends React.Component{
 	})();
 }
 
+	handlerClick(userName) {
+        this.setState({
+			loggedIn: true,
+			userName: userName
+		});
+		this.props.record(userName)
+	}
+
 	// function 
 
 	render() {
@@ -57,7 +67,7 @@ class NewOrgPage extends React.Component{
 			return(<h1>loading...</h1>)
 		return(
 			<div>
-                <Header data={{loggedIn: this.state.loggedIn, userName: this.state.userName}}/>
+                <Header record={this.handlerClick} data={{loggedIn: this.state.loggedIn, userName: this.state.userName}}/>
 				<NewOrg 
 					data = {this.state}/>
 				<Footer />

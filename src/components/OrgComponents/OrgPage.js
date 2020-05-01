@@ -32,7 +32,9 @@ class OrgPage extends React.Component{
 			// $$$$$$$$$
 
 			routeMain: false,
-			check_login_status: false
+			check_login_status: false,
+			userName: this.props.userName,
+			loggedIn: this.props.loggedIn
 		}
 		this.function_log_status();
 	}

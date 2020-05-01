@@ -208,8 +208,8 @@ class DesktopContainer extends React.Component
 	constructor(props){
 		super(props)
 		this.state = {
-			loggedIn: this.props.data.loggedIn,
-			userName: this.props.data.userName,
+			loggedIn: this.props.loggedIn,
+			userName: this.props.userName,
 			routeMain: false,
 			routeUserProfile: false
 		}
@@ -222,7 +222,7 @@ class DesktopContainer extends React.Component
 			loggedIn: true,
 			userName: userName
 		});
-		this.props.record(userName)
+		//this.props.record(userName)
 	}
 
 	hideFixedMenu = () => this.setState({ fixed: false })
@@ -285,8 +285,8 @@ render() {
 					My Profile
 				</Menu.Item>
 			  <Menu.Item position='right'>
-			  {this.state.showLogin && <LoginForm record={this.handlerClick}/>}
-                {this.state.showUser && <UserRegistrationForm />}
+			  {this.state.showLogin && <LoginForm record={this.handlerClick} data={{userName:this.state.userName, loggedIn:this.state.loggedIn}}/>}
+                {this.state.showUser && <UserRegistrationForm record={this.handlerClick} data={{userName:this.state.userName, loggedIn:this.state.loggedIn}}/>}
 				{!this.state.showLogin && !this.state.showUser &&
 				<div>
 				<Button as='a' inverted={!fixed} onClick={() => this.setState({showLogin: true, showUser: false, showBackButton: true})}>
@@ -323,8 +323,8 @@ class MobileContainer extends Component {
 		this.state = {
 			routeMain: false,
 			routeUserProfile: false,
-			loggedIn: this.props.data.loggedIn,
-			userName: this.props.data.userName
+			loggedIn: this.props.loggedIn,
+			userName: this.props.userName
 		}
 	this.handlerClick = this.handlerClick.bind(this);
 	//this.handlerLogoutClick = this.handlerLogoutClick.bind(this);
@@ -335,7 +335,7 @@ class MobileContainer extends Component {
 			loggedIn: true,
 			userName: userName
 		});
-		this.props.record(userName)
+		// this.props.record(userName)
 	}
   
 	handleSidebarHide = () => this.setState({ sidebarOpened: false })
@@ -365,9 +365,13 @@ class MobileContainer extends Component {
 			</Menu.Item>
 			<Menu.Item as='a'>Organizations</Menu.Item>
 			<Menu.Item as='a'>Prizes</Menu.Item>
-			{!this.state.loggedIn && 
-			<Menu.Item as='a'>Log in</Menu.Item> &&
-			<Menu.Item as='a'>Sign Up</Menu.Item>}
+			{!this.state.loggedIn && <div>
+			<Menu.Item as='a' onClick={() => this.setState({showLogin: true, showUser: false, showBackButton: true})}>Log in</Menu.Item> 
+			<Menu.Item as='a' onClick={() => this.setState({showLogin: false, showUser: true, showBackButton: true})}>Sign Up</Menu.Item>
+			</div>}
+			{this.state.loggedIn && <Menu.Item as='a' onClick={() => this.setState({showLogin: true, showUser: false, showBackButton: true})}>
+				  Log out
+				</Menu.Item>}
 
 			{/* allow showing profile only when signed in */}
 			{this.state.loggedIn && <Menu.Item as='a' active onClick ={() => this.setState(prevState => {
@@ -391,12 +395,21 @@ class MobileContainer extends Component {
 					<Icon name='sidebar' />
 				  </Menu.Item>
 				  <Menu.Item position='right'>
-					<Button as='a' inverted>
-					  Log in
-					</Button>
-					<Button as='a' inverted style={{ marginLeft: '0.5em' }}>
-					  Sign Up
-					</Button>
+				  {this.state.showLogin && <LoginForm record={this.handlerClick} data={{userName:this.state.userName, loggedIn:this.state.loggedIn}}/>}
+                {this.state.showUser && <UserRegistrationForm record={this.handlerClick} data={{userName:this.state.userName, loggedIn:this.state.loggedIn}}/>}
+				{!this.state.loggedIn &&
+				<div>
+				<Button as='a' onClick={() => this.setState({showLogin: true, showUser: false, showBackButton: true})}>
+				  Log in
+				</Button>
+				<Button as='a' style={{ marginLeft: '0.5em' }} onClick={() => this.setState({showLogin: false, showUser: true, showBackButton: true})}>
+				  Sign Up
+				</Button>
+				</div>}
+				{this.state.showBackButton && <button name = "btnBack" onClick={() => this.setState({showLogin: false, showUser: false, showBackButton: false})}>close</button>}
+				{this.state.loggedIn && <Button as='a' onClick={() => this.setState({showLogin: true, showUser: false, showBackButton: true})}>
+				  Log out
+				</Button>}
 				  </Menu.Item>
 				</Menu>
 			  </Container>
@@ -425,16 +438,12 @@ class MobileContainer extends Component {
 	children: PropTypes.node,
   }
 
-//   const HeaderLayout = () => (
-// 	<ResponsiveContainer>
-	  
-// 	  {/* <HeaderFile data={{loggedIn: false, userName: ""}}/> */}
-// 	  <Body data={{loggedIn: false, userName: ""}}/>
-// 	  <Footer />
-// 	</ResponsiveContainer>
-//   )
+  const HeaderLayout = () => (
+	<ResponsiveContainer>
+	</ResponsiveContainer>
+  )
   
-//   export default HeaderLayout;
+  export default HeaderLayout;
   
 
-export default DesktopContainer;
+// export default DesktopContainer;

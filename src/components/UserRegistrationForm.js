@@ -73,7 +73,7 @@ class UserRegistrationForm extends React.Component {
 				{ //todo- send real data
 					// -- * change
 					user: user,
-					user_name: this.state.userName, first_name: this.state.first_name, last_name: this.state.last_name, pswd: this.state.pswd, email: this.state.email,// ---- req
+					user_name: this.state.userName, first_name: this.state.first_name, last_name: this.state.last_name, pswd: this.state.pswd, email: this.state.email, phone: this.state.phone,// ---- req
 					is_admin: false
 				},
 				{ header: { 'Content-Type': 'application/json' } }
@@ -105,16 +105,22 @@ class UserRegistrationForm extends React.Component {
 			if (response.data === "confirmed") {
 				this.setState({status: Status.PostConfirmation})
 				//login confimed user:
-				(async () => {
-					const response = await axios.post(
-						'/login',
-						{
-							userName: this.state.email,
-							pswd: this.state.pswd,
-						},
-						{ header: { 'Content-Type': 'application/json' } }
-					)
-				});
+				// (async () => {
+				// 	const response = await axios.post(
+				// 		'/login',
+				// 		{
+				// 			userName: this.state.email,
+				// 			pswd: this.state.pswd,
+				// 		},
+				// 		{ header: { 'Content-Type': 'application/json' } }
+				// 	)
+				// 	if (response.data === 'loggedIn') {
+				// 		//say hello with user name
+				// 	} else {
+						
+				// 	}
+				// });
+				//TODO: login in from Server
 			} else {
 				
 			}
@@ -191,7 +197,7 @@ class UserRegistrationForm extends React.Component {
 						icon='phone'
 						iconPosition='left'
 						placeholder='Phone number'
-						name="first_name"
+						name="phone"
 						onChange={this.handleChange.bind(this)}
 					/>
 					<Form.Input

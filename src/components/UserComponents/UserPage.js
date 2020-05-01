@@ -46,7 +46,7 @@ class UserPage extends React.Component{
 					loggedIn: true,
 					userName: response.data});
 				this.forceUpdate();
-				//alert("loggedIn "+this.state.loggedIn + " userName "+ this.state.userName);
+				alert("loggedIn "+this.state.loggedIn + " userName "+ this.state.userName);
 			}
 			this.setState({check_login_status:true})
 	})();
