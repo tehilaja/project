@@ -13,13 +13,15 @@ const userLoginService = userLoginFile.data.userLoginService;
 
 
 const express = require('express');
+const app = express(); //library to shorten http requests
+
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
-const app = express(); //library to shorten http requests
 var my_user = null
 var pic = "https://yad-sarah.net/wp-content/uploads/2019/04/logoys.png"
 
-
+//routering 
+const Donate = require('./DonateServer.js');
 
 ///maybe- check loopback?
 
@@ -42,6 +44,10 @@ db.connect((err)=>{
   console.log('mysql connected...');
 });
 
+
+// ~~~~~~~~~~~~~~~ routering ~~~~~~~~~~~~
+// TODO: correct to /donate only!!!
+app.use('/OrgPage/donate',Donate);   
 
 
 //-~~~~~~~~~~~~~~~~~~ code ~~~~~~~~~~~~~~~~~~
