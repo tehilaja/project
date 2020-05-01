@@ -32,8 +32,11 @@ class UserLoginService {
         let sts = new STS(clientParams);
         sts.getCallerIdentity(function (err, data) {
             console.log("UserLoginService: Successfully set the AWS credentials");
+            console.log("err:"+JSON.stringify(err))
+            console.log("data:"+JSON.stringify(data))
+
             //throwing error when signing in i would want to return the something
-            callback.cognitoCallback(null, session);
+            // callback.cognitoCallback(null, session);
         });
     }
 

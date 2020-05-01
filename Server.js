@@ -126,6 +126,12 @@ app.post('/is_logged_in', function(req,res){
   }
 });
 
+//---------------get current user--------------
+app.post('/get_current_user',function(req,res){
+  console.log("get current user: "+ JSON.stringify(cognitoUtil.getCurrentUser()))
+  res.send(cognitoUtil.getCurrentUser())
+});
+
 //-------donation ----
 
 app.post('/donation',(req, res)=>{

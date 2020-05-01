@@ -84,12 +84,20 @@ class CognitoUtil {
             IdentityPoolId: _IDENTITY_POOL_ID, /* required */
             Logins: logins
         };
-        let serviceConfigs = {};
+        let serviceConfigs = {
+            region: _REGION
+            ,
+        };
         // if (environment.cognito_identity_endpoint) {
         //     serviceConfigs.endpoint = environment.cognito_identity_endpoint;
         // }
+        AWS.config.region = _REGION;
         let creds = new AWS.CognitoIdentityCredentials(params, serviceConfigs);
+        creds.IdentityPoolId = _IDENTITY_POOL_ID;
+        AWS.config.credentials = creds;
+        //AWS.config.cognitoidentityserviceprovider
         this.setCognitoCreds(creds);
+        console.log("in build cognito creds: "+JSON.stringify(this.cognitoCreds))
         return creds;
     }
 
