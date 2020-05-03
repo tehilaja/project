@@ -31,7 +31,20 @@ import {
 	Visibility,
   } from 'semantic-ui-react'
 
+import { useDispatch, useSelector } from 'react-redux';
 
+import { userActions } from '../_actions';
+
+function hookUser(Component) {
+	return function WrappedComponent(props) {
+	  const user = useSelector(state => state.authentication.user);
+	  return <Component {...props} hookUser={hookUser} />;
+	}
+  }
+
+
+
+// let user;
 // class YourComponent extends React.Component {
 // 	constructor(props) {
 // 	  super(props);
@@ -65,7 +78,7 @@ import {
 //   }
 class Body extends React.Component
 {
-//-----------constructor----------------------
+	//-----------constructor----------------------
 	constructor(props)
 	{
 		super(props)
@@ -188,6 +201,7 @@ class Body extends React.Component
 //--------------render------------------------
 	render()
 	{
+		const hookUser = this.props.hookUser;
 
 		// **
 		// if (!this.state.isLoading) 
@@ -252,10 +266,11 @@ class Body extends React.Component
 	//-----------return------------------------------
 		return(
 			<div>
-				<Segment style={{ padding: '8em 0em' }} vertical>
+			<Segment style={{ padding: '8em 0em' }} vertical>
 			<Grid container stackable verticalAlign='middle'>
 				<Grid.Row>
 				<Grid.Column width={8}>
+				{/* <h1>Hi {useSelector(state => state.authentication.user).firstName}!</h1> */}
 					{/*putting organizations into home page:*/}
 					{orgComponents}
 					{/* <carousel /> */}
@@ -271,6 +286,7 @@ class Body extends React.Component
 				<Header as='h3' style={{ fontSize: '2em' }}>
 					Create an online platform for ongoing donations
 					</Header>
+					<div>{hookUser}</div>
 					<Label as='a' color='red' tag>
 				Create Your Own!
 				</Label>
@@ -306,7 +322,6 @@ class Body extends React.Component
 					"I shouldn't have gone with their competitor."
 					</Header>
 					<p style={{ fontSize: '1.33em' }}>
-					<Image avatar src='/images/avatar/large/nan.jpg' />
 					<b>Nan</b> Chief Fun Officer Acme Toys
 					</p>
 				</Grid.Column>

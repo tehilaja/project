@@ -114,6 +114,10 @@ import {Redirect} from "react-router-dom";
 import LoginForm from './LoginForm.js';
 import UserRegistrationForm from './UserRegistrationForm.js';
 
+import { useDispatch, useSelector } from 'react-redux';
+
+import { userActions } from '../_actions';
+
 
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
@@ -155,6 +159,11 @@ const style = {
   
 	return isSSR ? Responsive.onlyTablet.minWidth : window.innerWidth
   }
+
+
+
+//   //getting user from redux
+//   const user = useSelector(state => state.authentication.user);
 
   /* eslint-disable react/no-multi-comp */
 /* Heads up! HomepageHeading uses inline styling, however it's not the best practice. Use CSS or styled components for
@@ -208,10 +217,10 @@ class DesktopContainer extends React.Component
 	constructor(props){
 		super(props)
 		this.state = {
-			loggedIn: this.props.data.loggedIn,
-			userName: this.props.data.userName,
-			// loggedIn: false,
-			// userName: "",
+			// loggedIn: this.props.data.loggedIn,
+			// userName: this.props.data.userName,
+			loggedIn: false,
+			userName: "",
 			routeMain: false,
 			routeUserProfile: false, 
 			routeOrgSearch: false,
