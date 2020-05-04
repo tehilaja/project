@@ -97,6 +97,24 @@ onDrop(picture) {
 		<br></br>
 		<div><b>Choose a date for your raffle</b></div>
         <DatePicker />
+		<Divider as='h4'
+		className='header'
+		horizontal
+		style={{ margin: '3em 0em', textTransform: 'uppercase' }}
+		>
+		<a href='#'>Upload a Raffle Flier (optional):</a>
+		</Divider>
+		<label><b>The flier will automatically be emailed to all doners</b></label>
+		<Segment raised>
+		<ImageUploader
+			withIcon={true}
+			buttonText='Choose images'
+			onChange={this.onDrop}
+			imgExtension={['.jpg', '.gif', '.png', '.gif']}
+			maxFileSize={5242880}
+		/>
+		<br/><br/>
+		</Segment>
 		</div>
 		)
 	}	
