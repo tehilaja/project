@@ -12,9 +12,6 @@ import * as serviceWorker from './serviceWorker';
 import 'semantic-ui-css/semantic.min.css' //css library
 
 
-//setting up redux:
-import { Provider } from 'react-redux';
-
 
 //---main
 ReactDOM.render(

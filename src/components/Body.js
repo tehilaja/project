@@ -31,16 +31,6 @@ import {
 	Visibility,
   } from 'semantic-ui-react'
 
-import { useDispatch, useSelector } from 'react-redux';
-
-import { userActions } from '../_actions';
-
-function hookUser(Component) {
-	return function WrappedComponent(props) {
-	  const user = useSelector(state => state.authentication.user);
-	  return <Component {...props} hookUser={hookUser} />;
-	}
-  }
 
 
 
@@ -201,8 +191,6 @@ class Body extends React.Component
 //--------------render------------------------
 	render()
 	{
-		const hookUser = this.props.hookUser;
-
 		// **
 		// if (!this.state.isLoading) 
 		// {
@@ -279,7 +267,6 @@ class Body extends React.Component
 				<Header as='h3' style={{ fontSize: '2em' }}>
 					Create an online platform for ongoing donations
 					</Header>
-					<div>{hookUser}</div>
 					<Label as='a' color='red' tag>
 				Create Your Own!
 				</Label>
@@ -327,7 +314,7 @@ class Body extends React.Component
 			<Segment style={{ padding: '8em 0em' }} vertical>
 			<Container text>
 				<Header as='h3' style={{ fontSize: '2em' }}>
-				Breaking The Grid, Grabs Your Attention
+				Create an account!
 				</Header>
 				<p style={{ fontSize: '1.33em' }}>
 					Yes that's right, you too can become a part of this wonderful community, helping to build something greater.
@@ -342,16 +329,15 @@ class Body extends React.Component
 				horizontal
 				style={{ margin: '3em 0em', textTransform: 'uppercase' }}
 				>
-				<a href='#'>Case Studies</a>
+				<a href='#'>Create a Platform</a>
 				</Divider>
 
 				<Header as='h3' style={{ fontSize: '2em' }}>
-				Did We Tell You About Our Bananas?
+				Just Sign Up
 				</Header>
 				<p style={{ fontSize: '1.33em' }}>
-				Yes I know you probably disregarded the earlier boasts as non-sequitur filler content, but
-				it's really true. It took years of gene splicing and combinatory DNA research, but our
-				bananas can really dance.
+				We will provide you with the design and software necessary to create an online platform for ongoing or one-time donations. 
+				All we left for you to do, is focus on content that will be appealing and attract your ongoing doners.
 				</p>
 				<Button as='a' size='large'>
 				I'm Still Quite Interested

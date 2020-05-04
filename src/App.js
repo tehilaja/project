@@ -4,12 +4,7 @@ import {Redirect} from "react-router-dom";
 import axios from "axios";
 import { async } from "q";
 
-//using redux:
-import { Provider } from 'react-redux';
 
-import { store } from './_helpers';
-
-import { LoginRegistration } from './LoginRegistration';
 
 
 // import './App.css';
@@ -20,12 +15,8 @@ import { LoginRegistration } from './LoginRegistration';
 import Body from './components/Body.js';
 import Footer from './components/Footer.js'
 import Header from './components/Header.js'
-// import LoginRegister from './components/LoginRegistration/src/index.js'
 // //////-------------
 
-// setup fake backend
-import { configureFakeBackend } from './_helpers';
-configureFakeBackend();
 
 class App extends React.Component
 {
@@ -83,16 +74,8 @@ class App extends React.Component
 		// else{
 		return(
 			<div>
-				{/* using redux for logging in user: */}
-				<Provider store={store}>
-					<LoginRegistration />
-				</Provider>
-				<Provider store={store}>
 				<Header data={{loggedIn: this.state.loggedIn, userName: this.state.userName}}/>
-				</Provider>
-				<Provider store={store}>
 				<Body data={{loggedIn: this.state.loggedIn, userName: this.state.userName}}/>
-				</Provider>
 				<Footer />
 				{/*<button onClick={this.check.bind(this)}>button</button>*/}
 			</div>
