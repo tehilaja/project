@@ -43,25 +43,31 @@ class NewOrg extends React.Component{
 				loggedIn: true, //this.props.data.loggedIn,
 				userName: "", //this.props.data.userName
 				check_login_status: true,
-				orgName:"",
-				admin_name:"",
-				photo:"",
-				minDonation: 10,
+				//////////////////
+				orgName:'',
+				admin_name:'',
+				description: '',
+				phone: '',
+				email: '',
+				//mailing information:
 				city:"",
 				building:"",
 				street:"",
 				p_code:"",
-				org_num:"",
-				branch:"",
-				account_num:"",
-				bank_num:"",
-				description:"",
-				field_of_acctivity:"",
-				founding_year:"",
-				working:"",
-				volunteers:"",
-				flag_done: false,
-				pictures: []
+				//more info:
+				pictures: [],
+				minDonation: 10,
+				allowOneTimeDonations: false,
+				// org_num:"",
+				// branch:"",
+				// account_num:"",
+				// bank_num:"",
+				// description:"",
+				// field_of_acctivity:"",
+				// founding_year:"",
+				// working:"",
+				// volunteers:"",
+				flag_done: false
 			}			  
 		this.handleChange = this.handleChange.bind(this)
 		this.handlerClick = this.handlerClick.bind(this);
@@ -120,6 +126,7 @@ class NewOrg extends React.Component{
 		// 	// TODO : nust filde....
 		// }
 
+		// alert(JSON.stringify(this.state))
 
 
             (async () => {
@@ -128,7 +135,7 @@ class NewOrg extends React.Component{
          			{ 
 						 // org_name,admin_name,description,field_of_acctivity,org_pic,min_donation,org_num,branch,account_num,bank_num,founding_year,working,volunteers,friends,city_id,building,street,p_code)
 						// TODO : all data
-						org_name: this.state.orgName,admin_name:this.state.admin_name,org_pic:this.state.photo, monthly_donation:this.state.minDonation,  // ---- req
+						// org_name: this.state.orgName,admin_name:this.state.admin_name,org_pic:this.state.photo, monthly_donation:this.state.minDonation,  // ---- req
                     },
                      {header:{'Content-Type': 'application/json'}}
                      )
@@ -206,7 +213,7 @@ class NewOrg extends React.Component{
 				<br></br>
 				<br></br>
 				{/* <Grid relaxed='very' stackable centered> */}
-				<Form onSubmit={this.handleSubmit.bind(this)}>
+				<Form onSubmit={this.handleSubmit.bind(this)} success>
 				<Divider
 				as='h4'
 				className='header'
@@ -240,7 +247,12 @@ class NewOrg extends React.Component{
 					</Form.Field>
 					<br/><br/>
 					<Form.Field>
-					<Form.TextArea label='Description:' placeholder='Tell us more about your organization...' />					</Form.Field>
+					<Form.TextArea 
+						label='Description:' 
+						placeholder='Tell us more about your organization...'
+						name='description' 
+						onChange={this.handleChange.bind(this)}/>
+					</Form.Field>
 					<Divider
 					as='h4'
 					className='header'
@@ -276,7 +288,7 @@ class NewOrg extends React.Component{
 					<Form.Input
 						label= 'Building:'
 						placeholder='Building'
-						name="building"
+						name="building"//////////////
 						onChange={this.handleChange.bind(this)}
 					/>
 						<Form.Input
@@ -358,14 +370,14 @@ class NewOrg extends React.Component{
 					<input type="text" name="bank_num" onChange={this.handleChange.bind(this)}/>
 					<br/>
 					more details */}
-					<Divider
+					{/* <Divider
 					as='h4'
 					className='header'
 					horizontal
 					style={{ margin: '3em 0em', textTransform: 'uppercase' }}
-					>
+					> */}
 					{/* TODO: see which details are actually necessay for us */}
-					<a href='#'>More Details:</a>
+					{/* <a href='#'>More Details:</a>
 					</Divider>
 					<br/><br/>
 					<lable className= "newOrgLable"> field_of_acctivity: </lable>
@@ -381,9 +393,9 @@ class NewOrg extends React.Component{
 					<input type="text" name="volunteers" onChange={this.handleChange.bind(this)}/>
 					<br/><br/>
 					<lable className= "newOrgLable"> friends: </lable>
-					<input type="text" name="friends" onChange={this.handleChange.bind(this)}/>
+					<input type="text" name="friends" onChange={this.handleChange.bind(this)}/>*/}
 					<br/><br/>
-					<br />
+					<br /> 
 					<Button content='Submit' primary />				
 					</Form>
 				{/* </Grid> */}

@@ -14,12 +14,8 @@ import {Grid, Segment} from 'semantic-ui-react';
 
 const images = [
     {
-      original: 'https://lh3.googleusercontent.com/proxy/pMUNfXJ2mZCxUdfGqxtC6N43se6h3Z0AVo_XqszXM7DSedT7JbTl9dLnJzTE7SVXgdKN56Ds713tDo0JkuSxWIELkL_rdrSxPc9ZQJhvxtnn',
-    //   thumbnail: 'https://picsum.photos/id/1018/250/150/',
-    },
-    {
       original: 'https://i.dansdeals.com/wp-content/uploads/2018/08/29102624/jlem-696x344.jpg',
-    //   thumbnail: 'https://picsum.photos/id/1015/250/150/',
+      thumbnail:"", //'https://picsum.photos/id/1015/250/150/',
     },
     {
       original: 'https://images-na.ssl-images-amazon.com/images/I/81W89sK72RL._AC_SL1500_.jpg',

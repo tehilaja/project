@@ -5,12 +5,10 @@ change user name to be the begining of email or the cell number!!
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-
 import axios from "axios";
 import { async } from "q";
 
 import { Button, Divider, Form, Grid, Segment } from 'semantic-ui-react';
-import { RegistrationUser } from '../cognito/user-registration.service';
 
 class Status {
 	static PreRegistration = 1;

@@ -274,13 +274,6 @@ class Body extends React.Component
 					{/*putting organizations into home page:*/}
 					{orgComponents}
 					{/* <carousel /> */}
-					<Header as='h3' style={{ fontSize: '2em' }}>
-					We Make Bananas That Can Dance
-					</Header>
-					<p style={{ fontSize: '1.33em' }}>
-					Yes that's right, you thought it was the stuff of dreams, but even bananas can be
-					bioengineered.
-					</p>
 				</Grid.Column>
 				<Grid.Column floated='right' width={6}>
 				<Header as='h3' style={{ fontSize: '2em' }}>
@@ -302,7 +295,10 @@ class Body extends React.Component
 				</Grid.Row>
 				<Grid.Row>
 				<Grid.Column textAlign='center'>
-					<Button size='huge'>Check Them Out</Button>
+				<Header as='h3' style={{ fontSize: '2em' }}>
+					Create an account so you too can donate!
+					</Header>
+					<Icon size="huge" name='heart outline' />
 				</Grid.Column>
 				</Grid.Row>
 			</Grid>
@@ -334,10 +330,8 @@ class Body extends React.Component
 				Breaking The Grid, Grabs Your Attention
 				</Header>
 				<p style={{ fontSize: '1.33em' }}>
-				Instead of focusing on content creation and hard work, we have learned how to master the
-				art of doing nothing by providing massive amounts of whitespace and generic content that
-				can seem massive, monolithic and worth your attention.
-				</p>
+					Yes that's right, you too can become a part of this wonderful community, helping to build something greater.
+					</p>
 				<Button as='a' size='large'>
 				Read More
 				</Button>
