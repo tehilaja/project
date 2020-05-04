@@ -76,6 +76,23 @@ onDrop(picture) {
         </Form.Group>
 		  {/* YOUR CHOICE: {this.state.statusInRaffle} */}
 		  <br></br>
+		  <label><b>Choose your winner option:</b></label>
+		<Form.Group widths='equal'>
+		  <Form.Radio
+            label='Get Winner Automatically'
+            autowinner = 'true'
+            checked={autowinner === 'true'}
+            onChange={this.handleWinnerChange}
+          />
+          <Form.Radio
+            label='Send List of Doners to Enter Raffle'
+            autowinner = 'false'
+            checked={autowinner === 'false'}
+            onChange={this.handleWinnerChange}
+          />
+        </Form.Group>
+		
+{/* YOUR CHOICE: automatic winner: {this.state.autowinner} */}
 		</Form>
 		<br></br>
 		<div><b>Choose a date for your raffle</b></div>
