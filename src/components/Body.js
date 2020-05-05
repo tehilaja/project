@@ -296,7 +296,7 @@ class Body extends React.Component
 				<Grid.Row textAlign='center'>
 				<Grid.Column style={{ paddingBottom: '5em', paddingTop: '5em' }}>
 					<Header as='h3' style={{ fontSize: '2em' }}>
-					"What a Company"
+					"What an Organization"
 					</Header>
 					<p style={{ fontSize: '1.33em' }}>That is what they all say about us</p>
 				</Grid.Column>

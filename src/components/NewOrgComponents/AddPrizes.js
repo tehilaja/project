@@ -10,7 +10,7 @@ import NewOrg from './NewOrg.js';
 import Footer from '../Footer.js';
 
 import DatePicker from './DatePicker.js'
-import { Divider, Form , Segment} from 'semantic-ui-react';
+import { Button, Divider, Form , Segment} from 'semantic-ui-react';
 
 import ImageUploader from 'react-images-upload';
 
@@ -18,15 +18,18 @@ class NewOrgPage extends React.Component{
 	constructor(props){
 		super(props)
 	this.state ={
-		giftName: "",
 		statusInRaffle: "all",
 		autowinner: 'true',
 		pictures: []
-
 	}
 	this.onDrop = this.onDrop.bind(this);
 }
 handleChange = (e, { statusInRaffle }) => this.setState({ statusInRaffle })
+handleChangeName(event){
+	this.setState({
+		[event.target.name]: event.target.value
+	})
+}
 handleWinnerChange = (e, { autowinner }) => this.setState({ autowinner })
 
 onDrop(picture) {
@@ -34,18 +37,24 @@ onDrop(picture) {
 		pictures: this.state.pictures.concat(picture),
 	});
 }
+
+handleSubmit=(e)=>
+	{
+		e.preventDefault();
+		alert(JSON.stringify(this.state));
+	}
 	render() {
 		const { statusInRaffle } = this.state
 		const { autowinner } = this.state
 
 		return(
 			<div>
-				<Form>
+				<Form onSubmit={this.handleSubmit}>
 				<Form.Input
 						label= 'Gift Description:'
 						placeholder='Gift Description:'
 						name="giftName:"
-						onChange={this.handleChange.bind(this)}
+						onChange={this.handleChangeName.bind(this)}
 					/>
 			<label><b>Select the status of the Doners to enter the raffle:</b></label>
 		<Form.Group inline>
@@ -92,8 +101,7 @@ onDrop(picture) {
           />
         </Form.Group>
 		
-{/* YOUR CHOICE: automatic winner: {this.state.autowinner} */}
-		</Form>
+		{/* YOUR CHOICE: automatic winner: {this.state.autowinner} */}
 		<br></br>
 		<div><b>Choose a date for your raffle</b></div>
         <DatePicker />
@@ -115,6 +123,8 @@ onDrop(picture) {
 		/>
 		<br/><br/>
 		</Segment>
+		<Button content='Submit Prize' primary />
+		</Form>
 		</div>
 		)
 	}	

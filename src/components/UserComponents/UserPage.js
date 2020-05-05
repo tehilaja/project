@@ -1,5 +1,5 @@
 import React from 'react';
-import {Redirect} from "react-router-dom";
+import { Redirect } from "react-router-dom";
 
 
 import axios from "axios";
@@ -10,93 +10,147 @@ import UserPageBody from './UserPageBody.js';
 import Footer from '../Footer.js';
 
 
-class UserPage extends React.Component{
-	constructor(props) {
-		super(props)	
-		this.state = {
+const userLoginFile = require('../../cognito/user-login.service');
+const userParametersFile = require('../../cognito/user-parameters.service');
+const userLoginService = userLoginFile.data.userLoginService;
+const userParametersService = userParametersFile.data.userParametersService;
+
+
+class UserPage extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
             loggedIn: this.props.loggedIn,
             userName: this.props.userName,
-			routeMain: false,
-			check_login_status: false
-		}
-		alert(JSON.stringify(this.state))
-		this.function_log_status();
-		this.get_current_user();
+            routeMain: false,
+            check_login_status: false,
+            first_name: "",
+            last_name: "",
+            email: "",
+            phone: "",
+        }
+        alert(JSON.stringify(this.state))
+        this.function_log_status();
+//      userLoginService.authenticate('tehilaj97@gmail.com', '12345678');
+//      let params = [];
+//   userParametersService.getParameters(params);
+        //this.get_current_user();
+        this.get_user_params();
 
-	}
-	
-	// componentWillReceiveProps(nextProps){
-	// 	nextProps= this.props
-	// }
+    }
 
-	//the function below checks if the user is already logged in before rendering page
-	function_log_status(){
-		(async ()=> {
+    get_user_params() {
+        (async () => {
+            const response = await axios.post(
+                '/get_user_params',
+                { headers: { 'Content-Type': 'application/json' } }
+            );
+
+            const params = response.data;
+
+            if (Array.isArray(params) && params.length) {
+
+                const fname = params.find(x => x.Name === 'name').Value;
+                const lname = params.find(x => x.Name === 'family_name').Value;
+				const email = params.find(x => x.Name === 'email').Value;
+				//phone is not required
+                const phone = params.find(x => x.Name === 'phone_number') &&  params.find(x => x.Name === 'phone_number').Value;
+
+                this.setState({
+                    loggedIn: true,
+                    first_name: fname,
+                    last_name: lname,
+                    email: email,
+                    phone: phone,
+                });
+                alert("my state:\n" + JSON.stringify(this.state));
+            } else {
+                this.setState({
+                    loggedIn: false,
+                    userName: ""
+                })
+                //return;
+            }
+            this.setState({ check_login_status: true })
+        })();
+    }
+
+    // componentWillReceiveProps(nextProps){
+    //  nextProps= this.props
+    // }
+
+    //the function below checks if the user is already logged in before rendering page
+    function_log_status() {
+        (async () => {
             const response = await axios.post(
                 '/is_logged_in',
                 { headers: { 'Content-Type': 'application/json' } }
-			  )
-			if(response.data === "no user"){
-				this.setState({
-					loggedIn: false,
-					userName: ""})
-				//return;
-			}
-			else{
-				this.setState({
-					loggedIn: true,
-					userName: response.data});
-				this.forceUpdate();
-				alert("loggedIn "+this.state.loggedIn + " userName "+ this.state.userName);
-			}
-			this.setState({check_login_status:true})
-	})();
-}
+            )
+            if (response.data === "no user") {
+                this.setState({
+                    loggedIn: false,
+                    userName: ""
+                })
+                //return;
+            }
+            else {
+                this.setState({
+                    loggedIn: true,
+                    userName: response.data
+                });
+                this.forceUpdate();
+                alert("loggedIn " + this.state.loggedIn + " userName " + this.state.userName);
+            }
+            this.setState({ check_login_status: true })
+        })();
+    }
 
-//get_current_user:
-get_current_user(){
-	(async ()=> {
-		const response = await axios.post(
-			'/get_current_user',
-			{ headers: { 'Content-Type': 'application/json' } }
-		  )
-		  console.log("get_current response:"+JSON.stringify(response.data))
-		  alert("get_current response:"+JSON.stringify(response.data))
-		if(response.data === null){
-			this.setState({
-				loggedIn: false,
-				userName: ""})
-		}
-		else{
-			console.log("server get current user before getting attributes");
-			alert("server get current user before getting attributes")
-			response.data.getUserAttributes(function(err,userAtrributes){
-				console.log("CallBack get current user error: "+JSON.stringify(err));
-			})
-			this.setState({
-				loggedIn: true,
-				userName: response.data});
-			this.forceUpdate();
-			//alert("loggedIn "+this.state.loggedIn + " userName "+ this.state.userName);
-		}
-		this.setState({check_login_status:true})
-})();
-}
+    //get_current_user:
+    get_current_user() {
+        (async () => {
+            const response = await axios.post(
+                '/get_current_user',
+                { headers: { 'Content-Type': 'application/json' } }
+            )
+            console.log("get_current response:" + JSON.stringify(response.data))
+            alert("get_current response:" + JSON.stringify(response.data))
+            if (response.data === null) {
+                this.setState({
+                    loggedIn: false,
+                    userName: ""
+                })
+            }
+            else {
+                console.log("server get current user before getting attributes");
+                alert("server get current user before getting attributes")
+                response.data.getUserAttributes(function (err, userAtrributes) {
+                    console.log("CallBack get current user error: " + JSON.stringify(err));
+                })
+                this.setState({
+                    loggedIn: true,
+                    userName: response.data
+                });
+                this.forceUpdate();
+                //alert("loggedIn "+this.state.loggedIn + " userName "+ this.state.userName);
+            }
+            this.setState({ check_login_status: true })
+        })();
+    }
 
-	// function 
+    // function 
 
-	render() {
-		if(!this.state.check_login_status)
-			return(<h1>loading...</h1>)
-		return(
-			<div>
+    render() {
+        if (!this.state.check_login_status)
+            return (<h1>loading...</h1>)
+        return (
+            <div>
                 {/* <Header data={{loggedIn: this.state.loggedIn, userName: this.state.userName}}/> */}
-				<Header data={{loggedIn: true, userName: "Tehila"}}/>
-				<UserPageBody 
-					data = {this.state}/>
-				<Footer />
-			</div>
-		)
-	}	
+                <Header data={{ loggedIn: this.state.loggedIn, userName: this.state.first_name }} />
+                <UserPageBody
+                    data={this.state} />
+                <Footer />
+            </div>
+        )
+    }
 }
 export default UserPage;

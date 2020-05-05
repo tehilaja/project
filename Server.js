@@ -7,19 +7,26 @@ const cognitoClient = require('./cognito_client');
 const cognitoServiceFile = require('./src/cognito/cognito.service');
 const userRegistrationFile = require('./src/cognito/user-registration.service');
 const userLoginFile = require('./src/cognito/user-login.service');
+const userParametersFile = require('./src/cognito/user-parameters.service');
+const awsServiceFile = require('./src/cognito/aws.service');
 const cognitoUtil = cognitoServiceFile.data.cognitoUtil;
 const userRestirationService = userRegistrationFile.data.userRegistrationService;
 const userLoginService = userLoginFile.data.userLoginService;
+const userParametersService = userParametersFile.data.userParametersService;
+const awsUtil = awsServiceFile.data.awsUtil;
+const reactor = require("./src/utilities/custom-event").data.reactor;
 
 
 const express = require('express');
+const app = express(); //library to shorten http requests
+
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
-const app = express(); //library to shorten http requests
 var my_user = null
 var pic = "https://yad-sarah.net/wp-content/uploads/2019/04/logoys.png"
 
-
+//routering 
+//const Donate = require('./DonateServer.js');
 
 ///maybe- check loopback?
 
@@ -42,6 +49,24 @@ db.connect((err)=>{
   console.log('mysql connected...');
 });
 
+userLoginService.isAuthenticated(function(message, isLoggedIn) {
+  console.log("AppComponent: the user is authenticated: " + isLoggedIn);
+  cognitoUtil.getIdToken({
+      callback() {
+
+      },
+      callbackWithParam(token) {
+          // Include the passed-in callback here as well so that it's executed downstream
+          console.log("AppComponent: calling initAwsService in callback")
+          awsUtil.initAwsService(null, isLoggedIn, token);
+      }
+  });
+})
+
+
+// ~~~~~~~~~~~~~~~ routering ~~~~~~~~~~~~
+// TODO: correct to /donate only!!!
+//app.use('/OrgPage/donate',Donate);   
 
 
 //-~~~~~~~~~~~~~~~~~~ code ~~~~~~~~~~~~~~~~~~
@@ -126,10 +151,18 @@ app.post('/is_logged_in', function(req,res){
   }
 });
 
-//---------------get current user--------------
-app.post('/get_current_user',function(req,res){
-  console.log("get current user: "+ JSON.stringify(cognitoUtil.getCurrentUser()))
-  res.send(cognitoUtil.getCurrentUser())
+//---------------get user params--------------
+app.post('/get_user_params',function(req,res){
+  console.log("start server get user params");
+  let params = [];
+  userParametersService.getParameters(params);
+  //while(!params.length);
+
+  reactor.registerEvent('got_user_params');
+  reactor.addEventListener('got_user_params', function() {
+    res.send(params);
+  });
+   
 });
 
 //-------donation ----
@@ -185,8 +218,8 @@ app.get('/data', function(req, res, next) {
   });
 });
 
-// -- userProfile 
-app.get('/userProfile ', function(req, res, next) {
+// -- userProfile 
+app.get('/userProfile ', function(req, res, next) {
   db.query(`SELECT * FROM Users WHERE user_name="${my_user.user_id}"`, function (error, results, fields) {
       if(error) throw error;
       res.send(JSON.stringify(results));

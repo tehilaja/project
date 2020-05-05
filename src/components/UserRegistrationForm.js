@@ -220,6 +220,7 @@ class UserRegistrationForm extends React.Component {
 		<Grid relaxed='very' stackable>
 			<Grid.Column>
 				<Form onSubmit={this.handleSubmit}>
+					<label>Please check you email for a confirmation code.</label>
 					<Form.Input
 						icon='lock'
 						iconPosition='left'
