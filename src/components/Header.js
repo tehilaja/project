@@ -217,7 +217,7 @@ class DesktopContainer extends React.Component
 			routeOrgSearch: false,
 			routePrizes: false
 		}
-		alert("in Header Desktop:"+JSON.stringify(this.state))
+		// alert("in Header Desktop:"+JSON.stringify(this.state))
 
 	this.handlerClick = this.handlerClick.bind(this);
 	//this.handlerLogoutClick = this.handlerLogoutClick.bind(this);
@@ -356,7 +356,7 @@ class MobileContainer extends Component {
 			loggedIn: this.props.loggedIn,
 			userName: this.props.userName
 		}
-		alert("in Header Mobile:"+JSON.stringify(this.state))
+		// alert("in Header Mobile:"+JSON.stringify(this.state))
 
 	this.handlerClick = this.handlerClick.bind(this);
 	//this.handlerLogoutClick = this.handlerLogoutClick.bind(this);
