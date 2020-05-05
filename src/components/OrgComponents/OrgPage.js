@@ -116,7 +116,12 @@ class OrgPage extends React.Component{
 				alert ("no data!")
 			else{
 				// alert("re: "+ res.data.org_name);
-				this.setState({ orgDetails: res.data, loadData:true });
+				// for(let i=0; i<10 ; i--); // await
+
+				this.setState({ orgDetails: res.data});
+				if(this.state.orgDetails != null)
+					this.setState({ loadData:true });
+
 				// alert("state " + this.state.orgDetails);
 				// alert(this.state.orgDetails.org_name);
 			}	

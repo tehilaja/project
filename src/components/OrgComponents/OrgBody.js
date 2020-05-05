@@ -550,16 +550,7 @@ class OrgBody extends React.Component {
 
                  {/* --------------- css --  */}
                 
-        
 
-               
-
-
-
-
-
-
-           
 
                 {/* //
                 <h3>{nameDonateThrough}</h3>

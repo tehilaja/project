@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import { Step, Segment, Image , Button, Grid,Form,Checkbox, Icon, Input, Label,Accordion, Message, Modal} from 'semantic-ui-react'
+import axios from "axios";
+
 // const Isemail = require('isemail');
 
 //  try to git
@@ -94,18 +96,47 @@ export default class Donate extends Component {
     handleChangeMail(e) {
         this.setState({dThrough: e.target.value});
     }
+
+    //~~~~~~~~~~~~~~~~~~~~~ donate proggress ~~~~~~~~~~~~
     // nextButton -> functionalety of donate proggress
     nextButton(e){
+        /*
+        TODO:
+        1. dont let a next button if all must field is empty
+
+        */
         // all require field is not empty (sumDonate)
-        if (this.state.sumDonate !== ''){
+        if (this.state.sumDonate !== '')
+        {
             alert("ok");
-
-
+            if(this.state.dThrough != null) 
+            { // ~~ check if the user in the system (and giv theier id)
+                // TODO:  check the email syntax
+                axios.get('/donate/findDThrouhUser/'+this.state.dThrough
+                ).then(res => 
+                {
+                    if (res.status >= 400) {
+                        throw new Error("Bad response from server");}
+                    else if (res === "not found" || res.data.user_id == undefined) // the data is not null
+                        {
+                            alert ("there are no user insystem!")
+                            this.setState({dThrough: null})
+                            // TODO: alert message in UI
+                        }
+                    else{ // give a id of the donate through
+                        alert("user_id: " + res.data.user_id)
+                        this.setState({ dThroughId: res.data });
+                        
+                    }	
+                }).catch(error=> {
+                    alert(error);
+                })
+            }
         }
         else
         {
-            alert(" not ok")
-            this.setState({showMessageReq : true});
+            alert(" not ok") // sun is empty
+            this.setState({showMessageReq : true, sumDonate: this.props.data.initialDonation} );
             // <Message
             //     error
             //     header='Action Forbidden'
