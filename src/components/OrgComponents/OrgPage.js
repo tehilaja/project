@@ -17,7 +17,7 @@ class OrgPage extends React.Component{
 		this.state = {
 			
 			loadData: false,
-			orgDetails: [],
+			orgDetails: null,
 
 			id: this.props.location.state.id,
 
@@ -117,10 +117,12 @@ class OrgPage extends React.Component{
 			else{
 				// alert("re: "+ res.data.org_name);
 				// for(let i=0; i<10 ; i--); // await
-
+				
 				this.setState({ orgDetails: res.data});
-				if(this.state.orgDetails != null)
-					this.setState({ loadData:true });
+				alert("res: " +res.min_donation)
+				// if(this.state.orgDetails != null)
+				// 	this.setState({ loadData:true });
+				// 	alert("state: "+ this.state.orgDetails.min_donation)
 
 				// alert("state " + this.state.orgDetails);
 				// alert(this.state.orgDetails.org_name);
@@ -202,7 +204,7 @@ class OrgPage extends React.Component{
 	render() {
 		if(!this.state.check_login_status)
 			return(<h1>loading...</h1>)
-		if (!this.state.loadData)
+		if (this.state.orgDetails == null)
 			return(<h1>not load data...</h1>)
 		return(
 			<div>
