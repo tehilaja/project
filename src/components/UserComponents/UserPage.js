@@ -12,12 +12,6 @@ import Footer from '../Footer.js';
 import AddPrize from '../NewOrgComponents/AddPrizes.js'
 import { Segment } from 'semantic-ui-react';
 
-const userLoginFile = require('../../cognito/user-login.service');
-const userParametersFile = require('../../cognito/user-parameters.service');
-const userLoginService = userLoginFile.data.userLoginService;
-const userParametersService = userParametersFile.data.userParametersService;
-
-
 class UserPage extends React.Component {
     constructor(props) {
         super(props)
@@ -34,10 +28,6 @@ class UserPage extends React.Component {
         }
         alert(JSON.stringify(this.state))
         this.function_log_status();
-//      userLoginService.authenticate('tehilaj97@gmail.com', '12345678');
-//      let params = [];
-//   userParametersService.getParameters(params);
-        //this.get_current_user();
         this.get_user_params();
 
     }

@@ -1,6 +1,10 @@
 import React, { Component } from 'react'
-import { Step, Segment, Image , Button, Grid,Form,Checkbox, Icon, Input, Label,Accordion} from 'semantic-ui-react'
+import { Step, Segment, Image , Button, Grid,Form,Checkbox, Icon, Input, Label,Accordion, Message, Modal} from 'semantic-ui-react'
+import axios from "axios";
 
+// const Isemail = require('isemail');
+
+//  try to git
 
 export default class Donate extends Component {
     constructor(props)
@@ -13,8 +17,14 @@ export default class Donate extends Component {
             divActivePayment: false,
             active: 'select Amount',
             sumDonate: this.props.data.initialDonation,
+            sumBtn: [10,20,30,40,50,100,200], // TODO : acordind min donation
+            dThrough: null, // email of came throw
+            showMessageReq: false,
 
-            sumBtn: [10,20,30,40,50,100,200] // TODO : acordind min donation
+
+            // set json to state
+            massageErrRequireFIeld: {},
+            data: []
 
             //
       
@@ -23,9 +33,16 @@ export default class Donate extends Component {
 
         //
         this.handleClickBtn = this.handleClickBtn.bind(this);
+
+        // handleChange (TODO - merge all)
         this.handleChange = this.handleChange.bind(this);
+        this.handleChangeMail = this.handleChangeMail.bind(this);
+        // next butten
+        this.nextButton = this.nextButton.bind(this);
 
         
+
+
 
 
     }
@@ -68,12 +85,73 @@ export default class Donate extends Component {
       }
     // TODO:
         // set completes - to steps
-
+    
+    // TODO
+    // לצרף את כל השינויים לפונ' אחת עם case
     handleChange(e) {
         this.setState({sumDonate: e.target.value});
     }
 
-  render() {
+    // change mail
+    handleChangeMail(e) {
+        this.setState({dThrough: e.target.value});
+    }
+
+    //~~~~~~~~~~~~~~~~~~~~~ donate proggress ~~~~~~~~~~~~
+    // nextButton -> functionalety of donate proggress
+    nextButton(e){
+        /*
+        TODO:
+        1. dont let a next button if all must field is empty
+
+        */
+        // all require field is not empty (sumDonate)
+        if (this.state.sumDonate !== '')
+        {
+            alert("ok");
+            if(this.state.dThrough != null) 
+            { // ~~ check if the user in the system (and giv theier id)
+                // TODO:  check the email syntax
+                axios.get('/donate/findDThrouhUser/'+this.state.dThrough
+                ).then(res => 
+                {
+                    if (res.status >= 400) {
+                        throw new Error("Bad response from server");}
+                    else if (res === "not found" || res.data.user_id == undefined) // the data is not null
+                        {
+                            alert ("there are no user insystem!")
+                            this.setState({dThrough: null})
+                            // TODO: alert message in UI
+                        }
+                    else{ // give a id of the donate through
+                        alert("user_id: " + res.data.user_id)
+                        this.setState({ dThroughId: res.data });
+                        
+                    }	
+                }).catch(error=> {
+                    alert(error);
+                })
+            }
+        }
+        else
+        {
+            alert(" not ok") // sun is empty
+            this.setState({showMessageReq : true, sumDonate: this.props.data.initialDonation} );
+            // <Message
+            //     error
+            //     header='Action Forbidden'
+            //     content='You must enter a sum of donation.'
+            // />
+        }
+    }
+    // set json to state
+    // this.setState({data: {"mail"}, });      
+
+
+
+ // ~~~~~~~~~~ render ~~~~~~~~~~~~~~~~~~~~~```
+  render() 
+  {
     const { active } = this.state
     const {completed} = this.state
     const styleBotton = {
@@ -153,7 +231,6 @@ export default class Donate extends Component {
                 <Grid>
                     <Grid.Row> 
                         <h4 style = {{marginLeft: '2em'}} >Donation amount (USD)</h4>
-                        
                     </Grid.Row>
                     <Grid.Row style ={{ paddingLeft: '4em'}}>
                         <Label style = {{backgroundColor: '#e6f2ff', fontSize: '14px'}}> 
@@ -165,6 +242,7 @@ export default class Donate extends Component {
                     
                         {/* <h3 style = {{textAlign: 'center'}}>select amount:</h3> */}
                         <div>
+                            {/* ~~ the sum buttons */}
                             {this.state.sumBtn.map(sums =>
                                 <Button inverted circular style = {styleBotton} key={sums} data-letter={sums} onClick={this.handleClickBtn}>
                                 {sums}
@@ -175,8 +253,8 @@ export default class Donate extends Component {
                     <Grid.Row style ={{paddingLeft: '10em'}}>
                         <div style ={{padding: '0.2em'}}>
                             {/* <label  > other: </label> */}
-                            {/*  amount */}
-                            <Input
+                            {/* ~~ amount */}
+                            <Input required
                                 action={{
                                 color: 'teal',
                                 labelPosition: 'left',
@@ -194,6 +272,13 @@ export default class Donate extends Component {
                                 onChange={this.handleChange}
 
                             />
+                            {this.state.sumDonate == '' &&
+                            <Message
+                                error
+                                header='Action Forbidden'
+                                content='You must enter a sum of donation.'
+                                />
+                            }
                             {/* <Input
                                 icon='tags'
                                 iconPosition='left'
@@ -213,11 +298,10 @@ export default class Donate extends Component {
                     <Grid.Row>  
                         <label style ={{paddingLeft: '5em' , color: '#20B2AA'}}>
                             _________________________________________________________</label>
-
                     </Grid.Row>  
                 </Grid>
 
-                {/* ---- form */}
+                {/* ~~ form */}
                 <Form style = {{paddingTop: '1.5em' , paddingLeft: '1.5em'}}>
                     {/* <Form.Input
                         width={4}
@@ -229,17 +313,28 @@ export default class Donate extends Component {
 						// onChange={this.handleChange.bind(this)}
 					/> */}
                     <Form.Input
-                            id='form-input-control-error-email'
+                            icon='mail'
+                            iconPosition='left'
+                            name = "dThrough"
+                            id='dedicationEmail'
                             placeholder='mail'
                             width ={4}
                             // control={Input}
                             label= 'Donate through:'
                             placeholder='joe@schmoe.com'
-                            error={{
-                                content: 'Please enter a valid email address',
-                                pointing: 'below',
-                            }}
+                            onChange = {this.handleChangeMail}
+                            // error={{
+                            //     content: 'Please enter a valid email address',
+                            //     pointing: 'below',
+                            // }}
                     />
+                    {/* // TODO */}
+                    {/* ~~ check if email is valid */}
+                    {/* { this.state.dThrough && 
+                        <div>{Isemail.validate(this.state.dThrough) &&
+                        <div>valid</div> }
+                        </div>
+                    } */}
                     <Form.Button content='check' />
 
                         
@@ -300,7 +395,7 @@ export default class Donate extends Component {
                                 
                                 ]
                             } */}
-                           
+                         {/* /// TODO ! toggel to show their namw */}
                         <Form.Input
                             width={4}
                             label= 'In Honor of:'
@@ -320,6 +415,7 @@ export default class Donate extends Component {
                         <Form.Field required>
                             < Checkbox label='I agree to the Terms and Conditions' />
                         </Form.Field>
+
                         <Button type='submit'>Submit</Button>
                     </Form>
                     {/* <Grid.Row>
@@ -368,16 +464,61 @@ export default class Donate extends Component {
 
         <div style ={{alignSelf: 'center'}}>
         <Button.Group >
-            <Button  disabled color='blue' icon labelPosition='left'>
-            <Icon name='left arrow' />
-                prev
-            </Button>
-            <Button color='blue' icon labelPosition='right'>
-                Next
-            <Icon name='right arrow' />
-            </Button>
+            <Button
+                name = 'btnNext'
+                disabled
+                color='blue'
+                labelPosition='left' 
+                icon='left arrow'
+                content='prev'
+            />
+            <Button
+                name = 'btnPrev'
+                color='blue'
+                labelPosition='right' 
+                icon='right arrow'
+                content='Next'
+                onClick = {this.nextButton}
+
+
+                // label={{ basic: true, color: 'blue', pointing: 'right', icon:'right arrow' }}
+                //  content: '2,048' }}
+            />
+
         </Button.Group>
         </div>
+        {/*  nassage of incoret value */}
+        {/* { this.state.showMessageReq && <Modal
+            trigger={this.nextButton}
+            header='Reminder!'
+            content='Call Benjamin regarding the reports.'
+            actions={['Snooze', { key: 'done', content: 'Done', positive: true }]}
+        />} */}
+
+        {/* <Modal
+            open={open}
+            closeOnEscape={closeOnEscape}
+            closeOnDimmerClick={closeOnDimmerClick}
+            onClose={this.close}
+            >
+            <Modal.Header>Delete Your Account</Modal.Header>
+            <Modal.Content>
+                <p>Are you sure you want to delete your account</p>
+            </Modal.Content>9
+            <Modal.Actions>
+                <Button onClick={this.close} negative>
+                No
+                </Button>
+                <Button
+                onClick-={this.close}
+                positive
+                labelPosition='right'
+                icon='checkmark'
+                content='Yes'
+                />
+            </Modal.Actions>
+        </Modal> */}
+
     </div>
     )
   }

@@ -4,19 +4,26 @@ const cognitoClient = require('./cognito_client');
 //  --- CHANGES
 // const cognitoClient = require('../project/cognito_client');
 
-const cognitoServiceFile = require('./src/cognito/cognito.service');
-const userRegistrationFile = require('./src/cognito/user-registration.service');
-const userLoginFile = require('./src/cognito/user-login.service');
-const userParametersFile = require('./src/cognito/user-parameters.service');
-const awsServiceFile = require('./src/cognito/aws.service');
+// const cognitoServiceFile = require('./src/cognito/cognito.service');
+// const userRegistrationFile = require('./src/cognito/user-registration.service');
+// const userLoginFile = require('./src/cognito/user-login.service');
+
+
+// ~~~~~~~~~~~ cognito ~~~~~~~~~~~~
+const cognitoServiceFile = require('./cognito/cognito.service');
+const userRegistrationFile = require('./cognito/user-registration.service');
+const userLoginFile = require('./cognito/user-login.service');
+const userParametersFile = require('./cognito/user-parameters.service');
+const awsServiceFile = require('./cognito/aws.service');
+
 const cognitoUtil = cognitoServiceFile.data.cognitoUtil;
 const userRestirationService = userRegistrationFile.data.userRegistrationService;
 const userLoginService = userLoginFile.data.userLoginService;
 const userParametersService = userParametersFile.data.userParametersService;
 const awsUtil = awsServiceFile.data.awsUtil;
-const reactor = require("./src/utilities/custom-event").data.reactor;
+const reactor = require("./utilities/custom-event").data.reactor;
 
-
+//~~~~~
 const express = require('express');
 const app = express(); //library to shorten http requests
 
@@ -28,12 +35,14 @@ var pic = "https://yad-sarah.net/wp-content/uploads/2019/04/logoys.png"
 //routering 
 //const Donate = require('./DonateServer.js');
 
-///maybe- check loopback?
 
+
+///maybe- check loopback?
 app.use(bodyParser.json({extended: false}))
 
 console.log("connected")
 
+//  ~~~~~~~~~~~~~~~~~~~~~~ DB ~~~~~~~~~~~~~~~~~~~
 const db = mysql.createConnection({
   host: 'localhost',
   user: 'root',
@@ -68,6 +77,88 @@ userLoginService.isAuthenticated(function(message, isLoggedIn) {
 // TODO: correct to /donate only!!!
 //app.use('/OrgPage/donate',Donate);   
 
+// ~~~~~~~~~~~~~~~ routering ~~~~~~~~~~~~
+// TODO: correct to /donate only!!!
+
+// app.use('/orgPage',OrgPage);   
+
+// -->  http://localhost:3000/donate
+
+
+// ~~~~~~~~~~ get org info ~~ (from: orgPage)
+// TODO: routering
+
+// @ ~~~~~~~~~~~~~~~~~ new 05.05.20 ~~~~~~~~~~~~
+
+// --/orgPage/:orgId 
+app.get('/orgPage/:orgId', (req, res,next)=> 
+{
+  try{
+    // TODO : try the db multi connection problem
+    // conectDb();
+    console.log("in /orgPage")
+    console.log("id: " + req.params.orgId)
+ 
+    const qO = `select * from Organization WHERE org_id="${req.params.orgId}"`;
+    console.log("query: " + qO);
+    db.query(qO, (err,result, fields) =>{
+      if(err) throw error;
+      if (result.length == 0 )
+        res.send("no data")
+      else{
+        console.log("res:  j" +JSON.stringify(result));
+        // console.log(result[0])
+        // console.log(result[0].min_donation)
+
+
+        // res.send(JSON.stringify(result));
+        res.send(result[0]);
+      }
+    });
+  }
+  catch(err){
+    console.log("erroe " + err.code);
+    res.end("err" , err.code);
+  }
+});
+
+
+// -- /donate/findDThrouhUser
+app.get('/donate/findDThrouhUser/:dUser', (req, res,next)=> 
+{
+  try
+  {
+    console.log("in donate/findDThrouhUser/:dUser")
+    const qDUser = `select user_id from users where email ="${req.params.dUser}"`;
+    console.log("query: \n" + qDUser + "\n");
+    db.query(qDUser, (err,result, fields) =>{
+    if(err) throw error;
+    if (result.length == 0)
+      res.send("no data")
+    else{
+      console.log("res:  " +result[0].user_id);
+      res.send(JSON.stringify(result[0]));
+    }
+    });
+  }
+  catch(err){
+    console.log("erroe " + err.code);
+    res.end("err" , err.code);
+  }
+});
+
+// @ ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+// -- userProfile 
+app.get('/userProfile ', function(req, res, next) {
+  db.query(`SELECT * FROM Users WHERE user_name="${my_user.user_id}"`, function (error, results, fields) {
+      if(error) throw error;
+      res.send(JSON.stringify(results));
+  });
+});
+
+
 
 //-~~~~~~~~~~~~~~~~~~ code ~~~~~~~~~~~~~~~~~~
 
@@ -92,6 +183,21 @@ try {
   // // TODO : login for this user     
   //
 });
+
+
+// @ check server connection
+app.get('/checkServer',function(req,res){
+  console.log("checkServer !!! ....");
+  try {
+    res.send("yes");
+  } catch (error) {
+    console.log("error: "+JSON.stringify(error));  
+    res.send("no")
+  }
+
+});
+
+
 
 //-----confirm registerd user ------
 app.post('/confirm_registerd_user', function(req,res){
@@ -221,7 +327,10 @@ app.get('/data', function(req, res, next) {
 app.get('/userProfile ', function(req, res, next) {
   db.query(`SELECT * FROM Users WHERE user_name="${my_user.user_id}"`, function (error, results, fields) {
       if(error) throw error;
+      // res.send(JSON.stringify(results));
       res.send(JSON.stringify(results));
+
+
   });
 });
 
@@ -233,7 +342,6 @@ app.get('/userProfile ', function(req, res, next) {
 //----------fetch organization data from data base-----------
 app.post('/fetch_org_data',(req, res)=>{
   console.log("fetch_org_data");
-
 
   // let {query} = await stripe.charges.create({
   //   amount: 2000,
