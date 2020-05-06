@@ -115,6 +115,7 @@ import LoginForm from './LoginForm.js';
 import UserRegistrationForm from './UserRegistrationForm.js';
 
 
+
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import {
@@ -208,9 +209,9 @@ class DesktopContainer extends React.Component
 	constructor(props){
 		super(props)
 		this.state = {
-			// loggedIn: this.props.data.loggedIn,
-			// userName: this.props.data.userName,
-			loggedIn: false,
+			// loggedIn: this.props.loggedIn,
+			// userName: this.props.userName,
+			loggedIn: true,
 			userName: "",
 			routeMain: false,
 			routeUserProfile: false, 

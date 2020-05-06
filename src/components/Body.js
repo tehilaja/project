@@ -32,6 +32,9 @@ import {
   } from 'semantic-ui-react'
 
 
+
+
+// let user;
 // class YourComponent extends React.Component {
 // 	constructor(props) {
 // 	  super(props);
@@ -65,7 +68,7 @@ import {
 //   }
 class Body extends React.Component
 {
-//-----------constructor----------------------
+	//-----------constructor----------------------
 	constructor(props)
 	{
 		super(props)
@@ -188,7 +191,6 @@ class Body extends React.Component
 //--------------render------------------------
 	render()
 	{
-
 		// **
 		// if (!this.state.isLoading) 
 		// {
@@ -253,20 +255,16 @@ class Body extends React.Component
 	//-----------return------------------------------
 		return(
 			<div>
-				<Segment style={{ padding: '8em 0em' }} vertical>
+			<Segment style={{ padding: '8em 0em' }} vertical>
 			<Grid container stackable verticalAlign='middle'>
 				<Grid.Row>
+				{/* <Grid.Column width={8}> */}
+					{/*putting organizations into home page:*/}
+					{/* <Carousel>{orgComponents}</Carousel> */}
+				{/* </Grid.Column> */}
 				<Grid.Column width={8}>
 					{/*putting organizations into home page:*/}
 					{orgComponents}
-					{/* <carousel /> */}
-					<Header as='h3' style={{ fontSize: '2em' }}>
-					We Make Bananas That Can Dance
-					</Header>
-					<p style={{ fontSize: '1.33em' }}>
-					Yes that's right, you thought it was the stuff of dreams, but even bananas can be
-					bioengineered.
-					</p>
 				</Grid.Column>
 				<Grid.Column floated='right' width={6}>
 				<Header as='h3' style={{ fontSize: '2em' }}>
@@ -287,7 +285,10 @@ class Body extends React.Component
 				</Grid.Row>
 				<Grid.Row>
 				<Grid.Column textAlign='center'>
-					<Button size='huge'>Check Them Out</Button>
+				<Header as='h3' style={{ fontSize: '2em' }}>
+					Create an account so you too can donate!
+					</Header>
+					<Icon size="huge" name='heart outline' />
 				</Grid.Column>
 				</Grid.Row>
 			</Grid>
@@ -298,7 +299,7 @@ class Body extends React.Component
 				<Grid.Row textAlign='center'>
 				<Grid.Column style={{ paddingBottom: '5em', paddingTop: '5em' }}>
 					<Header as='h3' style={{ fontSize: '2em' }}>
-					"What a Company"
+					"What an Organization"
 					</Header>
 					<p style={{ fontSize: '1.33em' }}>That is what they all say about us</p>
 				</Grid.Column>
@@ -307,7 +308,6 @@ class Body extends React.Component
 					"I shouldn't have gone with their competitor."
 					</Header>
 					<p style={{ fontSize: '1.33em' }}>
-					<Image avatar src='/images/avatar/large/nan.jpg' />
 					<b>Nan</b> Chief Fun Officer Acme Toys
 					</p>
 				</Grid.Column>
@@ -317,13 +317,11 @@ class Body extends React.Component
 			<Segment style={{ padding: '8em 0em' }} vertical>
 			<Container text>
 				<Header as='h3' style={{ fontSize: '2em' }}>
-				Breaking The Grid, Grabs Your Attention
+				Create an account!
 				</Header>
 				<p style={{ fontSize: '1.33em' }}>
-				Instead of focusing on content creation and hard work, we have learned how to master the
-				art of doing nothing by providing massive amounts of whitespace and generic content that
-				can seem massive, monolithic and worth your attention.
-				</p>
+					Yes that's right, you too can become a part of this wonderful community, helping to build something greater.
+					</p>
 				<Button as='a' size='large'>
 				Read More
 				</Button>
@@ -334,16 +332,15 @@ class Body extends React.Component
 				horizontal
 				style={{ margin: '3em 0em', textTransform: 'uppercase' }}
 				>
-				<a href='#'>Case Studies</a>
+				<a href='#'>Create a Platform</a>
 				</Divider>
 
 				<Header as='h3' style={{ fontSize: '2em' }}>
-				Did We Tell You About Our Bananas?
+				Just Sign Up
 				</Header>
 				<p style={{ fontSize: '1.33em' }}>
-				Yes I know you probably disregarded the earlier boasts as non-sequitur filler content, but
-				it's really true. It took years of gene splicing and combinatory DNA research, but our
-				bananas can really dance.
+				We will provide you with the design and software necessary to create an online platform for ongoing or one-time donations. 
+				All we left for you to do, is focus on content that will be appealing and attract your ongoing doners.
 				</p>
 				<Button as='a' size='large'>
 				I'm Still Quite Interested

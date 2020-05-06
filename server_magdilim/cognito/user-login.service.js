@@ -140,16 +140,16 @@ class UserLoginService {
             cognitoUser.getSession(function (err, session) {
                 if (err) {
                     console.log("UserLoginService: Couldn't get the session: " + err, err.stack);
-                    callback.isLoggedIn(err, false);
+                    callback(err, false);
                 }
                 else {
                     console.log("UserLoginService: Session is " + session.isValid());
-                    callback.isLoggedIn(err, session.isValid());
+                    callback(err, session.isValid());
                 }
             });
         } else {
             console.log("UserLoginService: can't retrieve the current user");
-            callback.isLoggedIn("Can't retrieve the CurrentUser", false);
+            callback("Can't retrieve the CurrentUser", false);
         }
     }
 }
