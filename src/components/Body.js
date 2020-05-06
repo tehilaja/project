@@ -5,10 +5,36 @@ import {Redirect} from "react-router-dom";
 import axios from "axios";
 import { async } from "q";
 
-import OrgCard from './organization/OrgCard.js'
-import orgData from './organization/orgData.js'
+import OrgCard from './OrgComponents/OrgCard.js'
+import orgData from './OrgComponents/orgData.js'
+
+import { Carousel } from 'react-responsive-carousel';
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 
+
+import {
+	Button,
+	Container,
+	Divider,
+	Grid,
+	Header,
+	Icon,
+	Image,
+	Label,
+	List,
+	Menu,
+	Responsive,
+	Segment,
+	Sidebar,
+	Step,
+	Visibility,
+  } from 'semantic-ui-react'
+
+
+
+
+// let user;
 // class YourComponent extends React.Component {
 // 	constructor(props) {
 // 	  super(props);
@@ -42,7 +68,7 @@ import orgData from './organization/orgData.js'
 //   }
 class Body extends React.Component
 {
-//-----------constructor----------------------
+	//-----------constructor----------------------
 	constructor(props)
 	{
 		super(props)
@@ -54,11 +80,12 @@ class Body extends React.Component
 			organizations: [],
 			clickOrg: false,
 
-
 			// **
 			isFetchingData: false,
-			data: null
+			data: null,
 			// id: "3"
+			routerCreateOrgPage: false
+
 		}
 		this.selectOrg = this.selectOrg.bind(this)
 		this.handleClick = this.handleClick.bind(this)
@@ -82,28 +109,12 @@ class Body extends React.Component
         }).catch(err => {
         console.log('caught it!',err);
         })
- 
-
-			// this.fetch_org_data()
-		//   this.setState({ isFetchingData: true });
-		//   apiCall().then((data) => {
-		// 	this.setState({
-		// 	  isFetchingData: true,
-		// 	  data
-		// 	});
-		//   });
 	}
 
 
 
 	//the function below has Server fetch data about organizations from datbase: 
 	// fetch_org_data(){
-
-
-
-
-
-
 	// (async ()=> {
 	// 	const response = await axios.post(
 	// 		'/fetch_org_data',
@@ -180,18 +191,47 @@ class Body extends React.Component
 //--------------render------------------------
 	render()
 	{
-
 		// **
 		// if (!this.state.isLoading) 
 		// {
 		// 	return <p>Loading data</p>;
 		// }
 
+
+		//redirecting to create organization page
+		//TODO: make sure the user is signed in! take care of other option!
+		if (this.state.routerCreateOrgPage === true){
+			return <Redirect to = {{
+				pathname: '/NewOrgPage',
+				state: {userName: this.state.userName, loggedIn: this.state.loggedIn}
+				// state: {userName: 'Tehila', loggedIn: true}
+			}} />
+		} 
+
 		const orgComponents = this.state.organizations.map(org =>{
 			return(
-				<OrgCard key={org.org_id} imgUrl={org.org_pic} name={org.org_name} id= {org.org_id} initialDonation= {org.min_donation}/>)
+				<OrgCard key={org.org_id} imgUrl={org.org_pic} name={org.org_name} id= {org.org_id} initialDonation= {org.min_donation} 
+					admin_name = {org.admin_name} field_of_acctivity = {org.field_of_acctivity} org_num = {org.org_num} description = {org.description}
+					working = {org.working} volunteers = {org.volunteers} friends = {org.friends}
+				/>)
+			// -- $$$$$$$ ---
 		})
+
+		// const carouselOrganizations = this.orgComponents.map(org =>{
+		// 	<Carousel>
+		// 	<div>
+		// 		org
+		// 	</div>
+		// </Carousel>
+		// })
 			
+		const settings = {
+			dots: true,
+			infinite: true,
+			speed: 500,
+			slidesToShow: 1,
+			slidesToScroll: 1
+		  };
 			 
 
 		// ---orgComponents (card)---
@@ -214,8 +254,98 @@ class Body extends React.Component
 	//-----------return------------------------------
 		return(
 			<div>
-				<myButton /> 
-				{orgComponents}
+			<Segment style={{ padding: '8em 0em' }} vertical>
+			<Grid container stackable verticalAlign='middle'>
+				<Grid.Row>
+				{/* <Grid.Column width={8}> */}
+					{/*putting organizations into home page:*/}
+					{/* <Carousel>{orgComponents}</Carousel> */}
+				{/* </Grid.Column> */}
+				<Grid.Column width={8}>
+					{/*putting organizations into home page:*/}
+					{orgComponents}
+				</Grid.Column>
+				<Grid.Column floated='right' width={6}>
+				<Header as='h3' style={{ fontSize: '2em' }}>
+					Create an online platform for ongoing donations
+					</Header>
+					<Label as='a' color='red' tag>
+				Create Your Own!
+				</Label>
+					<Image bordered rounded size='large' src='https://i.insider.com/5ab2a71c5851aebb008b46da?width=3100&format=jpeg&auto=webp' />
+					<Button primary size='huge' onClick ={() => this.setState(prevState => {
+						return {
+								routerCreateOrgPage: !prevState.routerCreateOrgPage
+							}})}>
+						Get Started
+						<Icon name='right arrow' />
+					</Button>
+				</Grid.Column>
+				</Grid.Row>
+				<Grid.Row>
+				<Grid.Column textAlign='center'>
+				<Header as='h3' style={{ fontSize: '2em' }}>
+					Create an account so you too can donate!
+					</Header>
+					<Icon size="huge" name='heart outline' />
+				</Grid.Column>
+				</Grid.Row>
+			</Grid>
+			</Segment>
+			
+			<Segment style={{ padding: '0em' }} vertical>
+			<Grid celled='internally' columns='equal' stackable>
+				<Grid.Row textAlign='center'>
+				<Grid.Column style={{ paddingBottom: '5em', paddingTop: '5em' }}>
+					<Header as='h3' style={{ fontSize: '2em' }}>
+					"What an Organization"
+					</Header>
+					<p style={{ fontSize: '1.33em' }}>That is what they all say about us</p>
+				</Grid.Column>
+				<Grid.Column style={{ paddingBottom: '5em', paddingTop: '5em' }}>
+					<Header as='h3' style={{ fontSize: '2em' }}>
+					"I shouldn't have gone with their competitor."
+					</Header>
+					<p style={{ fontSize: '1.33em' }}>
+					<b>Nan</b> Chief Fun Officer Acme Toys
+					</p>
+				</Grid.Column>
+				</Grid.Row>
+			</Grid>
+			</Segment>
+			<Segment style={{ padding: '8em 0em' }} vertical>
+			<Container text>
+				<Header as='h3' style={{ fontSize: '2em' }}>
+				Create an account!
+				</Header>
+				<p style={{ fontSize: '1.33em' }}>
+					Yes that's right, you too can become a part of this wonderful community, helping to build something greater.
+					</p>
+				<Button as='a' size='large'>
+				Read More
+				</Button>
+
+				<Divider
+				as='h4'
+				className='header'
+				horizontal
+				style={{ margin: '3em 0em', textTransform: 'uppercase' }}
+				>
+				<a href='#'>Create a Platform</a>
+				</Divider>
+
+				<Header as='h3' style={{ fontSize: '2em' }}>
+				Just Sign Up
+				</Header>
+				<p style={{ fontSize: '1.33em' }}>
+				We will provide you with the design and software necessary to create an online platform for ongoing or one-time donations. 
+				All we left for you to do, is focus on content that will be appealing and attract your ongoing doners.
+				</p>
+				<Button as='a' size='large'>
+				I'm Still Quite Interested
+				</Button>
+			</Container>
+			</Segment>
 			</div>
 		)
 	}

@@ -112,7 +112,8 @@
 import {Redirect} from "react-router-dom";
 
 import LoginForm from './LoginForm.js';
-import UserProfileForm from './UserProfileForm.js';
+import UserRegistrationForm from './UserRegistrationForm.js';
+
 
 
 import PropTypes from 'prop-types'
@@ -161,76 +162,83 @@ const style = {
  * such things.
  */
 const HomepageHeading = ({ mobile }) => (
-	<Container text>
-	  <Header
+<Container text>
+	<Header
 		as='h1'
 		content='MAGDILIM'
 		inverted
 		style={{
-		  fontSize: mobile ? '2em' : '4em',
-		  fontWeight: 'normal',
-		  marginBottom: 0,
-		  marginTop: mobile ? '1.5em' : '3em',
+			fontSize: mobile ? '2em' : '4em',
+			fontWeight: 'normal',
+			marginBottom: 0,
+			marginTop: mobile ? '1.5em' : '3em',
 		}}
-	  />
-	  <Header
+	/>
+	<Header
 		as='h2'
-		content='Multilevl crowd fundraising platform.'
+		content='Multilevel crowd fundraising platform.'
 		inverted
 		style={{
-		  fontSize: mobile ? '1.5em' : '1.7em',
-		  fontWeight: 'normal',
-		  marginTop: mobile ? '0.5em' : '1.5em',
+			fontSize: mobile ? '1.5em' : '1.7em',
+			fontWeight: 'normal',
+			marginTop: mobile ? '0.5em' : '1.5em',
 		}}
-	  />
-  
-  
-		  {/*responsive steps:*/}
-		  <Container style={style.last}>
-		  <Step.Group fluid>
-			<Step icon='user' title='Sign Up' description='Become a magdilim member' />
-			<Step icon='dollar' title='Donate' description='Choose and donate to organization' />
-			<Step
-				active
-			  icon='gift'
-			  title='Win a prize'
-			  description='Join the raffles'
-			/>
-		  </Step.Group>
-		</Container>
-  
+	/>
+	{/*responsive steps:*/}
+	<Container style={style.last}>
+	<Step.Group fluid>
+	<Step icon='user' title='Sign Up' description='Become a magdilim member' />
+	<Step icon='dollar' title='Donate' description='Choose and donate to organization' />
+	<Step
+		active
+		icon='gift'
+		title='Win a prize'
+		description='Join the raffles'
+	/>
+	</Step.Group>
 	</Container>
-  )
+</Container>
+)
 
   HomepageHeading.propTypes = {
 	mobile: PropTypes.bool,
   }
 
-class HeaderOrg extends React.Component 
+class DesktopContainer extends React.Component 
 {
 	constructor(props){
 		super(props)
 		this.state = {
+			// loggedIn: this.props.loggedIn,
+			// userName: this.props.userName,
+			loggedIn: true,
+			userName: "",
 			routeMain: false,
-			loggedIn: this.props.data.loggedIn,
-			userName: this.props.data.userName
+			routeUserProfile: false, 
+			routeOrgSearch: false,
+			routePrizes: false
 		}
+		// alert("in Header Desktop:"+JSON.stringify(this.state))
+
 	this.handlerClick = this.handlerClick.bind(this);
 	//this.handlerLogoutClick = this.handlerLogoutClick.bind(this);
 	}
 
-		handlerClick(user_name) {
+	handlerClick(userName) {
         this.setState({
 			loggedIn: true,
-			userName: user_name
+			userName: userName
 		});
-		this.props.record(user_name)
+		//this.props.record(userName)
 	}
 
 	hideFixedMenu = () => this.setState({ fixed: false })
 	showFixedMenu = () => this.setState({ fixed: true })
 	  
 render() {
+	// alert("in desktop render:"+ JSON.stringify(this.state))
+	const { children } = this.props
+    const { fixed } = this.state
 
 	//redirecting to Home
 	if (this.state.routeMain === true){
@@ -240,9 +248,28 @@ render() {
 		}} />
 	} 
 
+	//redirecting to User Profile ToDo: route to corect page!
+	if (this.state.routeUserProfile === true){
+		return <Redirect to = {{
+			pathname: '/UserPage',
+			state: {userName: this.state.userName, loggedIn: this.state.loggedIn}
+		}} />
+	} 
 
-	const { children } = this.props
-	const { fixed } = this.state
+	//redirecting to Prizes
+	if (this.state.routePrizes === true){
+		return <Redirect to = {{
+			pathname: '/Prizes',
+			state: {userName: this.state.userName, loggedIn: this.state.loggedIn}
+		}} />
+	} 
+		//redirecting to OrgSearch page
+		if (this.state.routeOrgSearch === true){
+			return <Redirect to = {{
+				pathname: '/OrgSearch',
+				state: {userName: this.state.userName, loggedIn: this.state.loggedIn}
+			}} />
+		} 
 	
   return (
 	<Responsive getWidth={getWidth} minWidth={Responsive.onlyTablet.minWidth}>
@@ -269,14 +296,27 @@ render() {
 				  return {
 						routeMain: !prevState.routeMain
 					}})}>
-				Home
+					Home
 			  </Menu.Item>
-			  <Menu.Item as='a'>Organizations</Menu.Item>
-			  <Menu.Item as='a'>Prizes</Menu.Item>
+			  <Menu.Item as='a' onClick ={() => this.setState(prevState => {
+				  return {
+						routeOrgSearch: !prevState.routeOrgSearch
+					}})}>Organizations</Menu.Item>
+			  <Menu.Item as='a' onClick ={() => this.setState(prevState => {
+				  return {
+						routePrizes: !prevState.routePrizes
+					}})}>Prizes</Menu.Item>
+			  {this.state.loggedIn &&
+			  <Menu.Item as='a' active onClick ={() => this.setState(prevState => {
+				  return {
+						routeUserProfile: !prevState.routeUserProfile
+					}})}>
+					My Profile
+				</Menu.Item>}
 			  <Menu.Item position='right'>
-			  {this.state.showLogin && <LoginForm record={this.handlerClick}/>}
-                {this.state.showUser && <UserProfileForm />}
-				{!this.state.showLogin && !this.state.showUser &&
+			  {this.state.showLogin && <LoginForm record={this.handlerClick} data={{userName:this.state.userName, loggedIn:this.state.loggedIn}}/>}
+                {this.state.showUser && <UserRegistrationForm record={this.handlerClick} data={{userName:this.state.userName, loggedIn:this.state.loggedIn}}/>}
+				{!this.state.loggedIn &&
 				<div>
 				<Button as='a' inverted={!fixed} onClick={() => this.setState({showLogin: true, showUser: false, showBackButton: true})}>
 				  Log in
@@ -298,7 +338,145 @@ render() {
 
 	  {children}
 	</Responsive>
-  )}
+  )
+}
 }
 
-export default HeaderOrg;
+DesktopContainer.propTypes = {
+	children: PropTypes.node,
+}
+
+class MobileContainer extends Component {
+	constructor(props){
+		super(props)
+		this.state = {
+			routeMain: false,
+			routeUserProfile: false,
+			routeOrgSearch: false,
+			routePrizes: false,
+			loggedIn: this.props.loggedIn,
+			userName: this.props.userName
+		}
+		// alert("in Header Mobile:"+JSON.stringify(this.state))
+
+	this.handlerClick = this.handlerClick.bind(this);
+	//this.handlerLogoutClick = this.handlerLogoutClick.bind(this);
+	}
+
+	handlerClick(userName) {
+        this.setState({
+			loggedIn: true,
+			userName: userName
+		});
+		// this.props.record(userName)
+	}
+  
+	handleSidebarHide = () => this.setState({ sidebarOpened: false })
+  
+	handleToggle = () => this.setState({ sidebarOpened: true })
+  
+	render() {
+	  const { children } = this.props
+	  const { sidebarOpened } = this.state
+  
+	  return (
+		<Responsive
+		  as={Sidebar.Pushable}
+		  getWidth={getWidth}
+		  maxWidth={Responsive.onlyMobile.maxWidth}
+		>
+		  <Sidebar
+			as={Menu}
+			animation='push'
+			inverted
+			onHide={this.handleSidebarHide}
+			vertical
+			visible={sidebarOpened}
+		  >
+			<Menu.Item as='a' active>
+			  Home
+			</Menu.Item>
+			<Menu.Item as='a'>Organizations</Menu.Item>
+			<Menu.Item as='a'>Prizes</Menu.Item>
+			{!this.state.loggedIn && <div>
+			<Menu.Item as='a' onClick={() => this.setState({showLogin: true, showUser: false, showBackButton: true})}>Log in</Menu.Item> 
+			<Menu.Item as='a' onClick={() => this.setState({showLogin: false, showUser: true, showBackButton: true})}>Sign Up</Menu.Item>
+			</div>}
+			{this.state.loggedIn && <Menu.Item as='a' onClick={() => this.setState({showLogin: true, showUser: false, showBackButton: true})}>
+				  Log out
+				</Menu.Item>}
+
+			{/* allow showing profile only when signed in */}
+			{this.state.loggedIn && <Menu.Item as='a' active onClick ={() => this.setState(prevState => {
+				  return {
+						routeUserProfile: !prevState.routeUserProfile
+					}})}>
+					My Profile
+			</Menu.Item>}
+		  </Sidebar>
+  
+		  <Sidebar.Pusher dimmed={sidebarOpened}>
+			<Segment
+			  inverted
+			  textAlign='center'
+			  style={{ minHeight: 350, padding: '1em 0em' }}
+			  vertical
+			>
+			  <Container>
+				<Menu inverted pointing secondary size='large'>
+				  <Menu.Item onClick={this.handleToggle}>
+					<Icon name='sidebar' />
+				  </Menu.Item>
+				  <Menu.Item position='right'>
+				  {this.state.showLogin && <LoginForm record={this.handlerClick} data={{userName:this.state.userName, loggedIn:this.state.loggedIn}}/>}
+                {this.state.showUser && <UserRegistrationForm record={this.handlerClick} data={{userName:this.state.userName, loggedIn:this.state.loggedIn}}/>}
+				{!this.state.loggedIn &&
+				<div>
+				<Button as='a' onClick={() => this.setState({showLogin: true, showUser: false, showBackButton: true})}>
+				  Log in
+				</Button>
+				<Button as='a' style={{ marginLeft: '0.5em' }} onClick={() => this.setState({showLogin: false, showUser: true, showBackButton: true})}>
+				  Sign Up
+				</Button>
+				</div>}
+				{this.state.showBackButton && <button name = "btnBack" onClick={() => this.setState({showLogin: false, showUser: false, showBackButton: false})}>close</button>}
+				{this.state.loggedIn && <Button as='a' onClick={() => this.setState({showLogin: true, showUser: false, showBackButton: true})}>
+				  Log out
+				</Button>}
+				  </Menu.Item>
+				</Menu>
+			  </Container>
+			  <HomepageHeading mobile />
+			</Segment>
+  
+			{children}
+		  </Sidebar.Pusher>
+		</Responsive>
+	  )
+	}
+  }
+  
+  MobileContainer.propTypes = {
+	children: PropTypes.node,
+  }
+  
+  const ResponsiveContainer = ({ children } ) => (
+	<div>
+	  <DesktopContainer>{children}</DesktopContainer>
+	  <MobileContainer>{children}</MobileContainer>
+	</div>
+  )
+  
+  ResponsiveContainer.propTypes = {
+	children: PropTypes.node,
+  }
+
+  const HeaderLayout = () => (
+	<ResponsiveContainer>
+	</ResponsiveContainer>
+  )
+  
+  export default HeaderLayout;
+  
+
+// export default DesktopContainer;

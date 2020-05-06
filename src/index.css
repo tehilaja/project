@@ -13,11 +13,6 @@ body {
   
       padding-top: 5px;;
   }
-  .headerOrg {
-      background-color: rgb(175, 156, 156);
-      height: 60px;
-      padding: 5px;
-    }
   .btnRenderingToOrgPage{
       padding: 10px;
       margin: 15px;

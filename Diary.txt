@@ -3,7 +3,7 @@ Tehila Jacobs and Avital Spector
 Magdilim
 
 30/3/2019 
-meeting with client who discussed his idea of this project
+meeting with client who disccused his idea of this project
 
 05/05/2019-12/06/2019
 working on researching different option for languages of development. working on porposal form for project.
@@ -14,13 +14,7 @@ Meeting with Eli Issac to disscuss our research on different development options
 12/06/2019
 meeting with Eli Issac to go over the proposal form
 
-/**************learning react**************/
-Sep 12, 2019
-finding info on react
-
-Oct 23, 2019
-short meeting (14:00-16:00)
-finding info on react
+/*************learning react**************/
 
 Oct 30, 2019 
 first and very basic react app
@@ -118,9 +112,79 @@ Using one login in Server and using it from all different pages. Synchronization
 using flags to get over the problems that accured.
 
 Jan 25th, 2020
-Server getting the information on the main home page from the DataBAse instead of file.
+Server getting the information on the main home page from the DataBase instead of file.
 working on the video for Alpha. 
 
 Jan 26th, 2020
 adding features to code, organizing everthing to give in for Alpha.
 recording the Prototype.
+
+/************************Server*********************/
+18/4/2020 22:15 - 00:15 
+reorganizing code comparing 
+google cloud / aws - creating account
+fixing a few bugs in server that appeared as a result of fixing the DB
+making plans for the next day
+
+19/4/2020 11:00-12:00 
+planning how to continue with project over next fiew days
+
+20/04/202012:15 -12:45 
+zoom meeting with Eli Issac, 
+reflecting in on Alpha
+13:30 -  15:45 starting integration with cognito.
+creating cognito account and integrating code for login and signin
+
+21/4/2020 13:00 - 16:00 
+finish setting up cognito account
+working on configuration
+trying to figure out what the errors are with signing up a new user
+17:00 - 21:00 using semantic-ui library and working on design
+
+22/4/2020 13:30-16:00
+still working to set up cognito - didn't work 
+
+25/4/2020 21:25 - 1:30 
+setting up cognito
+checking if typescript can be used in react
+
+26/4/2020 12:00-14:00
+working on user profile page
+a few more hours:
+react-avatar showing initials of user, finding different react tree option
+
+27/04/2020
+working on cognito
+trying to find carouselversion that will work on react cards...
+
+28/04/2020
+פונקציונליות תרומה - מעבר בין השלבים + שינויים בדף הגוף
+organizing components and code
+creating user page
+creating page for new organization
+routing between the different pages
+
+29/04/2020
+המשך עבוה על דף התרומה
+13:30
+carousel
+display tree of donators
+display a gallery
+
+30/04/2020
+looking into software to deal with credit card transactions
+Stripe: *work in israel?*
+BlueSnap: *is it secure? cheep?*
+Square: *work in israel?*
+Tranzila:
+making plans for code:
+**fix header not supported by the mobile display option**
+
+1/5/2020 
+9:00 - 16:30
+trying to deal with errors in connecting server to get current user
+dealing with header components throwing error not able to get state
+creating page for organization and for prizes - routing the pages.
+
+2/5/2020 21:30 - 2:00
+working on setting up redux to manage users

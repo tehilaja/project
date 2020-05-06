@@ -1,14 +1,32 @@
 //import { signInButton, registerButton } from '../project-master/src/Clients/cognito_client';
-const cognitoClient = require('../magdilim/cognito_client');
+const cognitoClient = require('./cognito_client');
+
+//  --- CHANGES
+// const cognitoClient = require('../project/cognito_client');
+
+const cognitoServiceFile = require('./src/cognito/cognito.service');
+const userRegistrationFile = require('./src/cognito/user-registration.service');
+const userLoginFile = require('./src/cognito/user-login.service');
+const userParametersFile = require('./src/cognito/user-parameters.service');
+const awsServiceFile = require('./src/cognito/aws.service');
+const cognitoUtil = cognitoServiceFile.data.cognitoUtil;
+const userRestirationService = userRegistrationFile.data.userRegistrationService;
+const userLoginService = userLoginFile.data.userLoginService;
+const userParametersService = userParametersFile.data.userParametersService;
+const awsUtil = awsServiceFile.data.awsUtil;
+const reactor = require("./src/utilities/custom-event").data.reactor;
+
 
 const express = require('express');
+const app = express(); //library to shorten http requests
+
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
-const app = express(); //library to shorten http requests
 var my_user = null
 var pic = "https://yad-sarah.net/wp-content/uploads/2019/04/logoys.png"
 
-
+//routering 
+//const Donate = require('./DonateServer.js');
 
 ///maybe- check loopback?
 
@@ -31,22 +49,39 @@ db.connect((err)=>{
   console.log('mysql connected...');
 });
 
+userLoginService.isAuthenticated(function(message, isLoggedIn) {
+  console.log("AppComponent: the user is authenticated: " + isLoggedIn);
+  cognitoUtil.getIdToken({
+      callback() {
+
+      },
+      callbackWithParam(token) {
+          // Include the passed-in callback here as well so that it's executed downstream
+          console.log("AppComponent: calling initAwsService in callback")
+          awsUtil.initAwsService(null, isLoggedIn, token);
+      }
+  });
+})
+
+
+// ~~~~~~~~~~~~~~~ routering ~~~~~~~~~~~~
+// TODO: correct to /donate only!!!
+//app.use('/OrgPage/donate',Donate);   
 
 
 //-~~~~~~~~~~~~~~~~~~ code ~~~~~~~~~~~~~~~~~~
 
 //-----add user ------
 app.post('/add_user', function(req,res){
-console.log("start signup");
+console.log("start signup....");
 try {
-  cognitoClient.registerButton(req.body.user_name, req.body.pswd);
+  const response = userRestirationService.register(req.body.user);
+  // res.send(response);
+  res.send("success");
 } catch (error) {
-  console.log(JSON.stringify(error));  
+  console.log("error: "+JSON.stringify(error));  
 }
   
-
-  // //todo- make sure email and user_name dosent exists.
-  // console.log("req",req.body);
   // // * change
   // let sql1 = `INSERT INTO Users ( user_name, first_name, last_name, pswd, email, credit_info_id, is_admin) VALUES ("${req.body.user_name}", "${req.body.first_name}", "${req.body.last_name}" ,"${req.body.pswd}", "${req.body.email}", 1, ${req.body.is_admin});`
   // console.log("quert is",sql1,"\n");
@@ -54,13 +89,31 @@ try {
   // console.log("in add_user")
   // res.send("added succesfully!") //response
 
-  // // TODO : login for this user 
+  // // TODO : login for this user     
+  //
 });
+
+//-----confirm registerd user ------
+app.post('/confirm_registerd_user', function(req,res){
+  console.log("start confirmation....");
+  try {
+    const response = userRestirationService.confirmRegistration(req.body.user_name, req.body.confirmation_code);
+    res.send("confirmed");
+  } catch (error) {
+    console.log("error: "+JSON.stringify(error));  
+  }
+});
+
 
 //-------login --------
 app.post('/login',(req, res)=>{
-  alert(1)
-  cognitoClient.signInButton(req.body.userName, req.body.pswd);
+  try {
+    const response = userLoginService.authenticate(req.body.userName, req.body.pswd);
+    console.log("in server log in success")
+    res.send("loggedIn");
+  } catch (error) {
+    console.log("error: "+JSON.stringify(error));  
+  }
   // console.log("login");
   // let query = `SELECT * FROM Users WHERE user_name="${req.body.userName}"`
   // db.query(query,(err,result,fields)=>{
@@ -96,6 +149,20 @@ app.post('/is_logged_in', function(req,res){
     console.log("in is logged. my_user: " + my_user.user_name)
     res.end(my_user.user_name)
   }
+});
+
+//---------------get user params--------------
+app.post('/get_user_params',function(req,res){
+  console.log("start server get user params");
+  let params = [];
+  userParametersService.getParameters(params);
+  //while(!params.length);
+
+  reactor.registerEvent('got_user_params');
+  reactor.addEventListener('got_user_params', function() {
+    res.send(params);
+  });
+   
 });
 
 //-------donation ----
@@ -151,8 +218,8 @@ app.get('/data', function(req, res, next) {
   });
 });
 
-// -- userProfile 
-app.get('/userProfile ', function(req, res, next) {
+// -- userProfile 
+app.get('/userProfile ', function(req, res, next) {
   db.query(`SELECT * FROM Users WHERE user_name="${my_user.user_id}"`, function (error, results, fields) {
       if(error) throw error;
       res.send(JSON.stringify(results));
