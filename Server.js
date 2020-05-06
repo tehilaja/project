@@ -134,10 +134,9 @@ app.post('/login',(req, res)=>{
 })
 
 //------------logout----------
-app.post('/logout', function(req,res){
-  my_user = null;
-  console.log("in logout")
-  res.send("logged out")
+app.post('/logout', function(req,res) {
+  userLoginService.logout();
+  res.send("logged out");
 });
 
 
