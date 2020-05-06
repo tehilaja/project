@@ -9,6 +9,8 @@ import Header from '../Header.js';
 import UserPageBody from './UserPageBody.js';
 import Footer from '../Footer.js';
 
+import AddPrize from '../NewOrgComponents/AddPrizes.js'
+import { Segment } from 'semantic-ui-react';
 
 const userLoginFile = require('../../cognito/user-login.service');
 const userParametersFile = require('../../cognito/user-parameters.service');
@@ -28,6 +30,7 @@ class UserPage extends React.Component {
             last_name: "",
             email: "",
             phone: "",
+            userIsAdmin: false
         }
         alert(JSON.stringify(this.state))
         this.function_log_status();
@@ -148,6 +151,9 @@ class UserPage extends React.Component {
                 <Header data={{ loggedIn: this.state.loggedIn, userName: this.state.email }} />
                 <UserPageBody
                     data={this.state} />
+                    {this.state.userIsAdmin && <Segment relaxed='very'>
+                    <AddPrize />
+                    </Segment>}
                 <Footer />
             </div>
         )
