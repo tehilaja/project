@@ -257,11 +257,13 @@ class Body extends React.Component
 			<Segment style={{ padding: '8em 0em' }} vertical>
 			<Grid container stackable verticalAlign='middle'>
 				<Grid.Row>
+				{/* <Grid.Column width={8}> */}
+					{/*putting organizations into home page:*/}
+					{/* <Carousel>{orgComponents}</Carousel> */}
+				{/* </Grid.Column> */}
 				<Grid.Column width={8}>
-				{/* <h1>Hi {useSelector(state => state.authentication.user).firstName}!</h1> */}
 					{/*putting organizations into home page:*/}
 					{orgComponents}
-					{/* <carousel /> */}
 				</Grid.Column>
 				<Grid.Column floated='right' width={6}>
 				<Header as='h3' style={{ fontSize: '2em' }}>

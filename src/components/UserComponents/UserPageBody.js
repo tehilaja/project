@@ -62,8 +62,8 @@ constructor(props)
     this.state = 
     {
         loggedIn: this.props.data.loggedIn, 
-		// userName: this.props.data.userName,
-		userName: 'Tehila Jacobs', 
+		userName: this.props.data.userName,
+		// userName: 'Tehila Jacobs', 
         organizations: [],
         clickOrg: false,
 
@@ -72,7 +72,8 @@ constructor(props)
         data: null
         // id: "3"
     }
-    this.handleClick = this.handleClick.bind(this)
+	this.handleClick = this.handleClick.bind(this)
+	alert("user page body: " + JSON.stringify(this.state))
     // this.fetch_org_data = this.fetch_org_data.bind(this)
 }
 

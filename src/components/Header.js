@@ -209,9 +209,9 @@ class DesktopContainer extends React.Component
 	constructor(props){
 		super(props)
 		this.state = {
-			// loggedIn: this.props.data.loggedIn,
-			// userName: this.props.data.userName,
-			loggedIn: false,
+			// loggedIn: this.props.loggedIn,
+			// userName: this.props.userName,
+			loggedIn: true,
 			userName: "",
 			routeMain: false,
 			routeUserProfile: false, 

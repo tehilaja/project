@@ -63,7 +63,7 @@ class UserPage extends React.Component {
                     email: email,
                     phone: phone,
                 });
-                alert("my state:\n" + JSON.stringify(this.state));
+                alert("my state in user page:\n" + JSON.stringify(this.state));
             } else {
                 this.setState({
                     loggedIn: false,
@@ -145,7 +145,7 @@ class UserPage extends React.Component {
         return (
             <div>
                 {/* <Header data={{loggedIn: this.state.loggedIn, userName: this.state.userName}}/> */}
-                <Header data={{ loggedIn: this.state.loggedIn, userName: this.state.first_name }} />
+                <Header data={{ loggedIn: this.state.loggedIn, userName: this.state.email }} />
                 <UserPageBody
                     data={this.state} />
                 <Footer />
