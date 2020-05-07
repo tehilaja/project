@@ -23,7 +23,9 @@ export default class Donate extends Component {
             showMessageReq: false,
 
 
-            sumBtn: [10,20,30,40,50,100,200] // TODO : acordind min donation
+            // set json to state
+            massageErrRequireFIeld: {},
+            data: []
 
             //
 
@@ -32,7 +34,14 @@ export default class Donate extends Component {
 
         //
         this.handleClickBtn = this.handleClickBtn.bind(this);
+
+        // handleChange (TODO - merge all)
         this.handleChange = this.handleChange.bind(this);
+        this.handleChangeMail = this.handleChangeMail.bind(this);
+        // next butten
+        this.nextButton = this.nextButton.bind(this);
+
+
 
 
 
@@ -75,6 +84,7 @@ export default class Donate extends Component {
         });
     }
     // TODO:
+
     // set completes - to steps
 
     // TODO
@@ -85,8 +95,75 @@ export default class Donate extends Component {
 
     // change mail
     handleChangeMail(e) {
-        this.setState({ dThrough: e.target.value });
+
+        this.setState({dThrough: e.target.value});
     }
+
+    //~~~~~~~~~~~~~~~~~~~~~ donate proggress ~~~~~~~~~~~~
+    // nextButton -> functionalety of donate proggress
+    nextButton(e){
+        /*
+        TODO:
+        1. dont let a next button if all must field is empty
+
+        */
+        // all require field is not empty (sumDonate)
+        if (this.state.sumDonate !== '')
+        {
+            alert("ok");
+            if(this.state.dThrough != null) 
+            { // ~~ check if the user in the system (and giv theier id)
+                // TODO:  check the email syntax
+                axios.get('/donate/findDThrouhUser/'+this.state.dThrough
+                ).then(res => 
+                {
+                    if (res.status >= 400) {
+                        throw new Error("Bad response from server");}
+                    else if (res === "not found" || res.data.user_id == undefined) // the data is not null
+                        {
+                            alert ("there are no user insystem!")
+                            this.setState({dThrough: null})
+                            // TODO: alert message in UI
+                        }
+                    else{ // give a id of the donate through
+                        alert("user_id: " + res.data.user_id)
+                        this.setState({ dThroughId: res.data });
+                        
+                    }	
+                }).catch(error=> {
+                    alert(error);
+                })
+            }
+        }
+        else
+        {
+            alert(" not ok") // sun is empty
+            this.setState({showMessageReq : true, sumDonate: this.props.data.initialDonation} );
+            // <Message
+            //     error
+            //     header='Action Forbidden'
+            //     content='You must enter a sum of donation.'
+            // />
+        }
+    }
+    // set json to state
+    // this.setState({data: {"mail"}, });      
+
+
+
+ // ~~~~~~~~~~ render ~~~~~~~~~~~~~~~~~~~~~```
+  render() 
+  {
+    const { active } = this.state
+    const {completed} = this.state
+    const styleBotton = {
+        margin: '1em',
+        // width: '5em',
+        // higte:'5em' 
+        // width: '20%',
+        // hight: '20%',
+        backgroundColor:'#20B2AA',
+
 
     createPayPalSubscriptionButton(vault) {
 
@@ -252,64 +329,63 @@ export default class Donate extends Component {
                 <div></div>
             <Image src='https://react.semantic-ui.com/images/wireframe/paragraph.png' />
             </Segment> */}
-
-
-                {/* divActiveDonation */}
-                {this.state.coreStep === 1 &&
-                    // {this.state.divActiveDonation && 
-                    <Segment >
-                        <Grid>
-                            <Grid.Row>
-                                <h4 style={{ marginLeft: '2em' }} >Donation amount (USD)</h4>
-                            </Grid.Row>
-                            <Grid.Row style={{ paddingLeft: '4em' }}>
-                                <Label style={{ backgroundColor: '#e6f2ff', fontSize: '14px' }}>
-                                    <Icon name='hand point right' /> Select an amount or type another amount
+          
+        {/* divActiveDonation */}
+        {this.state.coreStep === 1 && 
+        // {this.state.divActiveDonation && 
+            <Segment >
+                <Grid>
+                    <Grid.Row> 
+                        <h4 style = {{marginLeft: '2em'}} >Donation amount (USD)</h4>
+                    </Grid.Row>
+                    <Grid.Row style ={{ paddingLeft: '4em'}}>
+                        <Label style = {{backgroundColor: '#e6f2ff', fontSize: '14px'}}> 
+                            <Icon name='hand point right' /> Select an amount or type another amount
                         </Label>
-                            </Grid.Row>
+                    </Grid.Row>
 
-                            <Grid.Row>
+                    <Grid.Row>
+                    
+                        {/* <h3 style = {{textAlign: 'center'}}>select amount:</h3> */}
+                        <div>
+                            {/* ~~ the sum buttons */}
+                            {this.state.sumBtn.map(sums =>
+                                <Button inverted circular style = {styleBotton} key={sums} data-letter={sums} onClick={this.handleClickBtn}>
+                                {sums}
+                                </Button>
+                            )}
+                        </div>
+                    </Grid.Row>
+                    <Grid.Row style ={{paddingLeft: '10em'}}>
+                        <div style ={{padding: '0.2em'}}>
+                            {/* <label  > other: </label> */}
+                            {/* ~~ amount */}
+                            <Input required
+                                action={{
+                                color: 'teal',
+                                labelPosition: 'left',
+                                icon: 'eraser',
+                                content: 'clear',
+                                widths: '2em',
+                                onClick: () => {this.setState({ sumDonate: ''})}
+                                }}
+                                actionPosition='left'
+                                label={{ tag: true, content: 'your donation' }}
+                                labelPosition='right'
+                                placeholder={this.state.sumDonate}
+                                defaultValue={this.state.sumDonate}
+                                value={this.state.sumDonate}
+                                onChange={this.handleChange}
 
-                                {/* <h3 style = {{textAlign: 'center'}}>select amount:</h3> */}
-                                <div>
-                                    {/* ~~ the sum buttons */}
-                                    {this.state.sumBtn.map(sums =>
-                                        <Button inverted circular style={styleBotton} key={sums} data-letter={sums} onClick={this.handleClickBtn}>
-                                            {sums}
-                                        </Button>
-                                    )}
-                                </div>
-                            </Grid.Row>
-                            <Grid.Row style={{ paddingLeft: '10em' }}>
-                                <div style={{ padding: '0.2em' }}>
-                                    {/* <label  > other: </label> */}
-                                    {/* ~~ amount */}
-                                    <Input required
-                                        action={{
-                                            color: 'teal',
-                                            labelPosition: 'left',
-                                            icon: 'eraser',
-                                            content: 'clear',
-                                            widths: '2em',
-                                            onClick: () => { this.setState({ sumDonate: '' }) }
-                                        }}
-                                        actionPosition='left'
-                                        label={{ tag: true, content: 'your donation' }}
-                                        labelPosition='right'
-                                        placeholder={this.state.sumDonate}
-                                        defaultValue={this.state.sumDonate}
-                                        value={this.state.sumDonate}
-                                        onChange={this.handleChange}
-
-                                    />
-                                    {this.state.sumDonate == '' &&
-                                        <Message
-                                            error
-                                            header='Action Forbidden'
-                                            content='You must enter a sum of donation.'
-                                        />
-                                    }
-                                    {/* <Input
+                            />
+                            {this.state.sumDonate == '' &&
+                            <Message
+                                error
+                                header='Action Forbidden'
+                                content='You must enter a sum of donation.'
+                                />
+                            }
+                            {/* <Input
                                 icon='tags'
                                 iconPosition='left'
                                 label={{ tag: true, content: 'Add Tag' }}
@@ -317,23 +393,23 @@ export default class Donate extends Component {
                                 placeholder='Enter tags'
                             /> */}
 
-                                    {/* <input value={this.state.sumDonate} style = {{textAlign: 'center'}} onChange={this.handleChange} /> */}
-                                    {/* <label> USD</label> */}
-                                </div>
+                            {/* <input value={this.state.sumDonate} style = {{textAlign: 'center'}} onChange={this.handleChange} /> */}
+                            {/* <label> USD</label> */}
+                        </div>
+                        
+                    </Grid.Row> 
+                    {/* ADD ? */}
+                    {/* <label > Donation amount (per month):</label> */}
+  
+                    <Grid.Row>  
+                        <label style ={{paddingLeft: '5em' , color: '#20B2AA'}}>
+                            _________________________________________________________</label>
+                    </Grid.Row>  
+                </Grid>
 
-                            </Grid.Row>
-                            {/* ADD ? */}
-                            {/* <label > Donation amount (per month):</label> */}
-
-                            <Grid.Row>
-                                <label style={{ paddingLeft: '5em', color: '#20B2AA' }}>
-                                    _________________________________________________________</label>
-                            </Grid.Row>
-                        </Grid>
-
-                        {/* ~~ form */}
-                        <Form style={{ paddingTop: '1.5em', paddingLeft: '1.5em' }}>
-                            {/* <Form.Input
+                {/* ~~ form */}
+                <Form style = {{paddingTop: '1.5em' , paddingLeft: '1.5em'}}>
+                    {/* <Form.Input
                         width={4}
 						label= 'Donate through:'
 						icon='user outline'
@@ -342,17 +418,18 @@ export default class Donate extends Component {
 						name="dThrough"
 						// onChange={this.handleChange.bind(this)}
 					/> */}
-                            <Form.Input
-                                icon='mail'
-                                iconPosition='left'
-                                name="dThrough"
-                                id='dedicationEmail'
-                                placeholder='mail'
-                                width={4}
-                                // control={Input}
-                                label='Donate through:'
-                                placeholder='joe@schmoe.com'
-                                onChange={this.handleChangeMail}
+
+                    <Form.Input
+                            icon='mail'
+                            iconPosition='left'
+                            name = "dThrough"
+                            id='dedicationEmail'
+                            placeholder='mail'
+                            width ={4}
+                            // control={Input}
+                            label= 'Donate through:'
+                            placeholder='joe@schmoe.com'
+                            onChange = {this.handleChangeMail}
                             // error={{
                             //     content: 'Please enter a valid email address',
                             //     pointing: 'below',
@@ -361,11 +438,13 @@ export default class Donate extends Component {
                             {/* // TODO */}
                             {/* ~~ check if email is valid */}
                             {/* { this.state.dThrough && 
+
                         <div>{Isemail.validate(this.state.dThrough) &&
                         <div>valid</div> }
                         </div>
                     } */}
-                            <Form.Button content='check' />
+
+                    <Form.Button content='check' />
 
 
                             {/* <Form.Field
@@ -477,7 +556,7 @@ export default class Donate extends Component {
                 }
                 {this.state.coreStep === 3 &&
                     <div>
-                        <h1>TODO: conection to PayPal:</h1>
+                        <h1>Connection to PayPal:</h1>
                         <Icon name='money bill alternate outline' />
                         {this.createPayPalButton()}
                     </div>
@@ -493,40 +572,41 @@ export default class Donate extends Component {
                     <div>
                     <But */}
 
-                <div style={{ alignSelf: 'center' }}>
-                    <Button.Group >
-                        <Button
-                            name='btnNext'
-                            disabled
-                            color='blue'
-                            labelPosition='left'
-                            icon='left arrow'
-                            content='prev'
-                        />
-                        <Button
-                            name='btnPrev'
-                            color='blue'
-                            labelPosition='right'
-                            icon='right arrow'
-                            content='Next'
-                            onClick={this.nextButton}
+        <div style ={{alignSelf: 'center'}}>
+        <Button.Group >
+            <Button
+                name = 'btnNext'
+                disabled
+                color='blue'
+                labelPosition='left' 
+                icon='left arrow'
+                content='prev'
+            />
+            <Button
+                name = 'btnPrev'
+                color='blue'
+                labelPosition='right' 
+                icon='right arrow'
+                content='Next'
+                onClick = {this.nextButton}
 
 
-                        // label={{ basic: true, color: 'blue', pointing: 'right', icon:'right arrow' }}
-                        //  content: '2,048' }}
-                        />
+                // label={{ basic: true, color: 'blue', pointing: 'right', icon:'right arrow' }}
+                //  content: '2,048' }}
+            />
 
-                    </Button.Group>
-                </div>
-                {/*  nassage of incoret value */}
-                {/* { this.state.showMessageReq && <Modal
+        </Button.Group>
+        </div>
+        {/*  nassage of incoret value */}
+        {/* { this.state.showMessageReq && <Modal
             trigger={this.nextButton}
             header='Reminder!'
             content='Call Benjamin regarding the reports.'
             actions={['Snooze', { key: 'done', content: 'Done', positive: true }]}
         />} */}
 
-                {/* <Modal
+
+        {/* <Modal
             open={open}
             closeOnEscape={closeOnEscape}
             closeOnDimmerClick={closeOnDimmerClick}
@@ -550,8 +630,8 @@ export default class Donate extends Component {
             </Modal.Actions>
         </Modal> */}
 
-            </div>
-        )
-    }
+    </div>
+    )
+  }
 }
 

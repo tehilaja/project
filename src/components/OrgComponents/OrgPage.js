@@ -15,19 +15,38 @@ class OrgPage extends React.Component{
 	constructor(props) {
 		super(props)	
 		this.state = {
-			img: this.props.location.state.img,
-			name: this.props.location.state.name,
+			
+			loadData: false,
+			orgDetails: null,
+
 			id: this.props.location.state.id,
-			about: this.props.location.state.about,
-			initialDonation: this.props.location.state.initialDonation,
-			admin_name:this.props.location.state.admin_name,
-			field_of_acctivity:this.props.location.state.field_of_acctivity,
-			org_num:this.props.location.state.org_num, 
-			description :this.props.location.state.description,
-			working:this.props.location.state.working,
-			volunteers:this.props.location.state.volunteers,
-			friends:this.props.location.state.friends,
-			founding_year:this.props.location.state.founding_year,
+
+			img: null,
+			name: null,
+			about: null,
+			initialDonation: null,
+			admin_name:this.null,
+			field_of_acctivity:null,
+			org_num:null ,
+			description :null,
+			working:this.null,
+			volunteers:null,
+			friends:null,
+			founding_year:null,
+
+
+			// img: this.props.location.state.img,
+			// name: this.props.location.state.name,
+			// about: this.props.location.state.about,
+			// initialDonation: this.props.location.state.initialDonation,
+			// admin_name:this.props.location.state.admin_name,
+			// field_of_acctivity:this.props.location.state.field_of_acctivity,
+			// org_num:this.props.location.state.org_num, 
+			// description :this.props.location.state.description,
+			// working:this.props.location.state.working,
+			// volunteers:this.props.location.state.volunteers,
+			// friends:this.props.location.state.friends,
+			// founding_year:this.props.location.state.founding_year,
 
 			// $$$$$$$$$
 
@@ -37,8 +56,121 @@ class OrgPage extends React.Component{
 			loggedIn: this.props.loggedIn
 		}
 		this.function_log_status();
+	}	
+
+	// (async () => {
+		//             const response = await axios.post(
+		//                 '/findDuser',
+		//                 {userD:this.state.DuserName},
+		//                 {header:{'Content-Type': 'application/json'}}
+		//                 )
+		//                 console.log("resp",response)
+		//                 if(response.data == "fail"){
+		//                     alert("the user not found")
+		//                 }
+		//                 else if(response.data != " "){
+		//                 // this.setState({loggedIn: false})
+		//                 this.setState({DuserId: response.data})
+		//                 alert("id " + this.state.DuserId)
+		//                 }
+		//             })(); 
+
+
+	componentDidMount() 
+	{
+		// alert("id: "+ this.state.id);
+
+		
+	// 	fetch('/orgPage'+this.state.id, {
+    //         method: 'GET'
+    //     }).then(function(response) {
+    //         if (response.status >= 400) {
+    //             throw new Error("Bad response from server");
+    //         }
+    //         return response;
+    //     }).then(function(data) {
+	// 		alert("dataRes: "+ data.data.org_name);
+	// 		// this.setState({ orgDetails: res.data });
+	// 		this.setState({orgDetails: data.data, loadData:true});
+	// 		alert("state " + this.state.orgDetails);
+	// 		alert(this.state.orgDetails.org_name);
+    //     }).catch(err => {
+    //     	console.log('caught it!',err);
+    //     })
+	// }
+
+// 	Route path: /users/:userId/books/:bookId
+// Request URL: http://localhost:3000/users/34/books/8989
+// req.params: { "userId": "34", "bookId": "8989" }
+		
+
+
+		axios.get('/orgPage/'+this.state.id
+			// ,{orgId: this.state.id,},
+			// { header: { 'Content-Type': 'application/json' }}
+		).then(res => 
+		{
+			if (res.status >= 400) {
+				throw new Error("Bad response from server");}
+			else if (res === "no data") // the data is not null
+				alert ("no data!")
+			else{
+				// alert("re: "+ res.data.org_name);
+				// for(let i=0; i<10 ; i--); // await
+				
+				this.setState({ orgDetails: res.data});
+				alert("res: " +res.min_donation)
+				// if(this.state.orgDetails != null)
+				// 	this.setState({ loadData:true });
+				// 	alert("state: "+ this.state.orgDetails.min_donation)
+
+				// alert("state " + this.state.orgDetails);
+				// alert(this.state.orgDetails.org_name);
+			}	
+		})
+		.catch(error=> {
+			alert(error);
+		})
 	}
+
+	// (async () => {
+	// 	const response = await axios.post(
+	// 		'/confirm_registerd_user',
+	// 		{
+	// 			user_name: this.state.email,
+	// 			confirmation_code: this.state.confirmation_code,
+	// 		},
+	// 		{ header: { 'Content-Type': 'application/json' } }
+	// 	)
+	// 	if (response.data === "confirmed") {
+	// 		this.setState({status: Status.PostConfirmation})
+			
+	// 	} else {
+			
+	// 	}
+	// 	console.log("after confirmation")
+	// 	alert("response: "+JSON.stringify(response))
+	// 	console.log("response: "+JSON.stringify(response))
+	// 	console.log(response.data);
+	// }
+	// )();
+
+	// let self = this;
+	// fetch('/data', {
+	// 	method: 'GET'
+	// }).then(function(response) {
+	// 	if (response.status >= 400) {
+	// 		throw new Error("Bad response from server");
+	// 	}
+	// 	return response.json();
+	// }).then(function(data) {
+	// 	self.setState({organizations: data});
+	// }).catch(err => {
+	// console.log('caught it!',err);
+	// })
 	
+
+
 	// componentWillReceiveProps(nextProps){
 	// 	nextProps= this.props
 	// }
@@ -72,6 +204,8 @@ class OrgPage extends React.Component{
 	render() {
 		if(!this.state.check_login_status)
 			return(<h1>loading...</h1>)
+		if (this.state.orgDetails == null)
+			return(<h1>not load data...</h1>)
 		return(
 			<div>
                 <Header data={{loggedIn: this.state.loggedIn, userName: this.state.userName}}/>

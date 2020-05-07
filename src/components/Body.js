@@ -93,7 +93,7 @@ class Body extends React.Component
 	}
 //------------function-------------------------
 
-		componentDidMount () {
+	componentDidMount () {
 
 // ~~~~~~~~~~ get (select *) 
 		let self = this;
@@ -211,9 +211,10 @@ class Body extends React.Component
 		const orgComponents = this.state.organizations.map(org =>{
 			return(
 				<OrgCard key={org.org_id} imgUrl={org.org_pic} name={org.org_name} id= {org.org_id} initialDonation= {org.min_donation} 
-					admin_name = {org.admin_name} field_of_acctivity = {org.field_of_acctivity} org_num = {org.org_num} description = {org.description}
-					working = {org.working} volunteers = {org.volunteers} friends = {org.friends}
 				/>)
+				// 	admin_name = {org.admin_name} field_of_acctivity = {org.field_of_acctivity} org_num = {org.org_num} description = {org.description}
+				// 	working = {org.working} volunteers = {org.volunteers} friends = {org.friends}
+				// />)
 			// -- $$$$$$$ ---
 		})
 

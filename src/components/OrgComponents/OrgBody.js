@@ -32,7 +32,9 @@ class OrgBody extends React.Component {
             // organization: orgData,
             btnDonateClicked: false,
             confirmBtn: false,
-            initialDonation : this.props.data.initialDonation,
+            initialDonation : this.props.data.orgDetails.min_donation,
+            // initialDonation : this.props.orgDetails.min_donation,
+
 
 
             color: "F33333",
@@ -57,6 +59,13 @@ class OrgBody extends React.Component {
         // css
     }
 
+    componentDidMount()
+    {
+        // alert("first " + this.props.data.orgDetails.min_donation);
+        // alert(" hi "+ this.state.initialDonation)
+
+    }
+
     //---------increment +----------
     increment() 
     {
@@ -69,7 +78,7 @@ class OrgBody extends React.Component {
     //---------decrement--------------
     decrement()
      {
-        if (this.state.initialDonation !== this.props.data.initialDonation)
+        if (this.state.initialDonation !== this.props.data.orgDetails.min_donation)
         {
             this.setState(prevState => {
                 return {
@@ -84,7 +93,7 @@ class OrgBody extends React.Component {
         // const newColor = ''
         if(prevState.initialDonation !== this.state.initialDonation) 
         {
-            if(this.state.initialDonation ===this.props.data.initialDonation)
+            if(this.state.initialDonation ===this.props.data.orgDetails.min_donation)
                 this.setState({color: '#F33333'})
             else
                 this.setState({color: 'black'})
@@ -117,7 +126,8 @@ class OrgBody extends React.Component {
                         // todo- level(update +1), 
 						// user_id:this.state.user_id, org_id:this.props.data.id, monthly_donation:this.state.initialDonation,  // ---- req
                         // level:1, referred_by:this.state.DuserName
-                        org_id:this.props.data.id, monthly_donation:this.state.initialDonation,  // ---- req
+                        // this.props.data.orgDetails.min_donation
+                        org_id:this.props.data.orgDetails.org_id, monthly_donation:this.state.initialDonation,  // ---- req
                         level:1, referred_by:this.state.DuserName
                     },
                      {header:{'Content-Type': 'application/json'}}
@@ -245,7 +255,7 @@ class OrgBody extends React.Component {
                                            : תחום הפעילות 
                                         </Header>
                                         <p style={{ fontSize: '1em' }}>
-                                            {this.props.data.field_of_acctivity}
+                                            {this.props.data.orgDetails.field_of_acctivity}
                                         </p>
                                        5
                                         {/* // option to hide text */}
@@ -261,7 +271,7 @@ class OrgBody extends React.Component {
                                             </Accordion.Title>
                                             <Accordion.Content active={activeIndex === 0}>
                                             <p style={{fontSize: '1em' }}>
-                                                {this.props.data.description}
+                                                {this.props.data.orgDetails.description}
                                             </p>
                                             </Accordion.Content>
                                         </Accordion>
@@ -270,7 +280,7 @@ class OrgBody extends React.Component {
                                     <Grid.Column floated='right' width={6}>
                                         <Grid.Row>
                                             <Grid.Column>
-                                                <Image  floated='right'  size='large' src={this.props.data.img} style={{ padding: '3em 3em' }} />
+                                                <Image  floated='right'  size='large' src={this.props.data.orgDetails.org_pic} style={{ padding: '3em 3em' }} />
                                             </Grid.Column> 
                                             <Grid.Column>
 
@@ -279,19 +289,19 @@ class OrgBody extends React.Component {
                                             : מספר חברה
                                             </Header>
                                             <p style={{ fontSize: '1em' }}>
-                                                {this.props.data.org_num}
+                                                {this.props.data.orgDetails.org_num}
                                             </p>
                                             <Header as='h3' style={{ fontSize: '1.3em' }}>
                                              :שם מנהל
                                             </Header>
                                             <p style={{ fontSize: '1em' }}>
-                                                {this.props.data.admin_name}
+                                                {this.props.data.orgDetails.admin_name}
                                             </p>
                                             <Header as='h3' style={{ fontSize: '1.3em' }}>
                                                 : שנת הקמה
                                             </Header>
                                             <p style={{ fontSize: '1em' }}>
-                                                {this.props.data.founding_year} 
+                                                {this.props.data.orgDetails.founding_year} 
                                             </p>
 
 
@@ -309,12 +319,8 @@ class OrgBody extends React.Component {
                             </Grid>
                         </Segment>
                     </div>
-                   
-                 
-                
+                    
                 <br/>
-
-
               </Tab.Pane>,
             },
             {
@@ -438,7 +444,7 @@ class OrgBody extends React.Component {
                                 
                             <Grid.Column >
                                 <p>
-                                {this.props.data.description}
+                                {this.props.data.orgDetails.description}
                                 
                                 </p>
                                 ghcvdhcvghvhgdv hjjjjjjjjjjjjjjjjjjjjjj
@@ -447,8 +453,8 @@ class OrgBody extends React.Component {
                             <Grid.Column >
                                 <div className="org-spech-card">
                                     {/* <h3>id = {this.props.data.id}</h3> */}
-                                    <h1> {this.props.data.name} </h1>
-                                    <img src = {this.props.data.img}></img>
+                                    <h1> {this.props.data.orgDetails.org_name} </h1>
+                                    <img src = {this.props.data.orgDetails.org_picimg}></img>
                                 </div>
                                 {/* <Image src='https://react.semantic-ui.com/images/wireframe/image.png' /> */}
                             </Grid.Column>
@@ -513,9 +519,9 @@ class OrgBody extends React.Component {
                             {/* <Grid style = {{margin: '2em, 0.7em'}}> */}
 
                                 <Grid.Row>
-                                    <header style ={{backgroundColor: '#20B2AA' ,backgroundImage : this.props.data.img ,width:'100%',height: '20em' ,padding: '2em ,2em', margin: ''}}>
+                                    <header style ={{backgroundColor: '#20B2AA' ,backgroundImage : this.props.data.orgDetails.org_pic ,width:'100%',height: '20em' ,padding: '2em ,2em', margin: ''}}>
                                     {/* background-color: green;0.3; */}
-                                        <img  src={this.props.data.img} style = {{display: 'block',marginLeft: 'auto',marginRight: 'auto',width: '28%'}}/>
+                                        <img  src={this.props.data.orgDetails.org_pic} style = {{display: 'block',marginLeft: 'auto',marginRight: 'auto',width: '28%'}}/>
                                         
                                         {/* style={{ padding: '3em 3em' }} */}
                                         
@@ -536,7 +542,7 @@ class OrgBody extends React.Component {
 
 
                 <Header>
-                    <Image  floated='right'  size='large' src={this.props.data.img} style={{ padding: '3em 3em' }} />
+                    <Image  floated='right'  size='large' src={this.props.data.orgDetails.org_pic} style={{ padding: '3em 3em' }} />
 
                 </Header>
                 {/* // menu bar side */}
@@ -544,16 +550,7 @@ class OrgBody extends React.Component {
 
                  {/* --------------- css --  */}
                 
-        
 
-               
-
-
-
-
-
-
-           
 
                 {/* //
                 <h3>{nameDonateThrough}</h3>
