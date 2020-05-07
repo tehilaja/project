@@ -151,20 +151,6 @@ export default class Donate extends Component {
 
 
 
- // ~~~~~~~~~~ render ~~~~~~~~~~~~~~~~~~~~~```
-  render() 
-  {
-    const { active } = this.state
-    const {completed} = this.state
-    const styleBotton = {
-        margin: '1em',
-        // width: '5em',
-        // higte:'5em' 
-        // width: '20%',
-        // hight: '20%',
-        backgroundColor:'#20B2AA',
-
-
     createPayPalSubscriptionButton(vault) {
 
         return (
@@ -244,7 +230,9 @@ export default class Donate extends Component {
         }
         else {
             alert(" not ok") // sun is empty
-            this.setState({ showMessageReq: true, sumDonate: this.props.data.initialDonation });
+            this.setState({
+                showMessageReq: true,
+                sumDonate: this.props.data.initialDonation });
             // <Message
             //     error
             //     header='Action Forbidden'
