@@ -29,7 +29,7 @@ import {
 	Sidebar,
 	Step,
 	Visibility,
-  } from 'semantic-ui-react'
+  } from 'semantic-ui-react';
 
 
 
