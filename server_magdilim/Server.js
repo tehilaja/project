@@ -104,8 +104,8 @@ app.get('/orgPage/:orgId', (req, res,next)=>
     const qO = `select * from Organization WHERE org_id="${req.params.orgId}"`;
     console.log("query: " + qO);
     db.query(qO, (err,result, fields) =>{
-      if(err) throw error;
-      if (result.length == 0 )
+      if(err) throw err;
+      if (result.length === 0 )
         res.send("no data")
       else{
         console.log("res:  j" +JSON.stringify(result));
@@ -134,7 +134,7 @@ app.get('/donate/findDThrouhUser/:dUser', (req, res,next)=>
     const qDUser = `select user_id from users where email ="${req.params.dUser}"`;
     console.log("query: \n" + qDUser + "\n");
     db.query(qDUser, (err,result, fields) =>{
-    if(err) throw error;
+    if(err) throw err;
     if (result.length == 0)
       res.send("no data")
     else{
@@ -150,7 +150,6 @@ app.get('/donate/findDThrouhUser/:dUser', (req, res,next)=>
 });
 
 
-// ~~~~~~~~~~~ check giv a object 
 // -> ~~~ donate process
 
 // check which details exsist and do a query
@@ -190,7 +189,7 @@ function checkDonateDetails(paramO)
   return query
 }
 
-// ~~~~~~~~~~~~ post:  /checkObject --> donate ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~ post:  /donationProcess --> donate ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 app.post('/donationProcess', (req, res,next)=>
 {
   try
@@ -204,7 +203,7 @@ app.post('/donationProcess', (req, res,next)=>
 
     
     const qDonate = checkDonateDetails(req.body) ;// check details
-    console.log("quert is",qDonate,"\n");
+    console.log("quert is: \n",qDonate,"\n");
 
     db.query(qDonate,(err,result,fields)=>
     {
@@ -213,8 +212,11 @@ app.post('/donationProcess', (req, res,next)=>
         console.log("sucses! ");
       }
       else
-        res.send("db fail");
+      {
+        res.end("db fail");
         console.log("fail db "+ err.code);
+      }
+        
     // console.log("result " + result);
     })
     // console.log("in check \n")

@@ -72,7 +72,7 @@ class OrgPage extends React.Component{
 				// for(let i=0; i<10 ; i--); // await
 				
 				this.setState({ orgDetails: res.data});
-				alert("res: " +res.min_donation)
+				// alert("res: " +res.min_donation)
 				// if(this.state.orgDetails != null)
 				// 	this.setState({ loadData:true });
 				// 	alert("state: "+ this.state.orgDetails.min_donation)

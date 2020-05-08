@@ -11,13 +11,16 @@ class OrgCard extends React.Component{
         super(props)
         this.state ={
             routeOrgPage: false,
-            loginStatus: ""
+            myStatus: this.props.myStatus,
+            imgUrl: this.props.imgUrl,
+            orgName: this.props.orgName,
+            myMonthlyDonation: this.props.myMonthlyDonation,
         }
         this.user = {
             name: ""
         }
-
-        this.handleClick = this.handleClick.bind(this) 
+        this.handleClick = this.handleClick.bind(this)
+        alert("in card: "+ JSON.stringify(this.state)) 
     }
 
     handleClick(id)
@@ -44,20 +47,20 @@ class OrgCard extends React.Component{
                 return {
                     routeOrgPage: !prevState.routeOrgPage}
                   })}>
-            <Image src={this.props.imgUrl} wrapped ui={false} />
+            <Image src={this.state.imgUrl} wrapped ui={false} />
             <Card.Content>
-              <Card.Header>{this.props.name}</Card.Header>
+              <Card.Header>{this.state.orgName}</Card.Header>
               <Card.Meta>
-                <span className='date'>My Monthy Donation: {this.props.initialDonation} $</span>
+                <span className='date'>My Monthy Donation: {this.state.myMonthlyDonation} $</span>
               </Card.Meta>
               <Card.Description>
                 organization desciption
               </Card.Description>
             </Card.Content>
             <Card.Content extra>
-              <Label floating>
+              <Label floating color='red' tag>
                 <Icon name='user' />
-                my status
+                My Status: {this.state.myStatus}
               </Label>
             </Card.Content>
             <Card.Content extra>
