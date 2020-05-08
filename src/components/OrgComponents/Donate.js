@@ -1,34 +1,61 @@
 import React, { Component } from 'react'
-import { Step, Segment, Image, Button, Grid, Form, Checkbox, Icon, Input, Label, Accordion, Message, Modal } from 'semantic-ui-react'
+import { Step, Segment, Image , Button, Grid,Form,Checkbox, Icon, Input, Label,Accordion, Message, Modal} from 'semantic-ui-react'
 import axios from "axios";
 
+////#08.05
 import { PayPalButton } from "react-paypal-button-v2";
+
 
 // const Isemail = require('isemail');
 
 //  try to git
 
 export default class Donate extends Component {
-    constructor(props) {
+    constructor(props)
+    {
         super(props)
         this.state = {
-            coreStep: 1, // the corrent step
-            divActiveDonation: true,
+
+            // stef functionalety
+            coreStep : 1, // the corrent step
+            dicCompleteDonation: false,
+            divActiveDonation : true,
             divActiveMore: false,
             divActivePayment: false,
+            // activeStep:  'select Amount',
+            nextAble: false,
+            prevAble: true,
+
+            // step
+            
             active: 'select Amount',
+            completed: '',
+            disabled1: '',
+            disabled2: '',
+            //
             sumDonate: this.props.data.initialDonation,
-            sumBtn: [10, 20, 30, 40, 50, 100, 200], // TODO : acordind min donation
-            dThrough: null, // email of came throw
+            sumBtn: [10,20,30,40,50,100,200], // TODO : acordind min donation
+            dThrough: '', // email of came throw
             showMessageReq: false,
+            // dThroughId: '',
 
 
             // set json to state
             massageErrRequireFIeld: {},
-            data: []
+            // the request to donation for server
+            donate_req: {"user_id": 2, "org_id":this.props.data.org_id, "monthly_donation": this.props.data.initialDonation,
+            "referred_by": '',"d_title": '',"d_description": '',"is_anonim" : false },
+            
+            findDuser: true,
+            // next level
+            finishDonate: false,
+            //////
+            pass2step: false,
+            ableDonate:false
 
-            //
-
+            // (user_id, org_id, monthly_donation, referred_by,d_title, d_description,is_anonim,status_id
+            // TODO: 
+      
         }
         this.handleClick = this.handleClick.bind(this);
 
@@ -38,119 +65,248 @@ export default class Donate extends Component {
         // handleChange (TODO - merge all)
         this.handleChange = this.handleChange.bind(this);
         this.handleChangeMail = this.handleChangeMail.bind(this);
+
+        this.handleChangeTitle = this.handleChangeTitle.bind(this);
+        this.handleChangeDescription = this.handleChangeDescription.bind(this);
+
+
         // next butten
         this.nextButton = this.nextButton.bind(this);
+        this.disableNextBtn = this.disableNextBtn.bind(this);
+
+    
+        // ~~~~~~~~
+        this.donationProcess = this.donationProcess.bind(this);
+
+        this.donateDisabel = this.donateDisabel.bind(this);
 
 
+        // step
+        this.switchStep = this.switchStep.bind(this);
 
-
-
+    
 
     }
 
+    //~~~~~~~~~~~~~~~~~~ function ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
+    donateDisabel()
+    {
+        if(this.state.dThrough !== '' && this.state.donate_req.referred_by === '')
+            this.setState({ableDonate: true});
+    }
+    //~~~~~~~~~~~~~~~~~~~`
 
-    //   onClick(event: SyntheticEvent, data: object)
+    donationProcess(){
+        // TODO: massage that donate sucsess
+        
+        // this.setState({ donate_req.org_id: 5});
+        // this.setState(Object.assign(this.state.donate_req,{org_id:'5'}));
 
-    handleClick = (e, { title }) => {
+        // req 
+        axios.post('/donationProcess', this.state.donate_req
+        ).then(res => 
+        {
+            alert("res is: " + res.data)
+
+        }).catch(error=> {
+            alert("error donationProcess" +  error);
+        })
+    }
+
+    //~~~~~~~~~~ disableNextBtn  ~~~~~~``
+    disableNextBtn(e){
+        if(this.state.finishDonate)
+            return true;
+        else
+            return false;
+    }
+
+
+
+//   onClick(event: SyntheticEvent, data: object)
+
+    handleClick = (e, { title }) =>
+    {
         // TODO:
-
-
         this.setState({ active: title })
 
 
-        // ? TODO : show the prev state        
-        switch (title) {
+// ? TODO : show the prev state        
+        switch(title) {
             case 'select Amount':
-                this.setState({ coreStep: 1 });
+                this.setState({coreStep: 1});
                 break
             case 'more datails':
-                this.setState({ coreStep: 2 });
+                this.setState({coreStep: 2});
                 break
             case 'payment':
-                this.setState({ coreStep: 3 });
+                this.setState({coreStep: 3});
                 break
             default:
-                this.setState({ coreStep: 1 });
-        }
+                this.setState({coreStep: 1});
+          }
 
-
+        
+    }
+    //~~~~~~~~~swich step ~~~ 
+    switchStep()
+    {
+    
+        switch(this.state.coreStep) {
+            case 1:
+                // alert("dThrough" + this.state.dThrough)
+                // && this.state.donate_req.referred_by === '' )) // the mail doas not checkin
+                // if(this.state.donate_req.referred_by === '' )
+                // {
+                //     alert("not finish")
+                //     this.setState({massageErrRequireFIeld:true});
+                //     alert("not 1")
+                // }
+                             
+                // else{
+                    alert("pass to 2")
+                    this.setState({divActiveDonation: false, divActiveMore: true, dicCompleteDonation:true, coreStep: 2});
+                    // activeStep:'more datails'
+                   
+                // }
+                break;
+            case 2:
+                this.setState({divActiveMore: false, divActivePayment: true, coreStep: 3, nextAble: true});
+                // activeStep:'payment'
+                break;
+            case 3:
+                this.setState({divActivePayment: false, nextAble: true});
+                break;
+            default:
+                // this.setState({ activeStep:' select Amount', coreStep: 1 })
+                this.setState({ coreStep:1})
+          }
     }
 
-
-
+    // ~~~~~~~~~~~~ click on btn sum ~~~~~ 
     handleClickBtn(e) {
-        this.setState({
-            sumDonate: e.target.dataset.letter
-        });
-    }
+        // if(!(this.state.dThrough !== '' & this.state.donate_req.referred_by ==='')) // mail not empty ant not valid
+        this.setState({nextAble: false})
+        this.setState(Object.assign(this.state.donate_req,{monthly_donation:e.target.dataset.letter}));
+      }
     // TODO:
+        // set completes - to steps
+    
 
-    // set completes - to steps
-
+    //~~~~~~~~handleChange   
     // TODO
     // לצרף את כל השינויים לפונ' אחת עם case
+
+
+    //~~~~~~~~~~~~ change sum ~~~~~~~~~~~~~~
     handleChange(e) {
-        this.setState({ sumDonate: e.target.value });
+        if(e.target.value === '')
+            this.setState({nextAble: true});
+        else
+            this.setState({nextAble: false});
+        this.setState(Object.assign(this.state.donate_req,{monthly_donation: e.target.value}));
     }
 
-    // change mail
-    handleChangeMail(e) {
-
+    //~~~~~~~~~~~~~~~~ change mail (dThrow ~~~~~~~~~)
+    handleChangeMail(e) 
+    {
+        this.setState(Object.assign(this.state.donate_req,{referred_by: ''}));
         this.setState({dThrough: e.target.value});
+        this.setState({nextAble: false}); // able next btn
+
+    }
+    //d_title
+    handleChangeTitle(e){
+        this.setState(Object.assign(this.state.donate_req,{d_title: e.target.value}));
+
+    }
+    //d_description
+    handleChangeDescription(e){
+        this.setState(Object.assign(this.state.donate_req,{d_description: e.target.value}));
+
     }
 
     //~~~~~~~~~~~~~~~~~~~~~ donate proggress ~~~~~~~~~~~~
     // nextButton -> functionalety of donate proggress
-    nextButton(e){
-        /*
-        TODO:
-        1. dont let a next button if all must field is empty
-
-        */
-        // all require field is not empty (sumDonate)
-        if (this.state.sumDonate !== '')
+    nextButton(e)
+    {
+        // ~~ start step 1~~~
+        if( this.state.coreStep === 1) 
         {
-            alert("ok");
-            if(this.state.dThrough != null) 
-            { // ~~ check if the user in the system (and giv theier id)
-                // TODO:  check the email syntax
-                axios.get('/donate/findDThrouhUser/'+this.state.dThrough
-                ).then(res => 
+                    // TODO: מיותר? מתי נעשת הבדיקה
+            // if(this.state.donate_req.monthly_donation !== '') // sume field is not empty 
+            // {
+                // ~~ statr dThrow 
+                if(this.state.dThrough !== '')  // dTrow -> need check if user exist in system (give a id)
                 {
-                    if (res.status >= 400) {
-                        throw new Error("Bad response from server");}
-                    else if (res === "not found" || res.data.user_id == undefined) // the data is not null
+                    // TODO:    check the email syntax    
+                    if(this.state.donate_req.referred_by === '') //-> check if do a request before
+                    {
+                        this.setState({ableDonate: true});
+                        axios.get('/donate/findDThrouhUser/'+this.state.dThrough
+                        ).then(res => 
                         {
-                            alert ("there are no user insystem!")
-                            this.setState({dThrough: null})
-                            // TODO: alert message in UI
-                        }
-                    else{ // give a id of the donate through
-                        alert("user_id: " + res.data.user_id)
-                        this.setState({ dThroughId: res.data });
-                        
-                    }	
-                }).catch(error=> {
-                    alert(error);
-                })
-            }
-        }
-        else
-        {
-            alert(" not ok") // sun is empty
-            this.setState({showMessageReq : true, sumDonate: this.props.data.initialDonation} );
-            // <Message
-            //     error
-            //     header='Action Forbidden'
-            //     content='You must enter a sum of donation.'
-            // />
-        }
+                            if (res.status >= 400) {
+                                throw new Error("Bad response from server");}
+                            else if (res === "not found" || res.data.user_id === undefined) // the data is not null
+                                {
+                                    alert ("there are no user in system!")
+                                    this.setState({dThrough: '' ,ableDonate: false});
+
+                                    
+                                    // , nextAble:false});
+                                    // TODO: alert message in UI
+                                }
+                            else{ // give a id of the donate through
+                                this.setState(Object.assign(this.state.donate_req,{referred_by: res.data.user_id}));
+                                this.setState({ableDonate: false}); // donate able 
+                                this.setState({nextAble: false});
+                                
+                            }	
+                        }).catch(error=> {
+                            alert(error);
+                        })
+                    }
+                    
+                    // check if finish a req
+                    if (this.state.donate_req.referred_by !== ''){
+                        this.setState({ableDonate: false});
+                        this.switchStep();
+
+                    }
+                    alert("findDuser: " + this.state.findDuser + " finishDonate " + this.state.finishDonate)
+                }
+                // TODO (alert)
+                else{ // the mail is ok
+                    this.switchStep(); // switch step
+                }
+                // // ~~ end dThrow 
+                // if(this.state.donate_req.referred_by === '' && this.dThrough !== '') // the mail doas not checkin
+            // }
+            // // # TODO !!!!
+            // // ? מיותר? הכפתור לא מאופשר... DELETE?
+            // else// the sum is empty
+            // {
+            //     alert(" not ok") // sun is empty
+            //     this.setState({showMessageReq : true});
+            //         // , sumDonate: this.props.data.initialDonation} );
+            //     this.setState(Object.assign(this.state.donate_req,{monthly_donation: this.props.data.initialDonation}));
+            //     // <Message
+            //     //     error
+            //     //     header='Action Forbidden'
+            //     //     content='You must enter a sum of donation.'
+            //     // />
+            // }
+
+            // -> // DO: delete the option of a empty sum
+            if (this.state.donate_req.referred_by !== '')
+                this.switchStep();
+        } // ~~end step 1~~~
+        else   // step 2 or 3                
+            this.switchStep(); // switch step
     }
-    // set json to state
-    // this.setState({data: {"mail"}, });      
 
-
-
+    // # 08.05 -> paypel
     createPayPalSubscriptionButton(vault) {
 
         return (
@@ -193,131 +349,75 @@ export default class Donate extends Component {
                 }}
             />)
     }
+  
 
-    //~~~~~~~~~~~~~~~~~~~~~ donate proggress ~~~~~~~~~~~~
-    // nextButton -> functionalety of donate proggress
-    nextButton(e) {
-        /*
-        TODO:
-        1. dont let a next button if all must field is empty
 
-        */
-        // all require field is not empty (sumDonate)
-        if (this.state.sumDonate !== '') {
-            alert("ok");
-            if (this.state.dThrough != null) { // ~~ check if the user in the system (and giv theier id)
-                // TODO:  check the email syntax
-                axios.get('/donate/findDThrouhUser/' + this.state.dThrough
-                ).then(res => {
-                    if (res.status >= 400) {
-                        throw new Error("Bad response from server");
-                    }
-                    else if (res === "not found" || res.data.user_id == undefined) // the data is not null
-                    {
-                        alert("there are no user insystem!")
-                        this.setState({ dThrough: null })
-                        // TODO: alert message in UI
-                    }
-                    else { // give a id of the donate through
-                        alert("user_id: " + res.data.user_id)
-                        this.setState({ dThroughId: res.data });
+ // ~~~~~~~~~~ render ~~~~~~~~~~~~~~~~~~~~~```
+  render() 
+  {
+   
 
-                    }
-                }).catch(error => {
-                    alert(error);
-                })
-            }
-        }
-        else {
-            alert(" not ok") // sun is empty
-            this.setState({
-                showMessageReq: true,
-                sumDonate: this.props.data.initialDonation });
-            // <Message
-            //     error
-            //     header='Action Forbidden'
-            //     content='You must enter a sum of donation.'
-            // />
-        }
+    const styleBotton = 
+    {
+        margin: '1em',
+        backgroundColor:'#20B2AA',
+        textAlign: 'center',
+        // text-decoration: none;
+        display: 'inline-block',
+        fontSize: '16px',
+        padding: '32px 32px',
+        border: '0.1em solid black' 
     }
-    // set json to state
-    // this.setState({data: {"mail"}, });      
 
+    return (
+      <div>
+        <Step.Group widths={3} stackable='tablet' ordered = {true} fluid >
+            
+            <Step
+                id = 'step1'
+                // divActiveDonation
+                
+                active = {this.state.divActiveDonation}
+                completed = {this.state.dicCompleteDonation}
+                disabled = {this.state.dicCompleteDonation}
 
+                // children 
+                icon='dollar'
+                link
+                // onClick={this.handleClick}
+                // onClick={() => this.setState({showLogin: true, showUser: false, showBackButton: true}
+                title='select Amount'
+                description='Choose your amount'
+            />
+            <Step
+                id = 'step2'
 
-    // ~~~~~~~~~~ render ~~~~~~~~~~~~~~~~~~~~~```
-    render() {
-        const { active } = this.state
-        const { completed } = this.state
-        const styleBotton = {
-            margin: '1em',
-            // width: '5em',
-            // higte:'5em' 
-            // width: '20%',
-            // hight: '20%',
-            backgroundColor: '#20B2AA',
+                // active={active === 'more datails'}
+                active = {this.state.divActiveMore}
+                completed = {this.state.divActivePayment}
+                disabled = {this.state.divActivePayment}
+                icon='edit outline'
+                link
+                // onClick={this.handleClick}
+                title='more datails'
+                description='an additional information'
+            />
 
-            // borderRadius: '8em',
-            textAlign: 'center',
-            // text-decoration: none;
-            display: 'inline-block',
-            fontSize: '16px',
-            padding: '32px 32px',
+            <Step
+                id = 'step1' 
+                // active={active === 'payment'}
+                active = {this.state.divActivePayment}
+                disabled = {!this.state.divActivePayment}
+                icon='credit card'
+                link
+                // onClick={this.handleClick}
+                title='payment'
+                // description='an additional information'
+     
+            />
+        </Step.Group>
+        {/*       
 
-            border: '0.1em solid black'
-
-
-
-
-
-            // padding: '1em, 2em'
-        }
-
-        return (
-            <div>
-                <Step.Group widths={3} stackable='tablet' ordered={true} fluid >
-
-                    <Step
-                        id='step1'
-                        active={active === 'select Amount'}
-                        //  completes = {completed === 'select Amount'}
-                        //   completed
-                        // children 
-                        icon='dollar'
-                        link
-                        onClick={this.handleClick}
-                        // onClick={() => this.setState({showLogin: true, showUser: false, showBackButton: true}
-                        title='select Amount'
-                        description='Choose your amount'
-                    />
-                    <Step
-                        id='step2'
-                        active={active === 'more datails'}
-                        icon='edit outline'
-                        link
-                        onClick={this.handleClick}
-                        title='more datails'
-                        description='an additional information'
-                    />
-
-                    <Step
-                        id='step1'
-                        active={active === 'payment'}
-                        icon='credit card'
-                        link
-                        onClick={this.handleClick}
-                        title='payment'
-                    // description='an additional information'
-
-                    />
-                </Step.Group>
-                {/*       
-            <Segment attached >
-                <div id = ""></div>
-                <div></div>
-            <Image src='https://react.semantic-ui.com/images/wireframe/paragraph.png' />
-            </Segment> */}
-          
         {/* divActiveDonation */}
         {this.state.coreStep === 1 && 
         // {this.state.divActiveDonation && 
@@ -353,20 +453,32 @@ export default class Donate extends Component {
                                 color: 'teal',
                                 labelPosition: 'left',
                                 icon: 'eraser',
-                                content: 'clear',
+                                content: 'restar to min sum',
                                 widths: '2em',
-                                onClick: () => {this.setState({ sumDonate: ''})}
+                                onClick: () => 
+                                    { 
+                                        // TODO: message that not empty- end fill the minimum sum
+
+                                        // this.setState(Object.assign(this.state.donate_req,{monthly_donation: ''}));
+                                        // this.setState({nextAble: true});
+
+                                        this.setState(Object.assign(this.state.donate_req,{monthly_donation: this.props.data.initialDonation}));
+
+                                        // alert("state: " + this.state.donate_req.monthly_donation)
+
+                                    }
+                                // {this.setState({ sumDonate: ''})}
                                 }}
                                 actionPosition='left'
                                 label={{ tag: true, content: 'your donation' }}
                                 labelPosition='right'
-                                placeholder={this.state.sumDonate}
-                                defaultValue={this.state.sumDonate}
-                                value={this.state.sumDonate}
+                                placeholder= "sum of monthly donation"
+                                defaultValue={this.state.donate_req.monthly_donation}
+                                value={this.state.donate_req.monthly_donation}
                                 onChange={this.handleChange}
 
                             />
-                            {this.state.sumDonate == '' &&
+                            {this.state.donate_req.monthly_donation == '' &&
                             <Message
                                 error
                                 header='Action Forbidden'
@@ -406,7 +518,6 @@ export default class Donate extends Component {
 						name="dThrough"
 						// onChange={this.handleChange.bind(this)}
 					/> */}
-
                     <Form.Input
                             icon='mail'
                             iconPosition='left'
@@ -415,146 +526,118 @@ export default class Donate extends Component {
                             placeholder='mail'
                             width ={4}
                             // control={Input}
-                            label= 'Donate through:'
+                            label= 'Donate through: (mail)'
                             placeholder='joe@schmoe.com'
+                            value = {this.state.dThrough}
                             onChange = {this.handleChangeMail}
                             // error={{
                             //     content: 'Please enter a valid email address',
                             //     pointing: 'below',
                             // }}
-                            />
-                            {/* // TODO */}
-                            {/* ~~ check if email is valid */}
-                            {/* { this.state.dThrough && 
-
+                    />
+                    {/* // TODO */}
+                    {/* ~~ check if email is valid */}
+                    {/* { this.state.dThrough && 
                         <div>{Isemail.validate(this.state.dThrough) &&
                         <div>valid</div> }
                         </div>
                     } */}
-
                     <Form.Button content='check' />
 
-
-                            {/* <Form.Field
+                        
+                        {/* <Form.Field
                             label = 'Last Name'
                             width={4}
                             input = ''
                             placeholder='Sum donation'
                         /> */}
-                            {/* Add a dedication */}
-                            <Label tag style={{ backgroundColor: '#e6f2ff', fontSize: '12px', marginTop: '2em', marginBottom: '2em' }}>
-                                {/* <Icon name='heart'   */}
+                        {/* Add a dedication */}
+                        <Label tag style = {{backgroundColor: '#e6f2ff', fontSize: '12px' ,marginTop:'2em', marginBottom:'2em'}}> 
+                            {/* <Icon name='heart'   */}
                             Add a dedication (optional)
                         </Label>
 
-                            {/* <Accordion>
-                            <Accordion.Title
-                                active={activeIndex === 0}
-                                index={0}
-                                onClick={this.handleClickAcording}
-                                style={{fontSize: '1.3em' }}
-                            >
-                            <Icon name='dropdown' />
-                                : תאור
-                            </Accordion.Title>
-                            <Accordion.Content active={activeIndex === 0}>
-                            <p style={{fontSize: '1em' }}>
-                                {this.props.data.description}
-                            </p>
-                            </Accordion.Content>
-                        </Accordion> */}
 
 
+                         {/* /// TODO ! toggel to show their namw */}
+                        <Form.Input
+                            width={4}
+                            label= 'In Honor of:'
+                            icon='heart'
+                            iconPosition='left'
+                            placeholder='name'
+                            name="dedicatedTo"
+                            onChange={this.handleChangeTitle.bind(this)}
+					    />
+                        <Form.TextArea 
+                            width={12}
+                            label= 'Write a Dedication:'
+                            rows={3} 
+                            placeholder='Text'
+                            name="more"
+                            onChange={this.handleChangeDescription.bind(this)}
 
-                            {/* <Accordion as={Form.Field} panels={
-                            [
-                                {
-                                    key: 'details',
-                                    title: 'Optional Details',
-                                    content: {
-                                        <p style={{fontSize: '1em' }}>
-                                        {this.props.data.description}
-                                        </p>
-                                        as: Form.Input,
-                                        label: 'Maiden Name',
-                                        placeholder: 'Maiden Name',
-                                        },
-                                
-                                        content: {
-                                        as: Form.Input,
-                                        label: 'Maiden Name',
-                                        placeholder: 'Maiden Name',
-                                        },
-                                },
-                                
-                               
+                        />
+                        <Form.Field required>
+                            < Checkbox label='I agree to the Terms and Conditions' />
+                        </Form.Field>
 
-                                
-                                ]
-                            } */}
-                            {/* /// TODO ! toggel to show their namw */}
-                            <Form.Input
-                                width={4}
-                                label='In Honor of:'
-                                icon='heart'
-                                iconPosition='left'
-                                placeholder='name'
-                                name="dedicatedTo"
-                            // onChange={this.handleChange.bind(this)}
-                            />
-                            <Form.TextArea
-                                width={12}
-                                label='Write a Dedication:'
-                                rows={3}
-                                placeholder='Text'
-                                name="more"
-                            />
-                            <Form.Field required>
-                                < Checkbox label='I agree to the Terms and Conditions' />
-                            </Form.Field>
-
-                            <Button type='submit'>Submit</Button>
-                        </Form>
-                        {/* <Grid.Row>
+                        <Button type='submit'>Submit</Button>
+                    </Form>
+                    {/* <Grid.Row>
                         sum of donation: {this.state.sumDonate}
                     </Grid.Row> */}
-
-
-                    </Segment>
-                }
-                {this.state.coreStep === 2 &&
-                    <div>
-                        i am at 2
-
+            
+            
+            </Segment>
+        }
+        {/* ~~~ step 2 - more details */}
+        {/*  // TODO: check if thesync find duser (by mail) found */}
+        {this.state.coreStep === 2 && 
+            <div>
+                i am at 2
                  <Form>
-                            <Form.Field>
-                                <label>First Name</label>
-                                <input placeholder='First Name' />
-                            </Form.Field>
-                            <Form.Field>
-                                <label>Last Name</label>
-                                <input placeholder='Last Name' />
-                            </Form.Field>
-                            <Form.Field>
-                                <Checkbox label='I agree to the Terms and Conditions' />
-                            </Form.Field>
-                            <Button type='submit'>Submit</Button>
-                        </Form>
-                    </div>
-                }
-                {this.state.coreStep === 3 &&
-                    <div>
-                        <h1>Connection to PayPal:</h1>
+                    <Form.Field>
+                    <label>First Name</label>
+                    <input placeholder='First Name' />
+                    </Form.Field>
+                    <Form.Field>
+                    <label>Last Name</label>
+                    <input placeholder='Last Name' />
+                    </Form.Field>
+                    <Form.Field>
+                    <Checkbox label='I agree to the Terms and Conditions' />
+                    </Form.Field>
+                    <Button type='submit'>Submit</Button>
+                </Form>
+                <br></br>
+
+            </div>
+        }
+        {this.state.coreStep === 3 &&
+            <div>
+                 <h1>Connection to PayPal:</h1>
                         <Icon name='money bill alternate outline' />
                         {this.createPayPalButton()}
-                    </div>
-                }
+                 <br></br>
+                {/* DONATE */}
+                <Button 
+                    style = {{padding: '10em'}}
+                    onClick = {this.donationProcess }
+                    // referred_by
+                    // disabled ={ !this.state.finishDonate }
+                    disabled ={this.state.ableDonate}
+                >DONATE</Button>
+
+                <br></br>
+            </div>
+        }
 
 
-                {/* <Button as='a' inverted={!fixed} onClick={() => this.setState({showLogin: true, showUser: false, showBackButton: true})}> */}
+        {/* <Button as='a' inverted={!fixed} onClick={() => this.setState({showLogin: true, showUser: false, showBackButton: true})}> */}
 
 
-                {/* {this.state.showLogin && <LoginForm record={this.handlerClick}/>}
+        {/* {this.state.showLogin && <LoginForm record={this.handlerClick}/>}
                     {this.state.showUser && <UserRegistrationForm />}
                     {!this.state.showLogin && !this.state.showUser &&
                     <div>
@@ -563,15 +646,19 @@ export default class Donate extends Component {
         <div style ={{alignSelf: 'center'}}>
         <Button.Group >
             <Button
-                name = 'btnNext'
-                disabled
+                name = 'btnPrev'
+                // disabled = {this.disableButtons}
+                disabled ={true}
+                // active={active === 'select Amount'}
+
                 color='blue'
                 labelPosition='left' 
                 icon='left arrow'
                 content='prev'
             />
             <Button
-                name = 'btnPrev'
+                disabled ={this.state.nextAble}
+                name = 'btnNext'
                 color='blue'
                 labelPosition='right' 
                 icon='right arrow'
@@ -592,7 +679,6 @@ export default class Donate extends Component {
             content='Call Benjamin regarding the reports.'
             actions={['Snooze', { key: 'done', content: 'Done', positive: true }]}
         />} */}
-
 
         {/* <Modal
             open={open}
@@ -617,7 +703,21 @@ export default class Donate extends Component {
                 />
             </Modal.Actions>
         </Modal> */}
+        {/* ~~~ @ check ~~~ */}
+        <div>
+            <Button
+                onClick = {this.switchStep}
+            >
+            </Button>
+            
+            {/* <p> {this.state.sumDonate} </p> */}
+            <p>"referBy" {this.state.donate_req.referred_by} </p>
+            <p>"sum " {this.state.donate_req.monthly_donation} </p>
+            <p> "finish donae" {this.state.donate_req.referred_by}</p>
+            <p> "dThrough": {this.state.dThrough} </p>
+            <p>"core step" {this.state.coreStep} </p>
 
+        </div>
     </div>
     )
   }
