@@ -16,24 +16,30 @@ const userLoginFile = require('./cognito/user-login.service');
 const userParametersFile = require('./cognito/user-parameters.service');
 const awsServiceFile = require('./cognito/aws.service');
 
+
+
 const cognitoUtil = cognitoServiceFile.data.cognitoUtil;
 const userRestirationService = userRegistrationFile.data.userRegistrationService;
 const userLoginService = userLoginFile.data.userLoginService;
+
 const userParametersService = userParametersFile.data.userParametersService;
 const awsUtil = awsServiceFile.data.awsUtil;
 const reactor = require("./utilities/custom-event").data.reactor;
 
-//~~~~~
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 const express = require('express');
 const app = express(); //library to shorten http requests
 
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
+
 var my_user = null
 var pic = "https://yad-sarah.net/wp-content/uploads/2019/04/logoys.png"
 
 //routering 
-//const Donate = require('./DonateServer.js');
+// const OrgPage = require('./OrgPageServer.js');
+
 
 
 
@@ -58,6 +64,7 @@ db.connect((err)=>{
   console.log('mysql connected...');
 });
 
+// ~~~~~~~~~~ userLoginService ~~~~~~~
 userLoginService.isAuthenticated(function(message, isLoggedIn) {
   console.log("AppComponent: the user is authenticated: " + isLoggedIn);
   cognitoUtil.getIdToken({
@@ -71,11 +78,6 @@ userLoginService.isAuthenticated(function(message, isLoggedIn) {
       }
   });
 })
-
-
-// ~~~~~~~~~~~~~~~ routering ~~~~~~~~~~~~
-// TODO: correct to /donate only!!!
-//app.use('/OrgPage/donate',Donate);   
 
 // ~~~~~~~~~~~~~~~ routering ~~~~~~~~~~~~
 // TODO: correct to /donate only!!!
@@ -146,6 +148,84 @@ app.get('/donate/findDThrouhUser/:dUser', (req, res,next)=>
     res.end("err" , err.code);
   }
 });
+
+
+// ~~~~~~~~~~~ check giv a object 
+// -> ~~~ donate process
+
+// check which details exsist and do a query
+function checkDonateDetails(paramO)
+{
+  // user_id, org_id, monthly_donation, referred_by,d_title, d_description,is_anonim,status_id
+  var q = ` INSERT INTO doners_in_org (`
+  var insertinfValue = `)VALUES(`
+
+  // neccesery
+    // TODO: check if the neccesery value input? -> before?
+ 
+  q += `user_id,org_id,monthly_donation`;
+  insertinfValue += ` ${paramO.user_id},${paramO.org_id},${paramO.monthly_donation}`
+
+  // --- check
+  if(paramO.referred_by!=''){
+    q += `,referred_by`;
+    insertinfValue += `,${paramO.referred_by}`;
+  }
+  if(paramO.d_title!=''){
+    q += `,d_title`;
+    insertinfValue += `,"${paramO.d_title}"`;
+  }
+  if(paramO.d_description!=''){
+    q += `,d_description`;
+    insertinfValue += `,"${paramO.d_description}"`;
+  }
+  // nessecery
+  
+  q += `,is_anonim,status_id`;
+  insertinfValue += `,${paramO.is_anonim},1);`
+
+  const query = q + insertinfValue;
+  console.log("param (in fun) \n" + query);
+
+  return query
+}
+
+// ~~~~~~~~~~~~ post:  /checkObject --> donate ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+app.post('/donationProcess', (req, res,next)=>
+{
+  try
+  {
+    console.log("in /donationProcess \n ")
+
+    // let queryD = `INSERT INTO Doners_in_org (user_id, org_id, monthly_donation, referred_by) VALUES (${my_user.user_id} , ${req.body.org_id}, ${req.body.monthly_donation},(select user_id from Users where user_name = "${req.body.referred_by}" ));`
+    
+    // let qDonate = ` INSERT INTO doners_in_org SET ?', ${JSON.stringify(req.body)}`
+      //  ${req.body.is_admin });`
+
+    
+    const qDonate = checkDonateDetails(req.body) ;// check details
+    console.log("quert is",qDonate,"\n");
+
+    db.query(qDonate,(err,result,fields)=>
+    {
+      if(!err){
+        res.send("insert donation") ;//response
+        console.log("sucses! ");
+      }
+      else
+        res.send("db fail");
+        console.log("fail db "+ err.code);
+    // console.log("result " + result);
+    })
+    // console.log("in check \n")
+    // console.log("string obj \n "+ JSON.stringify(req.body));
+  }
+  catch(err){
+    console.log("erroe " + err.code);
+    res.end("err server " , err.code)
+  }
+});
+
 
 // @ ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -256,6 +336,14 @@ app.post('/is_logged_in', function(req,res){
   }
 });
 
+
+//---------------get current user--------------
+app.post('/get_current_user',function(req,res){
+  console.log("get current user: "+ JSON.stringify(cognitoUtil.getCurrentUser()))
+  res.send(cognitoUtil.getCurrentUser())
+});
+
+
 //---------------get user params--------------
 app.post('/get_user_params',function(req,res){
   console.log("start server get user params");
@@ -272,47 +360,48 @@ app.post('/get_user_params',function(req,res){
 
 //-------donation ----
 
-app.post('/donation',(req, res)=>{
+// app.post('/donation',(req, res)=>{
   
-  // var userID = req.body.user_id
-  console.log("the user: ", my_user)
-  if(my_user !== null)
-  {
-    let id = 0 
-    console.log("user", my_user.user_id)
-    // let qDuser = `(select user_id from Users where user_name = "${req.body.referred_by}" );`
-    // console.log("qDuser",qDuser )
-    // db.query(qDuser,(err,result,fields)=>
-    // {
-    //   if(!err){
-    //     console.log("add level")
-    //     id = result[0].user_id
-    //     console.log("id,",id)
-    //   }
-    //   else
-    //     res.end("fail1")
-    // console.log(result)
-    // })
+//   // var userID = req.body.user_id
+//   console.log("the user: ", my_user)
+//   if(my_user !== null)
+//   {
+//     let id = 0 
+//     console.log("user", my_user.user_id)
+//     // let qDuser = `(select user_id from Users where user_name = "${req.body.referred_by}" );`
+//     // console.log("qDuser",qDuser )
+//     // db.query(qDuser,(err,result,fields)=>
+//     // {
+//     //   if(!err){
+//     //     console.log("add level")
+//     //     id = result[0].user_id
+//     //     console.log("id,",id)
+//     //   }
+//     //   else
+//     //     res.end("fail1")
+//     // console.log(result)
+//     // })
 
-    // if(${req.body.referred_by}) // TODO: if no Referred to
+
+//     // if(${req.body.referred_by}) // TODO: if no Referred to
       
-    let queryD = `INSERT INTO Doners_in_org (user_id, org_id, monthly_donation, referred_by) VALUES (${my_user.user_id} , ${req.body.org_id}, ${req.body.monthly_donation},(select user_id from Users where user_name = "${req.body.referred_by}" ));`
-    console.log("quert is",queryD,"\n")
-    db.query(queryD,(err,result,fields)=>
-    {
-      if(!err){
-        console.log("in donation")
-        res.end("added succesfully!") //response
-      }
-      else
-        res.end("fail2")
-    console.log(result)
-    })
-  // })
-  }
-  else
-    res.end("no conection")
-})
+//     let queryD = `INSERT INTO Doners_in_org (user_id, org_id, monthly_donation, referred_by) VALUES (${my_user.user_id} , ${req.body.org_id}, ${req.body.monthly_donation},(select user_id from Users where user_name = "${req.body.referred_by}" ));`
+//     console.log("quert is",queryD,"\n")
+//     db.query(queryD,(err,result,fields)=>
+//     {
+//       if(!err){
+//         console.log("in donation")
+//         res.end("added succesfully!") //response
+//       }
+//       else
+//         res.end("fail2")
+//     console.log(result)
+//     })
+//   // })
+//   }
+//   else
+//     res.end("no conection")
+// })
 
 
 // -- data 
@@ -323,8 +412,8 @@ app.get('/data', function(req, res, next) {
   });
 });
 
-// -- userProfile 
-app.get('/userProfile ', function(req, res, next) {
+// -- userProfile 
+app.get('/userProfile ', function(req, res, next) {
   db.query(`SELECT * FROM Users WHERE user_name="${my_user.user_id}"`, function (error, results, fields) {
       if(error) throw error;
       // res.send(JSON.stringify(results));

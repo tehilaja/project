@@ -29,12 +29,9 @@ import {
 	Sidebar,
 	Step,
 	Visibility,
-  } from 'semantic-ui-react';
+  } from 'semantic-ui-react'
 
 
-
-
-// let user;
 // class YourComponent extends React.Component {
 // 	constructor(props) {
 // 	  super(props);
@@ -68,7 +65,7 @@ import {
 //   }
 class Body extends React.Component
 {
-	//-----------constructor----------------------
+//-----------constructor----------------------
 	constructor(props)
 	{
 		super(props)
@@ -191,6 +188,7 @@ class Body extends React.Component
 //--------------render------------------------
 	render()
 	{
+
 		// **
 		// if (!this.state.isLoading) 
 		// {
@@ -255,16 +253,13 @@ class Body extends React.Component
 	//-----------return------------------------------
 		return(
 			<div>
-			<Segment style={{ padding: '8em 0em' }} vertical>
+				<Segment style={{ padding: '8em 0em' }} vertical>
 			<Grid container stackable verticalAlign='middle'>
 				<Grid.Row>
-				{/* <Grid.Column width={8}> */}
-					{/*putting organizations into home page:*/}
-					{/* <Carousel>{orgComponents}</Carousel> */}
-				{/* </Grid.Column> */}
 				<Grid.Column width={8}>
 					{/*putting organizations into home page:*/}
 					{orgComponents}
+				
 				</Grid.Column>
 				<Grid.Column floated='right' width={6}>
 				<Header as='h3' style={{ fontSize: '2em' }}>
@@ -284,12 +279,13 @@ class Body extends React.Component
 				</Grid.Column>
 				</Grid.Row>
 				<Grid.Row>
-				<Grid.Column textAlign='center'>
-				<Header as='h3' style={{ fontSize: '2em' }}>
-					Create an account so you too can donate!
-					</Header>
-					<Icon size="huge" name='heart outline' />
-				</Grid.Column>
+
+					<Grid.Column textAlign='center'>
+						<Header as='h3' style={{ fontSize: '2em' }}>
+							Create an account so you too can donate!
+						</Header>
+						<Icon size="huge" name='heart outline' />
+					</Grid.Column>
 				</Grid.Row>
 			</Grid>
 			</Segment>
@@ -320,8 +316,9 @@ class Body extends React.Component
 				Create an account!
 				</Header>
 				<p style={{ fontSize: '1.33em' }}>
-					Yes that's right, you too can become a part of this wonderful community, helping to build something greater.
-					</p>
+				Yes that's right, you too can become a part of this wonderful community, helping to build something greater.
+
+				</p>
 				<Button as='a' size='large'>
 				Read More
 				</Button>
@@ -336,7 +333,7 @@ class Body extends React.Component
 				</Divider>
 
 				<Header as='h3' style={{ fontSize: '2em' }}>
-				Just Sign Up
+				Just Sign Up				
 				</Header>
 				<p style={{ fontSize: '1.33em' }}>
 				We will provide you with the design and software necessary to create an online platform for ongoing or one-time donations. 

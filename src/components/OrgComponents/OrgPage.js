@@ -17,36 +17,9 @@ class OrgPage extends React.Component{
 		this.state = {
 			
 			loadData: false,
-			orgDetails: null,
+			orgDetails: null, // all details from DB
 
 			id: this.props.location.state.id,
-
-			img: null,
-			name: null,
-			about: null,
-			initialDonation: null,
-			admin_name:this.null,
-			field_of_acctivity:null,
-			org_num:null ,
-			description :null,
-			working:this.null,
-			volunteers:null,
-			friends:null,
-			founding_year:null,
-
-
-			// img: this.props.location.state.img,
-			// name: this.props.location.state.name,
-			// about: this.props.location.state.about,
-			// initialDonation: this.props.location.state.initialDonation,
-			// admin_name:this.props.location.state.admin_name,
-			// field_of_acctivity:this.props.location.state.field_of_acctivity,
-			// org_num:this.props.location.state.org_num, 
-			// description :this.props.location.state.description,
-			// working:this.props.location.state.working,
-			// volunteers:this.props.location.state.volunteers,
-			// friends:this.props.location.state.friends,
-			// founding_year:this.props.location.state.founding_year,
 
 			// $$$$$$$$$
 
@@ -78,26 +51,6 @@ class OrgPage extends React.Component{
 
 	componentDidMount() 
 	{
-		// alert("id: "+ this.state.id);
-
-		
-	// 	fetch('/orgPage'+this.state.id, {
-    //         method: 'GET'
-    //     }).then(function(response) {
-    //         if (response.status >= 400) {
-    //             throw new Error("Bad response from server");
-    //         }
-    //         return response;
-    //     }).then(function(data) {
-	// 		alert("dataRes: "+ data.data.org_name);
-	// 		// this.setState({ orgDetails: res.data });
-	// 		this.setState({orgDetails: data.data, loadData:true});
-	// 		alert("state " + this.state.orgDetails);
-	// 		alert(this.state.orgDetails.org_name);
-    //     }).catch(err => {
-    //     	console.log('caught it!',err);
-    //     })
-	// }
 
 // 	Route path: /users/:userId/books/:bookId
 // Request URL: http://localhost:3000/users/34/books/8989
@@ -216,6 +169,7 @@ class OrgPage extends React.Component{
 				<OrgBody 
 					data = {this.state}/>
 				<Footer />
+
 			</div>
 		)
 	}	

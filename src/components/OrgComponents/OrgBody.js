@@ -351,7 +351,7 @@ class OrgBody extends React.Component {
 
                            
                                 <div>
-                                    <Donate data={{initialDonation: this.state.initialDonation}} />
+                                    <Donate data={{initialDonation: this.state.initialDonation, org_id: this.props.data.orgDetails.org_id}} />
                                     {/* <Step.Group>
                                     <Step
                                         active={active === 'Shipping'}
@@ -556,6 +556,7 @@ class OrgBody extends React.Component {
                 <h3>{nameDonateThrough}</h3>
                 <p>Your name: {this.state.DuserName} {this.state.userEmail}</p>  
                  */}
+
             </div>
         )
     }
