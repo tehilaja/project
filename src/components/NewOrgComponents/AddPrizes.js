@@ -77,9 +77,9 @@ handleSubmit=(e)=>
             onChange={this.handleChange}
           />
           <Form.Radio
-            label='Platnum'
-            statusInRaffle='platnum'
-            checked={statusInRaffle === 'platnum'}
+            label='Platinum'
+            statusInRaffle='platinum'
+            checked={statusInRaffle === 'platinum'}
             onChange={this.handleChange}
           />
         </Form.Group>
