@@ -6,6 +6,7 @@ import UserAvatar from 'react-avatar';
 
 import Tree from 'react-vertical-tree'
 
+import UserOrgCard from './UserOrgCard.js'
 import { Carousel } from 'react-responsive-carousel';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 
@@ -30,19 +31,6 @@ import {
 const WIDTH = 70;
 const HEIGHT = 80;
 
-//need to create function to get all the people who i brought to the organization
-const  verdicalTreeData = [
-	{id: 1, name: 'ME', parent: null, children: [
-	  {id: 2, parent: {id: 1}, name: 'Someone I brought', children: []},
-	  {id: 3, parent: {id: 1}, name: 'Someone I brought', children: [
-		{id: 4, parent: {id: 3}, name: 'Someone He brought', children: []},
-		{id: 7, parent: {id: 3}, name: 'Someone He brought', children: []}
-	  ]},
-	  {id: 5, parent: {id: 1}, name: 'Someone I brought', children: []},
-	  {id: 6, parent: {id: 1}, name: 'Someone I brought', children: []}
-	]}
-  ]
- 
 
  
 class MyComponent extends React.Component {
@@ -63,18 +51,46 @@ constructor(props)
     {
         loggedIn: this.props.data.loggedIn, 
 		userName: this.props.data.userName,
-		// userName: 'Tehila Jacobs', 
-        organizations: [],
+		//userName: 'Tehila Jacobs', 
+		//get the list of organization for thde specific user
         clickOrg: false,
-
-        // **
         isFetchingData: false,
         data: null
         // id: "3"
-    }
-	this.handleClick = this.handleClick.bind(this)
-	alert("user page body: " + JSON.stringify(this.state))
+	}
+	this.state.organizations = this.getUserOrganizations();
+	this.handleClick = this.handleClick.bind(this);
+	// alert("user page body: " + JSON.stringify(this.state))
     // this.fetch_org_data = this.fetch_org_data.bind(this)
+}
+
+//TODO: return list of organizations based on current user
+getUserOrganizations(){
+	return( [{
+		key:'1',
+		imgUrl:'https://cdn.shopify.com/s/files/1/0143/4478/1878/articles/lotus_flower_symbol_1200x1200.jpg?v=1553953163',
+		 name:'org name',
+		  id: "1",
+		  myMonthlyDonation: "1",
+		  myStatus: "1" }])
+}
+
+
+//TODO: return list of downline for user, in specific organization that was clicked. chose max height
+getMyDownLine(){
+	return(
+		[
+			{id: 1, name: 'ME', parent: null, children: [
+			  	{id: 2, parent: {id: 1}, name: 'Someone I brought', children: []},
+			  	{id: 3, parent: {id: 1}, name: 'Someone I brought', children: [
+					{id: 4, parent: {id: 3}, name: 'Someone He brought', children: []},
+					{id: 7, parent: {id: 3}, name: 'Someone He brought', children: []}
+				]},
+			  	{id: 5, parent: {id: 1}, name: 'Someone I brought', children: []},
+			  	{id: 6, parent: {id: 1}, name: 'Someone I brought', children: []}
+			]}
+		  ]
+	)
 }
 
 //get the information for specific user from DB
@@ -101,15 +117,12 @@ handleClick(id){
 }
 render()
 	{
-			
-		const settings = {
-			dots: true,
-			infinite: true,
-			speed: 500,
-			slidesToShow: 1,
-			slidesToScroll: 1
-		  };
-			 
+			// send the list of the organization for this user	 
+		  const orgComponents = this.state.organizations.map(org =>{
+			return(
+				<UserOrgCard key={org.key} imgUrl={org.imgUrl} orgName={org.orgName} id= {org.id} myMonthlyDonation= {org.myMonthlyDonation} myStatus = {org.myStatus} 
+				/>)
+		})
 
 
 		
@@ -132,8 +145,9 @@ render()
 				<Grid.Row>
 				<Grid.Column width={8}>
 					<Header as='h3' style={{ fontSize: '2em' }}>
-					Your profile page
+					Your Donations:
 					</Header>
+					{orgComponents}
 					<p style={{ fontSize: '1.33em' }}>
 						Show list of people I brought to this specific organiztion:
 					</p>
@@ -151,7 +165,7 @@ render()
 				</Grid.Row>
 				<Grid.Row>
 				<Grid.Column textAlign='center'>
-				<Tree data={verdicalTreeData} />
+				<Tree data={this.getMyDownLine()} />
 				<Button size='huge'>Check Them Out</Button>
 				</Grid.Column>
 				</Grid.Row>
