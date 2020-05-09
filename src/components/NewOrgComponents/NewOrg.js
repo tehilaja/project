@@ -9,7 +9,6 @@ import axios from "axios";
 import { async } from "q";
 import ImageUploader from 'react-images-upload';
 import { GoOrganization } from "react-icons/ai";
-
 ////---------------
 
 
@@ -78,6 +77,21 @@ class NewOrg extends React.Component{
 	}
 
 	onDrop(picture) {
+		(async () => {
+			const response = await axios.post(
+				'/upload-file',
+				{
+					file: picture,
+					key: 'try/try.jpg',
+				},
+				{header:{'Content-Type': 'application/json'}}
+				);
+			   console.log("resp",response);
+			 
+		  })();  
+
+
+		alert("uploaded: "+JSON.stringify(picture));
         this.setState({
             pictures: this.state.pictures.concat(picture),
         });

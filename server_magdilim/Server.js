@@ -24,6 +24,7 @@ const userLoginService = userLoginFile.data.userLoginService;
 
 const userParametersService = userParametersFile.data.userParametersService;
 const awsUtil = awsServiceFile.data.awsUtil;
+const uploadFile = require('./s3/upload').methods.uploadFile;
 const reactor = require("./utilities/custom-event").data.reactor;
 
 
@@ -123,6 +124,12 @@ app.get('/orgPage/:orgId', (req, res,next)=>
     res.end("err" , err.code);
   }
 });
+
+//--------------upload file-----------------
+app.post('/upload-file', (req, res, next)=> {console.log('in upload-file at server')
+  const reqponse = uploadFile(req.body.file, req.body.key);
+  res.send(response);
+})
 
 
 // -- /donate/findDThrouhUser

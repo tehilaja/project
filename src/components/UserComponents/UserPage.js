@@ -17,7 +17,8 @@ class UserPage extends React.Component {
         super(props)
         this.state = {
             loggedIn: this.props.loggedIn,
-            userName: this.props.userName,
+            // userName: this.props.userName,
+            userName: "Tehila Jacobs",
             routeMain: false,
             check_login_status: false,
             first_name: "",
@@ -82,7 +83,7 @@ class UserPage extends React.Component {
             if (response.data === "no user") {
                 this.setState({
                     loggedIn: false,
-                    userName: ""
+                    userName: ''
                 })
                 //return;
             }
@@ -141,9 +142,9 @@ class UserPage extends React.Component {
                 <Header data={{ loggedIn: this.state.loggedIn, userName: this.state.email }} />
                 <UserPageBody
                     data={this.state} />
-                    {this.state.userIsAdmin && <Segment relaxed='very'>
-                    <AddPrize />
-                    </Segment>}
+                {this.state.userIsAdmin && <Segment relaxed='very'>
+                <AddPrize />
+                </Segment>}
                 <Footer />
             </div>
         )
