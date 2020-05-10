@@ -105,7 +105,7 @@ app.get('/orgPage/:orgId', (req, res,next)=>
     console.log("query: " + qO);
     db.query(qO, (err,result, fields) =>{
       if(err) throw err;
-      if (result.length === 0 )
+      if (result.length == 0 )
         res.send("no data")
       else{
         console.log("res:  j" +JSON.stringify(result));
@@ -228,8 +228,62 @@ app.post('/donationProcess', (req, res,next)=>
   }
 });
 
+// ---- orgPage/gifts (get)
+app.get('/orgPage/gifts/:org_id', (req, res,next)=>
+{
+  try
+  {
+    console.log(" in orgPage/gifts \n")
+    const qGifts = 
+      `SELECT 
+        l.l_name, l.min_people, l.min_sum,
+        g.gift_id, g.gift_name,
+        g.gift_description,g.gift_pic,
+        g.g_date, g.winer
+      FROM
+        Leveled l
+      INNER JOIN gifts g 
+        ON l.level_id = g.level_id and l.org_id ="${req.params.org_id}"`;
+    console.log("the query: \n" + qGifts)
+    db.query(qGifts, (error, results, fields) =>
+    {
 
-// @ ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      if(error) throw error;
+      console.log("res: \n" +JSON.stringify(results));
+      console.log(results[0]);
+      
+
+      // console.log(JSON.stringify(results.data));
+      // console.log(results.data[0].l_name)
+      if(results.length == 0)
+        res.send("no data")
+      res.send(results);
+
+  });
+
+  }catch(err) {
+    console.log("error: "+ err.code)
+    res.send("server error: "+ err.code)
+  }
+});
+
+
+/*
+SELECT 
+	l.l_name, l.min_people, l.min_sum,
+	g.gift_id, g.gift_name,
+	g.gift_description,g.gift_pic,
+	g.g_date, g.winer
+FROM
+    Leveled l
+-- WHERE l.org_id = 1;
+INNER JOIN gifts g 
+  ON l.level_id = g.level_id and l.org_id = 1;
+  */
+
+
+
+// @ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 // -- userProfile 

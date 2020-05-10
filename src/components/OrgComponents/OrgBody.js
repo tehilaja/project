@@ -11,6 +11,7 @@ import OrgSpechCard from './OrgSpechCard.js'
 
 // donate
 import Donate from './Donate.js'
+import giftCard from './giftCard'
 
 
 import Doners from "./Doners.js"
@@ -25,6 +26,9 @@ class OrgBody extends React.Component {
         // }
         this.state = 
         {
+            org_id: this.props.data.orgDetails.org_id,
+            Allgifts : null, // the information about gifts
+            giftShow: null,
             // firstName: "",
             // email: "",
             showLogin: false,
@@ -55,9 +59,44 @@ class OrgBody extends React.Component {
         // this.findDuser = this.findDuser.bind(this)
         this.increment = this.increment.bind(this)
         this.decrement = this.decrement.bind(this)
+        // get gifts
+        this.getGifts = this.getGifts.bind(this)
+
+        
 
         // css
     }
+// ~~~~~~~~~~~~~~~~ function ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// get gifts list (call from commponentDidMount )
+// /orgPage/gifts/:org_id
+
+    getGifts()
+    {
+        axios.get('/orgPage/gifts/'+this.state.org_id).then(res => 
+        {
+            if (res.status >= 400) {
+                throw new Error("Bad response from server");}
+            // this.setState(Object.assign(this.state.donate_req,{referred_by: res.data.user_id}));
+            // alert("res: \n"+ JSON.stringify(res.data[0].l_name)); // how data came from server
+            this.setState({Allgifts: res.data}); // 
+            // alert(JSON.stringify(res.data))
+            // if (this.state.Allgifts !== null){
+            //     // alert(this.state.Allgifts[0].l_name)
+            //     alert(" Allgifts: \n" , this.state.Allgifts)
+            // }
+                
+
+
+                // alert(this.Allgifts[0].l_name)
+  
+                    	
+        }).catch(error=> {
+            alert(error);
+        })
+    }
+
+
 
     componentDidMount()
     {
@@ -160,30 +199,7 @@ class OrgBody extends React.Component {
     // } 
 
 
-    //-------- findDuser ---------
-    // findDuser(){
-    //     if(this.state.DuserName!="")
-    //     {
-    //         (async () => {
-    //             const response = await axios.post(
-    //                 '/findDuser',
-    //                 {userD:this.state.DuserName},
-    //                 {header:{'Content-Type': 'application/json'}}
-    //                 )
-    //                 console.log("resp",response)
-    //                 if(response.data == "fail"){
-    //                     alert("the user not found")
-    //                 }
-    //                 else if(response.data != " "){
-    //                 // this.setState({loggedIn: false})
-    //                 this.setState({DuserId: response.data})
-    //                 alert("id " + this.state.DuserId)
-    //                 }
-    //             })(); 
-    //     }
-    //     else
-    //         alert("you must to enter a name that you Referred to this organization by")
-    // }
+   
 
      //----------clickToDonate--------------------
      clickToDonate()
@@ -242,8 +258,8 @@ class OrgBody extends React.Component {
             // ~~~~~~~~~~~~~~ about ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
               menuItem: { key:'about', icon: 'users', content: 'about as' },
               render: () => 
-              <Tab.Pane> 
-                   <div>
+              <Tab.Pane > 
+                   <div style={{paddingLeft: '2em'}}>
                         <Segment style={{ padding: '0.5em 0em' }} vertical>
                             <Grid container stackable verticalAlign='middle'>
                                 <Grid.Row>
@@ -257,7 +273,6 @@ class OrgBody extends React.Component {
                                         <p style={{ fontSize: '1em' }}>
                                             {this.props.data.orgDetails.field_of_acctivity}
                                         </p>
-                                       5
                                         {/* // option to hide text */}
                                         <Accordion>
                                             <Accordion.Title
@@ -320,7 +335,7 @@ class OrgBody extends React.Component {
                         </Segment>
                     </div>
                     
-                <br/>
+                    <br/>
               </Tab.Pane>,
             },
             {
@@ -343,7 +358,7 @@ class OrgBody extends React.Component {
 
                     <div className = "donate" >
                     <Segment style={{ padding: '0.5em 1.5em' }} vertical>
-                        <Grid>
+                        <Grid style ={{paddingLeft: '2em'}}>
                             <Grid.Row>
                                 <Header as='h2' icon='handshake outline' content='Donate' />
                             </Grid.Row>
@@ -379,52 +394,7 @@ class OrgBody extends React.Component {
                             </Grid.Row>
                         </Grid>
 
-                    
-                            
-
-                            {/* -- Donation amount */}
-                            {/* <div className = "initialDonation">
-                                <label > Donation amount (per month):</label>
-                                <label className= "initialDonationValue"  type="text" style={{color: this.state.color}}> {this.state.initialDonation}</label> */}
-                                {/* <input className= "initialDonationValue"  type="text" style={{color: this.state.color, width:25}} placeholder = {this.state.initialDonation}></input> */}
-
-                                {/* <lable>$  </lable>
-                                <button onClick={this.decrement}>-</button>
-                                <button onClick={this.increment} >+</button>
-                            </div> */}
-
-                            {/* <button className ="btnDonateOrg" onClick ={() => this.setState(prevState => {
-                                return {
-                                    btnDonateClicked: !prevState.btnDonateClicked
-                                }})}>donate 
-                            </button> */}
-
-
-                            {/* Donation throw information... */}
-{/*                             
-                            {this.state.btnDonateClicked && 
-                                <div className = "doners"> */}
-                                    {/* * TODO: if no Referred to */}
-                                    {/* <h4 style ={styles} >Referred to this organization by: </h4>
-                                    <form className="fillFormDoners" onSubmit={this.handleSubmit}>
-                                        <lable htmlFor = "dname">name: </lable>
-                                        <input id = "dname"
-                                            type="text" name="DuserName" onChange={this.handleChange.bind(this)} 
-                                            placeholder="user Name" 
-                                        /><br /><br/> */}
-                                        {/* <lable>email: </lable>
-                                        <input 
-                                            input type="email"
-                                            name="userEmail" 
-                                            onChange={this.handleChange.bind(this)}
-                                            placeholder="email" 
-                                        /> <br/><br/> */}
-                                        
-                                        {/* <input className="btnConfirm"  type="submit" value="Submit"></input>             
-                                        <br/><br/>
-                                    </form>
-                                </div> */}
-                            {/* } */}
+                
                         </Segment>
                     </div>
                     
@@ -435,32 +405,32 @@ class OrgBody extends React.Component {
               {
                 menuItem: { key:'gifts', icon: 'gift', content: 'Gifts' },
                 
-                render: () => <Tab.Pane  attached={false} >
-                   <Grid columns={3} divided>
-                        <Grid.Row>
-                            <Header as='h2' icon='gift' content='Gift' />
-                        </Grid.Row>
-                        <Grid.Row>
-                                
-                            <Grid.Column >
-                                <p>
-                                {this.props.data.orgDetails.description}
-                                
-                                </p>
-                                ghcvdhcvghvhgdv hjjjjjjjjjjjjjjjjjjjjjj
-                            </Grid.Column>
+                render: () => 
+                    <Tab.Pane  attached={true} >
+                        <Grid style ={{marginLeft:'1em' ,width: '100%'}} columns={3} divided>
+                            <Grid.Row>
+                                <Header style ={{marginLeft:'1em'}} as='h2' icon='gift' content='Gift' />
+                            </Grid.Row>
+                            <Grid.Row>       
+                               
+                                {/* show the gifts
+                                    // TODO: filter objects
+                                */}
+                                {this.state.Allgifts !== null && 
+                                    <div>
+                                        {/* const orgComponents = this.state.organizations.map(org =>{
+				                         <OrgCard key={org.org_id} imgUrl={org.org_pic} name={org.org_name} id= {org.org_id} initialDonation= {org.min_donation} 
+				                        />)}
+				 */}
+		                                 
+                                        <p>in orgBody</p>
+                                        {this.state.Allgifts[0].l_name}
+                                    </div>
+                                }
 
-                            <Grid.Column >
-                                <div className="org-spech-card">
-                                    {/* <h3>id = {this.props.data.id}</h3> */}
-                                    <h1> {this.props.data.orgDetails.org_name} </h1>
-                                    <img src = {this.props.data.orgDetails.org_picimg}></img>
-                                </div>
-                                {/* <Image src='https://react.semantic-ui.com/images/wireframe/image.png' /> */}
-                            </Grid.Column>
-
-                        </Grid.Row>
-                    </Grid>
+                            </Grid.Row>
+                        </Grid>
+                    
                 </Tab.Pane>,
                 
               },
@@ -532,7 +502,7 @@ class OrgBody extends React.Component {
                                 </Grid.Row>
 
                                 <Grid.Row>
-                                    <Tab style={{ padding: '0em 0.2em' }} defaultActiveIndex={2} menu={{ color:'blue' ,vertical: true, inverted: true, attached: true, tabular: true, pointing: true}} panes={panes} />
+                                    <Tab style={{ padding: '0.2em 1.5em' }} defaultActiveIndex={2} menu={{ color:'blue' ,vertical: true, inverted: true, attached: true, tabular: true, pointing: true}} panes={panes} />
 
                                 </Grid.Row>
                                
@@ -545,6 +515,9 @@ class OrgBody extends React.Component {
                     <Image  floated='right'  size='large' src={this.props.data.orgDetails.org_pic} style={{ padding: '3em 3em' }} />
 
                 </Header>
+                <Button
+                    onClick = {this.getGifts}
+                >getGifts</Button>
                 {/* // menu bar side */}
                 {/* <Tab style={{ padding: '1em 0em' }} menu={{ color:'blue' ,vertical: true, inverted: true, attached: true, tabular: true, pointing: true}} panes={panes} /> */}
 
