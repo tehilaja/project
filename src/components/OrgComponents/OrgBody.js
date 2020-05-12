@@ -1,8 +1,11 @@
 import React from 'react';
 import axios from "axios";
+// import Select from 'react-select';
+
 
 // import 'semantic-ui-css/semantic.min.css' // css libary
-import { Header, Icon, Image, Label, Menu, Tab,Grid ,Segment, Button, Feed, Accordion} from 'semantic-ui-react'
+import { Header, Icon, Image, Label, Menu, Tab,Grid ,Segment, Button, Feed, Accordion, Select,Dropdown} from 'semantic-ui-react'
+
 
 
 import OrgCard from './OrgCard.js'
@@ -16,6 +19,18 @@ import GiftCard from './GiftCard.js'
 
 import Doners from "./Doners.js"
 
+
+
+const levelOptions = [
+    { key: 'all levels',value: 'all levels', text: 'all levels' },
+    { key: 'all',value: 'all', text: 'all' },
+    { key: 'silver',value: 'silver', text: 'silver' },
+    { key: 'gold',value: 'gold', text: 'gold' },
+    { key: 'platinium',value: 'platinium', text: 'platinium' },
+  ];
+
+
+
 class OrgBody extends React.Component {
     constructor(props)
     {
@@ -28,7 +43,7 @@ class OrgBody extends React.Component {
         {
             org_id: this.props.data.orgDetails.org_id,
             Allgifts : [], // the information about gifts
-            giftShow: null,
+            giftShow: [],
             // firstName: "",
             // email: "",
             showLogin: false,
@@ -47,7 +62,8 @@ class OrgBody extends React.Component {
             DuserId: "",
             userEmail: "", // -
             // user_id: 5 // todo : real info
-            activeIndex: 0 // to active >
+            activeIndex: 0, // to active >
+            selectedOptionLevel: null // gift
         }
      
 
@@ -61,12 +77,52 @@ class OrgBody extends React.Component {
         this.decrement = this.decrement.bind(this)
         // get gifts
         this.getGifts = this.getGifts.bind(this)
+        // select level
+        this.selectLevel = this.selectLevel.bind(this)
+        this.filterChooseLevel = this.filterChooseLevel.bind(this)
 
         
+
 
         // css
     }
 // ~~~~~~~~~~~~~~~~ function ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+    // selectLevel
+    
+        selectLevel (e, { value }) {
+            this.setState({ selectedOptionLevel: value })
+            this.filterChooseLevel(value)
+
+        }
+        
+
+    // filter an a choosen level
+    filterChooseLevel(filter){
+        let obj = [];
+        if (filter === 'all levels'){
+            this.setState({giftShow: this.state.Allgifts})
+            alert("all : "+ this.state.giftShow.length)
+        }
+        else
+        {
+            this.state.Allgifts.map(element =>
+            {
+                if(element.l_name === filter)
+                    // this.state.giftShow.push(element)
+                    obj.push(element)
+
+            })
+            this.setState({giftShow: obj})
+        }
+        
+       
+
+
+    }
+
+
 
 // get gifts list (call from commponentDidMount )
 // /orgPage/gifts/:org_id
@@ -83,7 +139,10 @@ class OrgBody extends React.Component {
                 return res
             }).then(respones=>
                 {
-                    this.setState({Allgifts: respones.data}); // 
+                    this.setState({Allgifts: respones.data});
+                    this.setState({giftShow: respones.data}); 
+ 
+                    // 
 
             // alert("data \n " + JSON.stringify(res.data))
             // if (this.state.Allgifts !== null){
@@ -261,15 +320,20 @@ class OrgBody extends React.Component {
     {
         // all gifts show
         
-        const giftComponents = this.state.Allgifts.map(gift =>{
-            alert(gift.l_name)
+        const giftComponents = this.state.giftShow.map(gift =>{
             return(
                 <GiftCard  gifts ={gift}  
                 />)
         })
-        
-
-                
+       
+        // const levelOptions = [
+        //     { key: 'all', value: 'all', text: 'all' },
+        //     { key: 'silver', value: 'silver', text: 'silver' },
+        //     { key: 'gold', value: 'gold', text: 'gold' },
+        //     { key: 'platinium', value: 'platinium', text: 'platinium' }
+        //   ]
+        const { valueLevel } = this.state // level
+      
         const styles = 
         {
             fontStyle: "italic",
@@ -393,39 +457,16 @@ class OrgBody extends React.Component {
                             <Grid.Row>
                                 <Header as='h2' icon='handshake outline' content='Donate' />
                             </Grid.Row>
-                            <Grid.Row>
-
-                           
+                            <Grid.Row>                           
                                 <div>
                                     <Donate data={{initialDonation: this.state.initialDonation, org_id: this.props.data.orgDetails.org_id}} />
-                                    {/* <Step.Group>
-                                    <Step
-                                        active={active === 'Shipping'}
-                                        icon='truck'
-                                        link
-                                        onClick={this.handleClick}
-                                        title='Shipping'
-                                        description='Choose your shipping options'
-                                    />
-                                    <Step
-                                        active={active === 'Billing'}
-                                        icon='credit card'
-                                        link
-                                        onClick={this.handleClick}
-                                        title='Billing'
-                                        description='Enter billing information'
-                                    />
-                                    </Step.Group> */}
+                                   
                                 </div>
                                                             
                             </Grid.Row>
-                            <Grid.Row>
-                                
-                                
+                            <Grid.Row>                                
                             </Grid.Row>
                         </Grid>
-
-                
                         </Segment>
                     </div>
                     
@@ -442,6 +483,25 @@ class OrgBody extends React.Component {
                             <Grid.Row>
                                 <Header style ={{marginLeft:'1em'}} as='h2' icon='gift' content='Prizes' />
                             </Grid.Row>
+                            <Grid.Row>
+                                <Label style = {{fontSize: '16px' ,marginTop:'2em', marginBottom:'2em'}}> 
+                                    the prizes of this organization: 
+                                </Label>
+                            </Grid.Row>
+                            <Grid.Row>
+                                {/* selection option (level select) */}
+                                <Dropdown
+                                    // fluid
+                                    selectio
+                                    // selectOnNavigation 
+                                    onChange={this.selectLevel}
+                                    options={levelOptions}
+                                    placeholder='Choose an option'
+                                    selection
+                                    value={valueLevel}
+                                />
+                            </Grid.Row>
+
                             <Grid.Row>  
 
                                 {/* show the gifts
@@ -489,28 +549,26 @@ class OrgBody extends React.Component {
             <div className = "orgBody_css">
                     
                 <Segment style={{ }} vertical>
-                            <Grid >
-                            {/* <Grid style = {{margin: '2em, 0.7em'}}> */}
+                    <Grid >
+                    {/* <Grid style = {{margin: '2em, 0.7em'}}> */}
 
-                                <Grid.Row>
-                                    <header style ={{backgroundColor: '#20B2AA' ,backgroundImage : this.props.data.orgDetails.org_pic ,width:'100%',height: '20em' ,padding: '2em ,2em', margin: ''}}>
-                                    {/* background-color: green;0.3; */}
-                                        <img  src={this.props.data.orgDetails.org_pic} style = {{display: 'block',marginLeft: 'auto',marginRight: 'auto',width: '28%'}}/>
-                                        
-                                        {/* style={{ padding: '3em 3em' }} */}
-                                        
-                                    </header>
-                                    {/* <Image  floated='right'  size='large' src={this.props.data.img} style={{ padding: '3em 3em' }} fluid /> */}
+                        <Grid.Row>
+                            <header style ={{backgroundColor: '#20B2AA' ,backgroundImage : this.props.data.orgDetails.org_pic ,width:'100%',height: '20em' ,padding: '2em ,2em', margin: ''}}>
+                            {/* background-color: green;0.3; */}
+                                <img  src={this.props.data.orgDetails.org_pic} style = {{display: 'block',marginLeft: 'auto',marginRight: 'auto',width: '28%'}}/>
+                                
+                                {/* style={{ padding: '3em 3em' }} */}
+                                
+                            </header>
+                            {/* <Image  floated='right'  size='large' src={this.props.data.img} style={{ padding: '3em 3em' }} fluid /> */}
+                        </Grid.Row>
 
+                        <Grid.Row>
+                            <Tab style={{ padding: '0.2em 1.5em' }} defaultActiveIndex={3} menu={{ color:'blue' ,vertical: true, inverted: true, attached: true, tabular: true, pointing: true}} panes={panes} />
 
-                                </Grid.Row>
-
-                                <Grid.Row>
-                                    <Tab style={{ padding: '0.2em 1.5em' }} defaultActiveIndex={2} menu={{ color:'blue' ,vertical: true, inverted: true, attached: true, tabular: true, pointing: true}} panes={panes} />
-
-                                </Grid.Row>
-                               
-                            </Grid>
+                        </Grid.Row>
+                        
+                    </Grid>
                 </Segment>
 
 
