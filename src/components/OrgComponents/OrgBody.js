@@ -11,7 +11,7 @@ import OrgSpechCard from './OrgSpechCard.js'
 
 // donate
 import Donate from './Donate.js'
-import giftCard from './giftCard'
+import GiftCard from './GiftCard.js'
 
 
 import Doners from "./Doners.js"
@@ -27,7 +27,7 @@ class OrgBody extends React.Component {
         this.state = 
         {
             org_id: this.props.data.orgDetails.org_id,
-            Allgifts : null, // the information about gifts
+            Allgifts : [], // the information about gifts
             giftShow: null,
             // firstName: "",
             // email: "",
@@ -79,8 +79,13 @@ class OrgBody extends React.Component {
                 throw new Error("Bad response from server");}
             // this.setState(Object.assign(this.state.donate_req,{referred_by: res.data.user_id}));
             // alert("res: \n"+ JSON.stringify(res.data[0].l_name)); // how data came from server
-            this.setState({Allgifts: res.data}); // 
-            // alert(JSON.stringify(res.data))
+            // alert("res:\n" + res)
+                return res
+            }).then(respones=>
+                {
+                    this.setState({Allgifts: respones.data}); // 
+
+            // alert("data \n " + JSON.stringify(res.data))
             // if (this.state.Allgifts !== null){
             //     // alert(this.state.Allgifts[0].l_name)
             //     alert(" Allgifts: \n" , this.state.Allgifts)
@@ -100,6 +105,21 @@ class OrgBody extends React.Component {
 
     componentDidMount()
     {
+        // fetch('/data', {
+        //     method: 'GET'
+        // }).then(function(response) {
+        //     if (response.status >= 400) {
+        //         throw new Error("Bad response from server");
+        //     }
+        //     return response.json();
+        // }).then(function(data) {
+        //     this.setState({Allgifts: data});
+        // }).catch(err => {
+        // console.log('caught it!',err);
+        // })
+    
+    
+        this.getGifts()
         // alert("first " + this.props.data.orgDetails.min_donation);
         // alert(" hi "+ this.state.initialDonation)
 
@@ -239,6 +259,17 @@ class OrgBody extends React.Component {
 //----------render------------------
     render() 
     {
+        // all gifts show
+        
+        const giftComponents = this.state.Allgifts.map(gift =>{
+            alert(gift.l_name)
+            return(
+                <GiftCard  gifts ={gift}  
+                />)
+        })
+        
+
+                
         const styles = 
         {
             fontStyle: "italic",
@@ -403,31 +434,20 @@ class OrgBody extends React.Component {
 
             // ~~~~~~~~~~~~~~ gift ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
               {
-                menuItem: { key:'gifts', icon: 'gift', content: 'Gifts' },
+                menuItem: { key:'gifts', icon: 'gift', content: 'Prizes' },
                 
                 render: () => 
                     <Tab.Pane  attached={true} >
                         <Grid style ={{marginLeft:'1em' ,width: '100%'}} columns={3} divided>
                             <Grid.Row>
-                                <Header style ={{marginLeft:'1em'}} as='h2' icon='gift' content='Gift' />
+                                <Header style ={{marginLeft:'1em'}} as='h2' icon='gift' content='Prizes' />
                             </Grid.Row>
-                            <Grid.Row>       
-                               
+                            <Grid.Row>  
+
                                 {/* show the gifts
                                     // TODO: filter objects
                                 */}
-                                {this.state.Allgifts !== null && 
-                                    <div>
-                                        {/* const orgComponents = this.state.organizations.map(org =>{
-				                         <OrgCard key={org.org_id} imgUrl={org.org_pic} name={org.org_name} id= {org.org_id} initialDonation= {org.min_donation} 
-				                        />)}
-				 */}
-		                                 
-                                        <p>in orgBody</p>
-                                        {this.state.Allgifts[0].l_name}
-                                    </div>
-                                }
-
+	                              {giftComponents}
                             </Grid.Row>
                         </Grid>
                     
@@ -461,7 +481,6 @@ class OrgBody extends React.Component {
                 </Tab.Pane>,
               },
 
-           
 
           ]
 
@@ -469,21 +488,6 @@ class OrgBody extends React.Component {
         return(
             <div className = "orgBody_css">
                     
-                    {/* users
-                    group */}
-                {/* <Header dividing textAlign='right' style={{ fontSize: '2em', padding:'0.5em, 5em', marginTop:'0.5em'}}>
-                    {this.props.data.name} */}
-                    {/* <  Icon  style={{ marginLeft: '0.7em' , marginRight: '1.5em', color:'blue'}} name='group' circular />  */}
-                {/* fontStyle: "italic" */}
-                     {/* {this.props.data.name} */}
-                     {/* <Image size='massive' src={this.props.data.img} style={{marginLeft: '3em' }}/> */}
-                {/* </Header> */}
-
-
-                {/* <image src = {this.props.data.img} ></image> */}
-
-
-
                 <Segment style={{ }} vertical>
                             <Grid >
                             {/* <Grid style = {{margin: '2em, 0.7em'}}> */}
@@ -510,14 +514,11 @@ class OrgBody extends React.Component {
                 </Segment>
 
 
-
                 <Header>
                     <Image  floated='right'  size='large' src={this.props.data.orgDetails.org_pic} style={{ padding: '3em 3em' }} />
 
                 </Header>
-                <Button
-                    onClick = {this.getGifts}
-                >getGifts</Button>
+            
                 {/* // menu bar side */}
                 {/* <Tab style={{ padding: '1em 0em' }} menu={{ color:'blue' ,vertical: true, inverted: true, attached: true, tabular: true, pointing: true}} panes={panes} /> */}
 
