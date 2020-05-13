@@ -15,67 +15,40 @@ class NewOrgPage extends React.Component{
 	constructor(props) {
 		super(props)	
 		this.state = {
-            loggedIn: this.props.loggedIn,
-            userName: this.props.userName,
+            loggedIn: this.props.data.loggedIn,
+            userName: this.props.data.userName,
 			routeMain: false,
-			check_login_status: false,
-			allowAddPrize: true,
+			allowAddPrize: false,
 			showAddPrize: false
 		}
-		this.function_log_status();
 		this.handlerClick = this.handlerClick.bind(this);
 
 	}
 	
+	//TODO:deal with only Admin being able to add organization and prizes
 	// componentWillReceiveProps(nextProps){
 	// 	nextProps= this.props
 	// }
 
-	//the function below checks if the user is already logged in before rendering page
-	function_log_status(){
-		(async ()=> {
-            const response = await axios.post(
-                '/is_logged_in',
-                { headers: { 'Content-Type': 'application/json' } }
-			  )
-			if(response.data === "no user"){
-				this.setState({
-					loggedIn: false,
-					userName: ""})
-				//return;
-			}
-			else{
-				this.setState({
-					loggedIn: true,
-					userName: response.data});
-				this.forceUpdate();
-				//alert("loggedIn "+this.state.loggedIn + " userName "+ this.state.userName);
-			}
-			this.setState({check_login_status:true})
-	})();
-}
-
-	handlerClick(userName) {
+	handlerClick(allowAddPrize) {
         this.setState({
-			loggedIn: true,
-			userName: userName
+			allowAddPrize: true
 		});
-		this.props.record(userName)
+		this.props.record(allowAddPrize)
 	}
 
 	// function 
 
 	render() {
-		// if(!this.state.check_login_status)
-		// 	return(<h1>loading...</h1>)
 		return(
 			<div>
-                <Header record={this.handlerClick} data={{loggedIn: this.state.loggedIn, userName: this.state.userName}}/>
+                <Header data={{loggedIn: this.state.loggedIn, userName: this.state.userName}}/>
 				<Grid container stackable verticalAlign='middle'>
 				<Grid.Row>
 				<Grid.Column width={8}>
 					{/* Form to add organization: */}
-					<NewOrg data = {this.state}/>
+					{/* sending record to know when to enable showing adding prize*/}
+				{!this.state.allowAddPrize && <NewOrg record={this.handlerClick} data = {this.state}/>}
 				</Grid.Column>
 				<Grid.Column floated='right' width={6}>
 				<div as='h3' style={{ fontSize: '2em' }}>

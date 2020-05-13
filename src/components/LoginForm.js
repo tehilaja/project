@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from "axios";
 import { Button, Divider, Form, Grid, Segment } from 'semantic-ui-react'
+import { Redirect } from "react-router-dom";
 
 class LoginForm extends React.Component {
     constructor(props){
@@ -53,9 +54,7 @@ class LoginForm extends React.Component {
                 this.setState({loggedIn: true})
                 // this.props.record(this.state.userName)
               }
-              
               window.location.assign('/UserPage');
-              
         })();
     }
     
@@ -98,12 +97,3 @@ class LoginForm extends React.Component {
 }
 
 export default LoginForm;
-
-//      <div className="App-header-form">
-//      <form onSubmit={this.handleSubmit.bind(this)}>
-//        User name: <input type="text" name="userName" onChange={this.handleChange.bind(this)}/><br />
-//        password: <input type="password" name="pswd" onChange={this.handleChange.bind(this)}/><br />
-//        <input type="submit" value="Submit" />
-//        {this.state.loggedIn && <h1>Hello {this.state.userName}</h1>} 
-//      </form>
-//      </div>

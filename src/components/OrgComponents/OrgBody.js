@@ -251,7 +251,7 @@ class OrgBody extends React.Component {
                      {header:{'Content-Type': 'application/json'}}
                      )
                     console.log("resp",response)
-                    if(response.data === "no conection"){
+                    if(response.data === "no connection"){
                         alert("you need to login...")
                     }
                     else if(response.data ==="added succesfully!"){

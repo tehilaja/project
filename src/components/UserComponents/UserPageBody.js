@@ -32,15 +32,6 @@ const WIDTH = 70;
 const HEIGHT = 80;
 
 
- 
-class MyComponent extends React.Component {
-  render() {
-    return (
-      {/* <Tree /> will fill width/height of its container; in this case `#treeWrapper` */}
-    );
-  }
-}
-
 class UserPage extends React.Component{
 //-----------constructor----------------------
 constructor(props)
@@ -55,12 +46,13 @@ constructor(props)
 		//get the list of organization for thde specific user
         clickOrg: false,
         isFetchingData: false,
-        data: null
+		data: null,
+		getOrgDownline: false
         // id: "3"
 	}
 	this.state.organizations = this.getUserOrganizations();
 	this.handleClick = this.handleClick.bind(this);
-	// alert("user page body: " + JSON.stringify(this.state))
+	alert("user page body: " + JSON.stringify(this.state))
     // this.fetch_org_data = this.fetch_org_data.bind(this)
 }
 
@@ -166,7 +158,6 @@ render()
 				<Grid.Row>
 				<Grid.Column textAlign='center'>
 				<Tree data={this.getMyDownLine()} />
-				<Button size='huge'>Check Them Out</Button>
 				</Grid.Column>
 				</Grid.Row>
 			</Grid>
@@ -196,7 +187,7 @@ render()
 			<Segment style={{ padding: '8em 0em' }} vertical>
 			<Container text>
 				<Header as='h3' style={{ fontSize: '2em' }}>
-				Breaking The Grid, Grabs Your Attention
+				Build. Create. Inspire others.
 				</Header>
 				<p style={{ fontSize: '1.33em' }}>
 				Instead of focusing on content creation and hard work, we have learned how to master the
@@ -217,7 +208,7 @@ render()
 				</Divider>
 
 				<Header as='h3' style={{ fontSize: '2em' }}>
-				Did We Tell You About Our Bananas?
+				Did We Tell You About Our?
 				</Header>
 				<p style={{ fontSize: '1.33em' }}>
 				Yes I know you probably disregarded the earlier boasts as non-sequitur filler content, but

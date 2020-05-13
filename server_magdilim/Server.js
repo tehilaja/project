@@ -24,6 +24,7 @@ const userLoginService = userLoginFile.data.userLoginService;
 
 const userParametersService = userParametersFile.data.userParametersService;
 const awsUtil = awsServiceFile.data.awsUtil;
+const uploadFile = require('./s3/upload').methods.uploadFile;
 const reactor = require("./utilities/custom-event").data.reactor;
 
 
@@ -33,7 +34,8 @@ const app = express(); //library to shorten http requests
 
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
-
+ app.use(bodyParser.json({limit: "50mb"}));
+ app.use(bodyParser.urlencoded({limit: "50mb", extended: true, parameterLimit:50000}));
 var my_user = null
 var pic = "https://yad-sarah.net/wp-content/uploads/2019/04/logoys.png"
 
@@ -124,6 +126,12 @@ app.get('/orgPage/:orgId', (req, res,next)=>
   }
 });
 
+//--------------upload file-----------------
+app.post('/upload-file', (req, res, next)=> {console.log('in upload-file at server')
+  const reqponse = uploadFile(req.body.file, req.body.key);
+  res.send(response);
+})
+
 
 // -- /donate/findDThrouhUser
 app.get('/donate/findDThrouhUser/:dUser', (req, res,next)=> 
@@ -209,7 +217,7 @@ app.post('/donationProcess', (req, res,next)=>
     {
       if(!err){
         res.send("insert donation") ;//response
-        console.log("sucses! ");
+        console.log("success");
       }
       else
       {
@@ -322,16 +330,16 @@ try {
 
 
 // @ check server connection
-app.get('/checkServer',function(req,res){
-  console.log("checkServer !!! ....");
-  try {
-    res.send("yes");
-  } catch (error) {
-    console.log("error: "+JSON.stringify(error));  
-    res.send("no")
-  }
+// app.get('/checkServer',function(req,res){
+//   console.log("checkServer !!! ....");
+//   try {
+//     res.send("yes");
+//   } catch (error) {
+//     console.log("error: "+JSON.stringify(error));  
+//     res.send("no")
+//   }
 
-});
+// });
 
 
 
@@ -404,9 +412,10 @@ app.post('/get_current_user',function(req,res){
 app.post('/get_user_params',function(req,res){
   console.log("start server get user params");
   let params = [];
-  userParametersService.getParameters(params);
-  //while(!params.length);
-
+  const err = userParametersService.getParameters(params);
+  if(err){
+    res.send(err);
+  }
   reactor.registerEvent('got_user_params');
   reactor.addEventListener('got_user_params', function() {
     res.send(params);
@@ -456,7 +465,7 @@ app.post('/get_user_params',function(req,res){
 //   // })
 //   }
 //   else
-//     res.end("no conection")
+//     res.end("no connection")
 // })
 
 
@@ -550,7 +559,7 @@ app.post('/addOrg',(req, res)=>{
   // })
   }
   else
-    res.end("no conection")
+    res.end("no connection")
 })
 
 
