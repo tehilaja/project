@@ -4,6 +4,7 @@ import {Redirect} from "react-router-dom";
 import axios from "axios";
 import { async } from "q";
 
+import {Dimmer, Image, Loader, Segment} from 'semantic-ui-react';
 //App being father component of all components:
 import HomePage from './HomePage.js'
 import OrgPage from './components/OrgComponents/OrgPage.js';
@@ -70,7 +71,19 @@ class App extends React.Component
 	render() 
 	{
 		if(!this.state.check_login_status)
-			return(<h1>loading...</h1>)
+		return(
+		<Segment>
+		<Dimmer active  inverted>
+		<Loader size='massive'>Loading</Loader>
+		</Dimmer>
+
+		<Image src='https://react.semantic-ui.com/images/wireframe/short-paragraph.png' />
+		<Image src='https://react.semantic-ui.com/images/wireframe/short-paragraph.png' />
+		<Image src='https://react.semantic-ui.com/images/wireframe/short-paragraph.png' />
+		<Image src='https://react.semantic-ui.com/images/wireframe/short-paragraph.png' />
+		<Image src='https://react.semantic-ui.com/images/wireframe/short-paragraph.png' />
+		<Image src='https://react.semantic-ui.com/images/wireframe/short-paragraph.png' />
+  		</Segment>)
 		else{
 			const path = window.location.pathname;
 			alert('path: '+path);
