@@ -32,6 +32,9 @@ import {
     Visibility,
 } from 'semantic-ui-react'
 
+
+const uploadFile = require('../../utilities/upload').methods.uploadFile;
+
 class NewOrg extends React.Component {
 
     constructor(props) {
@@ -39,9 +42,8 @@ class NewOrg extends React.Component {
         this.state = {
             pswd: "",
             validPswd: false,
-            loggedIn: true, //this.props.data.loggedIn,
-            userName: "", //this.props.data.userName
-            check_login_status: true,
+            loggedIn: this.props.data.loggedIn,
+            userName: this.props.data.userName,
             //////////////////
             orgName: '',
             admin_name: '',
@@ -69,86 +71,40 @@ class NewOrg extends React.Component {
             flag_done: false,
             file: "",
             file_name: "",
+            selectedImage: null,
         }
         this.handleChange = this.handleChange.bind(this)
         this.handlerClick = this.handlerClick.bind(this);
         this.increment = this.increment.bind(this);
         this.decrement = this.decrement.bind(this);
-        this.onDrop = this.onDrop.bind(this);
-	}
-	
-	//another try:
-	fileSelctedHandler = event => {
-		this.setState({
-			pictures:event.target.files[0]
-		})
-		this.fileUploadHandler();
-	}
+        this.onSelectFile = this.onSelectFile.bind(this);
+    }
+    
+    //another try:
+    fileSelctedHandler = event => {
+        this.setState({
+            pictures:event.target.files[0]
+        })
+        this.fileUploadHandler();
+    }
 
-	fileUploadHandler = () => {
-		(async () => {
-			const response = await axios.post(
-				'/upload-file',
-				{
-					file: this.state.pictures,
-					key: 'try/try.jpg',
-				},
-				{header:{'Content-Type': 'application/json'}}
-				);
-			   console.log("resp",response);
-			 
-		  })();  
-	}
-	
-	/////
-
-    onDrop(file, name) {
+    fileUploadHandler = () => {
         (async () => {
             const response = await axios.post(
                 '/upload-file',
                 {
-                    file: file,
-                    key: name,
+                    file: this.state.pictures,
+                    key: 'try/try.jpg',
                 },
-                { header: { 'Content-Type': 'application/json' } }
-            );
-            console.log("resp", response);
-
-        })();
-
-
-        // this.setState({
-        //     pictures: this.state.pictures.concat(picture),
-        // });
+                {header:{'Content-Type': 'application/json'}}
+                );
+               console.log("resp",response);
+             
+          })();  
     }
 
     onSelectFile(event) {
-        if (event.target.files && event.target.files[0]) {
-            const file = event.target.files[0];
-            const reader = new FileReader();
-
-            reader.onload = (event) => { // called once readAsDataURL is completed
-                (async () => {
-                    const response = await axios.post(
-                        '/upload-file',
-                        {
-                            file: reader.result,
-                            key: file.name,
-                        },
-                        {
-                            headers: {
-                              'Content-Type': 'application/json'
-                            }
-                          }
-                    );
-                    console.log("resp", response);
-
-                })();
-
-            }
-            reader.readAsDataURL(file);
-            //   this.onDrop(event.target.result, file.name);
-        }
+        this.setState({ selectedImage: event.target.files[0] });
     }
 
 
@@ -160,6 +116,11 @@ class NewOrg extends React.Component {
 
 
     handleSubmit = (e) => {
+
+        (async () => {
+            await uploadFile(this.state.selectedImage, fileUrl => alert('file url:' + fileUrl), this.state.orgName);
+        })();
+
         e.preventDefault();
         /*add new org to dataBase */
         // if (this.state.DuserName != "") // TODO: if find in db (func findDuser)
@@ -360,8 +321,6 @@ class NewOrg extends React.Component {
                         imgExtension={['.jpg', '.gif', '.png', '.gif']}
                         maxFileSize={5242880}
                     /> */}
-										<input type="file" onChange={this.fileSelctedHandler} />
-
                                 <input label='Choose image' type='file' onChange={this.onSelectFile} />
                                 <br /><br />
                             </Segment>

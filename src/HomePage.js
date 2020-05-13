@@ -30,7 +30,6 @@ class App extends React.Component
 			userName: this.props.data.userName,
 			org: null,
     }
-    alert("in app:"+JSON.stringify(this.state))
 	}
 
 // //---------render------------------

@@ -14,6 +14,13 @@ import NewOrgPage from './components/NewOrgComponents/NewOrgPage.js'
 import OrgSearch from './components/OrgComponents/OrgSearch.js'
 import Prizes from './components/Prizes.js'
 
+//to know which page is open and make the navbar active
+class ActivePage {
+	static Home = 1;
+	static Organizations = 2;
+	static Prizes = 3;
+	static MyProfile = 4;
+}
 
 class App extends React.Component
 {
@@ -26,7 +33,6 @@ class App extends React.Component
 	}
 
 	get_user_params() {
-		alert("in app:"+JSON.stringify(this.state));
         (async () => {
             const response = await axios.post(
                 '/get_user_params',
@@ -86,10 +92,9 @@ class App extends React.Component
   		</Segment>)
 		else{
 			const path = window.location.pathname;
-			alert('path: '+path);
 			switch (path.toLowerCase()) {
 					case "/":
-						return(<HomePage data={this.state}/>);
+						return(<HomePage data={this.state} activePage={ActivePage.Home}/>);
 					case "/userpage":
 						return(<UserPage data={this.state}/>);
 					case "/orgpage":

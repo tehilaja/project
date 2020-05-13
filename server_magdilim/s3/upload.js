@@ -1,34 +1,33 @@
 const AWS = require('aws-sdk');
 const bluebird = require('bluebird');
-
+const encryptor = require('../aes/encryptor').methods;
 const bucketName = 'magdilim-organization-images';
 
-// configure the keys for accessing AWS
-AWS.config.update({
-  accessKeyId: 'AKIAIDIZL7DZR2ZUUZAA',
-  secretAccessKey: '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',
-});
+const encryptedAccessKeyId = '97f60b6983714905023acb95fe34328c067e1644';
+const encryptedSecretAccessKey = 'beee2d4af04d2c0a7126a5baa00413a0026f287edbb9283fbb9b56a59836fe8394ec476ea303edf4';
 
-// configure AWS to work with promises
+
+AWS.config.update({
+  accessKeyId: encryptor.decrypt(encryptedAccessKeyId),
+  secretAccessKey: encryptor.decrypt(encryptedSecretAccessKey), });
+
 AWS.config.setPromisesDependency(bluebird);
 
-// create S3 instance
 const s3 = new AWS.S3();
 
-// abstracts function to upload a file returning a promise
-const uploadFile = (file, key) => {
+const uploadFile = (file, type, key) => {
+
   const params = {
     ACL: 'public-read',
-    Body: file,
+    Body: Buffer.from(file), 
     Bucket: bucketName,
     Key: key,
-    ContentType: 'MIME',
-  };
+    ContentType: type, };
+
   s3.upload(params).promise();
 
   return `https://${bucketName}.s3.amazonaws.com/${key}`;
 };
 
-  exports.methods = {
-    uploadFile: uploadFile
-  }
+
+exports.methods = { uploadFile: uploadFile }

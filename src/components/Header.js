@@ -63,6 +63,15 @@ const style = {
 		})();
 }
 
+//to know which page is open and make the navbar active
+class ActivePage {
+	static Home = 1;
+	static Organizations = 2;
+	static Prizes = 3;
+	static MyProfile = 4;
+}
+
+
   /* eslint-disable react/no-multi-comp */
 /* Heads up! HomepageHeading uses inline styling, however it's not the best practice. Use CSS or styled components for
  * such things.
@@ -117,12 +126,12 @@ class DesktopContainer extends React.Component
 		this.state = {
 			loggedIn: props.data.loggedIn,
 			userName: props.data.userName,
+			activePage: props.activePage,
 			routeMain: false,
 			routeUserProfile: false, 
 			routeOrgSearch: false,
-			routePrizes: false
+			routePrizes: false,
 		}
-		alert("in Header Desktop:"+JSON.stringify(props))
 
 	// this.handlerClick = this.handlerClick.bind(this);
 	//this.handlerLogoutClick = this.handlerLogoutClick.bind(this);
@@ -197,7 +206,7 @@ render() {
 			size='large'
 		  >
 			<Container>
-			  <Menu.Item as='a' active onClick ={() => this.setState(prevState => {
+			  <Menu.Item as='a' active={this.state.activePage===ActivePage.Home} onClick ={() => this.setState(prevState => {
 				  return {
 						routeMain: !prevState.routeMain
 					}})}>
@@ -212,7 +221,7 @@ render() {
 						routePrizes: !prevState.routePrizes
 					}})}>Prizes</Menu.Item>
 			  {this.state.loggedIn &&
-			  <Menu.Item as='a' active onClick ={() => this.setState(prevState => {
+			  <Menu.Item as='a' onClick ={() => this.setState(prevState => {
 				  return {
 						routeUserProfile: !prevState.routeUserProfile
 					}})}>
@@ -255,12 +264,13 @@ class MobileContainer extends Component {
 	constructor(props){
 		super(props)
 		this.state = {
+			loggedIn: props.data.loggedIn,
+			userName: props.data.userName,
+			activePage: props.activePage,
 			routeMain: false,
 			routeUserProfile: false,
 			routeOrgSearch: false,
 			routePrizes: false,
-			loggedIn: props.data.loggedIn,
-			userName: props.data.userName
 		}
 		// alert("in Header Mobile:"+JSON.stringify(this.state))
 
