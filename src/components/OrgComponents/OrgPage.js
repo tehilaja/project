@@ -2,11 +2,13 @@
 import React from 'react';
 import {Redirect} from "react-router-dom";
 
+import { Header, Image, Segment,Dimmer,Loader} from 'semantic-ui-react'
+
 
 import axios from "axios";
 import { async } from "q";
 
-import Header from '../Header.js';
+import HeaderPage from '../Header.js';
 import OrgBody from './OrgBody.js';
 import Footer from '../Footer.js';
 
@@ -48,7 +50,7 @@ class OrgPage extends React.Component{
 				// for(let i=0; i<10 ; i--); // await
 				
 				this.setState({ orgDetails: res.data});
-				alert("res: " +res.min_donation)
+				// alert("res: " +res.min_donation)
 				// if(this.state.orgDetails != null)
 				// 	this.setState({ loadData:true });
 				// 	alert("state: "+ this.state.orgDetails.min_donation)
@@ -64,10 +66,21 @@ class OrgPage extends React.Component{
 
 	render() {
 		if (this.state.orgDetails == null)
-			return(<h1>loading organization data...</h1>)
+			return(
+			// <h1>not load data...</h1>
+			<Segment>
+				<Dimmer active  inverted>
+				<Loader size='massive'>Loading</Loader>
+				</Dimmer>
+		
+				<Image src='https://react.semantic-ui.com/images/wireframe/short-paragraph.png' />
+				<Image src='https://react.semantic-ui.com/images/wireframe/short-paragraph.png' />
+				<Image src='https://react.semantic-ui.com/images/wireframe/short-paragraph.png' />
+		  </Segment>
+			)
 		return(
-			<div>
-                <Header data={{loggedIn: this.state.loggedIn, userName: this.state.userName}}/>
+			<div >
+                <HeaderPage data={{loggedIn: this.state.loggedIn, userName: this.state.userName}}/>
 				{/* <header>
 					<img src = {this.state.img} ></img>
 				</header> */}
