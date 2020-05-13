@@ -14,7 +14,7 @@ import OrgSpechCard from './OrgSpechCard.js'
 
 // donate
 import Donate from './Donate.js'
-import GiftCard from './GiftCard.js'
+import GiftCard from './giftCard.js'
 
 
 import Doners from "./Doners.js"
