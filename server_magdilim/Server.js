@@ -34,7 +34,8 @@ const app = express(); //library to shorten http requests
 
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
-
+ app.use(bodyParser.json({limit: "50mb"}));
+ app.use(bodyParser.urlencoded({limit: "50mb", extended: true, parameterLimit:50000}));
 var my_user = null
 var pic = "https://yad-sarah.net/wp-content/uploads/2019/04/logoys.png"
 
@@ -217,7 +218,7 @@ app.post('/donationProcess', (req, res,next)=>
     {
       if(!err){
         res.send("insert donation") ;//response
-        console.log("sucses! ");
+        console.log("success");
       }
       else
         res.send("db fail");
@@ -273,16 +274,16 @@ try {
 
 
 // @ check server connection
-app.get('/checkServer',function(req,res){
-  console.log("checkServer !!! ....");
-  try {
-    res.send("yes");
-  } catch (error) {
-    console.log("error: "+JSON.stringify(error));  
-    res.send("no")
-  }
+// app.get('/checkServer',function(req,res){
+//   console.log("checkServer !!! ....");
+//   try {
+//     res.send("yes");
+//   } catch (error) {
+//     console.log("error: "+JSON.stringify(error));  
+//     res.send("no")
+//   }
 
-});
+// });
 
 
 
@@ -356,8 +357,6 @@ app.post('/get_user_params',function(req,res){
   console.log("start server get user params");
   let params = [];
   userParametersService.getParameters(params);
-  //while(!params.length);
-
   reactor.registerEvent('got_user_params');
   reactor.addEventListener('got_user_params', function() {
     res.send(params);
@@ -407,7 +406,7 @@ app.post('/get_user_params',function(req,res){
 //   // })
 //   }
 //   else
-//     res.end("no conection")
+//     res.end("no connection")
 // })
 
 
@@ -501,7 +500,7 @@ app.post('/addOrg',(req, res)=>{
   // })
   }
   else
-    res.end("no conection")
+    res.end("no connection")
 })
 
 

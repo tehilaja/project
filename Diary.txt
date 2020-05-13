@@ -187,4 +187,59 @@ dealing with header components throwing error not able to get state
 creating page for organization and for prizes - routing the pages.
 
 2/5/2020 21:30 - 2:00
-working on setting up redux to manage users
+working on setting up redux to manage users state
+
+3/5/2020 (2.5)
+finishing getting user attributes for logged in user from cognito
+
+4/5/2020
+10:45 - 15:00
+17:00 - 19:00
+20:00 - 21:00
+Setting up PayPal for project
+sending emails to tranzila and other options for payment
+
+5/5/2020 
+13:00 - connecting state to input of different files
+14:30-17:05
+creating events
+learning about redux
+calling back to hear options for payment
+
+6/5/2020
+14:30 - 18:00 (3.5)
+Merging branches in git
+Working on state
+integrating project with PayPal
+
+7/5/2020 (16:15-18:00)
+working on OrgCards for user, 
+dividing the state into functions for further server functions in future.
+learning about mobx to deal with state - instead of redux that doesn't seem to be working out.
+
+8/5/2020
+displaying the OrgCards components in the user page
+testing out the donation page
+
+9/5/2020
+21:30 - 00:00
+setting up S3 in aws to upload images and create url
+
+10/5/2020
+12:30-15:00
+fixing issue with S3 from last night - aws account
+trying to figure out what the bug is in the S3 JS code
+filling in Diary
+figuring out why the files upoaded can only be downliaded and not viewed on url
+
+11/5/2020
+1.5
+still working on same bug from S3
+
+12/5/2020
+figuring out bug from S3 and returning url for image and encrypted file
+working on rendering state with info to different components
+
+13/5/2020
+changing code so that App is father of all components and enabling the passing of the state
+to all different pages of the website

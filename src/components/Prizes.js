@@ -12,6 +12,7 @@ import "react-image-gallery/styles/css/image-gallery.css";
 
 import {Grid, Segment} from 'semantic-ui-react';
 
+//TODO: get images from S3 that are the fliers of the prizes
 const images = [
     {
       original: 'https://i.dansdeals.com/wp-content/uploads/2018/08/29102624/jlem-696x344.jpg',
@@ -26,58 +27,19 @@ class OrgSearch extends React.Component{
 	constructor(props) {
 		super(props)	
 		this.state = {
-            loggedIn: this.props.loggedIn,
-            userName: this.props.userName,
+            loggedIn: this.props.data.loggedIn,
+            userName: this.props.data.userName,
 			routeMain: false,
 			check_login_status: false
 		}
-		// this.function_log_status();
 	}
 	
 	// componentWillReceiveProps(nextProps){
 	// 	nextProps= this.props
 	// }
-
-	//the function below checks if the user is already logged in before rendering page
-// 	function_log_status(){
-// 		(async ()=> {
-//             const response = await axios.post(
-//                 '/is_logged_in',
-//                 { headers: { 'Content-Type': 'application/json' } }
-// 			  )
-// 			if(response.data === "no user"){
-// 				this.setState({
-// 					loggedIn: false,
-// 					userName: ""})
-// 				//return;
-// 			}
-// 			else{
-// 				this.setState({
-// 					loggedIn: true,
-// 					userName: response.data});
-// 				this.forceUpdate();
-// 				//alert("loggedIn "+this.state.loggedIn + " userName "+ this.state.userName);
-// 			}
-// 			this.setState({check_login_status:true})
-// 	})();
-// }
-
-	// function 
+ 
 
 	render() {
-		// if(!this.state.check_login_status)
-		// 	return(<h1>loading...</h1>)
-			
-		//TODO: function that gets all the different organizaitons in DB
-		// const orgComponents = this.state.organizations.map(org =>{
-		// 	return(
-		// 		<OrgCard key={org.org_id} imgUrl={org.org_pic} name={org.org_name} id= {org.org_id} initialDonation= {org.min_donation} 
-		// 			admin_name = {org.admin_name} field_of_acctivity = {org.field_of_acctivity} org_num = {org.org_num} description = {org.description}
-		// 			working = {org.working} volunteers = {org.volunteers} friends = {org.friends}
-		// 		/>)
-		// })
-		
-		
 		return(
 			<div>
                 <Header data={{loggedIn: this.state.loggedIn, userName: this.state.userName}}/>

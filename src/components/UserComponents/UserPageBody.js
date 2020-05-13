@@ -32,15 +32,6 @@ const WIDTH = 70;
 const HEIGHT = 80;
 
 
- 
-class MyComponent extends React.Component {
-  render() {
-    return (
-      {/* <Tree /> will fill width/height of its container; in this case `#treeWrapper` */}
-    );
-  }
-}
-
 class UserPage extends React.Component{
 //-----------constructor----------------------
 constructor(props)

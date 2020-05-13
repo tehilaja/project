@@ -201,8 +201,6 @@ class Body extends React.Component
 		if (this.state.routerCreateOrgPage === true){
 			return <Redirect to = {{
 				pathname: '/NewOrgPage',
-				state: {userName: this.state.userName, loggedIn: this.state.loggedIn}
-				// state: {userName: 'Tehila', loggedIn: true}
 			}} />
 		} 
 

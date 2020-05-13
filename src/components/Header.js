@@ -1,120 +1,9 @@
-// import React from 'react';
-// import ReactDOM from 'react-dom';
-// import logo from './magdilim_logo.jpg';
-
-// import LoginVsSignIn from './LoginVsSignIn.js';
-
-// import {Redirect} from "react-router-dom";
-// import axios from "axios";
-// import { async } from "q";
-
-// import {
-// 	Container,
-// 	Header,
-// 	Step,
-//   } from 'semantic-ui-react'
-
-// class Header extends React.Component 
-// {
-// 		constructor(props)
-// 		{
-// 		super(props)
-// 		this.state = {
-// 			 newOrgFlag: false,
-// 			 loggedIn: this.props.data.loggedIn,
-// 			 userName: this.props.data.userName
-// 		}
-// 		this.handlerClick = this.handlerClick.bind(this);
-// 		this.handlerLogoutClick = this.handlerLogoutClick.bind(this);
-// 		this.userProfile = this.userProfile.bind(this);
-
-// 	}
-// // --------- userProfile 
-// 	userProfile ()
-// 	{
-// 		alert("in userprofile")
-// 		let self = this;
-//         fetch('/userProfile ', {
-//             method: 'GET'
-//         }).then(function(response) {
-//             if (response.status >= 400) {
-//                 throw new Error("Bad response from server");
-//             }
-//             return response.json();
-//         }).then(function(data) {
-//             self.setState({organizations: data});
-//         }).catch(err => {
-//         console.log('caught it!',err);
-// 		})
-		
-// 	} 
-
-
-// 	handlerLogoutClick(user_name) {
-// 		        //http - sign out        
-// 		(async ()=> {            
-// 			const response = await axios.post( 
-// 				'/logout',             
-// 				{ headers: { 'Content-Type': 'application/json' } } 
-// 				             )              
-// 				console.log("resp",response)              
-// 				if(response.data === "logged out"){
-// 					this.setState({			
-// 						loggedIn: false,
-// 						userName: ""})              
-// 					return;              
-// 				}              
-// 				else{
-// 					 alert("failed to log out")
-// 				            }
-// 			})();
-// 	}
-
-// 		handlerClick(user_name) {
-//         this.setState({
-// 			loggedIn: true,
-// 			userName: user_name
-//         });
-// 	}
-	
-// 	/*conditional rendering based on what was clicked*/
-// 	render(){
-// 		if (this.state.newOrgFlag === true){
-// 			return <Redirect to = {{
-// 				pathname: '/newOrg',
-// 				data: {userName: this.state.userName, loggedIn: this.state.loggedIn}
-// 			}} />
-// 		} 
-// 	return(
-// 			<div className="App">
-// 			  <header className="App-header">
-// 				<img src={logo} className="App-logo" alt="logo" />
-// 				<div>
-// 					<button name = "btnOrgJoin" onClick={() => this.setState(prevState => {
-// 				  return {
-//                       newOrgFlag: !prevState.newOrgFlag}
-//                     })} > Join as organization</button> 
-// 					{!this.state.loggedIn && <LoginVsSignIn record={this.handlerClick} data={{userName:this.state.userName, loggedIn:this.state.loggedIn}}/>}
-// 					{this.state.loggedIn && <div>
-// 						<button name = "btnLogOut" onClick={() => this.handlerLogoutClick()}>Log Out</button>
-// 						<button name = "btnUserProfile" onClick={() => this.userProfile()}>my profile</button>
-// 					<h1>Hello {this.state.userName} :)</h1></div>}
-// 				</div>
-// 			  </header>
-// 			</div>
-// 		)	
-// 	}
-// }
-
-// export default Header;
-
-
 import {Redirect} from "react-router-dom";
+
+import axios from "axios";
 
 import LoginForm from './LoginForm.js';
 import UserRegistrationForm from './UserRegistrationForm.js';
-
-
 
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
@@ -156,6 +45,23 @@ const style = {
   
 	return isSSR ? Responsive.onlyTablet.minWidth : window.innerWidth
   }
+
+  const  logOutFunc = () => {
+	//logout user to server
+	(async ()=> {
+		const response = await axios.post(
+			'/logout',
+			{ headers: { 'Content-Type': 'application/json' } }
+		  )
+		  if(response.data === "logged out"){
+			  alert("user logged out");
+		  }
+		  else{
+			alert("failed logging out")
+		  }
+		  window.location.assign('/');
+		})();
+}
 
   /* eslint-disable react/no-multi-comp */
 /* Heads up! HomepageHeading uses inline styling, however it's not the best practice. Use CSS or styled components for
@@ -209,28 +115,26 @@ class DesktopContainer extends React.Component
 	constructor(props){
 		super(props)
 		this.state = {
-			// loggedIn: this.props.loggedIn,
-			// userName: this.props.userName,
-			loggedIn: true,
-			userName: "",
+			loggedIn: props.data.loggedIn,
+			userName: props.data.userName,
 			routeMain: false,
 			routeUserProfile: false, 
 			routeOrgSearch: false,
 			routePrizes: false
 		}
-		// alert("in Header Desktop:"+JSON.stringify(this.state))
+		alert("in Header Desktop:"+JSON.stringify(props))
 
-	this.handlerClick = this.handlerClick.bind(this);
+	// this.handlerClick = this.handlerClick.bind(this);
 	//this.handlerLogoutClick = this.handlerLogoutClick.bind(this);
 	}
 
-	handlerClick(userName) {
-        this.setState({
-			loggedIn: true,
-			userName: userName
-		});
-		//this.props.record(userName)
-	}
+	// handlerClick(userName) {
+    //     this.setState({
+	// 		loggedIn: true,
+	// 		userName: userName
+	// 	});
+	// 	this.props.record(userName)
+	// }
 
 	hideFixedMenu = () => this.setState({ fixed: false })
 	showFixedMenu = () => this.setState({ fixed: true })
@@ -248,8 +152,9 @@ render() {
 		}} />
 	} 
 
-	//redirecting to User Profile ToDo: route to corect page!
+	//redirecting to User Profile TODO: route to correct page!
 	if (this.state.routeUserProfile === true){
+		alert("route user profile:"+JSON.stringify(this.state))
 		return <Redirect to = {{
 			pathname: '/UserPage',
 			state: {userName: this.state.userName, loggedIn: this.state.loggedIn}
@@ -326,7 +231,7 @@ render() {
 				</Button>
 				</div>}
 				{this.state.showBackButton && <button name = "btnBack" onClick={() => this.setState({showLogin: false, showUser: false, showBackButton: false})}>close</button>}
-				{this.state.loggedIn && <Button as='a' inverted={!fixed} onClick={() => this.setState({showLogin: true, showUser: false, showBackButton: true})}>
+				{this.state.loggedIn && <Button as='a' inverted={!fixed} onClick={logOutFunc}>
 				  Log out
 				</Button>}
 			  </Menu.Item>
@@ -354,8 +259,8 @@ class MobileContainer extends Component {
 			routeUserProfile: false,
 			routeOrgSearch: false,
 			routePrizes: false,
-			loggedIn: this.props.loggedIn,
-			userName: this.props.userName
+			loggedIn: props.data.loggedIn,
+			userName: props.data.userName
 		}
 		// alert("in Header Mobile:"+JSON.stringify(this.state))
 
@@ -402,7 +307,7 @@ class MobileContainer extends Component {
 			<Menu.Item as='a' onClick={() => this.setState({showLogin: true, showUser: false, showBackButton: true})}>Log in</Menu.Item> 
 			<Menu.Item as='a' onClick={() => this.setState({showLogin: false, showUser: true, showBackButton: true})}>Sign Up</Menu.Item>
 			</div>}
-			{this.state.loggedIn && <Menu.Item as='a' onClick={() => this.setState({showLogin: true, showUser: false, showBackButton: true})}>
+			{this.state.loggedIn && <Menu.Item as='a' onClick={logOutFunc}>
 				  Log out
 				</Menu.Item>}
 
@@ -440,7 +345,7 @@ class MobileContainer extends Component {
 				</Button>
 				</div>}
 				{this.state.showBackButton && <button name = "btnBack" onClick={() => this.setState({showLogin: false, showUser: false, showBackButton: false})}>close</button>}
-				{this.state.loggedIn && <Button as='a' onClick={() => this.setState({showLogin: true, showUser: false, showBackButton: true})}>
+				{this.state.loggedIn && <Button as='a' onClick={logOutFunc}>
 				  Log out
 				</Button>}
 				  </Menu.Item>
@@ -460,10 +365,10 @@ class MobileContainer extends Component {
 	children: PropTypes.node,
   }
   
-  const ResponsiveContainer = ({ children } ) => (
+  const ResponsiveContainer = ({ children }, props ) => (
 	<div>
-	  <DesktopContainer>{children}</DesktopContainer>
-	  <MobileContainer>{children}</MobileContainer>
+	  <DesktopContainer data={props}>{children}</DesktopContainer>
+	  <MobileContainer data={props}>{children}</MobileContainer>
 	</div>
   )
   
@@ -471,12 +376,12 @@ class MobileContainer extends Component {
 	children: PropTypes.node,
   }
 
-  const HeaderLayout = () => (
-	<ResponsiveContainer>
+  const HeaderLayout = (props) => (
+	<ResponsiveContainer data={props}>
 	</ResponsiveContainer>
   )
   
-  export default HeaderLayout;
+//   export default HeaderLayout;
   
 
-// export default DesktopContainer;
+export default DesktopContainer;

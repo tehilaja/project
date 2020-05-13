@@ -15,40 +15,16 @@ class OrgPage extends React.Component{
 	constructor(props) {
 		super(props)	
 		this.state = {
-			
 			loadData: false,
 			orgDetails: null, // all details from DB
-
 			id: this.props.location.state.id,
-
-			// $$$$$$$$$
-
 			routeMain: false,
-			check_login_status: false,
-			userName: this.props.userName,
-			loggedIn: this.props.loggedIn
+			userName: this.props.data.userName,
+			loggedIn: this.props.data.loggedIn
 		}
-		this.function_log_status();
 	}	
 
-	// (async () => {
-		//             const response = await axios.post(
-		//                 '/findDuser',
-		//                 {userD:this.state.DuserName},
-		//                 {header:{'Content-Type': 'application/json'}}
-		//                 )
-		//                 console.log("resp",response)
-		//                 if(response.data == "fail"){
-		//                     alert("the user not found")
-		//                 }
-		//                 else if(response.data != " "){
-		//                 // this.setState({loggedIn: false})
-		//                 this.setState({DuserId: response.data})
-		//                 alert("id " + this.state.DuserId)
-		//                 }
-		//             })(); 
-
-
+//TODO: fetch orgData from DB
 	componentDidMount() 
 	{
 
@@ -86,79 +62,9 @@ class OrgPage extends React.Component{
 		})
 	}
 
-	// (async () => {
-	// 	const response = await axios.post(
-	// 		'/confirm_registerd_user',
-	// 		{
-	// 			user_name: this.state.email,
-	// 			confirmation_code: this.state.confirmation_code,
-	// 		},
-	// 		{ header: { 'Content-Type': 'application/json' } }
-	// 	)
-	// 	if (response.data === "confirmed") {
-	// 		this.setState({status: Status.PostConfirmation})
-			
-	// 	} else {
-			
-	// 	}
-	// 	console.log("after confirmation")
-	// 	alert("response: "+JSON.stringify(response))
-	// 	console.log("response: "+JSON.stringify(response))
-	// 	console.log(response.data);
-	// }
-	// )();
-
-	// let self = this;
-	// fetch('/data', {
-	// 	method: 'GET'
-	// }).then(function(response) {
-	// 	if (response.status >= 400) {
-	// 		throw new Error("Bad response from server");
-	// 	}
-	// 	return response.json();
-	// }).then(function(data) {
-	// 	self.setState({organizations: data});
-	// }).catch(err => {
-	// console.log('caught it!',err);
-	// })
-	
-
-
-	// componentWillReceiveProps(nextProps){
-	// 	nextProps= this.props
-	// }
-
-	//the function below checks if the user is already logged in before rendering page
-	function_log_status(){
-		(async ()=> {
-            const response = await axios.post(
-                '/is_logged_in',
-                { headers: { 'Content-Type': 'application/json' } }
-			  )
-			if(response.data === "no user"){
-				this.setState({
-					loggedIn: false,
-					userName: ""})
-				//return;
-			}
-			else{
-				this.setState({
-					loggedIn: true,
-					userName: response.data});
-				this.forceUpdate();
-				//alert("loggedIn "+this.state.loggedIn + " userName "+ this.state.userName);
-			}
-			this.setState({check_login_status:true})
-	})();
-}
-
-	// function 
-
 	render() {
-		if(!this.state.check_login_status)
-			return(<h1>loading...</h1>)
 		if (this.state.orgDetails == null)
-			return(<h1>not load data...</h1>)
+			return(<h1>loading organization data...</h1>)
 		return(
 			<div>
                 <Header data={{loggedIn: this.state.loggedIn, userName: this.state.userName}}/>
