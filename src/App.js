@@ -33,7 +33,13 @@ class App extends React.Component
             );
 
 			const params = response.data;
-			
+			if(response.data === 'null'){
+				this.setState({
+                    loggedIn: false,
+					userName: "",
+					check_login_status: true
+                })
+			}	
             if (Array.isArray(params) && params.length) {
                 const fname = params.find(x => x.Name === 'name').Value;
                 const lname = params.find(x => x.Name === 'family_name').Value;

@@ -36,33 +36,9 @@ class UserParametersService {
 
             });
         }
-
-        // if (cognitoUser != null) {
-        //     cognitoUser.getSession(function (err, session) {console.log("got session");
-        //         if (err) {
-        //             console.log("UserParametersService: Couldn't retrieve the user");
-        //         } else {
-        //         try{console.log("about to get attributes");
-        //             cognitoUser.getUserAttributes(function (err, result) {console.log("in get attributes callback");
-        //                 console.log("error: UserParametersService: in getParameters: " + JSON.stringify(err));
-        //                 console.log("result: UserParametersService: in getParameters: " + JSON.stringify(result));
-        //                 if (err) {
-        //                     console.log("UserParametersService: in getParameters: " + err);
-        //                 } else {
-        //                     //callback.callbackWithParam(result);
-        //                     resultParametersArr.push(...result);
-        //                     console.log("result:"+JSON.stringify(resultParametersArr))
-        //                 }
-        //             });
-        //         } catch (ex) {
-        //             console.log("exception getting attributes: "+ JSON.stringify(ex));
-        //         }
-                    
-        //         }
-
-        //     });
-        // }
-        else {console.log('null cognito user')
+        else {
+            console.log ('null cognito user');
+            return 'null';
             //callback.callbackWithParam(null);
         }
     }

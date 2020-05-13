@@ -356,7 +356,10 @@ app.post('/get_current_user',function(req,res){
 app.post('/get_user_params',function(req,res){
   console.log("start server get user params");
   let params = [];
-  userParametersService.getParameters(params);
+  const err = userParametersService.getParameters(params);
+  if(err){
+    res.send(err);
+  }
   reactor.registerEvent('got_user_params');
   reactor.addEventListener('got_user_params', function() {
     res.send(params);
