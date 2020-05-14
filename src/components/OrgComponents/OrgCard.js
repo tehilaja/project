@@ -35,11 +35,11 @@ class OrgCard extends React.Component{
         } 
     //-----------return---------------------- 
 	    return( 
-            <Card onClick = {() => this.setState(prevState => {
+            <Card style ={{margin: '1em'}} 
+              onClick = {() => this.setState(prevState => {
                 return {
                     routeOrgPage: !prevState.routeOrgPage}
                   })}>
-            routeOrgPage: {this.state.routeOrgPage}
             <Image src={this.props.imgUrl} wrapped ui={false} />
             <Card.Content>
               <Card.Header>{this.props.name}</Card.Header>
