@@ -34,6 +34,9 @@ const app = express(); //library to shorten http requests
 
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
+
+const sendEmail = require('./utilities/email').methods.sendEmail;
+
 app.use(bodyParser.json({limit: "50mb"}));
  app.use(bodyParser.urlencoded({limit: "50mb", extended: true, parameterLimit:50000}));
 var my_user = null
@@ -91,6 +94,46 @@ userLoginService.isAuthenticated(function(message, isLoggedIn) {
 
 // ~~~~~~~~~~ get org info ~~ (from: orgPage)
 // TODO: routering
+
+
+
+/* ~~~~ lastDonation 
+  14.05
+*/
+
+/* SELECT d.user_id, d.org_id, u.user_name ,d.d_title,d.d_description, d.is_anonim,d.d_date, d.referred_by, o.org_pic FROM doners_in_org d 
+INNER JOIN users u ON u.user_id = d.user_id 
+INNER JOIN organization o ON o.org_id = d.org_id
+ ORDER BY d_date DESC LIMIT 20
+ */
+
+ // TODO: make in prochedure?
+app.get('/lastDonation',(req, res,next) => 
+{
+  try{
+    const qLDonation = `SELECT d.user_id, d.org_id, u.user_name ,d.d_title,d.d_description, d.is_anonim,d.d_date, d.referred_by, o.org_pic FROM doners_in_org d 
+      INNER JOIN users u ON u.user_id = d.user_id 
+      INNER JOIN organization o ON o.org_id = d.org_id
+      ORDER BY d_date DESC LIMIT 20`
+      console.log("query: " + qLDonation);
+      db.query(qLDonation, (err,result, fields) =>
+      {
+        if(err) throw err;
+        if (result.length == 0 )
+          res.send("no data")
+        else{
+          console.log("res:" +JSON.stringify(result));
+          // res.send(JSON.stringify(result));
+          res.send(result);
+        }
+      });
+  }
+  catch(err){
+    console.log("erroe " + err.code);
+    res.end("err" , err.code);
+  }
+});
+
 
 // @ ~~~~~~~~~~~~~~~~~ new 05.05.20 ~~~~~~~~~~~~
 
@@ -155,6 +198,33 @@ app.get('/donate/findDThrouhUser/:dUser', (req, res,next)=>
     res.end("err" , err.code);
   }
 });
+
+
+
+
+//-----------------------send email---------------------
+app.post('/sendEmail', (req, res) => {
+
+  sendEmail(
+    req.body.mail_to,
+    req.body.cc,
+    req.body.bcc,
+    req.body.subject,
+    req.body.body,
+    req.body.attachments,
+
+    (error, info) => {
+      if (error) {
+        console.log(error);
+        res.send(error);
+      } else {
+        console.log('Email sent: ' + info.response);
+        res.send(info);
+      }
+    });
+
+});
+
 
 
 // -> ~~~ donate process

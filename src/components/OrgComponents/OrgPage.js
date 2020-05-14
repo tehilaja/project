@@ -37,13 +37,10 @@ class OrgPage extends React.Component{
 
 	componentDidMount() 
 	{
-
-// 	Route path: /users/:userId/books/:bookId
-// Request URL: http://localhost:3000/users/34/books/8989
-// req.params: { "userId": "34", "bookId": "8989" }
+		// 	Route path: /users/:userId/books/:bookId
+		// Request URL: http://localhost:3000/users/34/books/8989
+		// req.params: { "userId": "34", "bookId": "8989" }
 		
-
-
 		axios.get('/orgPage/'+this.state.id
 			// ,{orgId: this.state.id,},
 			// { header: { 'Content-Type': 'application/json' }}

@@ -1,4 +1,6 @@
 Magdilim By Tehila and Avital: 
+## Our Work Diary:
+Diary.txt
 
 ## Available Scripts
 
@@ -10,6 +12,6 @@ then run:
 
 ### `npm start`
 
-in seperate command line run:
+in seperate command line go into Server_magdilim and run:
 ### `node Server.js`
 to run server.

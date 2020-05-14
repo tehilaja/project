@@ -345,34 +345,21 @@ class NewOrg extends React.Component {
                             <br></br>
                             <Radio toggle
                                 label="Allow One-time Donations" />
-                            {/* TODO: work out how payment will be done! */}
-                            {/* <Divider
-                    as='h4'
-                    className='header'
-                    horizontal
-                    style={{ margin: '3em 0em', textTransform: 'uppercase' }}
-                    >
-                    <a href='#'>Bank Info:</a>
-                    </Divider>
-                    <lable className= "newOrgLable"> org_num: </lable>
-                    <input type="text" name="org_num" onChange={this.handleChange.bind(this)}/>
-                    <br/>
-                    <lable className= "newOrgLable"> num of branch: </lable>
-                    <input type="text" name="branch" onChange={this.handleChange.bind(this)}/>
-                    <br/>
-                    <lable className= "newOrgLable"> account_num: </lable>
-                    <input type="text" name="account_num" onChange={this.handleChange.bind(this)}/>
-                    <br/>
-                    <lable className= "newOrgLable"> bank_num: </lable>
-                    <input type="text" name="bank_num" onChange={this.handleChange.bind(this)}/>
-                    <br/>
-                    more details */}
-                            {/* <Divider
-                    as='h4'
-                    className='header'
-                    horizontal
-                    style={{ margin: '3em 0em', textTransform: 'uppercase' }}
-                    > */}
+                            <Divider
+                                    as='h4'
+                                    className='header'
+                                    horizontal
+                                    style={{ margin: '3em 0em', textTransform: 'uppercase' }}
+                                >
+                                    <a href='#'>User Status</a>
+                                </Divider>
+
+                            <Radio toggle
+                                label="User status is based on the sum of money brought to the organiztion in his downline" />
+                            <br></br>
+                            <br></br>
+                            <Label>Default: User status is based only on the number of Doners in his Downline</Label>
+                            {/* TODO: deal with figuring out the user status */}
                             {/* TODO: see which details are actually necessay for us */}
                             {/* <a href='#'>More Details:</a>
                     </Divider>
