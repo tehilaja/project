@@ -18,7 +18,7 @@ class NewOrgPage extends React.Component{
             loggedIn: this.props.data.loggedIn,
             userName: this.props.data.userName,
 			routeMain: false,
-			allowAddPrize: false,
+			allowAddPrize: true,
 			showAddPrize: false
 		}
 		this.handlerClick = this.handlerClick.bind(this);

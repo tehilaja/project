@@ -34,6 +34,9 @@ const app = express(); //library to shorten http requests
 
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
+
+const sendEmail = require('./utilities/email').methods.sendEmail;
+
 app.use(bodyParser.json({limit: "50mb"}));
  app.use(bodyParser.urlencoded({limit: "50mb", extended: true, parameterLimit:50000}));
 var my_user = null
@@ -155,6 +158,33 @@ app.get('/donate/findDThrouhUser/:dUser', (req, res,next)=>
     res.end("err" , err.code);
   }
 });
+
+
+
+
+//-----------------------send email---------------------
+app.post('/sendEmail', (req, res) => {
+
+  sendEmail(
+    req.body.mail_to,
+    req.body.cc,
+    req.body.bcc,
+    req.body.subject,
+    req.body.body,
+    req.body.attachments,
+
+    (error, info) => {
+      if (error) {
+        console.log(error);
+        res.send(error);
+      } else {
+        console.log('Email sent: ' + info.response);
+        res.send(info);
+      }
+    });
+
+});
+
 
 
 // -> ~~~ donate process
