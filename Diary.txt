@@ -120,37 +120,43 @@ adding features to code, organizing everthing to give in for Alpha.
 recording the Prototype.
 
 /************************Server*********************/
-18/4/2020 22:15 - 00:15 
+18/4/2020 
+22:15 - 00:15 
 reorganizing code comparing 
 google cloud / aws - creating account
 fixing a few bugs in server that appeared as a result of fixing the DB
 making plans for the next day
 
-19/4/2020 11:00-12:00 
+19/4/2020 
+11:00-12:00 
 planning how to continue with project over next fiew days
 
-20/04/202012:15 -12:45 
+20/04/2020
+12:15 -12:45 
 zoom meeting with Eli Issac, 
 reflecting in on Alpha
 13:30 -  15:45 starting integration with cognito.
 creating cognito account and integrating code for login and signin
 
-21/4/2020 13:00 - 16:00 
+21/4/2020 
+13:00 - 16:00 
 finish setting up cognito account
 working on configuration
 trying to figure out what the errors are with signing up a new user
-17:00 - 21:00 using semantic-ui library and working on design
+17:00 - 21:00 
+using semantic-ui library and working on design
 
-22/4/2020 13:30-16:00
+22/4/2020 
+13:30-16:00
 still working to set up cognito - didn't work 
 
-25/4/2020 21:25 - 1:30 
+25/4/2020 
+21:25 - 1:30 
 setting up cognito
 checking if typescript can be used in react
 
-26/4/2020 12:00-14:00
+26/4/2020 
 working on user profile page
-a few more hours:
 react-avatar showing initials of user, finding different react tree option
 
 27/04/2020
@@ -200,11 +206,10 @@ Setting up PayPal for project
 sending emails to tranzila and other options for payment
 
 5/5/2020 
-13:00 - connecting state to input of different files
-14:30-17:05
+connecting state to input of different files
 creating events
 learning about redux
-calling back to hear options for payment
+calling back different online payment companies to hear what our options are
 
 6/5/2020
 14:30 - 18:00 (3.5)
@@ -226,20 +231,30 @@ testing out the donation page
 setting up S3 in aws to upload images and create url
 
 10/5/2020
-12:30-15:00
+security problem when uploading code to git - need to change aws access key
 fixing issue with S3 from last night - aws account
 trying to figure out what the bug is in the S3 JS code
 filling in Diary
-figuring out why the files upoaded can only be downliaded and not viewed on url
+figuring out why the files upoaded can only be downloaded and not viewed by url
 
 11/5/2020
-1.5
-still working on same bug from S3
+still working on same bug from S3 - uploaded images are encrypted and therfore can't be desplayed
 
 12/5/2020
-figuring out bug from S3 and returning url for image and encrypted file
+figuring out upload of image to S3 and returning url for image and encrypted file
 working on rendering state with info to different components
+when uploading to git- encountering an issue with the security of the aws access key
+this time we used aes to encrypt the access key - that was successful 
 
 13/5/2020
 changing code so that App is father of all components and enabling the passing of the state
 to all different pages of the website
+bug with passign id for specific org page - fixed
+
+14/5/2020
+Making changes based on users:
+enabling Admin of organization to send fliers to emails of all Doners via magdilim email address when adding a prize or raffle to organization.
+adding option to have state of user be based on sum of money in downline or num of people in downline.
+chaning layout of home page based on the request of user
+writing beta document
+
