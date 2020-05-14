@@ -92,6 +92,46 @@ userLoginService.isAuthenticated(function(message, isLoggedIn) {
 // ~~~~~~~~~~ get org info ~~ (from: orgPage)
 // TODO: routering
 
+
+
+/* ~~~~ lastDonation 
+  14.05
+*/
+
+/* SELECT d.user_id, d.org_id, u.user_name ,d.d_title,d.d_description, d.is_anonim,d.d_date, d.referred_by, o.org_pic FROM doners_in_org d 
+INNER JOIN users u ON u.user_id = d.user_id 
+INNER JOIN organization o ON o.org_id = d.org_id
+ ORDER BY d_date DESC LIMIT 20
+ */
+
+ // TODO: make in prochedure?
+app.get('/lastDonation',(req, res,next) => 
+{
+  try{
+    const qLDonation = `SELECT d.user_id, d.org_id, u.user_name ,d.d_title,d.d_description, d.is_anonim,d.d_date, d.referred_by, o.org_pic FROM doners_in_org d 
+      INNER JOIN users u ON u.user_id = d.user_id 
+      INNER JOIN organization o ON o.org_id = d.org_id
+      ORDER BY d_date DESC LIMIT 20`
+      console.log("query: " + qLDonation);
+      db.query(qLDonation, (err,result, fields) =>
+      {
+        if(err) throw err;
+        if (result.length == 0 )
+          res.send("no data")
+        else{
+          console.log("res:" +JSON.stringify(result));
+          // res.send(JSON.stringify(result));
+          res.send(result);
+        }
+      });
+  }
+  catch(err){
+    console.log("erroe " + err.code);
+    res.end("err" , err.code);
+  }
+});
+
+
 // @ ~~~~~~~~~~~~~~~~~ new 05.05.20 ~~~~~~~~~~~~
 
 // --/orgPage/:orgId 

@@ -61,3 +61,10 @@
 .App-link {
   color: #EAC117;
 }
+
+.orgComponents{
+  flex-direction: column;
+  /* display: 'flex'; */
+  /* flexDirection: 'column'; */
+}
+
