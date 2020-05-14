@@ -5,7 +5,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Card, Icon, Image,Segment ,Label,Grid} from 'semantic-ui-react'
 
-class giftCard extends React.Component{
+class GiftCard extends React.Component{
     constructor(props){
         super(props)
         this.state ={
@@ -66,4 +66,4 @@ class giftCard extends React.Component{
 // declerate function
 }
 
-export default giftCard;
+export default GiftCard;
