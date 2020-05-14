@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch } from "react-router-dom";
+import { BrowserRouter,Route, Switch } from "react-router-dom";
 import {Redirect} from "react-router-dom";
 import axios from "axios";
 import { async } from "q";
@@ -29,6 +29,7 @@ class App extends React.Component
 	 {
 		super()
 		this.state = { }
+		this.org ={}
 		this.get_user_params();
 	}
 
@@ -71,7 +72,12 @@ class App extends React.Component
                 })
             }
 		})();
-    }
+	}
+	
+	componentDidMount()
+	{
+		// alert("window.location.pathname: \n" + window.location.pathname)
+	}
 
 // //---------render------------------
 	render() 
@@ -91,16 +97,43 @@ class App extends React.Component
 		<Image src='https://react.semantic-ui.com/images/wireframe/short-paragraph.png' />
   		</Segment>)
 		else{
+			// return(
+			// 	<React.Fragment>
+			// 		<BrowserRouter>
+			// 		<div>
+			// 		<Route path="/orgpage/:id" component={OrgPage} />
+
+
+			// 	</div>
+			// 	</BrowserRouter>
+			// </React.Fragment>
+			// )
+
+			
+
+
 			const path = window.location.pathname;
+			const spliting = path.split("/")
+			// alert("arr: \n"+ spliting+ " \n"+ spliting[2])
 			switch (path.toLowerCase()) {
 					case "/":
 						return(<HomePage data={this.state} activePage={ActivePage.Home}/>);
 					case "/userpage":
 						return(<UserPage data={this.state}/>);
-					case "/orgpage":
-						return(<OrgPage data={this.state}/>);
+					case `/orgpage/${spliting[2]}`:
+						{
+							// alert("prop id in  app: \n" + this.props.match.params.id)
+							return(<OrgPage data={this.state} id = {spliting[2]}/>);
+						}
+						
+						// id={this.props.match.params.id}
+							// id={this.props.match.params.id} />);
 					// case "/orgbody":
 					// 	return(<OrgBody data={this.state}/>);
+					// case "/orgpage":
+
+					// 	// alert(this.props.match.params.id)
+					// 	return(<OrgPage data={this.state}/>);
 					case "/neworgpage":
 						return(<NewOrgPage data={this.state}/>);
 					case "/orgsearch":

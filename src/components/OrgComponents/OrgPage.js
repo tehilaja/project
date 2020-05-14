@@ -1,4 +1,3 @@
-
 import React from 'react';
 import {Redirect} from "react-router-dom";
 
@@ -17,16 +16,25 @@ class OrgPage extends React.Component{
 	constructor(props) {
 		super(props)	
 		this.state = {
+			
 			loadData: false,
 			orgDetails: null, // all details from DB
-			id: this.props.location.state.id,
+
+			id: this.props.id,
+
+			// $$$$$$$$$
+
 			routeMain: false,
+
 			userName: this.props.data.userName,
 			loggedIn: this.props.data.loggedIn
 		}
 	}	
 
-//TODO: fetch orgData from DB
+	//TODO: fetch orgData from DB
+
+
+
 	componentDidMount() 
 	{
 
@@ -64,7 +72,11 @@ class OrgPage extends React.Component{
 		})
 	}
 
+	
+
 	render() {
+		// if(!this.state.check_login_status)
+		// 	return(<h1>loading...</h1>)
 		if (this.state.orgDetails == null)
 			return(
 			// <h1>not load data...</h1>

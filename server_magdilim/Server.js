@@ -34,7 +34,7 @@ const app = express(); //library to shorten http requests
 
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
- app.use(bodyParser.json({limit: "50mb"}));
+app.use(bodyParser.json({limit: "50mb"}));
  app.use(bodyParser.urlencoded({limit: "50mb", extended: true, parameterLimit:50000}));
 var my_user = null
 var pic = "https://yad-sarah.net/wp-content/uploads/2019/04/logoys.png"
@@ -106,11 +106,11 @@ app.get('/orgPage/:orgId', (req, res,next)=>
     const qO = `select * from Organization WHERE org_id="${req.params.orgId}"`;
     console.log("query: " + qO);
     db.query(qO, (err,result, fields) =>{
-      if(err) throw error;
+      if(err) throw err;
       if (result.length == 0 )
         res.send("no data")
       else{
-        console.log("res:  j" +JSON.stringify(result));
+        console.log("res: j " +JSON.stringify(result));
         // console.log(result[0])
         // console.log(result[0].min_donation)
 
@@ -132,7 +132,6 @@ app.post('/upload-file', (req, res, next)=> {
   res.send(response);
 })
 
-
 // -- /donate/findDThrouhUser
 app.get('/donate/findDThrouhUser/:dUser', (req, res,next)=> 
 {
@@ -142,7 +141,7 @@ app.get('/donate/findDThrouhUser/:dUser', (req, res,next)=>
     const qDUser = `select user_id from users where email ="${req.params.dUser}"`;
     console.log("query: \n" + qDUser + "\n");
     db.query(qDUser, (err,result, fields) =>{
-    if(err) throw error;
+    if(err) throw err;
     if (result.length == 0)
       res.send("no data")
     else{
@@ -158,7 +157,6 @@ app.get('/donate/findDThrouhUser/:dUser', (req, res,next)=>
 });
 
 
-// ~~~~~~~~~~~ check giv a object 
 // -> ~~~ donate process
 
 // check which details exsist and do a query
@@ -198,7 +196,7 @@ function checkDonateDetails(paramO)
   return query
 }
 
-// ~~~~~~~~~~~~ post:  /checkObject --> donate ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~ post:  /donationProcess --> donate ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 app.post('/donationProcess', (req, res,next)=>
 {
   try
@@ -212,17 +210,20 @@ app.post('/donationProcess', (req, res,next)=>
 
     
     const qDonate = checkDonateDetails(req.body) ;// check details
-    console.log("quert is",qDonate,"\n");
+    console.log("quert is: \n",qDonate,"\n");
 
     db.query(qDonate,(err,result,fields)=>
     {
       if(!err){
         res.send("insert donation") ;//response
-        console.log("success");
+        console.log("sucבses! ");
       }
       else
-        res.send("db fail");
+      {
+        res.end("db fail");
         console.log("fail db "+ err.code);
+      }
+        
     // console.log("result " + result);
     })
     // console.log("in check \n")
@@ -234,11 +235,66 @@ app.post('/donationProcess', (req, res,next)=>
   }
 });
 
+// ---- orgPage/gifts (get)
+app.get('/orgPage/gifts/:org_id', (req, res,next)=>
+{
+  try
+  {
+    console.log(" in orgPage/gifts \n")
+    const qGifts = 
+      `SELECT 
+        l.l_name, l.min_people, l.min_sum,
+        g.gift_id, g.gift_name,
+        g.gift_description,g.gift_pic,
+        g.g_date, g.winer
+      FROM
+        Leveled l
+      INNER JOIN gifts g 
+        ON l.level_id = g.level_id and l.org_id ="${req.params.org_id}"`;
+    console.log("the query: \n" + qGifts)
+    db.query(qGifts, (error, results, fields) =>
+    {
 
-// @ ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      if(error) throw error;
+      console.log("res: \n" +JSON.stringify(results));
+      console.log(results[0]);
+      
+
+      // console.log(JSON.stringify(results.data));
+      // console.log(results.data[0].l_name)
+      if(results.length == 0)
+        res.send("no data")
+      else
+        res.send(results);
+
+    });
+
+  }catch(err) {
+    console.log("error: "+ err.code)
+    res.send("server error: "+ err.code)
+  }
+});
 
 
-// -- userProfile 
+/*
+SELECT 
+	l.l_name, l.min_people, l.min_sum,
+	g.gift_id, g.gift_name,
+	g.gift_description,g.gift_pic,
+	g.g_date, g.winer
+FROM
+    Leveled l
+-- WHERE l.org_id = 1;
+INNER JOIN gifts g 
+  ON l.level_id = g.level_id and l.org_id = 1;
+  */
+
+
+
+// @ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+/// -- userProfile 
 app.get('/userProfile ', function(req, res, next) {
   db.query(`SELECT * FROM Users WHERE user_name="${my_user.user_id}"`, function (error, results, fields) {
       if(error) throw error;
@@ -409,7 +465,7 @@ app.post('/get_user_params',function(req,res){
 //   // })
 //   }
 //   else
-//     res.end("no connection")
+//     res.end("no conection")
 // })
 
 

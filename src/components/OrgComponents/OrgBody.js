@@ -14,7 +14,7 @@ import OrgSpechCard from './OrgSpechCard.js'
 
 // donate
 import Donate from './Donate.js'
-import GiftCard from './giftCard.js'
+import GiftCard from './GiftCard.js'
 
 
 import Doners from "./Doners.js"
@@ -164,6 +164,8 @@ class OrgBody extends React.Component {
 
     componentDidMount()
     {
+        alert("org details: \n"+ JSON.stringify(this.props.data))
+        // alert("org_id \n" + this.props.data.orgDetails.org_id )
         // fetch('/data', {
         //     method: 'GET'
         // }).then(function(response) {
@@ -545,6 +547,8 @@ class OrgBody extends React.Component {
           ]
 
     //---------return------------------------------
+    if(this.props.data.orgDetails !== null)
+    {
         return(
             <div className = "orgBody_css">
                     
@@ -564,7 +568,7 @@ class OrgBody extends React.Component {
                         </Grid.Row>
 
                         <Grid.Row>
-                            <Tab style={{ padding: '0.2em 1.5em' }} defaultActiveIndex={3} menu={{ color:'blue' ,vertical: true, inverted: true, attached: true, tabular: true, pointing: true}} panes={panes} />
+                            <Tab style={{ padding: '0.2em 1.5em' }} defaultActiveIndex={2} menu={{ color:'blue' ,vertical: true, inverted: true, attached: true, tabular: true, pointing: true}} panes={panes} />
 
                         </Grid.Row>
                         
@@ -591,6 +595,7 @@ class OrgBody extends React.Component {
 
             </div>
         )
+    }
     }
     
 }
