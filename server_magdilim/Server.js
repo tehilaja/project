@@ -600,8 +600,8 @@ app.post('/fetch_org_data',(req, res)=>{
 
 // -- NEW --
 // -- addOrg --
-app.post('/addOrg',(req, res)=>{
-  
+app.post('/addOrg',(req, res)=>
+{
   console.log("the org:")
   if(my_user !== null)
   {
@@ -631,6 +631,7 @@ app.post('/addOrg',(req, res)=>{
   else
     res.end("no connection")
 })
+
 
 
 
