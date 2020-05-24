@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Redirect } from "react-router-dom";
 
+import { v1 as uuid } from 'uuid';
 
 
 import axios from "axios";
@@ -72,6 +73,7 @@ class NewOrg extends React.Component {
             file: "",
             file_name: "",
             selectedImage: null,
+            image_url: null,
         }
         this.handleChange = this.handleChange.bind(this)
         this.handlerClick = this.handlerClick.bind(this);
@@ -118,7 +120,9 @@ class NewOrg extends React.Component {
     handleSubmit = (e) => {
 
         (async () => {
-            await uploadFile(this.state.selectedImage, fileUrl => alert('file url:' + fileUrl), this.state.orgName);
+            const fileNamePrefix = `${this.state.orgName}_${uuid()}`
+            //TODO: save url to db in callback
+            await uploadFile(this.state.selectedImage, fileUrl => alert('file url:' + fileUrl), fileNamePrefix, 'organizations');
         })();
 
         e.preventDefault();

@@ -1,24 +1,38 @@
 const axios = require('axios');
 
-const uploadFile = async (file, onSuccess, directory = null) => {
+// upload raw file
+const uploadFile = async (file, onSuccess, fileNamePrefix = '', directory = null) => {
 
     const reader = new FileReader();
 
     reader.onload = async (event) => {
-        const bufferAndType = base64ImageToBuffer(reader.result);
-
-        const response = await axios.post('/upload-file',
-            {
-                file: bufferAndType[0],
-                type: bufferAndType[1],
-                key: directory ? `${directory}/${file.name}` : file.name,
-            },
-            { headers: { 'Content-Type': 'application/json' } });
-
-        console.log("resp", response); onSuccess(response.data);
+        
+        uploadDataUrlFile(reader.result, file.name, onSuccess, fileNamePrefix, directory);        
     }
 
     reader.readAsDataURL(file);
+}
+
+//upload base64 encoded file - which is a string of data uri
+const uploadDataUrlFile = async (dataUrl, filename, onSuccess, fileNamePrefix = '', directory = null) => {
+
+    const bufferAndType = base64ImageToBuffer(dataUrl);
+
+    let key = directory ? `${directory}/` : '';
+    key += fileNamePrefix ? `${fileNamePrefix}_` : '';
+    key += filename;
+
+    const response = await axios.post('/upload-file',
+        {
+            file: bufferAndType[0],
+            type: bufferAndType[1],
+            key: key,
+        },
+        { headers: { 'Content-Type': 'application/json' } });
+
+    console.log("resp", response);
+    onSuccess(response.data);
+
 }
 
 const base64ImageToBuffer = (str) => {    // extract content type and base64 payload from original string   
@@ -29,4 +43,18 @@ const base64ImageToBuffer = (str) => {    // extract content type and base64 pay
     return [buff, type];
 }
 
-exports.methods = { uploadFile: uploadFile, }
+const getFilesFromFolder = async (folder, callback) => {
+    const response = await axios.get(`/get-files-of-folder/${folder}`).then(res => {
+        if (Array.isArray(res.data)) {
+            callback(res.data);
+        } else {
+            callback(null);
+        }
+    });
+}
+
+exports.methods = {
+    uploadFile: uploadFile,
+    uploadDataUrlFile: uploadDataUrlFile,
+    getFilesFromFolder: getFilesFromFolder,
+}

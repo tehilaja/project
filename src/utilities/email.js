@@ -6,7 +6,7 @@ const emailAttachementFromFile = (file, callback) => {
     reader.onload = async (event) => {
         const attachment = {
             filename: file.name,
-            path: reader.result,                
+            path: reader.result,     //base64 encoded file           
         };
         callback(attachment);
     }
@@ -27,10 +27,8 @@ const sendEmail = async (mailTo, cc, bcc, subject, body, attachments, callback) 
         },
         { headers: { 'Content-Type': 'application/json' } });
 
-    console.log("resp", response);
-
     if (callback) {
-        callback(response.data);
+        callback(null, response.data);
     }
 
 }

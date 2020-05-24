@@ -2,6 +2,8 @@ import React from 'react';
 import {Redirect} from "react-router-dom";
 
 
+import { v1 as uuid } from 'uuid';
+
 import axios from "axios";
 import { async } from "q";
 
@@ -14,7 +16,8 @@ import { Button, Divider, Form , Segment} from 'semantic-ui-react';
 
 import ImageUploader from 'react-images-upload';
 
-const emailService = require('./../../utilities/email');
+const emailService = require('../../utilities/email');
+const uploadFileUtil = require('../../utilities/upload').methods;
 
 class AddPrizes extends React.Component{
     constructor(props){
@@ -27,6 +30,7 @@ class AddPrizes extends React.Component{
     }
     this.onDrop = this.onDrop.bind(this);
     this.sendEmail = this.sendEmail.bind(this);
+    this.uploadImage = this.uploadFirstAttachment.bind(this);
 }
 handleChange = (e, { statusInRaffle }) => this.setState({ statusInRaffle })
 handleChangeName(event){
@@ -61,7 +65,7 @@ onDrop(event) {
 sendEmail() {
     emailService.sendEmail(
         //'rachelletikva@gmail.com'
-        ['tehilaj97@gmail.com','avital05484@gmail.com'],
+        ['tehilaj97@gmail.com'],
         null,
         null,
         'Email send from Magdilim!!!!!!!',
@@ -72,14 +76,24 @@ sendEmail() {
                 console.log('error:\n'+JSON.stringify(error));
             } else {
                 console.log('info:\n'+JSON.stringify(info));
-            }
+            }            
         }
     )
+}
+
+uploadFirstAttachment() {
+    (async () => {
+        const fileNamePrefix = `${this.state.orgName}_${uuid()}`;
+        const attachment = this.state.attachments[0];
+        //TODO: save url to db in callback
+        await uploadFileUtil.uploadDataUrlFile(attachment.path, attachment.filename,  fileUrl => alert('file url:' + fileUrl), fileNamePrefix, 'prizes');
+    })();
 }
 
 handleSubmit=(e)=>
     {
         this.sendEmail();
+        this.uploadFirstAttachment();
         e.preventDefault();
         //alert(JSON.stringify(this.state));
     }

@@ -26,8 +26,40 @@ const uploadFile = (file, type, key) => {
 
   s3.upload(params).promise();
 
-  return `https://${bucketName}.s3.amazonaws.com/${key}`;
+  return getUrlFromKey(key);
 };
 
 
-exports.methods = { uploadFile: uploadFile }
+const getFilesFromFolder = (folder, callback) => {
+
+  const prefix = `${folder}/`;
+  
+  const params = {
+    Bucket: bucketName,
+    Prefix: prefix,
+  };
+
+  console.log('params: '+ JSON.stringify(params));
+
+  s3.listObjects(params, (err, data) => {
+    console.log('get files data: '+JSON.stringify(data));
+    console.log('get files error: ' + JSON.stringify(err));
+
+    if (data && data.Contents) {
+      const urls = data.Contents.filter(content => content.Key !== prefix).map(content => getUrlFromKey(content.Key));
+      callback(urls);
+    } else {
+      callback('error');
+    }
+  });
+}
+
+getUrlFromKey = (key) => {
+  return `https://${bucketName}.s3.amazonaws.com/${key}`; 
+}
+
+
+exports.methods = {
+  uploadFile: uploadFile,
+  getFilesFromFolder: getFilesFromFolder,
+ };

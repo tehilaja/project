@@ -328,7 +328,7 @@ class Body extends React.Component
 					All we left for you to do, is focus on content that will be appealing and attract your ongoing doners.
 					</p>
 					<Button as='a' size='large'>
-					I'm Still Quite Interested
+					Get Approved To Create Platform
 					</Button>
 				</Container>
 			</Segment>
