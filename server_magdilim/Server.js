@@ -24,7 +24,6 @@ const userLoginService = userLoginFile.data.userLoginService;
 
 const userParametersService = userParametersFile.data.userParametersService;
 const awsUtil = awsServiceFile.data.awsUtil;
-const uploadFile = require('./s3/upload').methods.uploadFile;
 const uploadFile = require('./utilities/s3-utilities').methods.uploadFile;
 const reactor = require("./utilities/custom-event").data.reactor;
 
@@ -662,5 +661,4 @@ app.post('/addOrg',(req, res)=>{
 //port for server
 app.listen('5000', ()=>{
     console.log('app running on port 5000')
-})
 })
