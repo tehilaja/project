@@ -24,7 +24,7 @@ const userLoginService = userLoginFile.data.userLoginService;
 
 const userParametersService = userParametersFile.data.userParametersService;
 const awsUtil = awsServiceFile.data.awsUtil;
-const uploadFile = require('./utilities/s3-utilities').methods.uploadFile;
+const s3Util = require('./utilities/s3-utilities').methods;
 const reactor = require("./utilities/custom-event").data.reactor;
 
 
@@ -171,9 +171,18 @@ app.get('/orgPage/:orgId', (req, res,next)=>
 
 //--------------upload file-----------------
 app.post('/upload-file', (req, res, next)=> {
-  const response = uploadFile(req.body.file.data, req.body.type, req.body.key);
+  const response = s3Util.uploadFile(req.body.file.data, req.body.type, req.body.key);
   res.send(response);
 })
+
+//--------------get files' urls from folder---------------
+app.get('/get-files-of-folder/:folder', (req, res, next) => {
+  console.log('folder: '+req.params.folder);
+  const response = s3Util.getFilesFromFolder(req.params.folder, (data) => {
+    console.log('urls: '+JSON.stringify(data));
+    res.send(data);
+  });
+});
 
 // -- /donate/findDThrouhUser
 app.get('/donate/findDThrouhUser/:dUser', (req, res,next)=> 
