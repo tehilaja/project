@@ -1,6 +1,13 @@
 Magdilim By Tehila and Avital: 
+
+
+## Active system users - comments and suggestions for improvement:
+https://docs.google.com/document/d/1xkeIHC_Qt8aOIJJ4e8wK41S4AiKePfHxWQZ526kAX-A/edit?usp=sharing
+
+(Constantly changing in real time according to user development and response process :)))
 ## Our Work Diary:
 Diary.txt
+
 
 ## Available Scripts
 
