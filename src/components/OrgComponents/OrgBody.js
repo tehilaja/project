@@ -14,8 +14,7 @@ import OrgSpechCard from './OrgSpechCard.js'
 
 // donate
 import Donate from './Donate.js'
-import giftCard from './GiftCard.js'
-
+import GiftCard from './GiftCard'
 
 import Doners from "./Doners.js"
 
@@ -23,10 +22,10 @@ import Doners from "./Doners.js"
 
 const levelOptions = [
     { key: 'all levels',value: 'all levels', text: 'all levels' },
-    { key: 'all',value: 'all', text: 'all' },
+    { key: 'all Donars',value: 'all Donars', text: 'all Donars' },
     { key: 'silver',value: 'silver', text: 'silver' },
     { key: 'gold',value: 'gold', text: 'gold' },
-    { key: 'platinium',value: 'platinium', text: 'platinium' },
+    { key: 'platinum',value: 'platinum', text: 'platinum' },
   ];
 
 
@@ -115,10 +114,8 @@ class OrgBody extends React.Component {
 
             })
             this.setState({giftShow: obj})
+            alert("gifts: " + JSON.stringify(this.state.giftShow))
         }
-        
-       
-
 
     }
 
@@ -324,7 +321,7 @@ class OrgBody extends React.Component {
         
         const giftComponents = this.state.giftShow.map(gift =>{
             return(
-                <giftCard  gifts ={gift}  
+                <GiftCard  gifts ={gift}  
                 />)
         })
        

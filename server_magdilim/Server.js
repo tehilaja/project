@@ -24,7 +24,7 @@ const userLoginService = userLoginFile.data.userLoginService;
 
 const userParametersService = userParametersFile.data.userParametersService;
 const awsUtil = awsServiceFile.data.awsUtil;
-const s3Util = require('./utilities/s3-utilities').methods;
+const uploadFile = require('./s3/upload').methods.uploadFile;
 const reactor = require("./utilities/custom-event").data.reactor;
 
 
@@ -34,9 +34,6 @@ const app = express(); //library to shorten http requests
 
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
-
-const sendEmail = require('./utilities/email').methods.sendEmail;
-
 app.use(bodyParser.json({limit: "50mb"}));
  app.use(bodyParser.urlencoded({limit: "50mb", extended: true, parameterLimit:50000}));
 var my_user = null
@@ -171,18 +168,9 @@ app.get('/orgPage/:orgId', (req, res,next)=>
 
 //--------------upload file-----------------
 app.post('/upload-file', (req, res, next)=> {
-  const response = s3Util.uploadFile(req.body.file.data, req.body.type, req.body.key);
+  const response = uploadFile(req.body.file.data, req.body.type, req.body.key);
   res.send(response);
 })
-
-//--------------get files' urls from folder---------------
-app.get('/get-files-of-folder/:folder', (req, res, next) => {
-  console.log('folder: '+req.params.folder);
-  const response = s3Util.getFilesFromFolder(req.params.folder, (data) => {
-    console.log('urls: '+JSON.stringify(data));
-    res.send(data);
-  });
-});
 
 // -- /donate/findDThrouhUser
 app.get('/donate/findDThrouhUser/:dUser', (req, res,next)=> 
@@ -207,33 +195,6 @@ app.get('/donate/findDThrouhUser/:dUser', (req, res,next)=>
     res.end("err" , err.code);
   }
 });
-
-
-
-
-//-----------------------send email---------------------
-app.post('/sendEmail', (req, res) => {
-
-  sendEmail(
-    req.body.mail_to,
-    req.body.cc,
-    req.body.bcc,
-    req.body.subject,
-    req.body.body,
-    req.body.attachments,
-
-    (error, info) => {
-      if (error) {
-        console.log(error);
-        res.send(error);
-      } else {
-        console.log('Email sent: ' + info.response);
-        res.send(info);
-      }
-    });
-
-});
-
 
 
 // -> ~~~ donate process
@@ -321,15 +282,14 @@ app.get('/orgPage/gifts/:org_id', (req, res,next)=>
   {
     console.log(" in orgPage/gifts \n")
     const qGifts = 
-      `SELECT 
-        l.l_name, l.min_people, l.min_sum,
+        `SELECT 
+		    l.min_people, l.min_sum,
         g.gift_id, g.gift_name,
         g.gift_description,g.gift_pic,
-        g.g_date, g.winer
+        g.g_date, g.winer, (select distinct gl.level_name from gifts_levels gl where gl.g_levele_id = l.g_levele_id) as l_name
       FROM
         Leveled l
-      INNER JOIN gifts g 
-        ON l.level_id = g.level_id and l.org_id ="${req.params.org_id}"`;
+      INNER JOIN gifts g ON l.level_id = g.level_id and l.org_id = "${req.params.org_id}"`
     console.log("the query: \n" + qGifts)
     db.query(qGifts, (error, results, fields) =>
     {
@@ -609,8 +569,8 @@ app.post('/fetch_org_data',(req, res)=>{
 
 // -- NEW --
 // -- addOrg --
-app.post('/addOrg',(req, res)=>
-{
+app.post('/addOrg',(req, res)=>{
+  
   console.log("the org:")
   if(my_user !== null)
   {
@@ -640,13 +600,6 @@ app.post('/addOrg',(req, res)=>
   else
     res.end("no connection")
 })
-
-
-
-
-
-
-
 
 //------------- ??? -------
  //---findDuser ---

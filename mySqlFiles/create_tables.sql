@@ -27,6 +27,7 @@ CREATE TABLE IF NOT EXISTS Country  (
   country_name varchar(50)
 );
 
+-- ! user name = email???
 -- Users --
 CREATE TABLE IF NOT EXISTS Users (
   user_id int(11) AUTO_INCREMENT PRIMARY KEY,
@@ -42,7 +43,8 @@ CREATE TABLE IF NOT EXISTS Users (
 -- Admin --
 CREATE TABLE IF NOT EXISTS Admin (
   admin_id int(11) PRIMARY KEY,
-  org_id int(11)
+  org_id int(11),
+  admin_pswd int (11)
 );
 
 -- DROP TABLE Organization;
@@ -63,30 +65,41 @@ CREATE TABLE IF NOT EXISTS Organization (
   working int(11),
   volunteers int(11),
   friends int(11),
-  city_id int(11),
+  -- city_id int(11),
+  city_name varchar(50),
+  country_name varchar(250),
   building varchar(4),
   street varchar(50),
-  p_code int(11)
+  p_code int(11),
+  one_time_donation tinyint(1)
 );
 
 -- Leveled ---
 CREATE TABLE IF NOT EXISTS Leveled (
   level_id int(11) AUTO_INCREMENT PRIMARY KEY,
   org_id int(11),
-  l_name varchar(25),
+  g_levele_id int(10), -- name of level
+  -- l_name varchar(25),
   min_people int(11),
   min_sum int(11)
+);
+
+CREATE TABLE IF NOT EXISTS gifts_levels (
+g_levele_id int(10),
+level_name varchar (50)
 );
 
 -- DROP TABLE Gifts;
 -- Gifts --
 CREATE TABLE IF NOT EXISTS Gifts (
   gift_id int(11) AUTO_INCREMENT PRIMARY KEY,
+  gift_name varchar(250),
   gift_description varchar(1000),
   gift_pic varchar(250),
   level_id int(11),
   g_date DATE,
-  auto BOOLEAN NOT NULL DEFAULT FALSE
+  winer varchar(250)
+
 );
 
 -- DROP TABLE Doners_in_org
@@ -99,14 +112,16 @@ CREATE TABLE IF NOT EXISTS Doners_in_org (
   referred_by int(11),
   d_title varchar(250),
   d_description TEXT,
-  is_anonim BOOLEAN NOT NULL DEFAULT FALSE,
-  d_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  is_anonim tinyint(1),
+  d_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- ??
   status_id int(4)
 );
 
+
+
 -- Donation_status --
 CREATE TABLE IF NOT EXISTS Donation_status (
-  status_id int(11) AUTO_INCREMENT PRIMARY KEY,
+  status_id int(11) PRIMARY KEY,
   description varchar(50)
 );
 
