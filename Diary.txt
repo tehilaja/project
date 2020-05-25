@@ -258,3 +258,13 @@ adding option to have state of user be based on sum of money in downline or num 
 chaning layout of home page based on the request of user
 writing beta document
 
+24/05/2020
+01:30- 02:45 
+Fixed bug following version merge
+Getting started on changing the tables in a database
+
+25/05/2020
+10:00 - 
+order db + create a first insert
+change the query of gifts
+
