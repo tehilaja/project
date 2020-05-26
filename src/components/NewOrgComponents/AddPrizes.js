@@ -63,6 +63,7 @@ onDrop(event) {
 }
 
 sendEmail() {
+    // TODO: get text to send, get list of mail
     emailService.sendEmail(
         //'rachelletikva@gmail.com'
         ['tehilaj97@gmail.com'],

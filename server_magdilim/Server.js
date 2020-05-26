@@ -132,7 +132,7 @@ app.get('/lastDonation',(req, res,next) =>
       db.query(qLDonation, (err,result, fields) =>
       {
         if(err) throw err;
-        if (result.length === 0 )
+        if (result.length == 0 )
           res.send("no data")
         else{
           console.log("res:" +JSON.stringify(result));
@@ -249,9 +249,107 @@ app.post('/sendEmail', (req, res) => {
 
 });
 
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~ addOrg ~~~~~~~~~~~~~~~~~~~~
+
+function checkAddOrgDetails(paramO)
+{
+// org_id, org_name ,one_time_donation , min_donation ,approved,org_num ,  branch ,account_num, bank_num, account_owner
+// , admin_name ,description ,field_of_acctivity, img_url ,founding_year, working ,volunteers, friends ,city_name,country_name ,building ,street, p_code
+  var q = ` INSERT INTO organization (`
+  var insertinfValue = `)VALUES(`
+
+  // neccesery 
+  //TODO: account_owner - take from cognito?
+  q += `org_id,org_name,min_donation,one_time_donation,approved,org_num,branch,account_num,bank_num,account_owner`;
+  insertinfValue += `${paramO.org_id},${paramO.org_name},${paramO.min_donation},${paramO.one_time_donation},0,
+    ${paramO.branch},${paramO.account_num},${paramO.bank_num},${paramO.account_owner},${paramO.org_num}`
+
+  // --- check
+  if(paramO.img_url!=''){
+    q += `,img_url`;
+    insertinfValue += `,${paramO.img_url}`;
+  }
+  if(paramO.founding_year!=''){
+    q += `,founding_year`;
+    insertinfValue += `,${paramO.founding_year}`;
+  }
+  if(paramO.working!=''){
+    q += `,working`;
+    insertinfValue += `,${paramO.working}`;
+  }
+  if(paramO.volunteers!=''){
+    q += `,volunteers`;
+    insertinfValue += `,${paramO.volunteers}`;
+  }
+   if(paramO.friends!=''){
+    q += `,friends`;
+    insertinfValue += `,${paramO.friends}`;
+  }
+  // if(paramO.admin_name!=''){
+  //   q += `,admin_name`;
+  //   insertinfValue += `,${paramO.admin_name}`;
+  // }
+  if(paramO.admin_name!=''){
+    q += `,admin_name`;
+    insertinfValue += `,${paramO.admin_name}`;
+  }
+  if(paramO.description!=''){
+    q += `,description`;
+    insertinfValue += `,"${paramO.description}"`;
+  }
+  if(paramO.field_of_acctivity!=''){
+    q += `,field_of_acctivity`;
+    insertinfValue += `,"${paramO.field_of_acctivity}"`;
+  }
+  // nessecery
+  
+  insertinfValue +=`);`
+  const query = q + insertinfValue;
+  console.log("param (in fun) \n" + query);
+
+  return query
+}
+ 
+
+// ~~~~~~~ addOrg ~~~~~~~
+app.post('/addOrg',(req, res,next)=>{
+  
+  console.log("the org:")
+  // need to check user login ?
+  try
+  {
+    console.log("in /addOrg \n ")
+    
+    const qAddOrg = checkAddOrgDetails(req.body) ;// check details
+    console.log("quert is: \n",qAddOrg,"\n");
+
+    db.query(qAddOrg,(err,result,fields)=>
+    {
+      if(!err){
+        res.send("insert org") ;//response
+        console.log("succses! ");
+      }
+      else
+      {
+        res.end("db fail");
+        console.log("fail db "+ err.code);
+      }
+        
+    // console.log("result " + result);
+    })
+    // console.log("in check \n")
+    // console.log("string obj \n "+ JSON.stringify(req.body));
+  }
+  catch(err){
+    console.log("erroe " + err.code);
+    res.end("err server " , err.code)
+  }
 
 
-// -> ~~~ donate process
+});
+
+
+//~~~~~~~~~~~~~~~~~~~~ donate process ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // check which details exsist and do a query
 function checkDonateDetails(paramO)
@@ -631,39 +729,6 @@ app.post('/fetch_org_data',(req, res)=>{
   })
 })
 
-// -- NEW --
-// -- addOrg --
-app.post('/addOrg',(req, res)=>{
-  
-  console.log("the org:")
-  if(my_user !== null)
-  {
-    let id = 0 
-    console.log("user")
-    // org_name: ,admin_name:,img_url:this.state.photo, monthly_donation:this.state.minDonation,  // ---- req
-
-    // TODO : real pic
-
-    // let queryD = `INSERT INTO Doners_in_org (user_id, org_id, monthly_donation, referred_by) VALUES (${my_user.user_id} , ${req.body.org_id}, ${req.body.monthly_donation},(select user_id from Users where user_name = "${req.body.referred_by}" ));`
-
-    let queryD = `INSERT INTO organization (org_name,admin_name,img_url,min_donation) VALUES 
-    ("${req.body.org_name}" , "${req.body.admin_name}","${pic}", ${req.body.monthly_donation} );`
-    console.log("quert is",queryD,"\n")
-    db.query(queryD,(err,result,fields)=>
-    {
-      if(!err){
-        console.log("in add org")
-        res.end("added succesfully!") //response
-      }
-      else
-        res.end("fail")
-    console.log(result)
-    })
-  // })
-  }
-  else
-    res.end("no connection")
-})
 
 //------------- ??? -------
  //---findDuser ---

@@ -76,16 +76,43 @@ class NewOrg extends React.Component {
             selectedImage: null,
             image_url: null,
 
-            newOrg_req: {"user_id": 2, "org_id":this.props.data.org_id, "monthly_donation": this.props.data.initialDonation,
-            "referred_by": '',"d_title": '',"d_description": '',"is_anonim" : false },
+// org_id org_name admin_name description field_of_acctivity img_url min_donation approved org_num branch account_num bank_num account_owner, one_time_donation, founding_year working volunteers friends city_name ,country_name, building street p_code 
+
+            // req json
+            newOrg_req: {"org_id": 2, "org_name":'',"min_donation": '',"approved":0,"org_num":'',
+                "branch":'', "account_num":'', "bank_num":'', "account_owner":'', "one_time_donation": 0,  // must field
+                "admin_name": '',"img_url": '',
+                "description": '',"field_of_acctivity": '',"founding_year":'', "working":'', "volunteers":'', "friends":'', "city_name":'', "building": '', "street":'', "p_code":''},
         }
         this.handleChange = this.handleChange.bind(this)
         this.handlerClick = this.handlerClick.bind(this);
         this.increment = this.increment.bind(this);
         this.decrement = this.decrement.bind(this);
         this.onSelectFile = this.onSelectFile.bind(this);
+        //
+        this.addOrgProcess = this.addOrgProcess.bind(this);
+
     }
     
+    // ~~~~~~~ add new org to DB
+    addOrgProcess(){
+        // TODO: massage that donate sucsess
+        
+        // this.setState({ donate_req.org_id: 5});
+        // this.setState(Object.assign(this.state.donate_req,{org_id:'5'}));
+
+        // req 
+        axios.post('/addOrg', this.state.newOrg_req
+        ).then(res => 
+        {
+            alert("res is: " + res.data)
+
+        }).catch(error=> {
+            alert("error donationProcess" +  error);
+        })
+    }
+
+
     //another try:
     fileSelctedHandler = event => {
         this.setState({
@@ -126,10 +153,12 @@ class NewOrg extends React.Component {
         (async () => {
             const fileNamePrefix = `${this.state.orgName}_${uuid()}`
             //TODO: save url to db in callback
-            await uploadFile(this.state.selectedImage, fileUrl => alert('file url:' + fileUrl), fileNamePrefix, 'organizations');
+            await uploadFile(this.state.selectedImage, fileUrl => alert('file url:' + fileUrl), fileNamePrefix, 'organizations'); 
+            // exp: => (callback, who, folder in s3)
         })();
 
         e.preventDefault();
+    }
         /*add new org to dataBase */
         // if (this.state.DuserName != "") // TODO: if find in db (func findDuser)
         // {
@@ -139,37 +168,37 @@ class NewOrg extends React.Component {
         // alert(JSON.stringify(this.state))
 
 
-        (async () => {
-            const response = await axios.post(
-                '/addOrg',
-                {
-                    // org_name,admin_name,description,field_of_acctivity,img_url,min_donation,org_num,branch,account_num,bank_num,founding_year,working,volunteers,friends,city_id,building,street,p_code)
-                    // TODO : all data
-                    // org_name: this.state.orgName,admin_name:this.state.admin_name,img_url:this.state.photo, monthly_donation:this.state.minDonation,  // ---- req
-                },
-                { header: { 'Content-Type': 'application/json' } }
-            )
-            console.log("resp", response)
-            if (response.data === "no connection") {
-                alert("you need to login...")
-            }
-            else if (response.data === "added succesfully!") {
-                // this.setState({loggedIn: false})
-                alert("the organization " + this.state.orgName + "added succesfully ")
-                //  }
-                // else if(response.data ==="fail2"){
-                //     alert("the referred by is incorrect")
-                // }
-                // else if(response.data ==="fail1"){
-                //     alert("the level")
-            }
-        })();
-        // }
+    //     (async () => {
+    //         const response = await axios.post(
+    //             '/addOrg',
+    //             {
+    //                 // org_name,admin_name,description,field_of_acctivity,img_url,min_donation,org_num,branch,account_num,bank_num,founding_year,working,volunteers,friends,city_id,building,street,p_code)
+    //                 // TODO : all data
+    //                 // org_name: this.state.orgName,admin_name:this.state.admin_name,img_url:this.state.photo, monthly_donation:this.state.minDonation,  // ---- req
+    //             },
+    //             { header: { 'Content-Type': 'application/json' } }
+    //         )
+    //         console.log("resp", response)
+    //         if (response.data === "no connection") {
+    //             alert("you need to login...")
+    //         }
+    //         else if (response.data === "added succesfully!") {
+    //             // this.setState({loggedIn: false})
+    //             alert("the organization " + this.state.orgName + "added succesfully ")
+    //             //  }
+    //             // else if(response.data ==="fail2"){
+    //             //     alert("the referred by is incorrect")
+    //             // }
+    //             // else if(response.data ==="fail1"){
+    //             //     alert("the level")
+    //         }
+    //     })();
+    //     // }
 
-        // else
-        //     alert("please enter Referred detiles")
-        this.setState({ flag_done: true });
-    }
+    //     // else
+    //     //     alert("please enter Referred detiles")
+    //     this.setState({ flag_done: true });
+    // }
 
     //function to deal with passing state to parent component:
     handlerClick(flagDone) {
@@ -193,7 +222,7 @@ class NewOrg extends React.Component {
     decrement() {
         if (this.state.minDonation > 1)
             this.setState({ minDonation: this.state.minDonation - 1 })
-    }
+    };
 
 
     render() {
