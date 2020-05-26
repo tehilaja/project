@@ -258,13 +258,39 @@ adding option to have state of user be based on sum of money in downline or num 
 chaning layout of home page based on the request of user
 writing beta document
 
+15/5/2020
+working a litle more with the aes
+
 24/05/2020
-01:30- 02:45 
 Fixed bug following version merge
 Getting started on changing the tables in a database
+figure out how to create a function that runs every 24 hrs in javaScript
+(using node schedule package: npm install node-schedule)
 
 25/05/2020
-10:00 - 
-order db + create a first insert
+organize db + create a first insert
 change the query of gifts
+dealing with errors when signing in - not crashing the server
+going over db tables and making changes
+coming up with plan for updating status of users - tree vs updating db
+
+26/05/2020
+
+updating the Diary
+looking through different options:
+******************
+using a cash: - the tree is already ready - no need to create these calls every time - saving reads
+for safety - we will update cash every 24 hours
+
+only have to claculate it once
+creating a cash would be a dictionary of dictionaries 
+needs to be singltone - static 
+how do we do that in javaScript?
+hold the instance in the server and it's functions somewhere else
+
+collection of Org
+each org has a tree
+for each doner (in a dictionary) would have a refference to the correct node
+**********************
+has an update command - to update an organization / update a doner and his ansestors
 

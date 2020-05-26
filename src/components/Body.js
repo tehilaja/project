@@ -300,18 +300,7 @@ class Body extends React.Component
 				</Segment>
 				<Segment style={{ padding: '8em 0em' }} vertical>
 				<Container text>
-					<Header as='h3' style={{ fontSize: '2em' }}>
-					Create an account!
-					</Header>
-					<p style={{ fontSize: '1.33em' }}>
-					Yes that's right, you too can become a part of this wonderful community, helping to build something greater.
-
-					</p>
-					<Button as='a' size='large'>
-					Read More
-					</Button>
-
-					<Divider
+				<Divider
 					as='h4'
 					className='header'
 					horizontal
@@ -319,13 +308,27 @@ class Body extends React.Component
 					>
 					<a href='#'>Create a Platform</a>
 					</Divider>
+					<Header as='h3' style={{ fontSize: '2em' }}>
+					Create an account!
+					</Header>
+					<p style={{ fontSize: '1.33em' }}>
+					Yes that's right, you too can become a part of this wonderful community, helping to build something greater.
+					<br></br>
+					If you already have a user account, you're good to go to the next step!
+					If you don't already have an account then create a user account.
+					</p>
+					<Button as='a' size='large'>
+					Sign Up
+					</Button>
 
 					<Header as='h3' style={{ fontSize: '2em' }}>
-					Just Sign Up				
+					Tell Us About Yourself!				
 					</Header>
 					<p style={{ fontSize: '1.33em' }}>
 					We will provide you with the design and software necessary to create an online platform for ongoing or one-time donations. 
+					<br></br>
 					All we left for you to do, is focus on content that will be appealing and attract your ongoing doners.
+					Tell us about your organization. We will be in touch with you shortly, and create your platform.
 					</p>
 					<Button as='a' size='large'>
 					Get Approved To Create Platform
