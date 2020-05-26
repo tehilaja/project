@@ -14,7 +14,7 @@ import OrgSpechCard from './OrgSpechCard.js'
 
 // donate
 import Donate from './Donate.js'
-import GiftCard from './giftCard'
+import GiftCard from './GiftCard'
 
 import Doners from "./Doners.js"
 
@@ -389,7 +389,7 @@ class OrgBody extends React.Component {
                                     <Grid.Column floated='right' width={6}>
                                         <Grid.Row>
                                             <Grid.Column>
-                                                <Image  floated='right'  size='large' src={this.props.data.orgDetails.org_pic} style={{ padding: '3em 3em' }} />
+                                                <Image  floated='right'  size='large' src={this.props.data.orgDetails.img_url} style={{ padding: '3em 3em' }} />
                                             </Grid.Column> 
                                             <Grid.Column>
 
@@ -554,9 +554,9 @@ class OrgBody extends React.Component {
                     {/* <Grid style = {{margin: '2em, 0.7em'}}> */}
 
                         <Grid.Row>
-                            <header style ={{backgroundColor: '#20B2AA' ,backgroundImage : this.props.data.orgDetails.org_pic ,width:'100%',height: '20em' ,padding: '2em ,2em', margin: ''}}>
+                            <header style ={{backgroundColor: '#20B2AA' ,backgroundImage : this.props.data.orgDetails.img_url ,width:'100%',height: '20em' ,padding: '2em ,2em', margin: ''}}>
                             {/* background-color: green;0.3; */}
-                                <img  src={this.props.data.orgDetails.org_pic} style = {{display: 'block',marginLeft: 'auto',marginRight: 'auto',width: '28%'}}/>
+                                <img  src={this.props.data.orgDetails.img_url} style = {{display: 'block',marginLeft: 'auto',marginRight: 'auto',width: '28%'}}/>
                                 
                                 {/* style={{ padding: '3em 3em' }} */}
                                 
@@ -574,7 +574,7 @@ class OrgBody extends React.Component {
 
 
                 <Header>
-                    <Image  floated='right'  size='large' src={this.props.data.orgDetails.org_pic} style={{ padding: '3em 3em' }} />
+                    <Image  floated='right'  size='large' src={this.props.data.orgDetails.img_url} style={{ padding: '3em 3em' }} />
 
                 </Header>
             

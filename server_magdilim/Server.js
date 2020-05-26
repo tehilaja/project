@@ -114,7 +114,7 @@ userLoginService.isAuthenticated(function(message, isLoggedIn) {
   14.05
 */
 
-/* SELECT d.user_id, d.org_id, u.user_name ,d.d_title,d.d_description, d.is_anonim,d.d_date, d.referred_by, o.org_pic FROM doners_in_org d 
+/* SELECT d.user_id, d.org_id, u.user_name ,d.d_title,d.d_description, d.is_anonim,d.d_date, d.referred_by, o.img_url FROM doners_in_org d 
 INNER JOIN users u ON u.user_id = d.user_id 
 INNER JOIN organization o ON o.org_id = d.org_id
  ORDER BY d_date DESC LIMIT 20
@@ -124,7 +124,7 @@ INNER JOIN organization o ON o.org_id = d.org_id
 app.get('/lastDonation',(req, res,next) => 
 {
   try{
-    const qLDonation = `SELECT d.user_id, d.org_id, u.user_name ,d.d_title,d.d_description, d.is_anonim,d.d_date, d.referred_by, o.org_pic FROM doners_in_org d 
+    const qLDonation = `SELECT d.user_id, d.org_id, u.user_name ,d.d_title,d.d_description, d.is_anonim,d.d_date, d.referred_by, o.img_url FROM doners_in_org d 
       INNER JOIN users u ON u.user_id = d.user_id 
       INNER JOIN organization o ON o.org_id = d.org_id
       ORDER BY d_date DESC LIMIT 20`
@@ -132,7 +132,7 @@ app.get('/lastDonation',(req, res,next) =>
       db.query(qLDonation, (err,result, fields) =>
       {
         if(err) throw err;
-        if (result.length == 0 )
+        if (result.length === 0 )
           res.send("no data")
         else{
           console.log("res:" +JSON.stringify(result));
@@ -336,14 +336,15 @@ app.get('/orgPage/gifts/:org_id', (req, res,next)=>
   {
     console.log(" in orgPage/gifts \n")
     const qGifts = 
-      `SELECT 
-      l.min_people, l.min_sum,
-      g.gift_id, g.gift_name,
-        g.gift_description,g.gift_pic,
-        g.g_date, g.winer, (select distinct gl.level_name from gifts_levels gl where gl.g_levele_id = l.g_levele_id) as l_name
-      FROM
-        Leveled l
-        INNER JOIN gifts g ON l.level_id = g.level_id and l.org_id = "${req.params.org_id}"`
+      `
+      SELECT 
+           l.l_name, l.min_people, l.min_sum,
+              g.gift_id, g.gift_name,
+              g.gift_description,g.gift_pic,
+              g.g_date, g.winer
+            FROM
+              Leveled l
+           INNER JOIN gifts g ON l.level_id = g.level_id and l.org_id = "${req.params.org_id}"`
 
     console.log("the query: \n" + qGifts)
     db.query(qGifts, (error, results, fields) =>
@@ -639,13 +640,13 @@ app.post('/addOrg',(req, res)=>{
   {
     let id = 0 
     console.log("user")
-    // org_name: ,admin_name:,org_pic:this.state.photo, monthly_donation:this.state.minDonation,  // ---- req
+    // org_name: ,admin_name:,img_url:this.state.photo, monthly_donation:this.state.minDonation,  // ---- req
 
     // TODO : real pic
 
     // let queryD = `INSERT INTO Doners_in_org (user_id, org_id, monthly_donation, referred_by) VALUES (${my_user.user_id} , ${req.body.org_id}, ${req.body.monthly_donation},(select user_id from Users where user_name = "${req.body.referred_by}" ));`
 
-    let queryD = `INSERT INTO organization (org_name,admin_name,org_pic,min_donation) VALUES 
+    let queryD = `INSERT INTO organization (org_name,admin_name,img_url,min_donation) VALUES 
     ("${req.body.org_name}" , "${req.body.admin_name}","${pic}", ${req.body.monthly_donation} );`
     console.log("quert is",queryD,"\n")
     db.query(queryD,(err,result,fields)=>
@@ -663,12 +664,6 @@ app.post('/addOrg',(req, res)=>{
   else
     res.end("no connection")
 })
-
-
-
-
-
-
 
 //------------- ??? -------
  //---findDuser ---
@@ -694,4 +689,3 @@ app.post('/addOrg',(req, res)=>{
 app.listen('5000', ()=>{
     console.log('app running on port 5000')
 })
-

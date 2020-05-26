@@ -41,6 +41,7 @@ class NewOrg extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
+
             pswd: "",
             validPswd: false,
             loggedIn: this.props.data.loggedIn,
@@ -74,6 +75,9 @@ class NewOrg extends React.Component {
             file_name: "",
             selectedImage: null,
             image_url: null,
+
+            newOrg_req: {"user_id": 2, "org_id":this.props.data.org_id, "monthly_donation": this.props.data.initialDonation,
+            "referred_by": '',"d_title": '',"d_description": '',"is_anonim" : false },
         }
         this.handleChange = this.handleChange.bind(this)
         this.handlerClick = this.handlerClick.bind(this);
@@ -139,9 +143,9 @@ class NewOrg extends React.Component {
             const response = await axios.post(
                 '/addOrg',
                 {
-                    // org_name,admin_name,description,field_of_acctivity,org_pic,min_donation,org_num,branch,account_num,bank_num,founding_year,working,volunteers,friends,city_id,building,street,p_code)
+                    // org_name,admin_name,description,field_of_acctivity,img_url,min_donation,org_num,branch,account_num,bank_num,founding_year,working,volunteers,friends,city_id,building,street,p_code)
                     // TODO : all data
-                    // org_name: this.state.orgName,admin_name:this.state.admin_name,org_pic:this.state.photo, monthly_donation:this.state.minDonation,  // ---- req
+                    // org_name: this.state.orgName,admin_name:this.state.admin_name,img_url:this.state.photo, monthly_donation:this.state.minDonation,  // ---- req
                 },
                 { header: { 'Content-Type': 'application/json' } }
             )
