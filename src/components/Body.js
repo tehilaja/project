@@ -199,12 +199,12 @@ app.get('/get-files-of-folder/:folder', (req, res, next) => {
 });
 
 
-// -- /donate/findDThrouhUser
-app.get('/donate/findDThrouhUser/:dUser', (req, res,next)=> 
+// -- /donate/findDThroughUser
+app.get('/donate/findDThroughUser/:dUser', (req, res,next)=> 
 {
   try
   {
-    console.log("in donate/findDThrouhUser/:dUser")
+    console.log("in donate/findDThroughUser/:dUser")
     const qDUser = `select user_id from users where email ="${req.params.dUser}"`;
     console.log("query: \n" + qDUser + "\n");
     db.query(qDUser, (err,result, fields) =>{
