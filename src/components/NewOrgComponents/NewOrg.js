@@ -13,27 +13,7 @@ import { GoOrganization } from "react-icons/ai";
 ////---------------
 
 
-import {
-    Button,
-    Container,
-    Divider,
-    Form,
-    Grid,
-    Header,
-    Icon,
-    Image,
-    Label,
-    List,
-    Menu,
-    Radio,
-    Responsive,
-    Segment,
-    Sidebar,
-    Step,
-    Visibility,
-} from 'semantic-ui-react'
-
-
+import {Button,Input,Container,Divider,Form,Grid,Header,Icon,Image,Label,List,Menu,Radio,Responsive,Segment,Sidebar,Step,Visibility,} from 'semantic-ui-react'
 const uploadFile = require('../../utilities/upload').methods.uploadFile;
 
 class NewOrg extends React.Component {
@@ -50,9 +30,11 @@ class NewOrg extends React.Component {
             orgName: '',
             admin_name: '',
             description: '',
+            field_of_acctivity: '',
             phone: '',
             email: '',
             //mailing information:
+            country: "",
             city: "",
             building: "",
             street: "",
@@ -96,20 +78,28 @@ class NewOrg extends React.Component {
     
     // ~~~~~~~ add new org to DB
     addOrgProcess(){
-        // TODO: massage that donate sucsess
-        
-        // this.setState({ donate_req.org_id: 5});
-        // this.setState(Object.assign(this.state.donate_req,{org_id:'5'}));
 
         // req 
-        axios.post('/addOrg', this.state.newOrg_req
-        ).then(res => 
-        {
-            alert("res is: " + res.data)
+        // axios.post('/addOrg', this.state.newOrg_req
+        // ).then(res => 
+        // {
+        //     alert("res is: " + res.data)
 
-        }).catch(error=> {
-            alert("error donationProcess" +  error);
-        })
+        // }).catch(error=> {
+        //     alert("error donationProcess" +  error);
+        // })
+    
+
+    // first step
+    axios.post('/addOrg/firstStep', this.state.newOrg_req
+    ).then(res => 
+    {
+        alert("res is: " + res.data)
+
+    }).catch(error=> {
+        alert("error addOrgProcess" +  error);
+    })
+
     }
 
 
@@ -233,15 +223,15 @@ class NewOrg extends React.Component {
                         <br></br>
                         <Label as='a' color='teal' ribbon left>
                             Get Started!
-                </Label>
+                        </Label>
                         <Header as='h3' style={{ fontSize: '2em' }}>
                             Thank you for using us for your organization!
-                </Header>
+                        </Header>
                         <Segment>
                             <p style={{ fontSize: '1.33em' }}>
                                 We will provide you with the design and software necessary to create an online platform for ongoing donations.
                                 All we left for you to do, is focus on content that will be appealing and attract your ongoing doners.
-                </p>
+                            </p>
                         </Segment>
                         <br></br>
                         <br></br>
@@ -257,6 +247,7 @@ class NewOrg extends React.Component {
                             </Divider>
                             {/* info about organization */}
                             <h4></h4>
+                            
                             <Form.Field>
                                 <Form.Input
                                     label='name of organization:'
@@ -266,7 +257,7 @@ class NewOrg extends React.Component {
                                     onChange={this.handleChange.bind(this)}
                                 />
                             </Form.Field>
-                            <br /><br />
+                            {/* <br /><br /> */}
                             <Form.Field>
                                 {/* <Form.label>name of Admin:</Form.label> */}
                                 <Form.Input
@@ -278,7 +269,15 @@ class NewOrg extends React.Component {
                                     onChange={this.handleChange.bind(this)}
                                 />
                             </Form.Field>
-                            <br /><br />
+                            {/* <br /><br /> */}
+                            <Form.Field>
+                                <Form.TextArea
+                                    rows={2}
+                                    label='field_of_acctivity:'
+                                    placeholder='field_of_acctivity...'
+                                    name='field_of_acctivity'
+                                    onChange={this.handleChange.bind(this)} />
+                            </Form.Field>
                             <Form.Field>
                                 <Form.TextArea
                                     label='Description:'
@@ -286,6 +285,7 @@ class NewOrg extends React.Component {
                                     name='description'
                                     onChange={this.handleChange.bind(this)} />
                             </Form.Field>
+                            
                             <Divider
                                 as='h4'
                                 className='header'
@@ -319,15 +319,9 @@ class NewOrg extends React.Component {
                                 <a href='#'>Mailing Address</a>
                             </Divider>
                             <Form.Input
-                                label='Building:'
-                                placeholder='Building'
-                                name="building"//////////////
-                                onChange={this.handleChange.bind(this)}
-                            />
-                            <Form.Input
-                                label='street:'
-                                placeholder='street'
-                                name="street"
+                                label='country:'
+                                placeholder='country'
+                                name="country"
                                 onChange={this.handleChange.bind(this)}
                             />
                             <Form.Input
@@ -336,6 +330,18 @@ class NewOrg extends React.Component {
                                 name="city"
                                 onChange={this.handleChange.bind(this)}
                             />
+                            <Form.Input
+                                label='street:'
+                                placeholder='street'
+                                name="street"
+                                onChange={this.handleChange.bind(this)}
+                            />  
+                            <Form.Input
+                                label='Building:'
+                                placeholder='Building'
+                                name="building"//////////////
+                                onChange={this.handleChange.bind(this)}
+                            />                        
                             <Form.Input
                                 label='postal code:'
                                 placeholder='postal code'
@@ -372,11 +378,27 @@ class NewOrg extends React.Component {
                                 >
                                     <a href='#'>Set minimum monthly doation</a>
                                 </Divider>
+                               
+                                {/* <label > $ </label> */}
+                                {/* <Input 
+                                    name="minDonation">{this.state.minDonation}
+                                     
+                                </Input> */}
 
-                                <label > $ </label>
-                                <lable name="minDonation">{this.state.minDonation}  </lable>
                                 <button onClick={this.decrement.bind(this)}>-</button>
                                 <button onClick={this.increment.bind(this)}>+</button>
+
+                           
+                                <Input labelPosition='right' type='text' placeholder='Amount'
+                                    name="minDonation"
+                                    // defaultValue={this.state.minDonation}
+                                    value={this.state.minDonation}
+                                    onChange={this.handleChange}
+                                >
+                                    <Label basic>$</Label>
+                                    <input />
+                                    <Label>.00</Label>
+                                </Input>
                             </div>
                             <br></br>
                             <br></br>
