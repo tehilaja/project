@@ -19,6 +19,7 @@ class OrgPage extends React.Component{
 			
 			loadData: false,
 			orgDetails: null, // all details from DB
+			org_field_of_acctivity: null,
 
 			id: this.props.id,
 
@@ -29,6 +30,7 @@ class OrgPage extends React.Component{
 			userName: this.props.data.userName,
 			loggedIn: this.props.data.loggedIn
 		}
+		this.get_field_of_acctivity = this.get_field_of_acctivity.bind(this);
 	}	
 
 	//TODO: fetch orgData from DB
@@ -55,26 +57,43 @@ class OrgPage extends React.Component{
 				// for(let i=0; i<10 ; i--); // await
 				
 				this.setState({ orgDetails: res.data});
-				// alert("res: " +res.min_donation)
-				// if(this.state.orgDetails != null)
-				// 	this.setState({ loadData:true });
-				// 	alert("state: "+ this.state.orgDetails.min_donation)
-
-				// alert("state " + this.state.orgDetails);
-				// alert(this.state.orgDetails.org_name);
 			}	
 		})
 		.catch(error=> {
 			alert(error);
 		})
+		this.get_field_of_acctivity() // get list of activity
+
 	}
+
+	// ------------- get_field_of_acctivity
+	get_field_of_acctivity()
+	{
+		axios.get('/orgPage/get_org_field_of_acctivity/'+this.state.id)
+		.then(res => 
+			{
+				if (res.status >= 400) {
+					throw new Error("Bad response from server");}
+				else if (res === "no data") // the data is not null
+					alert ("no data!")
+				else{
+					alert("res:\n "+ JSON.stringify(res.data))
+					this.setState({org_field_of_acctivity: res.data});
+				}
+			})
+			.catch(error=> {
+				alert(error);
+			})
+	}
+
+	
 
 	
 
 	render() {
 		// if(!this.state.check_login_status)
 		// 	return(<h1>loading...</h1>)
-		if (this.state.orgDetails == null)
+		if (this.state.orgDetails == null || this.state.org_field_of_acctivity == null)
 			return(
 			// <h1>not load data...</h1>
 			<Segment>

@@ -51,6 +51,8 @@ class OrgBody extends React.Component {
             btnDonateClicked: false,
             confirmBtn: false,
             initialDonation : this.props.data.orgDetails.min_donation,
+            field_of_acctivity: this.props.data.org_field_of_acctivity,
+           
             // initialDonation : this.props.orgDetails.min_donation,
 
 
@@ -80,7 +82,7 @@ class OrgBody extends React.Component {
         this.selectLevel = this.selectLevel.bind(this)
         this.filterChooseLevel = this.filterChooseLevel.bind(this)
 
-        
+        this.listOfField = this.listOfField.bind(this)
 
 
         // css
@@ -309,6 +311,11 @@ class OrgBody extends React.Component {
     
         this.setState({ activeIndex: newIndex })
       }
+    
+    listOfField()
+    {
+
+    }
 
       // step (donation)
 
@@ -344,8 +351,6 @@ class OrgBody extends React.Component {
         // for step (donation)
         // const { active } = this.state
 
-
-
         //------  menu bar
         const panes = [
             {
@@ -365,7 +370,9 @@ class OrgBody extends React.Component {
                                            : תחום הפעילות 
                                         </Header>
                                         <p style={{ fontSize: '1em' }}>
-                                            {this.props.data.orgDetails.field_of_acctivity}
+                                            {/*  TODO : show list of activity */}
+                                            {this.state.field_of_acctivity}
+                                            {/* {this.props.data.orgDetails.field_of_acctivity} */}
                                         </p>
                                         {/* // option to hide text */}
                                         <Accordion>

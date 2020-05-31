@@ -148,7 +148,43 @@ app.get('/lastDonation',(req, res,next) =>
   }
 });
 
+// ~~~ 30.05 ~~
+app.get(`/orgPage/get_org_field_of_acctivity/:orgId`,(req, res,next)=> 
+{
+  try{
+    // TODO : try the db multi connection problem
+    // conectDb();
+    console.log("in /orgPage")
+    console.log("id: " + req.params.orgId)
+ 
+    const q_org_field_name = `select distinct fo.field_name
+      from org_field_of_acctivity ofo
+      join field_of_acctivity fo on ofo.field_id = fo.field_id
+      where ofo.org_id = "${req.params.orgId}";`
+    console.log("query: \n" + q_org_field_name);
+    db.query(q_org_field_name, (err,result, fields) =>{
+      if(err) throw err;
+      if (result.length == 0 )
+        res.send("no data")
+      else{
+        console.log("res:\n " +JSON.stringify(result));
+        // console.log(result[0])
+        // console.log(result[0].min_donation)
 
+
+        // res.send(JSON.stringify(result));
+        res.send(result);
+      }
+    });
+  }
+  catch(err){
+    console.log("erroe " + err.code);
+    res.end("err" , err.code);
+  }
+
+});
+
+  
 // @ ~~~~~~~~~~~~~~~~~ new 05.05.20 ~~~~~~~~~~~~
 
 // --/orgPage/:orgId 
