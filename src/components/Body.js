@@ -151,7 +151,7 @@ class Body extends React.Component
 	handleClick(id)
     {
 		if (this.state.clickOrg === true)
-			// alert("id: " +id )
+			alert("id: " +id )
 		
 	}
 	// logout()
