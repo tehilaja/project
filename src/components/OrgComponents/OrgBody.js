@@ -371,7 +371,7 @@ class OrgBody extends React.Component {
                                         </Header>
                                         <p style={{ fontSize: '1em' }}>
                                             {/*  TODO : show list of activity */}
-                                            {this.state.field_of_acctivity}
+                                            {/* {this.state.field_of_acctivity} */}
                                             {/* {this.props.data.orgDetails.field_of_acctivity} */}
                                         </p>
                                         {/* // option to hide text */}
@@ -389,6 +389,7 @@ class OrgBody extends React.Component {
                                             <p style={{fontSize: '1em' }}>
                                                 {this.props.data.orgDetails.description}
                                             </p>
+
                                             </Accordion.Content>
                                         </Accordion>
                                         
