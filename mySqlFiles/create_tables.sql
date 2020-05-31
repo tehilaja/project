@@ -13,6 +13,12 @@
 -- DROP TABLE organization;
 -- DROP TABLE users;
 
+-- ALTER TABLE Organization RENAME COLUMN org_pic TO img_url;
+-- add column
+ -- ALTER TABLE Organization ADD COLUMN email varchar(50) AFTER field_of_acctivity;
+ -- alter table Organization modify field_of_acctivity int(11)
+
+
 
 -- city --
 CREATE TABLE IF NOT EXISTS City (
@@ -54,13 +60,20 @@ CREATE TABLE IF NOT EXISTS Organization (
   org_name varchar(255),
   admin_name varchar(255),
   description varchar(3000),
-  field_of_acctivity varchar(2000),
-  org_pic varchar(250),
+--   field_of_acctivity int(11),
+  phone varchar(15), -- *
+  email varchar(50), -- *
+  img_url varchar(250), -- *
   min_donation int(11),
+  one_time_donation tinyint(1),
+  approved tinyint(1), -- *
   org_num int(11),
+-- Organazation Bank info --
   branch int(5),
   account_num int(11),
   bank_num int(3),
+  account_owner varchar(50),
+  -- 
   founding_year int(4),
   working int(11),
   volunteers int(11),
@@ -70,17 +83,30 @@ CREATE TABLE IF NOT EXISTS Organization (
   country_name varchar(250),
   building varchar(4),
   street varchar(50),
-  p_code int(11),
-  one_time_donation tinyint(1)
+  p_code int(11)
+);
+
+ -- *
+ -- DROP TABLE org_field_of_acctivity
+CREATE TABLE IF NOT EXISTS org_field_of_acctivity(
+	field_id int(11),
+    org_id int(11)
+);
+
+ -- *
+ -- DROP TABLE field_of_acctivity
+CREATE TABLE IF NOT EXISTS field_of_acctivity(
+	field_id int(11) PRIMARY KEY,
+    field_name varchar(50)
 );
 
 -- Leveled ---
 CREATE TABLE IF NOT EXISTS Leveled (
   level_id int(11) AUTO_INCREMENT PRIMARY KEY,
   org_id int(11),
-  g_levele_id int(10), -- name of level
-  -- l_name varchar(25),
-  min_people int(11),
+  g_levele_id int(10), -- name of level ? delete??
+  l_name varchar(25),
+  min_people int(11), -- will be -1 in case where the level isn't chosen by these criterias
   min_sum int(11)
 );
 

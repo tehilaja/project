@@ -243,7 +243,7 @@ export default class Donate extends Component {
                     if(this.state.donate_req.referred_by === '') //-> check if do a request before
                     {
                         this.setState({ableDonate: true});
-                        axios.get('/donate/findDThroughUser/'+this.state.dThrough
+                        axios.get('/donate/findDThrouhUser/'+this.state.dThrough
                         ).then(res => 
                         {
                             if (res.status >= 400) {

@@ -46,9 +46,9 @@ class LastDonationCard extends React.Component{
                             {/* {this.props.ldonation.d_date.splite("T")} */}
                             </Card.Meta>
                         <Card.Description>
-                            <strong>{this.props.ldonation.d_description} </strong> 
-                            <br></br>                                
-                            {this.props.ldonation.d_title}
+                            <strong> {this.props.ldonation.d_title}</strong> 
+                            <br></br> 
+                            {this.props.ldonation.d_description}
                         </Card.Description>
                     </Card.Content>
 
