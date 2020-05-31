@@ -124,7 +124,7 @@ INNER JOIN organization o ON o.org_id = d.org_id
 app.get('/lastDonation',(req, res,next) => 
 {
   try{
-    const qLDonation = `SELECT d.user_id, d.org_id, u.user_name ,d.d_title,d.d_description, d.is_anonim,d_referred_by, d.d_date, o.img_url FROM doners_in_org d 
+    const qLDonation = `SELECT d.user_id, d.org_id, u.user_name ,d.d_title,d.d_description, d.is_anonim,d.referred_by, d.d_date, o.img_url FROM doners_in_org d 
       INNER JOIN users u ON u.user_id = d.user_id 
       INNER JOIN organization o ON o.org_id = d.org_id
       ORDER BY d_date DESC LIMIT 20`
@@ -200,12 +200,12 @@ app.get('/get-files-of-folder/:folder', (req, res, next) => {
 });
 
 
-// -- /donate/findDThroughUser
-app.get('/donate/findDThroughUser/:dUser', (req, res,next)=> 
+// -- /donate/findDThrouhUser
+app.get('/donate/findDThrouhUser/:dUser', (req, res,next)=> 
 {
   try
   {
-    console.log("in donate/findDThroughUser/:dUser")
+    console.log("in donate/findDThrouhUser/:dUser")
     const qDUser = `select user_id from users where email ="${req.params.dUser}"`;
     console.log("query: \n" + qDUser + "\n");
     db.query(qDUser, (err,result, fields) =>{
@@ -374,7 +374,7 @@ function checkDonateDetails(paramO)
     // TODO: check if the neccesery value input? -> before?
  
   q += `user_id,org_id,monthly_donation`;
-  insertinfValue += ` ${paramO.body.user_id},${paramO.org_id},${paramO.monthly_donation}`
+  insertinfValue += ` ${paramO.user_id},${paramO.org_id},${paramO.monthly_donation}`
 
   // --- check
   if(paramO.referred_by!=''){
@@ -434,7 +434,7 @@ app.post('/donationProcess', (req, res,next)=>
     // console.log("string obj \n "+ JSON.stringify(req.body));
   }
   catch(err){
-    console.log("erroe " + err.code);
+    console.log("erroer " + err.code);
     res.end("err server " , err.code)
   }
 });

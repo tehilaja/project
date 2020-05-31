@@ -387,6 +387,7 @@ class NewOrg extends React.Component {
 
                                 <button onClick={this.decrement.bind(this)}>-</button>
                                 <button onClick={this.increment.bind(this)}>+</button>
+                                {/* // TODO: checke why faild */}
 
                            
                                 <Input labelPosition='right' type='text' placeholder='Amount'
