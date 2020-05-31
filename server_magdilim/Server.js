@@ -24,8 +24,7 @@ const userLoginService = userLoginFile.data.userLoginService;
 
 const userParametersService = userParametersFile.data.userParametersService;
 const awsUtil = awsServiceFile.data.awsUtil;
-const uploadFile = require('./utilities/s3-utilities.js').methods.uploadFile;
-
+const s3Util = require('./utilities/s3-utilities.js').methods;
 const reactor = require("./utilities/custom-event").data.reactor;
 
 

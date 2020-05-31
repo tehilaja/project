@@ -104,7 +104,7 @@ class OrgBody extends React.Component {
         let obj = [];
         if (filter === 'all levels'){
             this.setState({giftShow: this.state.Allgifts})
-            alert("all : "+ this.state.giftShow.length)
+            // alert("all : "+ this.state.giftShow.length)
         }
         else
         {
@@ -116,7 +116,7 @@ class OrgBody extends React.Component {
 
             })
             this.setState({giftShow: obj})
-            alert("gifts: " + JSON.stringify(this.state.giftShow))
+            // alert("gifts: " + JSON.stringify(this.state.giftShow))
         }
 
     }
@@ -163,7 +163,7 @@ class OrgBody extends React.Component {
 
     componentDidMount()
     {
-        alert("org details: \n"+ JSON.stringify(this.props.data))
+        // alert("org details: \n"+ JSON.stringify(this.props.data))
         // alert("org_id \n" + this.props.data.orgDetails.org_id )
         // fetch('/data', {
         //     method: 'GET'

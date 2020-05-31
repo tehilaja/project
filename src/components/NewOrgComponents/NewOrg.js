@@ -111,7 +111,7 @@ class NewOrg extends React.Component {
     axios.post('/addOrg/firstStep', this.state.newOrg_req
     ).then(res => 
     {
-        alert("res is: " + res.data)
+        // alert("res is: " + res.data)
 
     }).catch(error=> {
         alert("error addOrgProcess" +  error);
@@ -159,7 +159,7 @@ class NewOrg extends React.Component {
 
         (async () => {
             const fileNamePrefix = `${this.state.orgName}_${uuid()}`
-            //TODO: save url to db in callback
+            //TODO: save url to db in callback - save all org information to DB
             await uploadFile(this.state.selectedImage, fileUrl => alert('file url:' + fileUrl), fileNamePrefix, 'organizations'); 
             // exp: => (callback, who, folder in s3)
         })();
