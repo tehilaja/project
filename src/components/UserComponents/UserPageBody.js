@@ -52,7 +52,7 @@ constructor(props)
 	}
 	this.state.organizations = this.getUserOrganizations();
 	this.handleClick = this.handleClick.bind(this);
-	alert("user page body: " + JSON.stringify(this.state))
+	// alert("user page body: " + JSON.stringify(this.state))
     // this.fetch_org_data = this.fetch_org_data.bind(this)
 }
 

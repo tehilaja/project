@@ -20,12 +20,12 @@ class OrgCard extends React.Component{
             name: ""
         }
         this.handleClick = this.handleClick.bind(this)
-        alert("in card: "+ JSON.stringify(this.state)) 
+        // alert("in card: "+ JSON.stringify(this.state)) 
     }
 
     handleClick(id)
     {
-        alert("hi: " +`${id}`)
+        // alert("hi: " +`${id}`)
     }
 //-------------render----------------
     render(){

@@ -129,10 +129,10 @@ class Body extends React.Component
 				{
 					// alert("lastDonation \n" + JSON.stringify(respones.data))
 					if(respones.data==="no data") //TODO: if no last donation///
-						alert(respones.data)
+						// alert(respones.data)
 					this.setState({lastDonation: respones.data});
 		}).catch(error=> {
-			alert(error);
+			// alert(error);
 		})
 	}
 

@@ -77,7 +77,7 @@ class UserRegistrationForm extends React.Component {
 				{ header: { 'Content-Type': 'application/json' } }
 			)
 			console.log("after registration")
-			alert("response: "+JSON.stringify(response))
+			// alert("response: "+JSON.stringify(response))
 			if (response.data === "success") {
 				this.setState({status: Status.PreConfirmation})
 			} else {
@@ -123,7 +123,7 @@ class UserRegistrationForm extends React.Component {
 				
 			}
 			console.log("after confirmation")
-			alert("response: "+JSON.stringify(response))
+			// alert("response: "+JSON.stringify(response))
 			console.log("response: "+JSON.stringify(response))
 			console.log(response.data);
 		}
