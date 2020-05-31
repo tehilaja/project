@@ -30,7 +30,7 @@ class NewOrg extends React.Component {
             orgName: '',
             admin_name: '',
             description: '',
-            field_of_acctivity: '',
+            field_of_activity: '',
             phone: '',
             email: '',
             //mailing information:
@@ -48,7 +48,7 @@ class NewOrg extends React.Component {
             // account_num:"",
             // bank_num:"",
             // description:"",
-            // field_of_acctivity:"",
+            // field_of_activity:"",
             // founding_year:"",
             // working:"",
             // volunteers:"",
@@ -58,13 +58,13 @@ class NewOrg extends React.Component {
             selectedImage: null,
             image_url: null,
 
-// org_id org_name admin_name description field_of_acctivity img_url min_donation approved org_num branch account_num bank_num account_owner, one_time_donation, founding_year working volunteers friends city_name ,country_name, building street p_code 
+// org_id org_name admin_name description field_of_activity img_url min_donation approved org_num branch account_num bank_num account_owner, one_time_donation, founding_year working volunteers friends city_name ,country_name, building street p_code 
 
             // req json
             newOrg_req: {"org_id": 2, "org_name":'',"min_donation": '',"approved":0,"org_num":'',
                 "branch":'', "account_num":'', "bank_num":'', "account_owner":'', "one_time_donation": 0,  // must field
                 "admin_name": '',"img_url": '',
-                "description": '',"field_of_acctivity": '',"founding_year":'', "working":'', "volunteers":'', "friends":'', "city_name":'', "building": '', "street":'', "p_code":''},
+                "description": '',"field_of_activity": '',"founding_year":'', "working":'', "volunteers":'', "friends":'', "city_name":'', "building": '', "street":'', "p_code":''},
         }
         this.handleChange = this.handleChange.bind(this)
         this.handlerClick = this.handlerClick.bind(this);
@@ -162,7 +162,7 @@ class NewOrg extends React.Component {
     //         const response = await axios.post(
     //             '/addOrg',
     //             {
-    //                 // org_name,admin_name,description,field_of_acctivity,img_url,min_donation,org_num,branch,account_num,bank_num,founding_year,working,volunteers,friends,city_id,building,street,p_code)
+    //                 // org_name,admin_name,description,field_of_activity,img_url,min_donation,org_num,branch,account_num,bank_num,founding_year,working,volunteers,friends,city_id,building,street,p_code)
     //                 // TODO : all data
     //                 // org_name: this.state.orgName,admin_name:this.state.admin_name,img_url:this.state.photo, monthly_donation:this.state.minDonation,  // ---- req
     //             },
@@ -232,6 +232,7 @@ class NewOrg extends React.Component {
                                 We will provide you with the design and software necessary to create an online platform for ongoing donations.
                                 All we left for you to do, is focus on content that will be appealing and attract your ongoing doners.
                             </p>
+                            <Label>Once you send in the following details, we will be in touch with you about creating your personal platform.</Label>
                         </Segment>
                         <br></br>
                         <br></br>
@@ -273,9 +274,9 @@ class NewOrg extends React.Component {
                             <Form.Field>
                                 <Form.TextArea
                                     rows={2}
-                                    label='field_of_acctivity:'
-                                    placeholder='field_of_acctivity...'
-                                    name='field_of_acctivity'
+                                    label='Field of Activity:'
+                                    placeholder='field_of_activity...'
+                                    name='field_of_activity'
                                     onChange={this.handleChange.bind(this)} />
                             </Form.Field>
                             <Form.Field>
@@ -424,8 +425,8 @@ class NewOrg extends React.Component {
                             {/* <a href='#'>More Details:</a>
                     </Divider>
                     <br/><br/>
-                    <lable className= "newOrgLable"> field_of_acctivity: </lable>
-                    <input type="text" name="field_of_acctivity" onChange={this.handleChange.bind(this)}/>
+                    <lable className= "newOrgLable"> field_of_activity: </lable>
+                    <input type="text" name="field_of_activity" onChange={this.handleChange.bind(this)}/>
                     <br/><br/>
                     <lable className= "newOrgLable"> founding_year: </lable>
                     <input type="text" name="founding_year" onChange={this.handleChange.bind(this)}/>

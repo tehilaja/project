@@ -179,7 +179,7 @@ class Body extends React.Component
 			return(
 				<OrgCard key={org.org_id} imgUrl={org.img_url} name={org.org_name} id= {org.org_id} initialDonation= {org.min_donation} 
 				/>)
-				// 	admin_name = {org.admin_name} field_of_acctivity = {org.field_of_acctivity} org_num = {org.org_num} description = {org.description}
+				// 	admin_name = {org.admin_name} field_of_activity = {org.field_of_activity} org_num = {org.org_num} description = {org.description}
 				// 	working = {org.working} volunteers = {org.volunteers} friends = {org.friends}
 				// />)
 			// -- $$$$$$$ ---
@@ -333,7 +333,12 @@ class Body extends React.Component
 					All we left for you to do, is focus on content that will be appealing and attract your ongoing doners.
 					Tell us about your organization. We will be in touch with you shortly, and create your platform.
 					</p>
-					<Button as='a' size='large'>
+					<Button as='a' size='large'
+					onClick ={() => this.setState(prevState => {
+						return {
+								routerCreateOrgPage: !prevState.routerCreateOrgPage
+							}})}
+					>
 					Get Approved To Create Platform
 					</Button>
 				</Container>
@@ -344,4 +349,4 @@ class Body extends React.Component
 
 }
 
-export default Body
+export default Body;

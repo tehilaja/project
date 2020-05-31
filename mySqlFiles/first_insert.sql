@@ -24,9 +24,9 @@ INSERT INTO Users (user_name, first_name, last_name, pswd, email, address_id,num
 INSERT Into Credit_info (user_id,numbers) VALUES (1,1234),(1,1244);
 
 -- ~~~~~~~~~~~~~~~ organization ~~~~~~~~~
- -- TODO:  field_of_acctivity
- -- select * from field_of_acctivity
-INSERT INTO field_of_acctivity(field_id,field_name) VALUES
+ -- TODO:  field_of_activity
+ -- select * from field_of_activity
+INSERT INTO field_of_activity(field_id,field_name) VALUES
 (1,"הצלת חיים"),(2,"השאלת ציוד"),(3,"בריאות -כללי"),(4,"טיפול באסונות"),(5,"עולם התורה"),(6,"מימון"),(7,"אמנים"),(8,"עזרה לנזקקים"),(9,"חלוקת מזון");
 
 
@@ -41,8 +41,8 @@ INSERT INTO organization (org_name,approved,admin_name,description,one_time_dona
 ("יד שרה",1,"משה אורי כהן","להשאיל ציוד ומכשור רפואי ללא תמורה לתקנו ולתחזקו. לעודד, להפעיל, להדריך ולהכשיר מתנדבים וארגוני מתנדבים למתן מענה לצרכים קהילתיים. להעניק שירותי בית וקהילה מגוונים לחולים ונזקקים.להלוות כסף ללא ריבית לנצרכים, לעמותות המסייעות לנצרכים ולכל גוף ציבורי המסייע לנצרכים בכל אופן שהוא. להעניק לנצרכים מעוטי יכולת כסף ו/או מכשירים לריפוי וסיוע. לאחוז ולנקוט בכל האמצעים הנדרשים או שידרשו לצורך מימוש המטרות הנ ל וכן כל פעולה אחרת שתראה לועד העמותה ואשר מגמתה הינה עזרה לזולת",
 0,"https://yad-sarah.net/wp-content/uploads/2019/04/logoys.png",15,580030104,"2145687884","yadSara@gmail.com","dov e",900,123456,10,1983,330,7000,11,"Jerusalem","Israel",124,"שדרות הרצל",9618722); 
 
--- select * from org_field_of_acctivity
-INSERT INTO org_field_of_acctivity(field_id,org_id) values(1,1),(3,1),(4,1),(2,2),(3,2),(1,2),(2,3),(3,3);
+-- select * from org_field_of_activity
+INSERT INTO org_field_of_activity(field_id,org_id) values(1,1),(3,1),(4,1),(2,2),(3,2),(1,2),(2,3),(3,3);
 
 
 

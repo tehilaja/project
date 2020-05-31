@@ -51,7 +51,7 @@ class OrgBody extends React.Component {
             btnDonateClicked: false,
             confirmBtn: false,
             initialDonation : this.props.data.orgDetails.min_donation,
-            field_of_acctivity: this.props.data.org_field_of_acctivity,
+            field_of_activity: this.props.data.org_field_of_activity,
            
             // initialDonation : this.props.orgDetails.min_donation,
 
@@ -371,8 +371,8 @@ class OrgBody extends React.Component {
                                         </Header>
                                         <p style={{ fontSize: '1em' }}>
                                             {/*  TODO : show list of activity */}
-                                            {/* {this.state.field_of_acctivity} */}
-                                            {/* {this.props.data.orgDetails.field_of_acctivity} */}
+                                            {/* {this.state.field_of_activity} */}
+                                            {/* {this.props.data.orgDetails.field_of_activity} */}
                                         </p>
                                         {/* // option to hide text */}
                                         <Accordion>

@@ -15,8 +15,8 @@
 
 -- ALTER TABLE Organization RENAME COLUMN org_pic TO img_url;
 -- add column
- -- ALTER TABLE Organization ADD COLUMN email varchar(50) AFTER field_of_acctivity;
- -- alter table Organization modify field_of_acctivity int(11)
+ -- ALTER TABLE Organization ADD COLUMN email varchar(50) AFTER field_of_activity;
+ -- alter table Organization modify field_of_activity int(11)
 
 
 
@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS Organization (
   org_name varchar(255),
   admin_name varchar(255),
   description varchar(3000),
---   field_of_acctivity int(11),
+--   field_of_activity int(11),
   phone varchar(15), -- *
   email varchar(50), -- *
   img_url varchar(250), -- *
@@ -87,15 +87,15 @@ CREATE TABLE IF NOT EXISTS Organization (
 );
 
  -- *
- -- DROP TABLE org_field_of_acctivity
-CREATE TABLE IF NOT EXISTS org_field_of_acctivity(
+ -- DROP TABLE org_field_of_activity
+CREATE TABLE IF NOT EXISTS org_field_of_activity(
 	field_id int(11),
     org_id int(11)
 );
 
  -- *
- -- DROP TABLE field_of_acctivity
-CREATE TABLE IF NOT EXISTS field_of_acctivity(
+ -- DROP TABLE field_of_activity
+CREATE TABLE IF NOT EXISTS field_of_activity(
 	field_id int(11) PRIMARY KEY,
     field_name varchar(50)
 );

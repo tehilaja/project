@@ -19,7 +19,7 @@ class OrgPage extends React.Component{
 			
 			loadData: false,
 			orgDetails: null, // all details from DB
-			org_field_of_acctivity: null,
+			org_field_of_activity: null,
 
 			id: this.props.id,
 
@@ -30,7 +30,7 @@ class OrgPage extends React.Component{
 			userName: this.props.data.userName,
 			loggedIn: this.props.data.loggedIn
 		}
-		this.get_field_of_acctivity = this.get_field_of_acctivity.bind(this);
+		this.get_field_of_activity = this.get_field_of_activity.bind(this);
 	}	
 
 	//TODO: fetch orgData from DB
@@ -62,14 +62,14 @@ class OrgPage extends React.Component{
 		.catch(error=> {
 			alert(error);
 		})
-		this.get_field_of_acctivity() // get list of activity
+		this.get_field_of_activity() // get list of activity
 
 	}
 
-	// ------------- get_field_of_acctivity
-	get_field_of_acctivity()
+	// ------------- get_field_of_activity
+	get_field_of_activity()
 	{
-		axios.get('/orgPage/get_org_field_of_acctivity/'+this.state.id)
+		axios.get('/orgPage/get_org_field_of_activity/'+this.state.id)
 		.then(res => 
 			{
 				if (res.status >= 400) {
@@ -78,7 +78,7 @@ class OrgPage extends React.Component{
 					alert ("no data!")
 				else{
 					alert("res:\n "+ JSON.stringify(res.data))
-					this.setState({org_field_of_acctivity: res.data});
+					this.setState({org_field_of_activity: res.data});
 				}
 			})
 			.catch(error=> {
@@ -93,7 +93,7 @@ class OrgPage extends React.Component{
 	render() {
 		// if(!this.state.check_login_status)
 		// 	return(<h1>loading...</h1>)
-		if (this.state.orgDetails == null || this.state.org_field_of_acctivity == null)
+		if (this.state.orgDetails == null || this.state.org_field_of_activity == null)
 			return(
 			// <h1>not load data...</h1>
 			<Segment>

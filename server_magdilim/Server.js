@@ -149,7 +149,7 @@ app.get('/lastDonation',(req, res,next) =>
 });
 
 // ~~~ 30.05 ~~
-app.get(`/orgPage/get_org_field_of_acctivity/:orgId`,(req, res,next)=> 
+app.get(`/orgPage/get_org_field_of_activity/:orgId`,(req, res,next)=> 
 {
   try{
     // TODO : try the db multi connection problem
@@ -158,8 +158,8 @@ app.get(`/orgPage/get_org_field_of_acctivity/:orgId`,(req, res,next)=>
     console.log("id: " + req.params.orgId)
  
     const q_org_field_name = `select distinct fo.field_name
-      from org_field_of_acctivity ofo
-      join field_of_acctivity fo on ofo.field_id = fo.field_id
+      from org_field_of_activity ofo
+      join field_of_activity fo on ofo.field_id = fo.field_id
       where ofo.org_id = "${req.params.orgId}";`
     console.log("query: \n" + q_org_field_name);
     db.query(q_org_field_name, (err,result, fields) =>{
@@ -291,7 +291,7 @@ app.post('/sendEmail', (req, res) => {
 function checkAddOrgDetails(paramO)
 {
   // org_id, org_name ,one_time_donation , min_donation ,approved,org_num ,  branch ,account_num, bank_num, account_owner
-  // , admin_name ,description ,field_of_acctivity, img_url ,founding_year, working ,volunteers, friends ,city_name,country_name ,building ,street, p_code
+  // , admin_name ,description ,field_of_activity, img_url ,founding_year, working ,volunteers, friends ,city_name,country_name ,building ,street, p_code
   var q = ` INSERT INTO organization (`
   var insertinfValue = `)VALUES(`
 
@@ -334,10 +334,10 @@ function checkAddOrgDetails(paramO)
     q += `,description`;
     insertinfValue += `,"${paramO.description}"`;
   }
-  // TODO!! field_of_acctivity
-  // if(paramO.field_of_acctivity!=''){
-  //   q += `,field_of_acctivity`;
-  //   insertinfValue += `,"${paramO.field_of_acctivity}"`;
+  // TODO!! field_of_activity
+  // if(paramO.field_of_activity!=''){
+  //   q += `,field_of_activity`;
+  //   insertinfValue += `,"${paramO.field_of_activity}"`;
   
   // nessecery
   

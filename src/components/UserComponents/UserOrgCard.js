@@ -34,7 +34,7 @@ class OrgCard extends React.Component{
 				pathname: '/OrgPage',
 		    // -- $$$$$$$ ---
         state: {id: this.props.id, img: this.props.imgUrl, name: this.props.name, initialDonation:this.props.initialDonation,
-          admin_name:this.props.admin_name, field_of_acctivity:this.props.field_of_acctivity, org_num:this.props.org_num,
+          admin_name:this.props.admin_name, field_of_activity:this.props.field_of_activity, org_num:this.props.org_num,
           description :this.props.description ,working:this.props.working ,volunteers:this.props.volunteers ,
           friends:this.props.friends,founding_year:this.props.founding_year}
            
