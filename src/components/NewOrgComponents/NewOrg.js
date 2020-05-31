@@ -15,15 +15,13 @@ import { GoOrganization } from "react-icons/ai";
 
 import {Button,Input,Container,Divider,Form,Grid,Header,Icon,Image,Label,List,Menu,Radio,Responsive,Segment,Sidebar,Step,Visibility,} from 'semantic-ui-react'
 const uploadFile = require('../../utilities/upload').methods.uploadFile;
+const emailService = require('../../utilities/email');
 
 class NewOrg extends React.Component {
 
     constructor(props) {
         super(props)
         this.state = {
-
-            pswd: "",
-            validPswd: false,
             loggedIn: this.props.data.loggedIn,
             userName: this.props.data.userName,
             //////////////////
@@ -73,8 +71,27 @@ class NewOrg extends React.Component {
         this.onSelectFile = this.onSelectFile.bind(this);
         //
         this.addOrgProcess = this.addOrgProcess.bind(this);
+        this.sendEmail = this.sendEmail.bind(this);
 
     }
+
+    //the following function is to send an email that a new oragnization is awaiting approval
+    sendEmail() {
+        // TODO: get text to send, get list of mail
+        emailService.sendEmail(
+            //'mordeyj316@gmail.com'
+            ['tehilaj97@gmail.com'],
+            null,
+            null,
+            'A new organization is awaiting your approval',
+            'organization name: '+ this.state.orgName +
+            '\norganizaion description: ' + this.state.description +
+            '\nclick to view org image: '+ this.state.image_url+
+            '\nname of user asking to create platform: ' + this.state.userName,
+            null,
+        )
+    }
+    
     
     // ~~~~~~~ add new org to DB
     addOrgProcess(){
@@ -146,7 +163,7 @@ class NewOrg extends React.Component {
             await uploadFile(this.state.selectedImage, fileUrl => alert('file url:' + fileUrl), fileNamePrefix, 'organizations'); 
             // exp: => (callback, who, folder in s3)
         })();
-
+        this.sendEmail();
         e.preventDefault();
     }
         /*add new org to dataBase */
@@ -275,7 +292,7 @@ class NewOrg extends React.Component {
                                 <Form.TextArea
                                     rows={2}
                                     label='Field of Activity:'
-                                    placeholder='field_of_activity...'
+                                    placeholder='field of activity...'
                                     name='field_of_activity'
                                     onChange={this.handleChange.bind(this)} />
                             </Form.Field>
