@@ -124,10 +124,11 @@ INNER JOIN organization o ON o.org_id = d.org_id
 app.get('/lastDonation',(req, res,next) => 
 {
   try{
-    const qLDonation = `SELECT d.user_id, d.org_id, u.user_name ,d.d_title,d.d_description, d.is_anonim,d.d_date, d.referred_by, o.img_url FROM doners_in_org d 
+    const qLDonation = `SELECT d.user_id, d.org_id, u.user_name ,d.d_title,d.d_description, d.is_anonim,d_referred_by, d.d_date, o.img_url FROM doners_in_org d 
       INNER JOIN users u ON u.user_id = d.user_id 
       INNER JOIN organization o ON o.org_id = d.org_id
       ORDER BY d_date DESC LIMIT 20`
+      //d.referred_by,
       console.log("query: " + qLDonation);
       db.query(qLDonation, (err,result, fields) =>
       {
@@ -253,8 +254,8 @@ app.post('/sendEmail', (req, res) => {
 
 function checkAddOrgDetails(paramO)
 {
-// org_id, org_name ,one_time_donation , min_donation ,approved,org_num ,  branch ,account_num, bank_num, account_owner
-// , admin_name ,description ,field_of_acctivity, img_url ,founding_year, working ,volunteers, friends ,city_name,country_name ,building ,street, p_code
+  // org_id, org_name ,one_time_donation , min_donation ,approved,org_num ,  branch ,account_num, bank_num, account_owner
+  // , admin_name ,description ,field_of_acctivity, img_url ,founding_year, working ,volunteers, friends ,city_name,country_name ,building ,street, p_code
   var q = ` INSERT INTO organization (`
   var insertinfValue = `)VALUES(`
 
@@ -297,10 +298,11 @@ function checkAddOrgDetails(paramO)
     q += `,description`;
     insertinfValue += `,"${paramO.description}"`;
   }
-  if(paramO.field_of_acctivity!=''){
-    q += `,field_of_acctivity`;
-    insertinfValue += `,"${paramO.field_of_acctivity}"`;
-  }
+  // TODO!! field_of_acctivity
+  // if(paramO.field_of_acctivity!=''){
+  //   q += `,field_of_acctivity`;
+  //   insertinfValue += `,"${paramO.field_of_acctivity}"`;
+  
   // nessecery
   
   insertinfValue +=`);`
@@ -348,7 +350,17 @@ app.post('/addOrg',(req, res,next)=>{
 
 });
 
+app.post('/addOrg/firstStep',(req, res,next)=>
+{
 
+  const qFirstAdd = `INSERT INTO doners_in_org (org_id,org_name,min_donation,one_time_donation,approved)
+    VALUES(${req.body.org_id},${req.body.org_name},${req.body.min_donation},${req.body.one_time_donation},0,
+    );`
+    // ,org_num,branch,account_num,bank_num,account_owner
+    // ${paramO.branch},${paramO.account_num},${paramO.bank_num},${paramO.account_owner},${paramO.org_num}
+
+
+});
 //~~~~~~~~~~~~~~~~~~~~ donate process ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // check which details exsist and do a query
@@ -362,7 +374,7 @@ function checkDonateDetails(paramO)
     // TODO: check if the neccesery value input? -> before?
  
   q += `user_id,org_id,monthly_donation`;
-  insertinfValue += ` ${paramO.user_id},${paramO.org_id},${paramO.monthly_donation}`
+  insertinfValue += ` ${paramO.body.user_id},${paramO.org_id},${paramO.monthly_donation}`
 
   // --- check
   if(paramO.referred_by!=''){
@@ -624,56 +636,12 @@ app.post('/get_user_params',function(req,res){
    
 });
 
-//-------donation ----
-
-// app.post('/donation',(req, res)=>{
-  
-//   // var userID = req.body.user_id
-//   console.log("the user: ", my_user)
-//   if(my_user !== null)
-//   {
-//     let id = 0 
-//     console.log("user", my_user.user_id)
-//     // let qDuser = `(select user_id from Users where user_name = "${req.body.referred_by}" );`
-//     // console.log("qDuser",qDuser )
-//     // db.query(qDuser,(err,result,fields)=>
-//     // {
-//     //   if(!err){
-//     //     console.log("add level")
-//     //     id = result[0].user_id
-//     //     console.log("id,",id)
-//     //   }
-//     //   else
-//     //     res.end("fail1")
-//     // console.log(result)
-//     // })
-
-
-//     // if(${req.body.referred_by}) // TODO: if no Referred to
-      
-//     let queryD = `INSERT INTO Doners_in_org (user_id, org_id, monthly_donation, referred_by) VALUES (${my_user.user_id} , ${req.body.org_id}, ${req.body.monthly_donation},(select user_id from Users where user_name = "${req.body.referred_by}" ));`
-//     console.log("quert is",queryD,"\n")
-//     db.query(queryD,(err,result,fields)=>
-//     {
-//       if(!err){
-//         console.log("in donation")
-//         res.end("added succesfully!") //response
-//       }
-//       else
-//         res.end("fail2")
-//     console.log(result)
-//     })
-//   // })
-//   }
-//   else
-//     res.end("no conection")
-// })
-
 
 // -- data 
 app.get('/data', function(req, res, next) {
-  db.query('select * from Organization', function (error, results, fields) {
+  db.query('select org_id,img_url,org_name,min_donation from Organization', function (error, results, fields) {
       if(error) throw error;
+      console.log("data org in body: \n "+ results)
       res.send(JSON.stringify(results));
   });
 });
