@@ -279,18 +279,23 @@ coming up with plan for updating status of users - tree vs updating db
 updating the Diary
 looking through different options:
 ******************
-using a cash: - the tree is already ready - no need to create these calls every time - saving reads
+using a cache: - the tree is already ready - no need to create these calls every time - saving reads
 for safety - we will update cash every 24 hours
 
 only have to claculate it once
-creating a cash would be a dictionary of dictionaries 
+creating a cache would be a dictionary of dictionaries 
 needs to be singltone - static 
 how do we do that in javaScript?
-hold the instance in the server and it's functions somewhere else
+hold the instance in the server and it's functions somewhere else?
 
 collection of Org
 each org has a tree
 for each doner (in a dictionary) would have a refference to the correct node
 **********************
 has an update command - to update an organization / update a doner and his ansestors
+
+31/05/2020 - 9/06/2020
+writing code for functionality of cache
+building dictionaries
+writing recursive functionality to get users level in organization etc
 
