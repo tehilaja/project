@@ -62,16 +62,24 @@ class OrgCard extends React.Component {
             <span className='date'>My Monthly Donation: {this.state.myMonthlyDonation} $</span>
           </Card.Meta>
           <Card.Description>
-            organization description
-              </Card.Description>
+          {this.state.description}
+          </Card.Description>
         </Card.Content>
-        <Card.Content extra>
-          <Label floating color='red' tag>
-            <Icon name='user' />
-                My Status: {this.state.myStatus} <br /> <br />
-                People I Referred: {this.state.reffered} <br /> <br />
+        <Card.Content extra floating='right'>
+          <Label as='a' color='orange'>
+          <Icon name='user' />
+                My Status: {this.state.myStatus} <br />
+          </Label>
+          <Label as='a' color='red' tag floating>
+            <Icon name='users' />
+                People I Referred: {this.state.reffered} <br />
+          </Label>
+          <Label as='a' color='teal'>
+            <Icon name='dollar' />
                 Total Amount Collected: {this.state.collected}
           </Label>
+          <br />
+          Click to view Downline
         </Card.Content>
         <Card.Content extra>
           <a>

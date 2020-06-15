@@ -239,7 +239,6 @@ render() {
 				  Sign Up
 				</Button>
 				</div>}
-				{this.state.showBackButton && <button name = "btnBack" onClick={() => this.setState({showLogin: false, showUser: false, showBackButton: false})}>close</button>}
 				{this.state.loggedIn && <Button as='a' inverted={!fixed} onClick={logOutFunc}>
 				  Log out
 				</Button>}
