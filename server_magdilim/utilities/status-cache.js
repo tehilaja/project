@@ -38,7 +38,7 @@ const setCache = (donersInOrg) => {
 
         // for each org create tree
         Object.keys(orgToDoners).forEach(orgId => {
-            // declare root whick will be the root of the org tree
+            // declare root which will be the root of the org tree
             const orgTree = {
                 key: {
                     collected: 0,
@@ -52,8 +52,8 @@ const setCache = (donersInOrg) => {
             const rootDoners = donersByReferrer[null];
             buildTree(orgId, rootDoners, orgTree, donersByReferrer);
             scanTreeAndUpdateNodes(orgTree, orgToLevels[orgId]);
-            orgTree.key.is_root = true; // we do not want to mistakenly give a gift to the root, which represents the entire org and not a specific doner
-            console.log(`\n\n\norg ${orgId} tree:\n` + JSON.stringify(getOrgTree(orgId)))
+            orgTree.key.is_root = true; // we do not want to mistakebly give a gift to the root, which represents the entire org and not a specific doner
+            //console.log(`\n\n\norg ${orgId} tree:\n` + JSON.stringify(getOrgTree(orgId)))
         });
     }
 }
@@ -63,9 +63,11 @@ const buildTree = (orgId, rootDoners, treeRoot, donersByReferrer) => {
 
         const node = {
             key: {
-                donerId: doner.user_id,
+                id: doner.user_id,
+                name: doner.user_id,
                 collected: doner.monthly_donation,
                 referred_doners: 1,
+                parent: treeRoot,
             },
             children: [],
         };
@@ -98,17 +100,18 @@ const scanTreeAndUpdateNodes = (root, levels) => {
         root.key.referred_doners += resultFromChildren.referred_doners;        
     }
 
-    const level = getDonerLevelInOrg(root.key, levels);
-    root.key.level = (level && level.level_num) || 0;
+    const level = getDonerLevel(root.key, levels);
+    root.key.level = level && level.level_num || 0;
     return root.key;
 }
 
-const getDonerLevelInOrg = (doner, levels) => {
+const getDonerLevel = (doner, levels) => {
+    // a lambda deciding if the doner is at a given level or not
     const isDonerAtLevel = (level) => {
-        return !!((!level.min_people || level.min_people <= doner.referred_doners) && (!level.min_sum || level.min_sum <= doner.collected));
+        return !!((!level.min_people || level.min_people <= doner.referred_doners) && (!level.min_sum || level.min_sum <= doner.collected)); // !! in order to turn an object into a boolean value
     }
 
-    return levels.find(isDonerAtLevel);
+    return levels.find(isDonerAtLevel); // returns the first level meeting the lambda. (Levels are sorted from higher to lower.)
 }
 
 //get today's gifts from db, grouped by orgs
@@ -130,7 +133,7 @@ console.log(sqlQuery);
 
 
 //Returns a dict where keys are gift ids, and values are array of doners who would get the gift
-const getGiftsReceivers = (db) => {
+const getGiftsReceivers = (db, callback) => {
     getGifts(db, (gifts) => {
         const giftsReceivers = {};
 
@@ -153,8 +156,8 @@ const getGiftsReceivers = (db) => {
                 });
             });
         });
-        console.log('gift receivers: '+JSON.stringify(giftsReceivers));
-        return giftsReceivers;
+
+        if (callback) callback(giftsReceivers);
     });
 }
 
@@ -165,15 +168,84 @@ const getDonersOfOrgAtLevel = (org_id, level) => {
     return doners;
 }
 
+// since the parent is a reference, printing the tree is imposible due to a circular dependncy in the parent-child relationship. This comes to solve that problem for testing.
+const getPrintableTree = (root) => {
+    const rootKeyCopy = Object.assign({}, root.key); // Object.assign copies the source object to the targe object (returns a new object, not a reference to the old)
+    rootKeyCopy.parent = root.key.parent && root.key.parent.key.id || null; // changing the parent from a reference to the parent's id
+    console.log('root key copy: '+JSON.stringify(rootKeyCopy))
+    const rootCopy = { key: rootKeyCopy, children: [] };
+
+    if (root.children && root.children.length) {
+        root.children.forEach(child => rootCopy.children.push(getPrintableTree(child))); // recursion
+    }
+
+    return rootCopy;
+}
+
 // recursive function which accepts an org tree root, a level, and an array which will serve as an accumulator collecting the list of doners which will be the result
 const getDonersFromTreeAtLevel = (root, level, acc) => {
     if (root.key.level >= level) {
         if (!root.key.is_root) {
-            acc.push(root.key.donerId);
+            acc.push(root.key.id);
         }
         if (root.children && root.children.length) {
             root.children.forEach(child => getDonersFromTreeAtLevel(child, level, acc)); // recursion
         }
+    }
+}
+
+const addDonerToOrg = (doner_id, org_id, monthly_donation, referrer) => {
+    const nodeParent = referrer && getOrgTreeForUser(referrer, org_id) || getOrgTree(org_id);
+    const node = {
+        key: {
+            id: doner_id,
+            name: doner_id,
+            collected: monthly_donation,
+            referred_doners: 1,
+            parent: nodeParent,
+        },
+        children: [],
+    };
+
+    const level = getDonerLevel(node.key, orgToLevels[org_id]);
+    node.key.level = level && level.level_num || 0;
+    nodeParent.children.push(node);
+    updateAnccestors(node, org_id, monthly_donation, 1);
+}
+
+const updateDonerInOrg = (doner_id, org_id, old_monthly_donation, new_monthly_donation) => {
+    const node = getOrgTreeForUser(doner_id, org_id);
+    const newCollected = new_monthly_donation - old_monthly_donation;
+    node.key.collected += newCollected;
+    const level = getDonerLevel(node.key, orgToLevels[org_id]);
+    node.key.level = level && level.level_num || 0;
+    updateAnccestors(node, org_id, newCollected, 0);    
+}
+
+const updateAnccestors = (node, org_id, newCollected, newReferred) => {
+    let pointer = node;
+
+    while (pointer.key.parent) {
+        pointer = pointer.key.parent;
+        pointer.key.collected += newCollected;
+        pointer.key.referred_doners += newReferred;
+        const level = getDonerLevel(pointer.key, orgToLevels[org_id]);
+        pointer.key.level = level && level.level_num || 0;
+    }
+}
+
+const updateLevelInOrg = (org_id, level) => {
+    const prevLevel = orgToLevels[org_id].find(x => level.level_num === x.level_num);
+    Object.assign(prevLevel, level);
+    updateLevelByOrgDoners(getOrgTree(org_id), org_id, orgToLevels[org_id]);
+}
+
+const updateLevelByOrgDoners = (root, org_id, levels) => {
+    const level = getDonerLevel(root.key, orgToLevels[org_id]);
+    root.key.level = level && level.level_num || 0;
+
+    if (root.children && root.children.length) {
+        root.children.forEach(child => updateLevelByOrgDoners(child, org_id, levels));
     }
 }
 
@@ -199,3 +271,8 @@ exports.getOrgTree = getOrgTree;
 exports.getOrgTreeForUser = getOrgTreeForUser;
 exports.getGiftsReceivers = getGiftsReceivers;
 exports.getOrgsForUser = getOrgsForUser;
+
+exports.addDonerToOrg = addDonerToOrg;
+exports.updateDonerInOrg = updateDonerInOrg;
+exports.updateLevelInOrg = updateLevelInOrg;
+exports.getPrintableTree = getPrintableTree;
