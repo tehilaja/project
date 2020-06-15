@@ -26,6 +26,7 @@ const userParametersService = userParametersFile.data.userParametersService;
 const awsUtil = awsServiceFile.data.awsUtil;
 const s3Util = require('./utilities/s3-utilities.js').methods;
 const reactor = require("./utilities/custom-event").data.reactor;
+const statusCache = require('./utilities/status-cache');
 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -69,6 +70,20 @@ db.connect((err)=>{
   console.log('mysql connected...');
 });
 
+statusCache.setCache(db, () => {
+  console.log(`\n\n\norg 1 before anything:\n`+JSON.stringify(statusCache.getOrgTree(1)));
+  statusCache.addDonerToOrg('anotherid@id.com', 1, 3000, 'someid@id.com');
+  console.log(`\n\n\norg 1 after adding:\n`+JSON.stringify(statusCache.getOrgTree(1)));
+  statusCache.updateDonerInOrg('someotherid@id.com', 1, 80, 500);
+  console.log(`\n\n\norg 1 after updating:\n`+JSON.stringify(statusCache.getOrgTree(1)));
+  statusCache.updateLevelInOrg(1, {"org_id":1,"level_num":4,"level_name":"כסף","min_sum":3000});
+  console.log(`\n\n\norg 1 after updating level:\n`+JSON.stringify(statusCache.getOrgTree(1)));
+  // statusCache.getGiftsReceivers(db, (giftReceivers) => {
+  //   console.log('gift receivers: '+JSON.stringify(giftReceivers));
+  //   });
+
+});
+
 
 // ~~~~~~~~~~~~~~~~~~~ scheduled jobs ~~~~~~~~~~~~~~~~~
 const schedule = require('node-schedule');
@@ -79,6 +94,11 @@ rule.hour = 0;
  
 const job = schedule.scheduleJob(rule, function() {
   console.log(`The time is: ${new Date()}`);
+  statusCache.setCache(db, () => {
+    statusCache.getGiftsReceivers(db, (giftReceivers) => {
+    console.log('gift receivers: '+JSON.stringify(giftReceivers));
+});
+  });
 });
 
 // ~~~~~~~~~~ userLoginService ~~~~~~~
@@ -123,9 +143,12 @@ INNER JOIN organization o ON o.org_id = d.org_id
 app.get('/lastDonation',(req, res,next) => 
 {
   try{
-    const qLDonation = `SELECT d.user_id, d.org_id, u.user_name ,d.d_title,d.d_description, d.is_anonim,d.referred_by, d.d_date, o.img_url FROM doners_in_org d 
-      INNER JOIN users u ON u.user_id = d.user_id 
-      INNER JOIN organization o ON o.org_id = d.org_id
+    // const qLDonation = `SELECT d.user_id, d.org_id, u.user_name ,d.d_title,d.d_description, d.is_anonim,d.referred_by, d.d_date, o.img_url FROM doners_in_org d 
+    //   INNER JOIN users u ON u.user_id = d.user_id 
+    //   INNER JOIN organizations o ON o.org_id = d.org_id
+    //   ORDER BY d_date DESC LIMIT 20`;
+    const qLDonation = `SELECT d.user_id, d.org_id, d.d_title,d.d_description, d.anonymous,d.referred_by, d.d_date, o.img_url FROM doners_in_org d 
+      INNER JOIN organizations o ON o.org_id = d.org_id
       ORDER BY d_date DESC LIMIT 20`
       //d.referred_by,
       console.log("query: " + qLDonation);
@@ -195,7 +218,7 @@ app.get('/orgPage/:orgId', (req, res,next)=>
     console.log("in /orgPage")
     console.log("id: " + req.params.orgId)
  
-    const qO = `select * from Organization WHERE org_id="${req.params.orgId}"`;
+    const qO = `select * from Organizations WHERE org_id="${req.params.orgId}"`;
     console.log("query: " + qO);
     db.query(qO, (err,result, fields) =>{
       if(err) throw err;
@@ -291,7 +314,7 @@ function checkAddOrgDetails(paramO)
 {
   // org_id, org_name ,one_time_donation , min_donation ,approved,org_num ,  branch ,account_num, bank_num, account_owner
   // , admin_name ,description ,field_of_activity, img_url ,founding_year, working ,volunteers, friends ,city_name,country_name ,building ,street, p_code
-  var q = ` INSERT INTO organization (`
+  var q = ` INSERT INTO organizations (`
   var insertinfValue = `)VALUES(`
 
   // neccesery 
@@ -674,7 +697,7 @@ app.post('/get_user_params',function(req,res){
 
 // -- data 
 app.get('/data', function(req, res, next) {
-  db.query('select org_id,img_url,org_name,min_donation from Organization', function (error, results, fields) {
+  db.query('select org_id,img_url,org_name,min_donation from Organizations', function (error, results, fields) {
       if(error) throw error;
       console.log("data org in body: \n "+ results)
       res.send(JSON.stringify(results));
@@ -693,7 +716,31 @@ app.get('/userProfile ', function(req, res, next) {
 });
 
 
+//-------------------get org trees from cache for user------------------------
+app.get('/userOrgTrees/:user_id', function (req, res, next) {
+  const trees = statusCache.getOrgsForUser(req.params.user_id);
+  console.log('my trees:\n'+JSON.stringify(trees));
+  
+  const orgIds = Object.keys(trees);
+  let index = 0;
 
+  orgIds.forEach(orgId => {
+    const level = statusCache.getOrgLevel(orgId, trees[orgId].key.level);
+    trees[orgId].level = level;
+    db.query(`SELECT img_url, org_name from Organizations WHERE org_id = ${orgId}`, function (error, results, fields) {
+      if (error) throw error;
+      
+      trees[orgId].org_name = results[0].org_name;
+      trees[orgId].img_url = results[0].img_url;
+      
+      index++;
+
+      if (index == orgIds.length) {
+        res.send(trees);
+      }
+    });
+  });
+});
 
 
 
@@ -712,7 +759,7 @@ app.post('/fetch_org_data',(req, res)=>{
 
 
 
-  let query = `SELECT * FROM Organization`
+  let query = `SELECT * FROM Organizations`
   db.query(query,(err,result,fields)=>{
     if(!err){
       console.log("the query is: \n", query)

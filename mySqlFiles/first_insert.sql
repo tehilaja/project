@@ -1,4 +1,4 @@
--- ~~~~~~~~~~ FIRST TINSERT  ~~~~~~~~~~~~~~~~~
+-- ~~~~~~~~~~ FIRST INSERT  ~~~~~~~~~~~~~~~~~
 
 USe magdilimdb;
 
