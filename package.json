@@ -59,6 +59,7 @@
     ]
   },
   "devDependencies": {
-    "babel-plugin-transform-class-properties": "^6.24.1"
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "react-admin": "^3.5.5"
   }
 }

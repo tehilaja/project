@@ -90,7 +90,6 @@ const HomepageHeading = ({ mobile }) => (
 			marginTop: mobile ? '1.5em' : '3em',
 		}}
 	/>
-	 <Container compact style={style.last}>
 	<Step.Group fluid>
 	<Step icon='user'/>
 	<Step icon='money bill alternate outline' />
@@ -98,7 +97,6 @@ const HomepageHeading = ({ mobile }) => (
 	<Step icon='building'/>
 	<Step active icon='gift'/>
 	</Step.Group>
-	</Container>
 	<Header
 		as='h2'
 		content='Multilevel crowd fundraising platform.'
@@ -109,33 +107,6 @@ const HomepageHeading = ({ mobile }) => (
 			marginTop: mobile ? '0.5em' : '1.5em',
 		}}
 	/>
-	<br />
-	{/*responsive steps:*/}
-	{/* <Container compact style={style.last}>
-	<Step.Group fluid>
-	<Step icon='user' title='Sign Up' description='Become a magdilim member' />
-	<Label color='red' floating>
-        2
-      </Label>
-	<Step icon='dollar' title='Donate' description='Choose and donate to organization' />
-	</Step.Group>
-	<br />
-	<Step.Group fluid>
-	<Label color='red' floating>
-        3
-      </Label>
-	<Step icon='users' title='Grow' description='Reffer others to an organization' />
-	<Label color='red' floating>
-        4
-      </Label>
-	<Step
-		active
-		icon='gift'
-		title='Win a prize'
-		description='You will be entered into raffles'
-	/>
-	</Step.Group>
-	</Container> */}
 	<Menu compact>
     <Menu.Item as='a'>
       <Icon name='user' /> Sign Up

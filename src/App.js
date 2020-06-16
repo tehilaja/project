@@ -14,6 +14,8 @@ import NewOrgPage from './components/NewOrgComponents/NewOrgPage.js'
 import OrgSearch from './components/OrgComponents/OrgSearch.js'
 import Prizes from './components/Prizes.js'
 
+import OrgTables from './components/Admin/AproveOrgs.js'
+
 //to know which page is open and make the navbar active
 class ActivePage {
 	static Home = 1;
@@ -97,26 +99,11 @@ class App extends React.Component
 		<Image src='https://react.semantic-ui.com/images/wireframe/short-paragraph.png' />
   		</Segment>)
 		else{
-			// return(
-			// 	<React.Fragment>
-			// 		<BrowserRouter>
-			// 		<div>
-			// 		<Route path="/orgpage/:id" component={OrgPage} />
-
-
-			// 	</div>
-			// 	</BrowserRouter>
-			// </React.Fragment>
-			// )
-
-			
-
-
 			const path = window.location.pathname;
 			const spliting = path.split("/")
-			// alert("arr: \n"+ spliting+ " \n"+ spliting[2])
 			switch (path.toLowerCase()) {
 					case "/":
+						// return(<OrgTables />)
 						return(<HomePage data={this.state} activePage={ActivePage.Home}/>);
 					case "/userpage":
 						return(<UserPage data={this.state}/>);
@@ -125,15 +112,6 @@ class App extends React.Component
 							// alert("prop id in  app: \n" + this.props.match.params.id)
 							return(<OrgPage data={this.state} id = {spliting[2]}/>);
 						}
-						
-						// id={this.props.match.params.id}
-							// id={this.props.match.params.id} />);
-					// case "/orgbody":
-					// 	return(<OrgBody data={this.state}/>);
-					// case "/orgpage":
-
-					// 	// alert(this.props.match.params.id)
-					// 	return(<OrgPage data={this.state}/>);
 					case "/neworgpage":
 						return(<NewOrgPage data={this.state}/>);
 					case "/orgsearch":

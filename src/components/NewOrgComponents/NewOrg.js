@@ -261,7 +261,10 @@ class NewOrg extends React.Component {
                                 horizontal
                                 style={{ margin: '3em 0em', textTransform: 'uppercase' }}
                             >
-                                <a href='#'>Enter the Details Bellow:</a>
+                                <a href='#'>
+                                    <Icon size='big' name='edit' />
+                                    Enter the Details Bellow:
+                                </a>
                             </Divider>
                             {/* info about organization */}
                             <h4></h4>
@@ -310,7 +313,10 @@ class NewOrg extends React.Component {
                                 horizontal
                                 style={{ margin: '3em 0em', textTransform: 'uppercase' }}
                             >
-                                <a href='#'>Organization Contact Info:</a>
+                                <a href='#'>
+                                    <Icon size='big' name='info circle' />
+                                    Organization Contact Info:
+                                </a>
                             </Divider>
                             <Form.Input
                                 label='Phone number:'
@@ -334,7 +340,10 @@ class NewOrg extends React.Component {
                                 horizontal
                                 style={{ margin: '3em 0em', textTransform: 'uppercase' }}
                             >
-                                <a href='#'>Mailing Address</a>
+                                <a href='#'>
+                                    <Icon size='big' name='map marker alternate' />
+                                    Mailing Address
+                                </a>
                             </Divider>
                             <Form.Input
                                 label='country:'
@@ -372,7 +381,10 @@ class NewOrg extends React.Component {
                                 horizontal
                                 style={{ margin: '3em 0em', textTransform: 'uppercase' }}
                             >
-                                <a href='#'>Upload a Photo:</a>
+                                <a href='#'>
+                                    <Icon size='big' name='image' />
+                                    Upload a Photo:
+                                </a>
                             </Divider>
                             <Segment raised>
                                 {/* <ImageUploader
@@ -394,7 +406,10 @@ class NewOrg extends React.Component {
                                     horizontal
                                     style={{ margin: '3em 0em', textTransform: 'uppercase' }}
                                 >
-                                    <a href='#'>Set minimum monthly doation</a>
+                                <a href='#'>
+                                    <Icon size='big' name='dollar' />
+                                    Set minimum monthly doation
+                                </a>
                                 </Divider>
                                
                                 {/* <label > $ </label> */}
@@ -429,7 +444,10 @@ class NewOrg extends React.Component {
                                     horizontal
                                     style={{ margin: '3em 0em', textTransform: 'uppercase' }}
                                 >
-                                    <a href='#'>User Status</a>
+                                <a href='#'>
+                                    <Icon size='big' name='users' />
+                                    User Status
+                                </a>
                                 </Divider>
 
                             <Radio toggle
@@ -457,6 +475,10 @@ class NewOrg extends React.Component {
                     <lable className= "newOrgLable"> friends: </lable>
                     <input type="text" name="friends" onChange={this.handleChange.bind(this)}/>*/}
                             <br /><br />
+                            <Header as='h3' style={{ fontSize: '2em' }}>
+                        <Icon size='big' name='handshake' />
+                            We will be in touch shortly.
+                        </Header>
                             <br />
                             <Button content='Submit' primary />
                         </Form>

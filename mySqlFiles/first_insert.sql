@@ -23,17 +23,17 @@ INSERT INTO Users (user_name, first_name, last_name, pswd, email, address_id,num
 -- Credit_info
 INSERT Into Credit_info (user_id,numbers) VALUES (1,1234),(1,1244);
 
--- ~~~~~~~~~~~~~~~ organization ~~~~~~~~~
+-- ~~~~~~~~~~~~~~~ organizations ~~~~~~~~~
  -- TODO:  field_of_activity
  -- select * from field_of_activity
 INSERT INTO field_of_activity(field_id,field_name) VALUES
 (1,"הצלת חיים"),(2,"השאלת ציוד"),(3,"בריאות -כללי"),(4,"טיפול באסונות"),(5,"עולם התורה"),(6,"מימון"),(7,"אמנים"),(8,"עזרה לנזקקים"),(9,"חלוקת מזון");
 
 
- -- organization
- -- drop table organization
- -- select * from organization
-INSERT INTO organization (org_name,approved,admin_name,description,one_time_donation,img_url,min_donation,org_num,phone,email,account_owner,branch,account_num,bank_num,founding_year,working,volunteers,friends,city_name,country_name,building,street,p_code) VALUES 
+ -- organizations
+ -- drop table organizations
+ -- select * from organizations
+INSERT INTO organizations (org_name,approved,admin_name,description,one_time_donation,img_url,min_donation,org_num,phone,email,account_owner,branch,account_num,bank_num,founding_year,working,volunteers,friends,city_name,country_name,building,street,p_code) VALUES 
 ("איחוד הצלה ישראל",1,"אליהו פולק", "ן (אירועים רבי נפגעים), חולים ונפגעים. רכישת ציוד רפואי בסיסי ומתקדם לצורך פעילות המתנדבים. רכישת רכבי חירום והצלה, כגון אמבולנסים ואופנועים, ומימון הוצאות אחזקת רכבי החירום. הכשרת אזרחים לפעילות בקהילה לסיוע ומניעה של תאונות דרכים, פגיעות ומחלות",
 0,"https://upload.wikimedia.org/wikipedia/commons/b/bc/UHNewLogo.svg",12,580465979,"0545391235","avitalbic@gmail.com","dov e",910,102346,10,2006,231,5400,12,"Jerusalem","Israel",78,"ירמיהו",9446758),
 ("עזר מציון", 1,"הרב חנניה צ'ולק","וסעודית. סיוע, שיקום ושירותים לנכי בריאות הנפש. סיוע לניצולי שואה. סיוע לחולי סרטן. הפעלת מגוון שרותים לאוכלוסיית הגמלאים והקשישים ודאגה לזכויותיהם. סיוע, ייעוץ, טיפול ושיקום לבעלי צרכים מיוחדים בכל סוגי הנכויות לרבות נכויות חושיות כגון לקויות שמיעה, לקויות דיבור ולקויות ראיה. הפעלת מסגרות חינוכיות וטיפוליות. הפעלת שירותי רווחה. סיוע לנפגעי טרור להקים קרן גמילות חסדים. לעזור לחולים נזקקים בריפוי ועזרה רפואית",

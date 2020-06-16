@@ -10,7 +10,7 @@ import Footer from './Footer.js';
 import ImageGallery from 'react-image-gallery';
 import "react-image-gallery/styles/css/image-gallery.css";
 
-import {Grid, Segment} from 'semantic-ui-react';
+import {Grid, Icon, Segment} from 'semantic-ui-react';
 
 const s3Util = require('../utilities/upload').methods;
 
@@ -58,12 +58,14 @@ class Prizes extends React.Component{
                     <Grid.Row textAlign='center'>
                     <Grid.Column style={{ paddingBottom: '5em', paddingTop: '5em' }}>
                         <div as='h3' style={{ fontSize: '2em' }}>
+                        <Icon size='big' name='gift' />
                         "Best Prize Ever!"
                         </div>
-                        <p style={{ fontSize: '1.33em' }}>didn't even know i was entered into the raffle</p>
+                        <p style={{ fontSize: '1.33em' }}>"didn't even know I was entered into the raffle!"</p>
                     </Grid.Column>
                     <Grid.Column style={{ paddingBottom: '5em', paddingTop: '5em' }}>
                         <div as='h3' style={{ fontSize: '2em' }}>
+                        <Icon size='big' name='users' />
                         "I got all my friends involved!"
                         </div>
                         <p style={{ fontSize: '1.33em' }}>

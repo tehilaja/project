@@ -309,7 +309,10 @@ class Body extends React.Component
 					horizontal
 					style={{ margin: '3em 0em', textTransform: 'uppercase' }}
 					>
-					<a href='#'>Create a Platform</a>
+					<a href='#'>
+					<Icon size='big' name='globe' />
+						Create a Platform
+					</a>
 					</Divider>
 					<Header as='h3' style={{ fontSize: '2em' }}>
 					<Icon size="huge" name='edit outline' />
