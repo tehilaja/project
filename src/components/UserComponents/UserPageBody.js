@@ -42,15 +42,12 @@ class UserPage extends React.Component {
         {
             loggedIn: this.props.data.loggedIn,
             userName: this.props.data.userName,
-            //userName: 'Tehila Jacobs', 
-            //get the list of organization for thde specific user
             clickOrg: false,
             isFetchingData: false,
             data: null,
             orgsTrees: undefined,
             orgToDisplay: undefined,
             treeDownline: undefined,
-            // id: "3"
         }
         this.state.organizations = [];
         this.state.orgsTrees = this.getOrgsTrees();
@@ -157,7 +154,7 @@ class UserPage extends React.Component {
                     </Header>
                                 {orgComponents}
                                 <p style={{ fontSize: '1.33em' }}>
-                                    Show list of people I brought to this specific organiztion:
+                                    My downline for {this.state.name}:
                     </p>
                             </Grid.Column>
                             {/* <Grid.Column floated='right' width={6}>
@@ -195,7 +192,6 @@ class UserPage extends React.Component {
                                     "So glad to be a part of this wonderful Organization."
                     </Header>
                                 <p style={{ fontSize: '1.33em' }}>
-                                    <Image avatar src='/images/avatar/large/nan.jpg' />
                                     <b>Wow</b> Just incredible
                     </p>
                             </Grid.Column>

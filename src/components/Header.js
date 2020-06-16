@@ -15,6 +15,7 @@ import {
   Header,
   Icon,
   Image,
+  Label,
   List,
   Menu,
   Responsive,
@@ -57,7 +58,7 @@ const style = {
 			  alert("user logged out");
 		  }
 		  else{
-			alert("failed logging out")
+			  alert("failed logging out")
 		  }
 		  window.location.assign('/');
 		})();
@@ -89,6 +90,15 @@ const HomepageHeading = ({ mobile }) => (
 			marginTop: mobile ? '1.5em' : '3em',
 		}}
 	/>
+	 <Container compact style={style.last}>
+	<Step.Group fluid>
+	<Step icon='user'/>
+	<Step icon='money bill alternate outline' />
+	<Step icon='users'/>
+	<Step icon='building'/>
+	<Step active icon='gift'/>
+	</Step.Group>
+	</Container>
 	<Header
 		as='h2'
 		content='Multilevel crowd fundraising platform.'
@@ -99,19 +109,59 @@ const HomepageHeading = ({ mobile }) => (
 			marginTop: mobile ? '0.5em' : '1.5em',
 		}}
 	/>
+	<br />
 	{/*responsive steps:*/}
-	<Container style={style.last}>
+	{/* <Container compact style={style.last}>
 	<Step.Group fluid>
 	<Step icon='user' title='Sign Up' description='Become a magdilim member' />
+	<Label color='red' floating>
+        2
+      </Label>
 	<Step icon='dollar' title='Donate' description='Choose and donate to organization' />
+	</Step.Group>
+	<br />
+	<Step.Group fluid>
+	<Label color='red' floating>
+        3
+      </Label>
+	<Step icon='users' title='Grow' description='Reffer others to an organization' />
+	<Label color='red' floating>
+        4
+      </Label>
 	<Step
 		active
 		icon='gift'
 		title='Win a prize'
-		description='Join the raffles'
+		description='You will be entered into raffles'
 	/>
 	</Step.Group>
-	</Container>
+	</Container> */}
+	<Menu compact>
+    <Menu.Item as='a'>
+      <Icon name='user' /> Sign Up
+      <Label basic color='red' pointing='below' floating>
+        1
+      </Label>
+    </Menu.Item>
+	<Menu.Item as='a'>
+      <Icon name='dollar' /> Donate
+      <Label basic color='red' pointing='below' floating>
+        2
+      </Label>
+    </Menu.Item>
+	<Menu.Item as='a'>
+      <Icon name='users' /> Reffer others
+      <Label basic color='red' pointing='below' floating>
+        3
+      </Label>
+    </Menu.Item>
+    <Menu.Item as='a' active>
+      <Icon name='gift' /> win a prize!
+      <Label basic color='red' pointing='below' floating>
+        4
+      </Label>
+    </Menu.Item>
+  </Menu>
 </Container>
 )
 

@@ -312,6 +312,7 @@ class Body extends React.Component
 					<a href='#'>Create a Platform</a>
 					</Divider>
 					<Header as='h3' style={{ fontSize: '2em' }}>
+					<Icon size="huge" name='edit outline' />
 					Create an account!
 					</Header>
 					<p style={{ fontSize: '1.33em' }}>
@@ -325,6 +326,7 @@ class Body extends React.Component
 					</Button>
 
 					<Header as='h3' style={{ fontSize: '2em' }}>
+					<Icon size="huge" name='handshake outline' />
 					Tell Us About Yourself!				
 					</Header>
 					<p style={{ fontSize: '1.33em' }}>
