@@ -555,7 +555,11 @@ INNER JOIN gifts g
 
 
 // @ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+//the function bellow checks if the user is the program Admin to enable special routing
+//------------is program admin--------------
+app.get('/:userId/is-program-admin', function(req, res, next) {
+  res.send(req.params.userId === 'tehilaj97@gmail.com');
+});
 
 /// -- userProfile 
 app.get('/userProfile ', function(req, res, next) {

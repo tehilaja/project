@@ -90,6 +90,7 @@ const HomepageHeading = ({ mobile }) => (
 			marginTop: mobile ? '1.5em' : '3em',
 		}}
 	/>
+	{/* <Image bordered rounded size='large' src='https://magdilim-organization-images.s3.amazonaws.com/MagdilimLogo.jpg' /> */}
 	<Step.Group fluid>
 	<Step icon='user'/>
 	<Step icon='money bill alternate outline' />
