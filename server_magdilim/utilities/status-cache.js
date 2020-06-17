@@ -254,6 +254,7 @@ const getOrgTreeForUser = (userId, orgId) => usersToOrganizationTrees[userId][or
 // returns a dict mapping org id to the user's node of that org tree
 const getOrgsForUser = (userId) => usersToOrganizationTrees[userId];
 
+// maps the levels and returns the first level that equales the level num we got. if level doesn't exsist the level will be none
 const getOrgLevel = (org_id, level_num) => orgToLevels[org_id].find(x => level_num === x.level_num) || {level_name: 'none', level_num: level_num};
 
 

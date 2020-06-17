@@ -728,6 +728,7 @@ app.get('/userOrgTrees/:user_id', function (req, res, next) {
   const orgIds = Object.keys(trees);
   let index = 0;
 
+  //after recieving all the orgs from the cache - recieving their info from the db:
   orgIds.forEach(orgId => {
     const level = statusCache.getOrgLevel(orgId, trees[orgId].key.level);
     trees[orgId].level = level;
@@ -737,8 +738,9 @@ app.get('/userOrgTrees/:user_id', function (req, res, next) {
       trees[orgId].org_name = results[0].org_name;
       trees[orgId].img_url = results[0].img_url;
       
-      index++;
-
+      //checking how many organzaionts info was returned. the request will return only once all organizations data was retrieved
+      index++; 
+      
       if (index == orgIds.length) {
         res.send(trees);
       }

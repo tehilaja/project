@@ -85,7 +85,8 @@ class UserPage extends React.Component {
 
             Object.keys(this.state.orgsTrees).forEach(orgId => {
                 document.addEventListener(`userOrg${orgId}CardClicked`, () => {
-                    this.setState({ treeDownline: this.getMyDownLine(orgId) });
+                    this.setState({ treeDownline: this.getMyDownLine(orgId),
+                    orgId: orgId });
                 });
             });
         })();
@@ -154,7 +155,7 @@ class UserPage extends React.Component {
                     </Header>
                                 {orgComponents}
                                 <p style={{ fontSize: '1.33em' }}>
-                                    My downline for {this.state.name}:
+                                    { this.state.treeDownline &&`My downline for ${this.state.orgsTrees[this.state.orgId].org_name}:`}
                     </p>
                             </Grid.Column>
                             {/* <Grid.Column floated='right' width={6}>

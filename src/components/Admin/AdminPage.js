@@ -22,7 +22,7 @@ class AdminPage extends React.Component {
             primary
             size='small'
           >
-            <Icon name='user' /> View Admins
+            <Icon name='user' /> Approve Organizations
           </Button>
           <Button
             icon
@@ -30,7 +30,7 @@ class AdminPage extends React.Component {
             primary
             size='small'
           >
-            <Icon name='user' /> View Admins
+            <Icon name='user' /> Monthly Payments
           </Button>
           <Button
             icon
@@ -38,7 +38,7 @@ class AdminPage extends React.Component {
             primary
             size='small'
           >
-            <Icon name='user' /> View Admins
+            <Icon name='user' /> One Time Payments
           </Button>
           {this.state.showAproveOrgs && <ApproveOrgs />}
           {this.state.showPayOrgsMonthly && <PayOrgs />}

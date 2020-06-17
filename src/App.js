@@ -11,6 +11,7 @@ import OrgPage from './components/OrgComponents/OrgPage.js';
 import OrgBody from './components/OrgComponents/OrgBody.js';
 import UserPage from './components/UserComponents/UserPage.js'
 import NewOrgPage from './components/NewOrgComponents/NewOrgPage.js'
+import EditOrgPage from './components/NewOrgComponents/EditOrgPage.js'
 import OrgSearch from './components/OrgComponents/OrgSearch.js'
 import Prizes from './components/Prizes.js'
 import AdminPage from './components/Admin/AdminPage.js'
@@ -138,6 +139,8 @@ class App extends React.Component {
                         return this.guardRoute('program_admin', (<AdminPage data={this.state} />), '/');
                 case "/neworgpage":
                     return (<NewOrgPage data={this.state} />);
+                case "/editorgpage":
+                    return (<EditOrgPage data={this.state} />);
                 case "/orgsearch":
                     return (<OrgSearch data={this.state} />);
                 case "/prizes":
