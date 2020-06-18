@@ -41,6 +41,7 @@ class EditOrgPage extends React.Component{
             orgId: this.props.orgId,
 			routeMain: false,
             showAddPrize: false,
+            orgId: this.props.data.id,
         }
         this.org = this.fetchOrgData(this.state.orgId)
         this.handleSubmit = this.handleSubmit.bind(this)

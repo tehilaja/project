@@ -1,15 +1,15 @@
 import React from 'react';
-import axios from "axios";
 import ReactDOM from 'react-dom';
 import { Redirect } from "react-router-dom";
 
 import UserAvatar from 'react-avatar';
 
-import Tree from 'react-vertical-tree'
+import Tree from 'react-vertical-tree';
 
 import UserOrgCard from './UserOrgCard.js'
 import { Carousel } from 'react-responsive-carousel';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
+import axios from "axios";
 
 import {
     Button,
@@ -44,10 +44,14 @@ class UserPage extends React.Component {
             userName: this.props.data.userName,
             clickOrg: false,
             data: null,
+            getOrgDownline: false,
+            adminOfOrgs: undefined,
             orgsTrees: undefined,
             orgToDisplay: undefined,
             treeDownline: undefined,
         }
+        this.getAdminOfOrgs();
+        this.state.organizations = this.getUserOrganizations();
         this.state.organizations = [];
         this.state.orgsTrees = this.getOrgsTrees();
         this.handleClick = this.handleClick.bind(this);
@@ -87,8 +91,32 @@ class UserPage extends React.Component {
             });
         })();
     }
+
+    getAdminOfOrgs() {
+        (async () => {
+            const response = await axios.get(
+                `/${this.state.userName}/org-admin-of`
+            );
+
+            this.setState({ adminOfOrgs: response.data });
+        })();
+    }
+
+    //TODO: return list of organizations based on current user
+    getUserOrganizations() {
+        return ([{
+            key: '1',
+            imgUrl: 'https://cdn.shopify.com/s/files/1/0143/4478/1878/articles/lotus_flower_symbol_1200x1200.jpg?v=1553953163',
+            name: 'org name',
+            id: "1",
+            myMonthlyDonation: "1",
+            myStatus: "1"
+        }])
+    }
+
+
     //TODO: return list of downline for user, in specific organization that was clicked. chose max height
-    getMyDownLine(orgId) {
+     getMyDownLine(orgId) {
         const orgTree = this.state.orgsTrees && this.state.orgsTrees[orgId];
         console.log('organization 1:\n' + JSON.stringify(orgTree));
         return ([orgTree]);
@@ -151,7 +179,7 @@ class UserPage extends React.Component {
                     </Header>
                                 {orgComponents}
                                 <p style={{ fontSize: '1.33em' }}>
-                                    { this.state.treeDownline &&`My downline for ${this.state.orgsTrees[this.state.orgId].org_name}:`}
+                                { this.state.treeDownline &&`My downline for ${this.state.orgsTrees[this.state.orgId].org_name}:`}
                     </p>
                             </Grid.Column>
                             {/* <Grid.Column floated='right' width={6}>
@@ -167,12 +195,16 @@ class UserPage extends React.Component {
                         </Grid.Row>
                         <Grid.Row>
                             <Grid.Column textAlign='center'>
-                                {
+                            {
                                     this.state.treeDownline && <Tree data={this.state.treeDownline} /> || <div></div>
-                                }
+                            }
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
+
+
+                    {this.adminButtons()}
+
                 </Segment>
 
                 <Segment style={{ padding: '0em' }} vertical>
@@ -233,6 +265,18 @@ class UserPage extends React.Component {
                 </Segment>
             </div>
         )
+    }
+
+
+    adminButtons() {
+        if (!this.state.adminOfOrgs) {
+            return null;
+        }
+
+        const onClickFunc = (org) => window.location.assign(`EditOrgPage/${org.org_id}`);
+
+        return this.state.adminOfOrgs
+            .map(org => <Button onClick={() => onClickFunc(org)}>edit {org.org_name} page</Button>);
     }
 
 }

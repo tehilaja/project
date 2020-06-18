@@ -38,9 +38,30 @@ class App extends React.Component {
         await (async () => {
             const response = await axios.get(`${this.state.email}/is-program-admin`);
             this.setState({ program_admin: response.data });
-            const event = new Event('got_is_program_admin');
-            document.dispatchEvent(event);
         })();
+    }
+
+    async get_is_org_admin(orgId) {
+        await (async () => {
+            const url = `${this.state.email}/is-org-admin/${orgId}`;
+            alert(url);
+            const response = await axios.get(url);
+            this.setState({ org_admin: response.data });
+        })();
+    }
+
+    async run_necessary_guard_checks() {
+        const path = window.location.pathname.split('/');
+        switch (path[1].toLowerCase()) {
+            case 'editorgpage':
+                await this.get_is_org_admin(path[2]);
+                break;
+            case 'neworgpage':
+                await this.get_is_program_admin();
+                break;
+            default:
+                break;
+        }
     }
 
     async get_user_params() {
@@ -57,6 +78,7 @@ class App extends React.Component {
                     userName: "",
                     check_login_status: true,
                     program_admin: false,
+                    org_admin: false,
                 })
             }
             if (Array.isArray(params) && params.length) {
@@ -76,13 +98,15 @@ class App extends React.Component {
                     check_login_status: true,
                 });
 
-                await this.get_is_program_admin();
+                //await this.get_is_program_admin();
+                await this.run_necessary_guard_checks();
             } else {
                 this.setState({
                     loggedIn: false,
                     userName: "",
                     check_login_status: true,
                     program_admin: false,
+                    org_admin: false,
                 })
             }
         })();
@@ -136,11 +160,11 @@ class App extends React.Component {
                     }
                 //The following case to get to Admin page will be guarded:
                 case "/adminpage":
-                        return this.guardRoute('program_admin', (<AdminPage data={this.state} />), '/');
+                    return this.guardRoute('program_admin', (<AdminPage data={this.state} />), '/');
                 case "/neworgpage":
-                    return (<NewOrgPage data={this.state} />);
-                case "/editorgpage":
-                    return (<EditOrgPage data={this.state} orgId={1} />);
+                    return this.guardRoute('program_admin', (<NewOrgPage data={this.state} />), '/');
+                case `/editorgpage/${spliting[2]}`:
+                    return this.guardRoute('org_admin', (<EditOrgPage data={this.state} id={spliting[2]} />), '/');
                 case "/orgsearch":
                     return (<OrgSearch data={this.state} />);
                 case "/prizes":
