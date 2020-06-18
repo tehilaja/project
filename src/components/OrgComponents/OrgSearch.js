@@ -12,7 +12,7 @@ import Footer from '../Footer.js';
 import ImageGallery from 'react-image-gallery';
 import "react-image-gallery/styles/css/image-gallery.css";
 
-import {Grid, Segment} from 'semantic-ui-react';
+import {Grid, Icon, Segment} from 'semantic-ui-react';
 
 const s3Util = require('../../utilities/upload').methods;
 
@@ -63,16 +63,18 @@ class OrgSearch extends React.Component{
                     <Grid.Row textAlign='center'>
                     <Grid.Column style={{ paddingBottom: '5em', paddingTop: '5em' }}>
                         <div as='h3' style={{ fontSize: '2em' }}>
+                        <Icon size='big' name='globe' />
                         "Thanks Magdilim"
                         </div>
                         <p style={{ fontSize: '1.33em' }}>for enabling us to create an ongoing platform</p>
                     </Grid.Column>
                     <Grid.Column style={{ paddingBottom: '5em', paddingTop: '5em' }}>
                         <div as='h3' style={{ fontSize: '2em' }}>
+                        <Icon size='big' name='building' />
                         "This campaign will be different!"
                         </div>
                         <p style={{ fontSize: '1.33em' }}>
-                        This time our efforts will build something that will <b>last forever</b>
+                        This time, our efforts will build something that will <b>last forever</b>
                         </p>
                     </Grid.Column>
                     </Grid.Row>

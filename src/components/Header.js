@@ -15,6 +15,7 @@ import {
   Header,
   Icon,
   Image,
+  Label,
   List,
   Menu,
   Responsive,
@@ -57,7 +58,7 @@ const style = {
 			  alert("user logged out");
 		  }
 		  else{
-			alert("failed logging out")
+			  alert("failed logging out")
 		  }
 		  window.location.assign('/');
 		})();
@@ -89,6 +90,14 @@ const HomepageHeading = ({ mobile }) => (
 			marginTop: mobile ? '1.5em' : '3em',
 		}}
 	/>
+	{/* <Image bordered rounded size='large' src='https://magdilim-organization-images.s3.amazonaws.com/MagdilimLogo.jpg' /> */}
+	<Step.Group fluid>
+	<Step icon='user'/>
+	<Step icon='money bill alternate outline' />
+	<Step icon='users'/>
+	<Step icon='building'/>
+	<Step active icon='gift'/>
+	</Step.Group>
 	<Header
 		as='h2'
 		content='Multilevel crowd fundraising platform.'
@@ -99,19 +108,32 @@ const HomepageHeading = ({ mobile }) => (
 			marginTop: mobile ? '0.5em' : '1.5em',
 		}}
 	/>
-	{/*responsive steps:*/}
-	<Container style={style.last}>
-	<Step.Group fluid>
-	<Step icon='user' title='Sign Up' description='Become a magdilim member' />
-	<Step icon='dollar' title='Donate' description='Choose and donate to organization' />
-	<Step
-		active
-		icon='gift'
-		title='Win a prize'
-		description='Join the raffles'
-	/>
-	</Step.Group>
-	</Container>
+	<Menu compact>
+    <Menu.Item as='a'>
+      <Icon name='user' /> Sign Up
+      <Label basic color='red' pointing='below' floating>
+        1
+      </Label>
+    </Menu.Item>
+	<Menu.Item as='a'>
+      <Icon name='dollar' /> Donate
+      <Label basic color='red' pointing='below' floating>
+        2
+      </Label>
+    </Menu.Item>
+	<Menu.Item as='a'>
+      <Icon name='users' /> Reffer others
+      <Label basic color='red' pointing='below' floating>
+        3
+      </Label>
+    </Menu.Item>
+    <Menu.Item as='a' active>
+      <Icon name='gift' /> win a prize!
+      <Label basic color='red' pointing='below' floating>
+        4
+      </Label>
+    </Menu.Item>
+  </Menu>
 </Container>
 )
 
@@ -239,7 +261,6 @@ render() {
 				  Sign Up
 				</Button>
 				</div>}
-				{this.state.showBackButton && <button name = "btnBack" onClick={() => this.setState({showLogin: false, showUser: false, showBackButton: false})}>close</button>}
 				{this.state.loggedIn && <Button as='a' inverted={!fixed} onClick={logOutFunc}>
 				  Log out
 				</Button>}
