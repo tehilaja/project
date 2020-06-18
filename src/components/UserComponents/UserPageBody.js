@@ -51,7 +51,6 @@ class UserPage extends React.Component {
             treeDownline: undefined,
         }
         this.getAdminOfOrgs();
-        this.state.organizations = this.getUserOrganizations();
         this.state.organizations = [];
         this.state.orgsTrees = this.getOrgsTrees();
         this.handleClick = this.handleClick.bind(this);
@@ -100,18 +99,6 @@ class UserPage extends React.Component {
 
             this.setState({ adminOfOrgs: response.data });
         })();
-    }
-
-    //TODO: return list of organizations based on current user
-    getUserOrganizations() {
-        return ([{
-            key: '1',
-            imgUrl: 'https://cdn.shopify.com/s/files/1/0143/4478/1878/articles/lotus_flower_symbol_1200x1200.jpg?v=1553953163',
-            name: 'org name',
-            id: "1",
-            myMonthlyDonation: "1",
-            myStatus: "1"
-        }])
     }
 
 
@@ -276,7 +263,9 @@ class UserPage extends React.Component {
         const onClickFunc = (org) => window.location.assign(`EditOrgPage/${org.org_id}`);
 
         return this.state.adminOfOrgs
-            .map(org => <Button onClick={() => onClickFunc(org)}>edit {org.org_name} page</Button>);
+            .map(org => <Button onClick={() => onClickFunc(org)}>
+                 <Icon name='edit' />
+                edit {org.org_name} page</Button>);
     }
 
 }
