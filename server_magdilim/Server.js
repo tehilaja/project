@@ -753,18 +753,6 @@ app.get('/userOrgTrees/:user_id', function (req, res, next) {
 //----------fetch organization data from data base-----------
 app.post('/fetch_org_data',(req, res)=>{
   console.log("fetch_org_data");
-
-  // let {query} = await stripe.charges.create({
-  //   amount: 2000,
-  //   currency: "usd",
-  //   description: "An example charge",
-  //   source: req.body
-  // });
-
-  // res.json({status});
-
-
-
   let query = `SELECT * FROM Organizations`
   db.query(query,(err,result,fields)=>{
     if(!err){

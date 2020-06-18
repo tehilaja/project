@@ -38,20 +38,36 @@ class EditOrgPage extends React.Component{
 		this.state = {
             loggedIn: this.props.data.loggedIn,
             userName: this.props.data.userName,
+            orgId: this.props.orgId,
 			routeMain: false,
-            showAddPrize: false
-		}
+            showAddPrize: false,
+        }
+        this.org = this.fetchOrgData(this.state.orgId)
         this.handleSubmit = this.handleSubmit.bind(this)
         this.handleChange = this.handleChange.bind(this)
 
 	}
 	
 	//TODO: get the information (orgId for the correct organization to Edit)
-	// }
+	fetchOrgData(){
+        return({orgName: "OrgName",
+                adminName: "adminName",
+                field: "fieldOfActivity",
+                description: "orgDescription",
+                orgPhone:"!!!!!!!!!!!!!orgPhone",
+                orgEmail: 'orgEmail',
+                country: 'country',
+                city: "city",
+                street:'street',
+                building:'building',
+                pc:'postal code',
+                minDonation: 'minDonation'
+                })
+    }
 
     handleSubmit = (e) => {
 
-    alert("Enter updated details to DB")
+    alert("TODO: Enter updated details to DB")
     e.preventDefault();
     }
 
@@ -71,7 +87,6 @@ class EditOrgPage extends React.Component{
 				<Grid container stackable verticalAlign='middle'>
 				<Grid.Row>
 					<Grid.Column width={8}>
-                        {/* TODO: Form to edit the OrgPage: the placeHolders should be what was already saved for the organization in the DB */}
                         {/* ************************************************* */}
                         <div>
                 <Segment style={{ padding: '8em 0em' }} vertical>
@@ -111,7 +126,7 @@ class EditOrgPage extends React.Component{
                                 <Form.Input
                                     label='name of organization:'
                                     iconPosition='left'
-                                    placeholder='Organization name'
+                                    placeholder={this.org.orgName}
                                     name="orgName"
                                     onChange={this.handleChange.bind(this)}
                                 />
@@ -123,7 +138,7 @@ class EditOrgPage extends React.Component{
                                     label='name of Admin:'
                                     icon='user'
                                     iconPosition='left'
-                                    placeholder='Admin name'
+                                    placeholder={this.org.adminName}
                                     name="admin_name"
                                     onChange={this.handleChange.bind(this)}
                                 />
@@ -133,14 +148,14 @@ class EditOrgPage extends React.Component{
                                 <Form.TextArea
                                     rows={2}
                                     label='Field of Activity:'
-                                    placeholder='field of activity...'
+                                    placeholder={this.org.field}
                                     name='field_of_activity'
                                     onChange={this.handleChange.bind(this)} />
                             </Form.Field>
                             <Form.Field>
                                 <Form.TextArea
                                     label='Description:'
-                                    placeholder='Tell us more about your organization...'
+                                    placeholder={this.org.description}
                                     name='description'
                                     onChange={this.handleChange.bind(this)} />
                             </Form.Field>
@@ -160,7 +175,7 @@ class EditOrgPage extends React.Component{
                                 label='Phone number:'
                                 icon='phone'
                                 iconPosition='left'
-                                placeholder='Phone number'
+                                placeholder={this.org.orgPhone}
                                 name="phone"
                                 onChange={this.handleChange.bind(this)}
                             />
@@ -168,7 +183,7 @@ class EditOrgPage extends React.Component{
                                 label='email:'
                                 icon='envelope'
                                 iconPosition='left'
-                                placeholder='email'
+                                placeholder={this.org.orgEmail}
                                 name="email"
                                 onChange={this.handleChange.bind(this)}
                             />
@@ -185,31 +200,31 @@ class EditOrgPage extends React.Component{
                             </Divider>
                             <Form.Input
                                 label='country:'
-                                placeholder='country'
+                                placeholder={this.org.country}
                                 name="country"
                                 onChange={this.handleChange.bind(this)}
                             />
                             <Form.Input
                                 label='city:'
-                                placeholder='city'
+                                placeholder={this.org.city}
                                 name="city"
                                 onChange={this.handleChange.bind(this)}
                             />
                             <Form.Input
                                 label='street:'
-                                placeholder='street'
+                                placeholder={this.org.street}
                                 name="street"
                                 onChange={this.handleChange.bind(this)}
                             />  
                             <Form.Input
                                 label='Building:'
-                                placeholder='Building'
-                                name="building"//////////////
+                                placeholder={this.org.building}
+                                name="building"
                                 onChange={this.handleChange.bind(this)}
                             />                        
                             <Form.Input
                                 label='postal code:'
-                                placeholder='postal code'
+                                placeholder={this.org.pc}
                                 name="p_code"
                                 onChange={this.handleChange.bind(this)}
                             />
@@ -255,7 +270,7 @@ class EditOrgPage extends React.Component{
                                 {/* // TODO: checke why failed */}
 
                            
-                                <Input labelPosition='right' type='text' placeholder='Amount'
+                                <Input labelPosition='right' type='text' placeholder={this.org.minDoantion}
                                     name="minDonation"
                                     // defaultValue={this.state.minDonation}
                                     value={this.state.minDonation}
@@ -320,6 +335,7 @@ class EditOrgPage extends React.Component{
 									return {
 											showAddPrize: !prevState.showAddPrize
 										}})}>
+                                    <Icon name='edit' />
 									Add Prizes
 									<Icon name='right arrow' />
 								</Button>

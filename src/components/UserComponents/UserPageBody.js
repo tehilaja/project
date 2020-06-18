@@ -43,7 +43,6 @@ class UserPage extends React.Component {
             loggedIn: this.props.data.loggedIn,
             userName: this.props.data.userName,
             clickOrg: false,
-            isFetchingData: false,
             data: null,
             orgsTrees: undefined,
             orgToDisplay: undefined,
@@ -52,9 +51,6 @@ class UserPage extends React.Component {
         this.state.organizations = [];
         this.state.orgsTrees = this.getOrgsTrees();
         this.handleClick = this.handleClick.bind(this);
-
-        // alert("user page body: " + JSON.stringify(this.state))
-        // this.fetch_org_data = this.fetch_org_data.bind(this)
     }
 
     getOrgsTrees() {

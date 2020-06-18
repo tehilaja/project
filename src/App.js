@@ -140,7 +140,7 @@ class App extends React.Component {
                 case "/neworgpage":
                     return (<NewOrgPage data={this.state} />);
                 case "/editorgpage":
-                    return (<EditOrgPage data={this.state} />);
+                    return (<EditOrgPage data={this.state} orgId={1} />);
                 case "/orgsearch":
                     return (<OrgSearch data={this.state} />);
                 case "/prizes":
