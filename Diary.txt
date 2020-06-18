@@ -275,10 +275,12 @@ going over db tables and making changes
 coming up with plan for updating status of users - tree vs updating db
 
 26/05/2020
-
-updating the Diary
 looking through different options:
 ******************
+How to deal with storing the data, and updating the level - to many times to access the db
+building a tree - doing that each time wouldn't be very efficient - building a tree every time there is a request
+ 
+solution:
 using a cache: - the tree is already ready - no need to create these calls every time - saving reads
 for safety - we will update cash every 24 hours
 
@@ -299,3 +301,27 @@ writing code for functionality of cache
 building dictionaries
 writing recursive functionality to get users level in organization etc
 
+14/6/2020
+in user page, displaying the levels and the number of people in downline
+when the organization was clicked - displaying the downline of the user in that organization
+gets the reference to the user node in the tree of that organization that is in the cache
+needed to change the structure of the chache to enable just sending the reference and displaying it quickly
+
+15/6/2020
+changing the structure of the cache so that it can be displayed on the user page just by sending the reference
+
+16/6/2020
+building Admin pages for the admin of the program to be able to accept a new organization
+building pages to store which organizations have to be paid
+
+17/6/2020
+building pages for Admin of organization to edit his organization page
+adding functionality to have buttons on the userpage that allow him to 
+edit the organizations that he is admin of
+
+18/6/2020
+guarding Admin pages
+guarding pages to edit org pages
+guarding userPage should only be desplayed when user is logged in 
+edge cases for registeration
+looking into different options for deployment
