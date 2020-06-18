@@ -55,6 +55,7 @@ class UserRegistrationService {
                 console.log("UserRegistrationService: registered user is " + result);
                 // callback.cognitoCallback(null, result);
             }
+            callback(err && err.message, result);
         });
 
     }
@@ -69,10 +70,12 @@ class UserRegistrationService {
         let cognitoUser = new CognitoUser(userData);
 
         cognitoUser.confirmRegistration(confirmationCode, true, function (err, result) {
-            if (err) {console.log("error confirming: "+JSON.stringify(err))
-                // callback.cognitoCallback(err.message, null);
-            } else {console.log("success confirming: "+JSON.stringify(result))
-                // callback.cognitoCallback(null, result);
+            if (err) {
+                console.log("error confirming: "+JSON.stringify(err))
+                callback(err.message, null);
+            } else {
+                console.log("success confirming: "+JSON.stringify(result))
+                callback(null, result);
             }
         });
     }

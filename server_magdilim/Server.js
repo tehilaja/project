@@ -563,27 +563,21 @@ app.get('/userProfile ', function (req, res, next) {
 
 //-~~~~~~~~~~~~~~~~~~ code ~~~~~~~~~~~~~~~~~~
 
-//-----add user ------
-app.post('/add_user', function (req, res) {
+app.post('/add_user', function(req,res){
   console.log("start signup....");
   try {
-    const response = userRestirationService.register(req.body.user);
-    // res.send(response);
-    res.send("success");
+    const response = userRestirationService.register(req.body.user, (err, result) => {
+      if (err) {
+        console.log('register error: ' + err);
+        res.send(err);
+      } else {
+        res.send("registered");
+      }
+    });
   } catch (error) {
-    console.log("error: " + JSON.stringify(error));
-  }
-
-  // // * change
-  // let sql1 = `INSERT INTO Users ( user_name, first_name, last_name, pswd, email, credit_info_id, is_admin) VALUES ("${req.body.user_name}", "${req.body.first_name}", "${req.body.last_name}" ,"${req.body.pswd}", "${req.body.email}", 1, ${req.body.is_admin});`
-  // console.log("quert is",sql1,"\n");
-  // db.query(sql1)
-  // console.log("in add_user")
-  // res.send("added succesfully!") //response
-
-  // // TODO : login for this user     
-  //
-});
+    console.log("error: "+JSON.stringify(error));  
+    res.send('Unknown error registering user. Please try again later.');
+  }});
 
 
 // @ check server connection
@@ -601,13 +595,19 @@ app.post('/add_user', function (req, res) {
 
 
 //-----confirm registerd user ------
-app.post('/confirm_registerd_user', function (req, res) {
+app.post('/confirm_registerd_user', function(req,res){
   console.log("start confirmation....");
   try {
-    const response = userRestirationService.confirmRegistration(req.body.user_name, req.body.confirmation_code);
-    res.send("confirmed");
+    const response = userRestirationService.confirmRegistration(req.body.user_name, req.body.confirmation_code, (err, result) => {
+      if (err) {
+        res.send(err);
+      } else {
+        res.send("confirmed");
+      }
+    });    
   } catch (error) {
-    console.log("error: " + JSON.stringify(error));
+    console.log("error: "+JSON.stringify(error));
+    res.send('Unknown error confirming user. Please try again later.'); 
   }
 });
 
