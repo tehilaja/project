@@ -3,7 +3,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import {Redirect} from "react-router-dom";
-import { Card, Icon, Image, Segment } from 'semantic-ui-react'
+import { Card, Feed, Icon, Image, Segment } from 'semantic-ui-react'
+
 
 class OrgCard extends React.Component{
     constructor(props){
@@ -57,6 +58,10 @@ class OrgCard extends React.Component{
               <Icon name='gift' />
               last prize winner
             </a>
+            <br />
+            <Feed.Like>
+            <Icon name='like' /> 5 Monthly Doners
+          </Feed.Like>
           </Card.Content>
         </Card>
 

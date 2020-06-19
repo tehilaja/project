@@ -14,7 +14,7 @@ import OrgSpechCard from './OrgSpechCard.js'
 
 // donate
 import Donate from './Donate.js'
-import GiftCard from './GiftCard'
+import giftCard from './giftCard'
 
 import Doners from "./Doners.js"
 
@@ -328,7 +328,7 @@ class OrgBody extends React.Component {
         
         const giftComponents = this.state.giftShow.map(gift =>{
             return(
-                <GiftCard  gifts ={gift}  
+                <giftCard  gifts ={gift}  
                 />)
         })
        

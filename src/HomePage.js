@@ -5,7 +5,7 @@ import axios from "axios";
 import { async } from "q";
 
 
-
+import Feed from './components/Extra/Feed.js'
 
 // import './App.css';
 
@@ -39,6 +39,7 @@ class App extends React.Component
 			<div>
 				<Header data={{loggedIn: this.state.loggedIn, userName: this.state.userName}}/>
 				<Body data={{loggedIn: this.state.loggedIn, userName: this.state.userName}}/>
+				<Feed />
 				<Footer />
 				{/*<button onClick={this.check.bind(this)}>button</button>*/}
 			</div>

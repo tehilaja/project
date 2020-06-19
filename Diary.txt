@@ -325,3 +325,6 @@ guarding pages to edit org pages
 guarding userPage should only be desplayed when user is logged in 
 edge cases for registeration
 looking into different options for deployment
+
+19/6/2020
+adding components for feed
