@@ -15,7 +15,7 @@ class LastDonationCard extends React.Component{
         }
     }
     /*
-     d.user_id, d.org_id, u.user_name ,d.d_title,d.d_description, d.is_anonim,d.d_date, d.referred_by, o.org_pic
+     d.user_id, d.org_id, u.user_name ,d.d_title,d.d_description, d.is_anonim,d.d_date, d.referred_by, o.img_url
     */
 
     spliteDate()
@@ -35,7 +35,7 @@ class LastDonationCard extends React.Component{
                         <Image 
                         floated='right'
                         size='tiny'
-                        src={this.props.ldonation.org_pic}
+                        src={this.props.ldonation.img_url}
                         />
                         <Card.Header>
                             <Icon name = 'user'/>
@@ -46,9 +46,9 @@ class LastDonationCard extends React.Component{
                             {/* {this.props.ldonation.d_date.splite("T")} */}
                             </Card.Meta>
                         <Card.Description>
-                            <strong>{this.props.ldonation.d_description} </strong> 
-                            <br></br>                                
-                            {this.props.ldonation.d_title}
+                            <strong> {this.props.ldonation.d_title}</strong> 
+                            <br></br> 
+                            {this.props.ldonation.d_description}
                         </Card.Description>
                     </Card.Content>
 
@@ -86,7 +86,7 @@ class LastDonationCard extends React.Component{
                 </Card>
                     {/* <Feed>
                         <Feed.Event
-                            image={this.props.ldonation.org_pic}
+                            image={this.props.ldonation.img_url}
                             date={this.props.ldonation.d_data}
                             summary={this.props.ldonation.d_title}
                             extraText={this.props.ldonation.d_description}

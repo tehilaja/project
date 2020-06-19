@@ -10,51 +10,62 @@ import Footer from './Footer.js';
 import ImageGallery from 'react-image-gallery';
 import "react-image-gallery/styles/css/image-gallery.css";
 
-import {Grid, Segment} from 'semantic-ui-react';
+import {Grid, Icon, Segment} from 'semantic-ui-react';
 
-//TODO: get images from S3 that are the fliers of the prizes
-const images = [
-    {
-      original: 'https://i.dansdeals.com/wp-content/uploads/2018/08/29102624/jlem-696x344.jpg',
-      thumbnail:"", //'https://picsum.photos/id/1015/250/150/',
-    },
-    {
-      original: 'https://images-na.ssl-images-amazon.com/images/I/81W89sK72RL._AC_SL1500_.jpg',
-    //   thumbnail: 'https://picsum.photos/id/1019/250/150/',
-    },];
+const s3Util = require('../utilities/upload').methods;
 
-class OrgSearch extends React.Component{
-	constructor(props) {
-		super(props)	
-		this.state = {
-            loggedIn: this.props.data.loggedIn,
-            userName: this.props.data.userName,
-			routeMain: false,
-			check_login_status: false
-		}
-	}
-	
-	// componentWillReceiveProps(nextProps){
-	// 	nextProps= this.props
-	// }
- 
+class Prizes extends React.Component{
+  constructor(props) {
+    super(props)  
+    this.state = {
+            loggedIn: this.props.data.loggedIn,
+            userName: this.props.data.userName,
+      routeMain: false,
+            check_login_status: false,
+            images: [],
+        }
+        
+        this.getImages();
+  }
+  
+  // componentWillReceiveProps(nextProps){
+  //  nextProps= this.props
+  // }
+    getImages() {
+        s3Util.getFilesFromFolder('prizes', (res) => {
+          if (Array.isArray(res)) {
+            const imgs = res.map(url => {
+              const image = {};
+              image.original = url;
+              image.thumbnail = url;
+              return image;
+            });
+    
+            this.setState({images: imgs});
+            
+          }
+        });
+      }
+    
 
-	render() {
-		return(
-			<div>
-                <Header data={{loggedIn: this.state.loggedIn, userName: this.state.userName}}/>
-                <ImageGallery items={images} />
+  render() {
+    return(
+      <div>
+                <Header data={{loggedIn: this.state.loggedIn, userName: this.state.userName}}/>
+                <ImageGallery items={this.state.images} />
                 <Segment>
                 <Grid celled='internally' columns='equal' stackable>
                     <Grid.Row textAlign='center'>
                     <Grid.Column style={{ paddingBottom: '5em', paddingTop: '5em' }}>
                         <div as='h3' style={{ fontSize: '2em' }}>
+                        <Icon size='big' name='gift' />
                         "Best Prize Ever!"
                         </div>
-                        <p style={{ fontSize: '1.33em' }}>didn't even know i was entered into the raffle</p>
+                        <p style={{ fontSize: '1.33em' }}>"didn't even know I was entered into the raffle!"</p>
                     </Grid.Column>
                     <Grid.Column style={{ paddingBottom: '5em', paddingTop: '5em' }}>
                         <div as='h3' style={{ fontSize: '2em' }}>
+                        <Icon size='big' name='users' />
                         "I got all my friends involved!"
                         </div>
                         <p style={{ fontSize: '1.33em' }}>
@@ -64,9 +75,9 @@ class OrgSearch extends React.Component{
                     </Grid.Row>
                 </Grid>
                 </Segment>
-				<Footer />
-			</div>
-		)
-	}	
+        <Footer />
+      </div>
+    )
+  } 
 }
-export default OrgSearch;
+export default Prizes;

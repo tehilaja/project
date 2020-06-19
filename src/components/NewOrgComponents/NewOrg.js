@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Redirect } from "react-router-dom";
 
+import { v1 as uuid } from 'uuid';
 
 
 import axios from "axios";
@@ -12,45 +13,26 @@ import { GoOrganization } from "react-icons/ai";
 ////---------------
 
 
-import {
-    Button,
-    Container,
-    Divider,
-    Form,
-    Grid,
-    Header,
-    Icon,
-    Image,
-    Label,
-    List,
-    Menu,
-    Radio,
-    Responsive,
-    Segment,
-    Sidebar,
-    Step,
-    Visibility,
-} from 'semantic-ui-react'
-
-
+import {Button,Input,Container,Divider,Form,Grid,Header,Icon,Image,Label,List,Menu,Radio,Responsive,Segment,Sidebar,Step,Visibility,} from 'semantic-ui-react'
 const uploadFile = require('../../utilities/upload').methods.uploadFile;
+const emailService = require('../../utilities/email');
 
 class NewOrg extends React.Component {
 
     constructor(props) {
         super(props)
         this.state = {
-            pswd: "",
-            validPswd: false,
             loggedIn: this.props.data.loggedIn,
             userName: this.props.data.userName,
             //////////////////
             orgName: '',
             admin_name: '',
             description: '',
+            field_of_activity: '',
             phone: '',
             email: '',
             //mailing information:
+            country: "",
             city: "",
             building: "",
             street: "",
@@ -64,7 +46,7 @@ class NewOrg extends React.Component {
             // account_num:"",
             // bank_num:"",
             // description:"",
-            // field_of_acctivity:"",
+            // field_of_activity:"",
             // founding_year:"",
             // working:"",
             // volunteers:"",
@@ -72,14 +54,72 @@ class NewOrg extends React.Component {
             file: "",
             file_name: "",
             selectedImage: null,
+            image_url: null,
+
+// org_id org_name admin_name description field_of_activity img_url min_donation approved org_num branch account_num bank_num account_owner, one_time_donation, founding_year working volunteers friends city_name ,country_name, building street p_code 
+
+            // req json
+            newOrg_req: {"org_id": 2, "org_name":'',"min_donation": '',"approved":0,"org_num":'',
+                "branch":'', "account_num":'', "bank_num":'', "account_owner":'', "one_time_donation": 0,  // must field
+                "admin_name": '',"img_url": '',
+                "description": '',"field_of_activity": '',"founding_year":'', "working":'', "volunteers":'', "friends":'', "city_name":'', "building": '', "street":'', "p_code":''},
         }
         this.handleChange = this.handleChange.bind(this)
         this.handlerClick = this.handlerClick.bind(this);
         this.increment = this.increment.bind(this);
         this.decrement = this.decrement.bind(this);
         this.onSelectFile = this.onSelectFile.bind(this);
+        //
+        this.addOrgProcess = this.addOrgProcess.bind(this);
+        this.sendEmail = this.sendEmail.bind(this);
+
+    }
+
+    //the following function is to send an email that a new oragnization is awaiting approval
+    sendEmail() {
+        // TODO: get text to send, get list of mail
+        emailService.sendEmail(
+            //'mordeyj316@gmail.com'
+            ['tehilaj97@gmail.com'],
+            null,
+            null,
+            'A new organization is awaiting your approval',
+            'organization name: '+ this.state.orgName +
+            '\norganizaion description: ' + this.state.description +
+            '\nclick to view org image: '+ this.state.image_url+
+            '\nname of user asking to create platform: ' + this.state.userName,
+            null,
+        )
     }
     
+    
+    // ~~~~~~~ add new org to DB
+    addOrgProcess(){
+
+        // req 
+        // axios.post('/addOrg', this.state.newOrg_req
+        // ).then(res => 
+        // {
+        //     alert("res is: " + res.data)
+
+        // }).catch(error=> {
+        //     alert("error donationProcess" +  error);
+        // })
+    
+
+    // first step
+    axios.post('/addOrg/firstStep', this.state.newOrg_req
+    ).then(res => 
+    {
+        // alert("res is: " + res.data)
+
+    }).catch(error=> {
+        alert("error addOrgProcess" +  error);
+    })
+
+    }
+
+
     //another try:
     fileSelctedHandler = event => {
         this.setState({
@@ -118,10 +158,14 @@ class NewOrg extends React.Component {
     handleSubmit = (e) => {
 
         (async () => {
-            await uploadFile(this.state.selectedImage, fileUrl => alert('file url:' + fileUrl), this.state.orgName);
+            const fileNamePrefix = `${this.state.orgName}_${uuid()}`
+            //TODO: save url to db in callback - save all org information to DB
+            await uploadFile(this.state.selectedImage, fileUrl => alert('file url:' + fileUrl), fileNamePrefix, 'organizations'); 
+            // exp: => (callback, who, folder in s3)
         })();
-
+        this.sendEmail();
         e.preventDefault();
+    }
         /*add new org to dataBase */
         // if (this.state.DuserName != "") // TODO: if find in db (func findDuser)
         // {
@@ -131,37 +175,37 @@ class NewOrg extends React.Component {
         // alert(JSON.stringify(this.state))
 
 
-        (async () => {
-            const response = await axios.post(
-                '/addOrg',
-                {
-                    // org_name,admin_name,description,field_of_acctivity,org_pic,min_donation,org_num,branch,account_num,bank_num,founding_year,working,volunteers,friends,city_id,building,street,p_code)
-                    // TODO : all data
-                    // org_name: this.state.orgName,admin_name:this.state.admin_name,org_pic:this.state.photo, monthly_donation:this.state.minDonation,  // ---- req
-                },
-                { header: { 'Content-Type': 'application/json' } }
-            )
-            console.log("resp", response)
-            if (response.data === "no connection") {
-                alert("you need to login...")
-            }
-            else if (response.data === "added succesfully!") {
-                // this.setState({loggedIn: false})
-                alert("the organization " + this.state.orgName + "added succesfully ")
-                //  }
-                // else if(response.data ==="fail2"){
-                //     alert("the referred by is incorrect")
-                // }
-                // else if(response.data ==="fail1"){
-                //     alert("the level")
-            }
-        })();
-        // }
+    //     (async () => {
+    //         const response = await axios.post(
+    //             '/addOrg',
+    //             {
+    //                 // org_name,admin_name,description,field_of_activity,img_url,min_donation,org_num,branch,account_num,bank_num,founding_year,working,volunteers,friends,city_id,building,street,p_code)
+    //                 // TODO : all data
+    //                 // org_name: this.state.orgName,admin_name:this.state.admin_name,img_url:this.state.photo, monthly_donation:this.state.minDonation,  // ---- req
+    //             },
+    //             { header: { 'Content-Type': 'application/json' } }
+    //         )
+    //         console.log("resp", response)
+    //         if (response.data === "no connection") {
+    //             alert("you need to login...")
+    //         }
+    //         else if (response.data === "added succesfully!") {
+    //             // this.setState({loggedIn: false})
+    //             alert("the organization " + this.state.orgName + "added succesfully ")
+    //             //  }
+    //             // else if(response.data ==="fail2"){
+    //             //     alert("the referred by is incorrect")
+    //             // }
+    //             // else if(response.data ==="fail1"){
+    //             //     alert("the level")
+    //         }
+    //     })();
+    //     // }
 
-        // else
-        //     alert("please enter Referred detiles")
-        this.setState({ flag_done: true });
-    }
+    //     // else
+    //     //     alert("please enter Referred detiles")
+    //     this.setState({ flag_done: true });
+    // }
 
     //function to deal with passing state to parent component:
     handlerClick(flagDone) {
@@ -185,7 +229,7 @@ class NewOrg extends React.Component {
     decrement() {
         if (this.state.minDonation > 1)
             this.setState({ minDonation: this.state.minDonation - 1 })
-    }
+    };
 
 
     render() {
@@ -196,15 +240,16 @@ class NewOrg extends React.Component {
                         <br></br>
                         <Label as='a' color='teal' ribbon left>
                             Get Started!
-                </Label>
+                        </Label>
                         <Header as='h3' style={{ fontSize: '2em' }}>
                             Thank you for using us for your organization!
-                </Header>
+                        </Header>
                         <Segment>
                             <p style={{ fontSize: '1.33em' }}>
                                 We will provide you with the design and software necessary to create an online platform for ongoing donations.
                                 All we left for you to do, is focus on content that will be appealing and attract your ongoing doners.
-                </p>
+                            </p>
+                            <Label>Once you send in the following details, we will be in touch with you about creating your personal platform.</Label>
                         </Segment>
                         <br></br>
                         <br></br>
@@ -216,10 +261,14 @@ class NewOrg extends React.Component {
                                 horizontal
                                 style={{ margin: '3em 0em', textTransform: 'uppercase' }}
                             >
-                                <a href='#'>Enter the Details Bellow:</a>
+                                <a href='#'>
+                                    <Icon size='big' name='edit' />
+                                    Enter the Details Bellow:
+                                </a>
                             </Divider>
                             {/* info about organization */}
                             <h4></h4>
+                            
                             <Form.Field>
                                 <Form.Input
                                     label='name of organization:'
@@ -229,7 +278,7 @@ class NewOrg extends React.Component {
                                     onChange={this.handleChange.bind(this)}
                                 />
                             </Form.Field>
-                            <br /><br />
+                            {/* <br /><br /> */}
                             <Form.Field>
                                 {/* <Form.label>name of Admin:</Form.label> */}
                                 <Form.Input
@@ -241,7 +290,15 @@ class NewOrg extends React.Component {
                                     onChange={this.handleChange.bind(this)}
                                 />
                             </Form.Field>
-                            <br /><br />
+                            {/* <br /><br /> */}
+                            <Form.Field>
+                                <Form.TextArea
+                                    rows={2}
+                                    label='Field of Activity:'
+                                    placeholder='field of activity...'
+                                    name='field_of_activity'
+                                    onChange={this.handleChange.bind(this)} />
+                            </Form.Field>
                             <Form.Field>
                                 <Form.TextArea
                                     label='Description:'
@@ -249,13 +306,17 @@ class NewOrg extends React.Component {
                                     name='description'
                                     onChange={this.handleChange.bind(this)} />
                             </Form.Field>
+                            
                             <Divider
                                 as='h4'
                                 className='header'
                                 horizontal
                                 style={{ margin: '3em 0em', textTransform: 'uppercase' }}
                             >
-                                <a href='#'>Organization Contact Info:</a>
+                                <a href='#'>
+                                    <Icon size='big' name='info circle' />
+                                    Organization Contact Info:
+                                </a>
                             </Divider>
                             <Form.Input
                                 label='Phone number:'
@@ -279,18 +340,15 @@ class NewOrg extends React.Component {
                                 horizontal
                                 style={{ margin: '3em 0em', textTransform: 'uppercase' }}
                             >
-                                <a href='#'>Mailing Address</a>
+                                <a href='#'>
+                                    <Icon size='big' name='map marker alternate' />
+                                    Mailing Address
+                                </a>
                             </Divider>
                             <Form.Input
-                                label='Building:'
-                                placeholder='Building'
-                                name="building"//////////////
-                                onChange={this.handleChange.bind(this)}
-                            />
-                            <Form.Input
-                                label='street:'
-                                placeholder='street'
-                                name="street"
+                                label='country:'
+                                placeholder='country'
+                                name="country"
                                 onChange={this.handleChange.bind(this)}
                             />
                             <Form.Input
@@ -299,6 +357,18 @@ class NewOrg extends React.Component {
                                 name="city"
                                 onChange={this.handleChange.bind(this)}
                             />
+                            <Form.Input
+                                label='street:'
+                                placeholder='street'
+                                name="street"
+                                onChange={this.handleChange.bind(this)}
+                            />  
+                            <Form.Input
+                                label='Building:'
+                                placeholder='Building'
+                                name="building"//////////////
+                                onChange={this.handleChange.bind(this)}
+                            />                        
                             <Form.Input
                                 label='postal code:'
                                 placeholder='postal code'
@@ -311,7 +381,10 @@ class NewOrg extends React.Component {
                                 horizontal
                                 style={{ margin: '3em 0em', textTransform: 'uppercase' }}
                             >
-                                <a href='#'>Upload a Photo:</a>
+                                <a href='#'>
+                                    <Icon size='big' name='image' />
+                                    Upload a Photo:
+                                </a>
                             </Divider>
                             <Segment raised>
                                 {/* <ImageUploader
@@ -333,52 +406,62 @@ class NewOrg extends React.Component {
                                     horizontal
                                     style={{ margin: '3em 0em', textTransform: 'uppercase' }}
                                 >
-                                    <a href='#'>Set minimum monthly doation</a>
+                                <a href='#'>
+                                    <Icon size='big' name='dollar' />
+                                    Set minimum monthly doation
+                                </a>
                                 </Divider>
+                               
+                                {/* <label > $ </label> */}
+                                {/* <Input 
+                                    name="minDonation">{this.state.minDonation}
+                                     
+                                </Input> */}
 
-                                <label > $ </label>
-                                <lable name="minDonation">{this.state.minDonation}  </lable>
                                 <button onClick={this.decrement.bind(this)}>-</button>
                                 <button onClick={this.increment.bind(this)}>+</button>
+                                {/* // TODO: checke why faild */}
+
+                           
+                                <Input labelPosition='right' type='text' placeholder='Amount'
+                                    name="minDonation"
+                                    // defaultValue={this.state.minDonation}
+                                    value={this.state.minDonation}
+                                    onChange={this.handleChange}
+                                >
+                                    <Label basic>$</Label>
+                                    <input />
+                                    <Label>.00</Label>
+                                </Input>
                             </div>
                             <br></br>
                             <br></br>
                             <Radio toggle
                                 label="Allow One-time Donations" />
-                            {/* TODO: work out how payment will be done! */}
-                            {/* <Divider
-                    as='h4'
-                    className='header'
-                    horizontal
-                    style={{ margin: '3em 0em', textTransform: 'uppercase' }}
-                    >
-                    <a href='#'>Bank Info:</a>
-                    </Divider>
-                    <lable className= "newOrgLable"> org_num: </lable>
-                    <input type="text" name="org_num" onChange={this.handleChange.bind(this)}/>
-                    <br/>
-                    <lable className= "newOrgLable"> num of branch: </lable>
-                    <input type="text" name="branch" onChange={this.handleChange.bind(this)}/>
-                    <br/>
-                    <lable className= "newOrgLable"> account_num: </lable>
-                    <input type="text" name="account_num" onChange={this.handleChange.bind(this)}/>
-                    <br/>
-                    <lable className= "newOrgLable"> bank_num: </lable>
-                    <input type="text" name="bank_num" onChange={this.handleChange.bind(this)}/>
-                    <br/>
-                    more details */}
-                            {/* <Divider
-                    as='h4'
-                    className='header'
-                    horizontal
-                    style={{ margin: '3em 0em', textTransform: 'uppercase' }}
-                    > */}
+                            <Divider
+                                    as='h4'
+                                    className='header'
+                                    horizontal
+                                    style={{ margin: '3em 0em', textTransform: 'uppercase' }}
+                                >
+                                <a href='#'>
+                                    <Icon size='big' name='users' />
+                                    User Status
+                                </a>
+                                </Divider>
+
+                            <Radio toggle
+                                label="User status is based on the sum of money brought to the organiztion in his downline" />
+                            <br></br>
+                            <br></br>
+                            <Label>Default: User status is based only on the number of Doners in his Downline</Label>
+                            {/* TODO: deal with figuring out the user status */}
                             {/* TODO: see which details are actually necessay for us */}
                             {/* <a href='#'>More Details:</a>
                     </Divider>
                     <br/><br/>
-                    <lable className= "newOrgLable"> field_of_acctivity: </lable>
-                    <input type="text" name="field_of_acctivity" onChange={this.handleChange.bind(this)}/>
+                    <lable className= "newOrgLable"> field_of_activity: </lable>
+                    <input type="text" name="field_of_activity" onChange={this.handleChange.bind(this)}/>
                     <br/><br/>
                     <lable className= "newOrgLable"> founding_year: </lable>
                     <input type="text" name="founding_year" onChange={this.handleChange.bind(this)}/>
@@ -392,6 +475,10 @@ class NewOrg extends React.Component {
                     <lable className= "newOrgLable"> friends: </lable>
                     <input type="text" name="friends" onChange={this.handleChange.bind(this)}/>*/}
                             <br /><br />
+                            <Header as='h3' style={{ fontSize: '2em' }}>
+                        <Icon size='big' name='handshake' />
+                            We will be in touch shortly.
+                        </Header>
                             <br />
                             <Button content='Submit' primary />
                         </Form>

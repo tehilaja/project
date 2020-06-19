@@ -120,37 +120,43 @@ adding features to code, organizing everthing to give in for Alpha.
 recording the Prototype.
 
 /************************Server*********************/
-18/4/2020 22:15 - 00:15 
+18/4/2020 
+22:15 - 00:15 
 reorganizing code comparing 
 google cloud / aws - creating account
 fixing a few bugs in server that appeared as a result of fixing the DB
 making plans for the next day
 
-19/4/2020 11:00-12:00 
+19/4/2020 
+11:00-12:00 
 planning how to continue with project over next fiew days
 
-20/04/202012:15 -12:45 
+20/04/2020
+12:15 -12:45 
 zoom meeting with Eli Issac, 
 reflecting in on Alpha
 13:30 -  15:45 starting integration with cognito.
 creating cognito account and integrating code for login and signin
 
-21/4/2020 13:00 - 16:00 
+21/4/2020 
+13:00 - 16:00 
 finish setting up cognito account
 working on configuration
 trying to figure out what the errors are with signing up a new user
-17:00 - 21:00 using semantic-ui library and working on design
+17:00 - 21:00 
+using semantic-ui library and working on design
 
-22/4/2020 13:30-16:00
+22/4/2020 
+13:30-16:00
 still working to set up cognito - didn't work 
 
-25/4/2020 21:25 - 1:30 
+25/4/2020 
+21:25 - 1:30 
 setting up cognito
 checking if typescript can be used in react
 
-26/4/2020 12:00-14:00
+26/4/2020 
 working on user profile page
-a few more hours:
 react-avatar showing initials of user, finding different react tree option
 
 27/04/2020
@@ -200,11 +206,10 @@ Setting up PayPal for project
 sending emails to tranzila and other options for payment
 
 5/5/2020 
-13:00 - connecting state to input of different files
-14:30-17:05
+connecting state to input of different files
 creating events
 learning about redux
-calling back to hear options for payment
+calling back different online payment companies to hear what our options are
 
 6/5/2020
 14:30 - 18:00 (3.5)
@@ -226,20 +231,97 @@ testing out the donation page
 setting up S3 in aws to upload images and create url
 
 10/5/2020
-12:30-15:00
+security problem when uploading code to git - need to change aws access key
 fixing issue with S3 from last night - aws account
 trying to figure out what the bug is in the S3 JS code
 filling in Diary
-figuring out why the files upoaded can only be downliaded and not viewed on url
+figuring out why the files upoaded can only be downloaded and not viewed by url
 
 11/5/2020
-1.5
-still working on same bug from S3
+still working on same bug from S3 - uploaded images are encrypted and therfore can't be desplayed
 
 12/5/2020
-figuring out bug from S3 and returning url for image and encrypted file
+figuring out upload of image to S3 and returning url for image and encrypted file
 working on rendering state with info to different components
+when uploading to git- encountering an issue with the security of the aws access key
+this time we used aes to encrypt the access key - that was successful 
 
 13/5/2020
 changing code so that App is father of all components and enabling the passing of the state
 to all different pages of the website
+bug with passign id for specific org page - fixed
+
+14/5/2020
+Making changes based on users:
+enabling Admin of organization to send fliers to emails of all Doners via magdilim email address when adding a prize or raffle to organization.
+adding option to have state of user be based on sum of money in downline or num of people in downline.
+chaning layout of home page based on the request of user
+writing beta document
+
+15/5/2020
+working a litle more with the aes
+
+24/05/2020
+Fixed bug following version merge
+Getting started on changing the tables in a database
+figure out how to create a function that runs every 24 hrs in javaScript
+(using node schedule package: npm install node-schedule)
+
+25/05/2020
+organize db + create a first insert
+change the query of gifts
+dealing with errors when signing in - not crashing the server
+going over db tables and making changes
+coming up with plan for updating status of users - tree vs updating db
+
+26/05/2020
+looking through different options:
+******************
+How to deal with storing the data, and updating the level - to many times to access the db
+building a tree - doing that each time wouldn't be very efficient - building a tree every time there is a request
+ 
+solution:
+using a cache: - the tree is already ready - no need to create these calls every time - saving reads
+for safety - we will update cash every 24 hours
+
+only have to claculate it once
+creating a cache would be a dictionary of dictionaries 
+needs to be singltone - static 
+how do we do that in javaScript?
+hold the instance in the server and it's functions somewhere else?
+
+collection of Org
+each org has a tree
+for each doner (in a dictionary) would have a refference to the correct node
+**********************
+has an update command - to update an organization / update a doner and his ansestors
+
+31/05/2020 - 9/06/2020
+writing code for functionality of cache
+building dictionaries
+writing recursive functionality to get users level in organization etc
+
+14/6/2020
+in user page, displaying the levels and the number of people in downline
+when the organization was clicked - displaying the downline of the user in that organization
+gets the reference to the user node in the tree of that organization that is in the cache
+needed to change the structure of the chache to enable just sending the reference and displaying it quickly
+
+15/6/2020
+changing the structure of the cache so that it can be displayed on the user page just by sending the reference
+
+16/6/2020
+building Admin pages for the admin of the program to be able to accept a new organization
+building pages to store which organizations have to be paid
+
+17/6/2020
+building pages for Admin of organization to edit his organization page
+adding functionality to have buttons on the userpage that allow him to 
+edit the organizations that he is admin of
+
+18/6/2020
+guarding Admin pages
+guarding pages to edit org pages
+guarding userPage should only be desplayed when user is logged in 
+edge cases for registeration
+looking into different options for deployment

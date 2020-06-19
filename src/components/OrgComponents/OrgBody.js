@@ -14,8 +14,7 @@ import OrgSpechCard from './OrgSpechCard.js'
 
 // donate
 import Donate from './Donate.js'
-import GiftCard from './GiftCard.js'
-
+import GiftCard from './GiftCard'
 
 import Doners from "./Doners.js"
 
@@ -23,10 +22,10 @@ import Doners from "./Doners.js"
 
 const levelOptions = [
     { key: 'all levels',value: 'all levels', text: 'all levels' },
-    { key: 'all',value: 'all', text: 'all' },
+    { key: 'all Donars',value: 'all Donars', text: 'all Donars' },
     { key: 'silver',value: 'silver', text: 'silver' },
     { key: 'gold',value: 'gold', text: 'gold' },
-    { key: 'platinium',value: 'platinium', text: 'platinium' },
+    { key: 'platinum',value: 'platinum', text: 'platinum' },
   ];
 
 
@@ -52,6 +51,8 @@ class OrgBody extends React.Component {
             btnDonateClicked: false,
             confirmBtn: false,
             initialDonation : this.props.data.orgDetails.min_donation,
+            field_of_activity: this.props.data.org_field_of_activity,
+           
             // initialDonation : this.props.orgDetails.min_donation,
 
 
@@ -81,7 +82,7 @@ class OrgBody extends React.Component {
         this.selectLevel = this.selectLevel.bind(this)
         this.filterChooseLevel = this.filterChooseLevel.bind(this)
 
-        
+        this.listOfField = this.listOfField.bind(this)
 
 
         // css
@@ -103,7 +104,7 @@ class OrgBody extends React.Component {
         let obj = [];
         if (filter === 'all levels'){
             this.setState({giftShow: this.state.Allgifts})
-            alert("all : "+ this.state.giftShow.length)
+            // alert("all : "+ this.state.giftShow.length)
         }
         else
         {
@@ -115,10 +116,8 @@ class OrgBody extends React.Component {
 
             })
             this.setState({giftShow: obj})
+            // alert("gifts: " + JSON.stringify(this.state.giftShow))
         }
-        
-       
-
 
     }
 
@@ -164,7 +163,7 @@ class OrgBody extends React.Component {
 
     componentDidMount()
     {
-        alert("org details: \n"+ JSON.stringify(this.props.data))
+        // alert("org details: \n"+ JSON.stringify(this.props.data))
         // alert("org_id \n" + this.props.data.orgDetails.org_id )
         // fetch('/data', {
         //     method: 'GET'
@@ -312,6 +311,11 @@ class OrgBody extends React.Component {
     
         this.setState({ activeIndex: newIndex })
       }
+    
+    listOfField()
+    {
+
+    }
 
       // step (donation)
 
@@ -347,8 +351,6 @@ class OrgBody extends React.Component {
         // for step (donation)
         // const { active } = this.state
 
-
-
         //------  menu bar
         const panes = [
             {
@@ -368,7 +370,9 @@ class OrgBody extends React.Component {
                                            : תחום הפעילות 
                                         </Header>
                                         <p style={{ fontSize: '1em' }}>
-                                            {this.props.data.orgDetails.field_of_acctivity}
+                                            {/*  TODO : show list of activity */}
+                                            {/* {this.state.field_of_activity} */}
+                                            {/* {this.props.data.orgDetails.field_of_activity} */}
                                         </p>
                                         {/* // option to hide text */}
                                         <Accordion>
@@ -385,6 +389,7 @@ class OrgBody extends React.Component {
                                             <p style={{fontSize: '1em' }}>
                                                 {this.props.data.orgDetails.description}
                                             </p>
+
                                             </Accordion.Content>
                                         </Accordion>
                                         
@@ -392,7 +397,7 @@ class OrgBody extends React.Component {
                                     <Grid.Column floated='right' width={6}>
                                         <Grid.Row>
                                             <Grid.Column>
-                                                <Image  floated='right'  size='large' src={this.props.data.orgDetails.org_pic} style={{ padding: '3em 3em' }} />
+                                                <Image  floated='right'  size='large' src={this.props.data.orgDetails.img_url} style={{ padding: '3em 3em' }} />
                                             </Grid.Column> 
                                             <Grid.Column>
 
@@ -557,9 +562,9 @@ class OrgBody extends React.Component {
                     {/* <Grid style = {{margin: '2em, 0.7em'}}> */}
 
                         <Grid.Row>
-                            <header style ={{backgroundColor: '#20B2AA' ,backgroundImage : this.props.data.orgDetails.org_pic ,width:'100%',height: '20em' ,padding: '2em ,2em', margin: ''}}>
+                            <header style ={{backgroundColor: '#20B2AA' ,backgroundImage : this.props.data.orgDetails.img_url ,width:'100%',height: '20em' ,padding: '2em ,2em', margin: ''}}>
                             {/* background-color: green;0.3; */}
-                                <img  src={this.props.data.orgDetails.org_pic} style = {{display: 'block',marginLeft: 'auto',marginRight: 'auto',width: '28%'}}/>
+                                <img  src={this.props.data.orgDetails.img_url} style = {{display: 'block',marginLeft: 'auto',marginRight: 'auto',width: '28%'}}/>
                                 
                                 {/* style={{ padding: '3em 3em' }} */}
                                 
@@ -577,7 +582,7 @@ class OrgBody extends React.Component {
 
 
                 <Header>
-                    <Image  floated='right'  size='large' src={this.props.data.orgDetails.org_pic} style={{ padding: '3em 3em' }} />
+                    <Image  floated='right'  size='large' src={this.props.data.orgDetails.img_url} style={{ padding: '3em 3em' }} />
 
                 </Header>
             

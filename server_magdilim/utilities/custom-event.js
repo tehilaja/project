@@ -16,6 +16,8 @@ Reactor.prototype.registerEvent = function (eventName) {
     this.events[eventName] = event;
 };
 
+
+// when dispatching an event, we can send in eventArgs to call the callbacks with
 Reactor.prototype.dispatchEvent = function (eventName, eventArgs) {
     this.events[eventName].callbacks.forEach(function (callback) {
         callback(eventArgs);

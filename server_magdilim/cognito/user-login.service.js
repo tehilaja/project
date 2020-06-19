@@ -1,5 +1,3 @@
-//import { DynamoDBService } from "./ddb.service";
-
 const cognitoIdentityFile = require("amazon-cognito-identity-js");
 const cognitoServiceFile = require("./cognito.service");
 const AuthenticationDetails = cognitoIdentityFile.AuthenticationDetails;
@@ -36,12 +34,12 @@ class UserLoginService {
             console.log("data:"+JSON.stringify(data))
 
             //throwing error when signing in i would want to return the something
-            // callback.cognitoCallback(null, session);
+            callback(null, session);
         });
     }
 
     onLoginError(callback, err){
-        callback.cognitoCallback(err.message, null);
+        callback(err.message, null);
     }
 
     constructor(cognitoUtil) {
@@ -64,24 +62,20 @@ class UserLoginService {
 
         console.log("UserLoginService: Params set...Authenticating the user");
         let cognitoUser = new CognitoUser(userData);
-        console.log("UserLoginService: config is " + AWS.config);
+        
         cognitoUser.authenticateUser(authenticationDetails, {
-            newPasswordRequired: (userAttributes, requiredAttributes) => {console.log("newPasswordRequired")
+            newPasswordRequired: (userAttributes, requiredAttributes) => {
+                console.log("newPasswordRequired")
                 return "newPasswordRequired";
-                // callback.cognitoCallback(`User needs to set password.`, null)
             },
-            onSuccess: result => {console.log("success login before onloginsuccess")
+            onSuccess: result => {
+                console.log("success login before onloginsuccess")
                 this.onLoginSuccess(callback, result);                
             },
-            onFailure: err => this.onLoginError(callback, err),
-            // mfaRequired: (challengeName, challengeParameters) => {
-            //     callback.handleMFAStep(challengeName, challengeParameters, (confirmationCode: string) => {
-            //         cognitoUser.sendMFACode(confirmationCode, {
-            //             onSuccess: result => this.onLoginSuccess(callback, result),
-            //             onFailure: err => this.onLoginError(callback, err)
-            //         });
-            //     });
-            // }
+            onFailure: err => {
+                console.log('failure login before onloginerror')
+                this.onLoginError(callback, err);
+            },
         });
     }
 

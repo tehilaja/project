@@ -12,70 +12,77 @@ import Footer from '../Footer.js';
 import ImageGallery from 'react-image-gallery';
 import "react-image-gallery/styles/css/image-gallery.css";
 
-import {Grid, Segment} from 'semantic-ui-react';
+import {Grid, Icon, Segment} from 'semantic-ui-react';
 
+const s3Util = require('../../utilities/upload').methods;
 
-//TODO: have the images be from S3 - all the organization images
-//pehaps it should be done in component did mount
-const images = [
-    {
-      original: 'https://picsum.photos/id/1018/1000/600/',
-      thumbnail: 'https://picsum.photos/id/1018/250/150/',
-    },
-    {
-      original: 'https://picsum.photos/id/1015/1000/600/',
-      thumbnail: 'https://picsum.photos/id/1015/250/150/',
-    },
-    {
-      original: 'https://picsum.photos/id/1019/1000/600/',
-      thumbnail: 'https://picsum.photos/id/1019/250/150/',
-    },];
 
 class OrgSearch extends React.Component{
-	constructor(props) {
-		super(props)	
-		this.state = {
-            loggedIn: this.props.data.loggedIn,
-            userName: this.props.data.userName,
-			      routeMain: false,
-			      check_login_status: false
-		}
+  constructor(props) {
+    super(props)  
+    this.state = {
+            loggedIn: this.props.data.loggedIn,
+            userName: this.props.data.userName,
+            routeMain: false,
+            check_login_status: false,
+            images: [],
+    }
+
+    this.getImages();
 }
   
-	// componentWillReceiveProps(nextProps){
-	// 	nextProps= this.props
-	// }
+  // componentWillReceiveProps(nextProps){
+  //  nextProps= this.props
+  // }
+  
+  getImages() {
+    s3Util.getFilesFromFolder('organizations', (res) => {
+      if (Array.isArray(res)) {
+        const imgs = res.map(url => {
+          const image = {};
+          image.original = url;
+          image.thumbnail = url;
+          return image;
+        });
+
+        this.setState({images: imgs});
+        
+      }
+    });
+  }
 
 
-	render() {
-		
-		return(
-			<div>
-                <Header data={{loggedIn: this.state.loggedIn, userName: this.state.userName}}/>
-                <ImageGallery items={images} />
+  render() {
+    
+    return(
+      <div>
+                <Header data={{loggedIn: this.state.loggedIn, userName: this.state.userName}}/>
+                <ImageGallery items={this.state.images} />
                 <Segment>
                 <Grid celled='internally' columns='equal' stackable>
                     <Grid.Row textAlign='center'>
                     <Grid.Column style={{ paddingBottom: '5em', paddingTop: '5em' }}>
                         <div as='h3' style={{ fontSize: '2em' }}>
+                        <Icon size='big' name='globe' />
                         "Thanks Magdilim"
                         </div>
                         <p style={{ fontSize: '1.33em' }}>for enabling us to create an ongoing platform</p>
                     </Grid.Column>
                     <Grid.Column style={{ paddingBottom: '5em', paddingTop: '5em' }}>
                         <div as='h3' style={{ fontSize: '2em' }}>
+                        <Icon size='big' name='building' />
                         "This campaign will be different!"
                         </div>
                         <p style={{ fontSize: '1.33em' }}>
-                        This time our efforts will build something that will <b>last forever</b>
+                        This time, our efforts will build something that will <b>last forever</b>
                         </p>
                     </Grid.Column>
                     </Grid.Row>
                 </Grid>
                 </Segment>
-				<Footer />
-			</div>
-		)
-	}	
+        <Footer />
+      </div>
+    )
+  } 
 }
 export default OrgSearch;

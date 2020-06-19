@@ -3,7 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import {Redirect} from "react-router-dom";
-import { Card, Icon, Image } from 'semantic-ui-react'
+import { Card, Icon, Image, Segment } from 'semantic-ui-react'
 
 class OrgCard extends React.Component{
     constructor(props){
@@ -34,29 +34,32 @@ class OrgCard extends React.Component{
         }} />
         } 
     //-----------return---------------------- 
-	    return( 
-            <Card style ={{margin: '1em'}} 
-              onClick = {() => this.setState(prevState => {
-                return {
-                    routeOrgPage: !prevState.routeOrgPage}
-                  })}>
-            <Image src={this.props.imgUrl} wrapped ui={false} />
-            <Card.Content>
-              <Card.Header>{this.props.name}</Card.Header>
-              <Card.Meta>
-                <span className='date'>Monthy Donation: {this.props.initialDonation} $</span>
-              </Card.Meta>
-              <Card.Description>
-                organization desciption
-              </Card.Description>
-            </Card.Content>
-            <Card.Content extra>
-              <a>
-                <Icon name='gift' />
-                last prize winner
-              </a>
-            </Card.Content>
-          </Card>
+      return( 
+        <Card style ={{margin: '1em'}} 
+          onClick = {() => this.setState(prevState => {
+            return {
+                routeOrgPage: !prevState.routeOrgPage}
+              })}>
+
+          <Card.Content>
+            <Image src={this.props.imgUrl} wrapped ui={true} />
+
+          </Card.Content>
+          <Card.Content extra>
+          <Card.Header>{this.props.name}</Card.Header>
+            <Card.Meta>
+              <span className='date'>Monthy Donation: {this.props.initialDonation} $</span>
+            </Card.Meta>
+            <Card.Description>
+              organization desciption
+            </Card.Description>
+            <a>
+              <Icon name='gift' />
+              last prize winner
+            </a>
+          </Card.Content>
+        </Card>
+
         )
     }
 }

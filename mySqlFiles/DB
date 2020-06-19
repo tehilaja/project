@@ -25,7 +25,7 @@ INSERT Into Credit_info (user_id,numbers) VALUES (1,1234),(1,1244);
 
 
  -- organization
-INSERT INTO organization (org_name,admin_name,description,field_of_acctivity,org_pic,min_donation,org_num,branch,account_num,bank_num,founding_year,working,volunteers,friends,city_id,building,street,p_code) VALUES 
+INSERT INTO organization (org_name,admin_name,description,field_of_activity,org_pic,min_donation,org_num,branch,account_num,bank_num,founding_year,working,volunteers,friends,city_id,building,street,p_code) VALUES 
 ("איחוד הצלה ישראל","אליהו פולק", "ן (אירועים רבי נפגעים), חולים ונפגעים. רכישת ציוד רפואי בסיסי ומתקדם לצורך פעילות המתנדבים. רכישת רכבי חירום והצלה, כגון אמבולנסים ואופנועים, ומימון הוצאות אחזקת רכבי החירום. הכשרת אזרחים לפעילות בקהילה לסיוע ומניעה של תאונות דרכים, פגיעות ומחלות","טיפול באסונות ומצבי חירוםהצלת חיים",
 "https://upload.wikimedia.org/wikipedia/commons/b/bc/UHNewLogo.svg",12,580465979,910,102346,10,2006,231,5400,12,1,78,"ירמיהו",9446758),
 ("עזר מציון", "הרב חנניה צ'ולק","וסעודית. סיוע, שיקום ושירותים לנכי בריאות הנפש. סיוע לניצולי שואה. סיוע לחולי סרטן. הפעלת מגוון שרותים לאוכלוסיית הגמלאים והקשישים ודאגה לזכויותיהם. סיוע, ייעוץ, טיפול ושיקום לבעלי צרכים מיוחדים בכל סוגי הנכויות לרבות נכויות חושיות כגון לקויות שמיעה, לקויות דיבור ולקויות ראיה. הפעלת מסגרות חינוכיות וטיפוליות. הפעלת שירותי רווחה. סיוע לנפגעי טרור להקים קרן גמילות חסדים. לעזור לחולים נזקקים בריפוי ועזרה רפואית",
@@ -116,7 +116,7 @@ CREATE TABLE IF NOT EXISTS Organization (
   org_name varchar(255),
   admin_name varchar(255),
   description varchar(3000),
-  field_of_acctivity varchar(2000),
+  field_of_activity varchar(2000),
   org_pic varchar(250),
   min_donation int(11),
   org_num int(11),
