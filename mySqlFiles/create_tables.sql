@@ -1,17 +1,17 @@
 -- ~~~~~~~~~~~~ CREATE TABLE ~~~~~~~~~~~~~~~~ --
 
  -- ~~~~ DROP
-DROP TABLE admin;
-DROP TABLE country;
-DROP TABLE city;
-DROP TABLE credit_info;
-DROP TABLE donation_status;
 DROP TABLE doners_in_org;
-DROP TABLE leveld_in_org;
+DROP TABLE bank_info;
+DROP TABLE addresses;
+DROP TABLE doners_in_org;
+DROP TABLE field_of_acctivity;
 DROP TABLE gifts;
-DROP TABLE leveled;
-DROP TABLE organization;
-DROP TABLE users;
+DROP TABLE gifts_levels;
+DROP TABLE levels_in_org;
+DROP TABLE levels;
+DROP TABLE org_field_of_acctivity;
+DROP TABLE organizations;
 
 
 -- Addresses--
@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS Addresses (
 org_id int(11) PRIMARY KEY,
 country varchar(50),
 state varchar(50),
-    city varchar(50),
+city varchar(50),
 street varchar(50),
 building int(11),
 apartment int(11),
@@ -122,4 +122,15 @@ CREATE TABLE IF NOT EXISTS Levels_in_org (
   PRIMARY KEY(level_id, fk_d_i_o_id)
 );
 -- כל כמה זמן לעדכן ?
+
+CREATE TABLE IF NOT EXISTS fields_of_activity (
+	field_id int(11),
+    field_name varchar(255)
+);
+
+CREATE TABLE IF NOT EXISTS org_field_of_activity(
+	org_id int(11),
+    field_id int (11)
+);
+
 

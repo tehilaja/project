@@ -4,32 +4,38 @@ let orgToLevels = undefined; //
 
 const getDonersFromDbAndSetCache = (db, callback) => {
     const sqlQuery = `SELECT * FROM doners_in_org`; console.log(sqlQuery);
-
-    db.query(sqlQuery, (err, result, fields) => {
-        if (err) throw err;
-        console.log("doners in org:\n" + JSON.stringify(result));
-        getLevels(db, () => {
-            setCache(result);
-            if (callback) callback();
+    try{
+        db.query(sqlQuery, (err, result, fields) => {
+            if (err) throw err;
+            console.log("doners in org:\n" + JSON.stringify(result));
+            getLevels(db, () => {
+                setCache(result);
+                if (callback) callback();
+            });
         });
-    });
+    }catch(err){
+        throw err;
+    }
 }
 
 const getLevels = (db, callback) => {
     const sqlQuery = `SELECT * FROM levels`;
-
-    db.query(sqlQuery, (err, result, fields) => {
-        if (err) throw err;
-        console.log("levels:\n" + JSON.stringify(result));
-        orgToLevels = groupBy(result, 'org_id');
-        Object.keys(orgToLevels).forEach(org_id => {
-            orgToLevels[org_id].sort((x, y) => y.level_num - x.level_num);
-            console.log(`levels of org ${org_id}:\n` + JSON.stringify(orgToLevels[org_id]));
+    try{
+        db.query(sqlQuery, (err, result, fields) => {
+            if (err) throw err;
+            console.log("levels:\n" + JSON.stringify(result));
+            orgToLevels = groupBy(result, 'org_id');
+            Object.keys(orgToLevels).forEach(org_id => {
+                orgToLevels[org_id].sort((x, y) => y.level_num - x.level_num);
+                console.log(`levels of org ${org_id}:\n` + JSON.stringify(orgToLevels[org_id]));
+            });
+            if (callback) {
+                callback();
+            }
         });
-        if (callback) {
-            callback();
-        }
-    });
+    }catch(err){
+        throw err;
+    }
 }
 
 const setCache = (donersInOrg) => {
