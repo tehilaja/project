@@ -157,16 +157,17 @@ class UserPage extends React.Component {
             <div>
                 <Segment style={{ padding: '8em 0em' }} vertical>
                     <Grid container stackable verticalAlign='middle'>
-                        {/* putting in initials ToDo: change name to user name*/}
                         <UserAvatar size={100} name={this.state.userName} />
                         <Grid.Row>
                             <Grid.Column width={8}>
                                 <Header as='h3' style={{ fontSize: '2em' }}>
                                     Your Donations:
                     </Header>
-                                {orgComponents}
-                                <p style={{ fontSize: '1.33em' }}>
-                                { this.state.treeDownline &&`My downline for ${this.state.orgsTrees[this.state.orgId].org_name}:`}
+                    {/* <div style ={{display: 'flex', flexDirection: 'row',  justify_content: 'space-between'}}>  */}
+						{orgComponents}
+					{/* </div> */}
+                     <p style={{ fontSize: '1.33em' }}>
+                    { this.state.treeDownline &&`My downline for ${this.state.orgsTrees[this.state.orgId].org_name}:`}
                     </p>
                             </Grid.Column>
                             {/* <Grid.Column floated='right' width={6}>

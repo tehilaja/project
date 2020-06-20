@@ -1,7 +1,8 @@
 import React from 'react'
-import { Feed, Icon } from 'semantic-ui-react'
+import { Feed, Icon, Segment, Form } from 'semantic-ui-react'
 
 import UserAvatar from 'react-avatar';
+import { render } from 'react-dom';
 
 // TODO: figure out where the feed will be enabled, what and where will be stored.
 // const FeedContent = feedList.map(feed => {
@@ -42,7 +43,10 @@ const FeedExampleBasic = () => (
         </Feed.Extra>
         <Feed.Meta>
           <Feed.Like>
-            <Icon name='like' />{FeedContent.numLikes} Likes
+            <Icon name='like'
+            onClick ={FeedContent.numLikes= FeedContent.numLikes+1}/>
+                {FeedContent.numLikes}
+                 Likes
           </Feed.Like>
         </Feed.Meta>
       </Feed.Content>
@@ -134,4 +138,83 @@ const FeedExampleBasic = () => (
   </Feed>
 )
 
-export default FeedExampleBasic;
+
+class Comment extends React.Component{
+  constructor(props){
+    super(props)
+      this.state = 
+		{
+			loggedIn: this.props.data.loggedIn, 
+      userName: this.props.data.userName, 
+      commentText: ''
+    }
+    this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleChange = this.handleChange.bind(this)
+    this.updateLikes = this.updateLikes.bind(this)
+  }
+
+  handleChange(event) {
+    this.setState({
+        [event.target.name]: event.target.value
+    })
+}
+
+  handleSubmit(){
+
+    this.state.newComment = {
+      feedUserName: this.state.userName, 
+      feedAction: 'commented', 
+      feedDate: new Date, 
+      feedText: this.state.commentText, 
+      numLikes: 5
+}
+alert(JSON.stringify(this.state.newComment))
+}
+
+updateLikes(){
+ //TODO: update number of likes
+}
+   render(){
+      return(
+        <Feed>
+    <Feed.Event>
+      <Feed.Label>
+      <UserAvatar size = '35' shape='round' name={FeedContent.feedUserName} />
+      </Feed.Label>
+      <Feed.Content>
+        <Feed.Summary>
+        <Feed.User>{FeedContent.feedUserName}</Feed.User> 
+        {FeedContent.feedAction}
+          <Feed.Date>{FeedContent.feedDate}</Feed.Date>
+        </Feed.Summary>
+        <Feed.Extra text>
+        <Feed.Extra text>
+          {FeedContent.feedText}
+        </Feed.Extra>
+        </Feed.Extra>
+        <Feed.Meta>
+          <Feed.Like>
+            <Icon name='like'
+            onClick ={this.updateLikes.bind(this)}/>
+                {FeedContent.numLikes}
+                 Likes
+          </Feed.Like>
+        </Feed.Meta>
+      </Feed.Content>
+    </Feed.Event>
+    <Segment>
+    <Form>
+    <Form.Field inline='verdical' onSubmit={this.handleSubmit.bind(this)}>
+      <UserAvatar size = '35' shape='round' name={this.state.userName} />
+        <Form.Input
+         placeholder='add comment...'
+         name="commentText"
+         onChange={this.handleChange.bind(this)} />
+      </Form.Field>
+    </Form>
+    </Segment>
+    </Feed>
+      )
+    }
+}
+export default Comment;

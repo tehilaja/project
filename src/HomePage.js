@@ -39,7 +39,7 @@ class App extends React.Component
 			<div>
 				<Header data={{loggedIn: this.state.loggedIn, userName: this.state.userName}}/>
 				<Body data={{loggedIn: this.state.loggedIn, userName: this.state.userName}}/>
-				<Feed />
+				<Feed data={{loggedIn: this.state.loggedIn, userName: this.state.userName}}/>
 				<Footer />
 				{/*<button onClick={this.check.bind(this)}>button</button>*/}
 			</div>
