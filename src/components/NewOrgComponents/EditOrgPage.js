@@ -1,54 +1,195 @@
-//this should only be enabled for the admin of the organization
 import React from 'react';
-import {Redirect} from "react-router-dom";
+
+import { Redirect } from "react-router-dom";
+
+import { v1 as uuid } from 'uuid';
 
 
 import axios from "axios";
+
 import { async } from "q";
+import ImageUploader from 'react-images-upload';
+import { GoOrganization } from "react-icons/ai";
+////---------------
 
 import Header from '../Header.js';
 import NewOrg from './NewOrg.js';
 import Footer from '../Footer.js';
 import AddPrizes from './AddPrizes.js';
 
-import 
-{
-    Button,
-    Input,
-    Container,
-    Divider,
-    Form,
-    Grid,
-    Icon,
-    Image,
-    Label,
-    List,
-    Menu,
-    Radio,
-    Responsive,
-    Segment,
-    Sidebar,
-    Step,
-    Visibility
-} from 'semantic-ui-react';
+import {Button,Input,Container,Divider,Form,Grid,Icon,Image,Label,List,Menu,Radio,Responsive,Segment,Sidebar,Step,Visibility,} from 'semantic-ui-react'
 
-class EditOrgPage extends React.Component{
-	constructor(props) {
-		super(props)	
-		this.state = {
+const uploadFile = require('../../utilities/upload').methods.uploadFile;
+const emailService = require('../../utilities/email');
+
+class EditOrgPage extends React.Component {
+
+    constructor(props) {
+        super(props)
+        this.state = {
             loggedIn: this.props.data.loggedIn,
             userName: this.props.data.userName,
-            orgId: this.props.orgId,
+            //////////////////
+            orgName: '',
+            admin_name: '',
+            description: '',
+            field_of_activity: '',
+            phone: '',
+            email: '',
+            //mailing information:
+            country: "",
+            city: "",
+            building: "",
+            street: "",
+            p_code: "",
+            //more info:
+            pictures: [],
+            minDonation: 10,
+            allowOneTimeDonations: false,
+            // org_num:"",
+            // branch:"",
+            // account_num:"",
+            // bank_num:"",
+            // description:"",
+            // field_of_activity:"",
+            // founding_year:"",
+            // working:"",
+            // volunteers:"",
+            flag_done: false,
+            file: "",
+            file_name: "",
+            selectedImage: null,
+            image_url: null,
+
 			routeMain: false,
             showAddPrize: false,
             orgId: this.props.data.id,
+
+// org_id org_name admin_name description field_of_activity img_url min_donation approved org_num branch account_num bank_num account_owner, one_time_donation, founding_year working volunteers friends city_name ,country_name, building street p_code 
+
+            // req json
+            newOrg_req: {"org_id": 2, "org_name":'',"min_donation": '',"approved":0,"org_num":'',
+                "branch":'', "account_num":'', "bank_num":'', "account_owner":'', "one_time_donation": 0,  // must field
+                "admin_name": '',"img_url": '',
+                "description": '',"field_of_activity": '',"founding_year":'', "working":'', "volunteers":'', "friends":'', "city_name":'', "building": '', "street":'', "p_code":''},
         }
+        this.handleChange = this.handleChange.bind(this)
+        this.handlerClick = this.handlerClick.bind(this);
+        this.increment = this.increment.bind(this);
+        this.decrement = this.decrement.bind(this);
+        this.onSelectFile = this.onSelectFile.bind(this);
+        //
+        this.addOrgProcess = this.addOrgProcess.bind(this);
+        this.sendEmail = this.sendEmail.bind(this);
         this.org = this.fetchOrgData(this.state.orgId)
         this.handleSubmit = this.handleSubmit.bind(this)
-        this.handleChange = this.handleChange.bind(this)
+    }
 
-	}
-	
+    //the following function is to send an email that a new oragnization is awaiting approval
+    sendEmail() {
+        // TODO: get text to send, get list of mail
+        emailService.sendEmail(
+            //'mordeyj316@gmail.com'
+            ['tehilaj97@gmail.com'],
+            null,
+            null,
+            'A new organization is awaiting your approval',
+            'organization name: '+ this.state.orgName +
+            '\norganizaion description: ' + this.state.description +
+            '\nclick to view org image: '+ this.state.image_url+
+            '\nname of user asking to create platform: ' + this.state.userName,
+            null,
+        )
+    }
+    
+    
+    // ~~~~~~~ add new org to DB
+    addOrgProcess(){ 
+
+    // first step
+    axios.post('/addOrg/firstStep', this.state.newOrg_req
+    ).then(res => 
+    {
+        // alert("res is: " + res.data)
+
+    }).catch(error=> {
+        alert("error addOrgProcess" +  error);
+    })
+
+    }
+
+
+    //another try:
+    fileSelctedHandler = event => {
+        this.setState({
+            pictures:event.target.files[0]
+        })
+        this.fileUploadHandler();
+    }
+
+    fileUploadHandler = () => {
+        (async () => {
+            const response = await axios.post(
+                '/upload-file',
+                {
+                    file: this.state.pictures,
+                    key: 'try/try.jpg',
+                },
+                {header:{'Content-Type': 'application/json'}}
+                );
+               console.log("resp",response);
+             
+          })();  
+    }
+
+    onSelectFile(event) {
+        this.setState({ selectedImage: event.target.files[0] });
+    }
+
+
+    handleChange(event) {
+        const { name, value, type, checked } = event.target
+        type === "file" ? this.setState({ [name]: event.target.files[0] }) : this.setState({ [name]: value })
+    }
+
+
+
+    handleSubmit = (e) => {
+
+        (async () => {
+            const fileNamePrefix = `${this.state.orgName}_${uuid()}`
+            //TODO: save url to db in callback - save all org information to DB
+            await uploadFile(this.state.selectedImage, fileUrl => alert('file url:' + fileUrl), fileNamePrefix, 'organizations'); 
+            // exp: => (callback, who, folder in s3)
+        })();
+        this.sendEmail();
+        e.preventDefault();
+    }
+
+    //function to deal with passing state to parent component:
+    handlerClick(flagDone) {
+        this.setState({
+            flagDone: true,
+        });
+        this.props.record(flagDone)
+    }
+
+    //---------increment + ----------
+
+    increment() {
+        this.setState(prevState => {
+            return {
+                minDonation: prevState.minDonation + 1
+            }
+        })
+    }
+
+    //---------decrement - -------------
+    decrement() {
+        if (this.state.minDonation > 1)
+            this.setState({ minDonation: this.state.minDonation - 1 })
+    };
+
 	//TODO: get the information (orgId for the correct organization to Edit)
 	fetchOrgData(){
         return({orgName: "OrgName",
@@ -88,7 +229,6 @@ class EditOrgPage extends React.Component{
 				<Grid container stackable verticalAlign='middle'>
 				<Grid.Row>
 					<Grid.Column width={8}>
-                        {/* ************************************************* */}
                         <div>
                 <Segment style={{ padding: '8em 0em' }} vertical>
                     <Grid container stackable verticalAlign='middle'>

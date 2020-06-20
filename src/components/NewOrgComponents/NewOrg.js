@@ -375,109 +375,12 @@ class NewOrg extends React.Component {
                                 name="p_code"
                                 onChange={this.handleChange.bind(this)}
                             />
-                            <Divider
-                                as='h4'
-                                className='header'
-                                horizontal
-                                style={{ margin: '3em 0em', textTransform: 'uppercase' }}
-                            >
-                                <a href='#'>
-                                    <Icon size='big' name='image' />
-                                    Upload a Photo:
-                                </a>
-                            </Divider>
-                            <Segment raised>
-                                {/* <ImageUploader
-                        withIcon={true}
-                        buttonText='Choose images'
-                        onChange={this.onDrop}
-                        imgExtension={['.jpg', '.gif', '.png', '.gif']}
-                        maxFileSize={5242880}
-                    /> */}
-                                <input label='Choose image' type='file' onChange={this.onSelectFile} />
-                                <br /><br />
-                            </Segment>
-                            {/* // TODO : STYLE height */}
-                            {/* set minimum donation per month */}
-                            <div>
-                                <Divider
-                                    as='h4'
-                                    className='header'
-                                    horizontal
-                                    style={{ margin: '3em 0em', textTransform: 'uppercase' }}
-                                >
-                                <a href='#'>
-                                    <Icon size='big' name='dollar' />
-                                    Set minimum monthly doation
-                                </a>
-                                </Divider>
-                               
-                                {/* <label > $ </label> */}
-                                {/* <Input 
-                                    name="minDonation">{this.state.minDonation}
-                                     
-                                </Input> */}
-
-                                <button onClick={this.decrement.bind(this)}>-</button>
-                                <button onClick={this.increment.bind(this)}>+</button>
-                                {/* // TODO: checke why faild */}
-
-                           
-                                <Input labelPosition='right' type='text' placeholder='Amount'
-                                    name="minDonation"
-                                    // defaultValue={this.state.minDonation}
-                                    value={this.state.minDonation}
-                                    onChange={this.handleChange}
-                                >
-                                    <Label basic>$</Label>
-                                    <input />
-                                    <Label>.00</Label>
-                                </Input>
-                            </div>
-                            <br></br>
-                            <br></br>
-                            <Radio toggle
-                                label="Allow One-time Donations" />
-                            <Divider
-                                    as='h4'
-                                    className='header'
-                                    horizontal
-                                    style={{ margin: '3em 0em', textTransform: 'uppercase' }}
-                                >
-                                <a href='#'>
-                                    <Icon size='big' name='users' />
-                                    User Status
-                                </a>
-                                </Divider>
-
-                            <Radio toggle
-                                label="User status is based on the sum of money brought to the organiztion in his downline" />
-                            <br></br>
-                            <br></br>
-                            <Label>Default: User status is based only on the number of Doners in his Downline</Label>
-                            {/* TODO: deal with figuring out the user status */}
-                            {/* TODO: see which details are actually necessay for us */}
-                            {/* <a href='#'>More Details:</a>
-                    </Divider>
-                    <br/><br/>
-                    <lable className= "newOrgLable"> field_of_activity: </lable>
-                    <input type="text" name="field_of_activity" onChange={this.handleChange.bind(this)}/>
-                    <br/><br/>
-                    <lable className= "newOrgLable"> founding_year: </lable>
-                    <input type="text" name="founding_year" onChange={this.handleChange.bind(this)}/>
-                    <br/><br/>
-                    <lable className= "newOrgLable"> working: </lable>
-                    <input type="text" name="working" onChange={this.handleChange.bind(this)}/>
-                    <br/><br/>
-                    <lable className= "newOrgLable"> volunteers: </lable>
-                    <input type="text" name="volunteers" onChange={this.handleChange.bind(this)}/>
-                    <br/><br/>
-                    <lable className= "newOrgLable"> friends: </lable>
-                    <input type="text" name="friends" onChange={this.handleChange.bind(this)}/>*/}
-                            <br /><br />
-                            <Header as='h3' style={{ fontSize: '2em' }}>
+                         <br /><br />
+                         <Label>An email will be sent once your organization gets approved.</Label>
+                         <br />
+                        <Header as='h3' style={{ fontSize: '2em' }}>
                         <Icon size='big' name='handshake' />
-                            We will be in touch shortly.
+                            Thanks you. We will be in touch shortly.
                         </Header>
                             <br />
                             <Button content='Submit' primary />

@@ -207,6 +207,7 @@ updateLikes(){
     <Form.Field inline='verdical' onSubmit={this.handleSubmit.bind(this)}>
       <UserAvatar size = '35' shape='round' name={this.state.userName} />
         <Form.Input
+         icon = 'comment alternate'
          placeholder='add comment...'
          name="commentText"
          onChange={this.handleChange.bind(this)} />
