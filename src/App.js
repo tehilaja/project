@@ -162,7 +162,7 @@ class App extends React.Component {
                 case "/adminpage":
                     return this.guardRoute('program_admin', (<AdminPage data={this.state} />), '/');
                 case "/neworgpage":
-                    return this.guardRoute('program_admin', (<NewOrgPage data={this.state} />), '/');
+                    return (<NewOrgPage data={this.state} />);
                 case `/editorgpage/${spliting[2]}`:
                     return this.guardRoute('org_admin', (<EditOrgPage data={this.state} id={spliting[2]} />), '/');
                 case "/orgsearch":
