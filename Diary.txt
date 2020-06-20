@@ -328,3 +328,7 @@ looking into different options for deployment
 
 19/6/2020
 adding components for feed
+
+20/6/2020
+Adding comment to feed
+sending email when new organization was requested, and adding the correnct fields to the page to Edit org Page

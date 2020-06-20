@@ -234,7 +234,7 @@ class Body extends React.Component
 							<Grid.Column width={10}>
 								{/*putting organizations into home page:*/}
 								{/*~~~~~~~~~~~  organization */}
-								<Segment>
+								<Segment color='red'>
 									<Header as='h2' icon='globe' content='Donate to organization' />
 									<div style ={{display: 'flex', flexDirection: 'row', padding: '1em', margin:'1em'}}> 
 										{/* className = "orgComponents" */}
@@ -250,7 +250,7 @@ class Body extends React.Component
 							</Grid.Column>
 						</Grid.Row>
 							{/*~~~~~~~~~~~  last donation */}
-							<Segment>
+							<Segment color='orange'>
 								<Grid.Column floated='cener' width ={12}>
 									<Header as='h2' icon='time' content='the last donation' />
 									<div  style ={{display: 'flex'}}>
