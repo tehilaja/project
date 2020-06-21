@@ -10,12 +10,14 @@ INSERT INTO organizations(org_name, org_admin_id, description, img_url, min_dona
 "https://yad-sarah.net/wp-content/uploads/2019/04/logoys.png",15, 20, true, 580030104,"משה אורי כהן",1983, 55,900,123456,"ציוד רפואי");
 
 -- addresses
+select * from addresses;
 INSERT INTO addresses(org_id, country, state, city, street, building, apartment, suite, zip) VALUES
 (1, "Israel", null, "Jerusalem","ירמיהו", 78, null, null, 9446758),
 (2, "Israel", null, "Jerusalem","הרב רבינוב", 5, null, null, 5156316),
 (3, "Israel", null, "Jerusalem","שדרות הרצל", 124, null, null, 9618722);
 
 -- doners in org
+select * from doners_in_org;
 INSERT INTO doners_in_org (user_id, org_id, monthly_donation, referred_by,d_title, d_description,anonymous,status_id) VALUES
 ("genstil@g.jct.ac.il",3,15,null, "תודות לארגון","נתרם עקב העזרה הרבה אשר הארגון מסייע לכלל ישראל ישר כוח!",TRUE,1),
 ("tehilaj97@gmail.com",3,45,null, "תודות לארגון","נתרם עקב העזרה הרבה אשר הארגון מסייע לכלל ישראל ישר כוח!",TRUE,1),
@@ -31,6 +33,7 @@ INSERT INTO doners_in_org (user_id, org_id, monthly_donation, referred_by,d_titl
 ("someid@gmail.com",2,50,null,"tanks for all halpe ","...",TRUE,1);
 
 -- levels
+select * from levels;
 INSERT INTO levels (org_id, level_num, level_name, min_people, min_sum) VALUES
 (1, 1, "כסף", 5, null),
 (1, 2, "זהב", 5, 500),
@@ -46,6 +49,7 @@ INSERT INTO levels (org_id, level_num, level_name, min_people, min_sum) VALUES
 (3, 4, "יהלום", null, 10000);
 
 -- gifts
+select* from gifts;
 INSERT INTO gifts (gift_name, gift_description, gift_pic, org_id, level_num, g_date, raffle) VALUES
 ("רכב 7 מקומות","כב מפואר עם 7 מקומותר", null, 1, 4, "2020-08-23", true),
 ("מצלמה","מצלמת קאנון איכותית","",2,2,"2020-08-17", true),
@@ -67,15 +71,15 @@ INSERT INTO gifts (gift_name, gift_description, gift_pic, org_id, level_num, g_d
 -- (1,2,0,100),(2,2,150,0),(3,2,500,10),(4,2,4000,10000); -- org2
 
 -- level
-select * from leveled;
-insert into leveled (l_name,org_id,min_people,min_sum) values("silver",1,50,5000),("gold",1,150,50000),("platinum",1,1000,100000), -- org1
-("all Donars",2,0,100),("silver",2,150,0),("gold",2,500,10),("platinum",2,4000,10000); -- org2
+-- select * from levels;
+-- insert into levels (l_name,org_id,min_people,min_sum) values("silver",1,50,5000),("gold",1,150,50000),("platinum",1,1000,100000), -- org1
+-- ("all Donars",2,0,100),("silver",2,150,0),("gold",2,500,10),("platinum",2,4000,10000); -- org2
 
 -- gifts
-select * from gifts;
-insert into gifts (gift_name,gift_description,gift_pic,level_id,g_date)values
-("רכב 7 מקומות","כב מפואר עם 7 מקומותר","",3,"2020-08-23"),("מצלמה","מצלמת קאנון איכותית","",2,"2020-08-17"), -- org1
-("דיסק","פרחי מיאמי","",4,"2020-07-17"),("מכונת תפירה","חדשה במחיוחד","",6,"2020-09-23"); -- org2
+-- select * from gifts;
+-- insert into gifts (gift_name,gift_description,gift_pic,level_id,g_date)values
+-- ("רכב 7 מקומות","כב מפואר עם 7 מקומותר","",3,"2020-08-23"),("מצלמה","מצלמת קאנון איכותית","",2,"2020-08-17"), -- org1
+-- ("דיסק","פרחי מיאמי","",4,"2020-07-17"),("מכונת תפירה","חדשה במחיוחד","",6,"2020-09-23"); -- org2
 
    
 -- https://github.com/tehilaja/project

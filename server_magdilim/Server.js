@@ -176,10 +176,12 @@ app.get(`/orgPage/get_org_field_of_activity/:orgId`, (req, res, next) => {
     console.log("in /orgPage")
     console.log("id: " + req.params.orgId)
 
-    const q_org_field_name = `select distinct fo.field_name
-      from org_field_of_activity ofo
-      join field_of_activity fo on ofo.field_id = fo.field_id
-      where ofo.org_id = "${req.params.orgId}";`
+    const q_org_field_name = 
+      `select f.field_name
+      from org_field_of_activity o
+        inner join fields_of_activity f ON o.field_id = f.field_id
+      where o.org_id ="${req.params.orgId}";`
+
     console.log("query: \n" + q_org_field_name);
     db.query(q_org_field_name, (err, result, fields) => {
       if (err) throw err;
@@ -218,10 +220,10 @@ app.get('/orgPage/:orgId', (req, res, next) => {
     console.log("query: " + qO);
     db.query(qO, (err, result, fields) => {
       if (err) throw err;
-      if (result.length == 0)
+      if (result.length === 0)
         res.send("no data")
       else {
-        console.log("res: j " + JSON.stringify(result));
+        console.log("res org info: \n" + JSON.stringify(result));
         // console.log(result[0])
         // console.log(result[0].min_donation)
 
@@ -488,13 +490,14 @@ app.get('/orgPage/gifts/:org_id', (req, res, next) => {
     const qGifts =
       `
       SELECT 
-           l.l_name, l.min_people, l.min_sum,
-              g.gift_id, g.gift_name,
-              g.gift_description,g.gift_pic,
-              g.g_date, g.winer
-            FROM
-              Leveled l
-           INNER JOIN gifts g ON l.level_id = g.level_id and l.org_id = "${req.params.org_id}"`
+      l.level_name as l_name, l.min_people, l.min_sum,
+         g.gift_id, g.gift_name,
+         g.gift_description,g.gift_pic,
+         g.g_date, g.winer
+       FROM
+         Levels l
+      INNER JOIN gifts g ON l.level_num = g.level_num and l.org_id ="${req.params.org_id}";`
+
 
     console.log("the query: \n" + qGifts)
     db.query(qGifts, (error, results, fields) => {
