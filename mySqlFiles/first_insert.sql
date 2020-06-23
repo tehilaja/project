@@ -3,7 +3,7 @@
 USe magdilimdb;
 
  -- city 
-INSERT INTO city (country_id,city_name) VALUE (1, "TEL_aviv"),(1, "Jerusalem"),(2, "Maiami"),(1, "Bnei_brak");
+INSERT INTO city (country_id,city_name) VALUE (1, "TEL_aviv"),(1, "Jerusalem"),(2, "Miami"),(1, "Bnei_brak");
 
 -- country
 INSERT INTO country (country_ID, country_name) VALUE(1,"Israel"), (2,"Usa");

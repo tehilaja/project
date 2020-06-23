@@ -69,7 +69,7 @@ class Prizes extends React.Component{
                         "I got all my friends involved!"
                         </div>
                         <p style={{ fontSize: '1.33em' }}>
-                        This time our efforts will build something that will <b>last forever</b>
+                        This time our efforts built something that <b>lasts forever</b>
                         </p>
                     </Grid.Column>
                     </Grid.Row>

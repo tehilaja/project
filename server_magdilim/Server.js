@@ -543,7 +543,7 @@ INNER JOIN gifts g
 
 //------------is program admin--------------
 app.get('/EditOrgPage/:userId/is-org-admin/:orgId', function (req, res, next) {
-  const sqlQuery = `SELECT org_admin_id FROM Organizations WHERE org_id='${req.params.orgId}'`;
+  const sqlQuery = `SELECT org_admin_id FROM Organizations WHERE org_id='${req.params.orgId}' AND approved=1`;
   db.query(sqlQuery, function (error, results, fields) {
     if (error) throw error;
     res.send(!!results && !!results.length);
@@ -694,7 +694,7 @@ app.post('/get_user_params', function (req, res) {
 
 // -- data 
 app.get('/data', function (req, res, next) {
-  db.query('select org_id,img_url,org_name,min_donation from Organizations', function (error, results, fields) {
+  db.query('select org_id,img_url,org_name,min_donation from Organizations WHERE approved=1', function (error, results, fields) {
     if (error) throw error;
     console.log("data org in body: \n " + results)
     res.send(JSON.stringify(results));
@@ -725,7 +725,7 @@ app.get('/userOrgTrees/:user_id', function (req, res, next) {
   orgIds.forEach(orgId => {
     const level = statusCache.getOrgLevel(orgId, trees[orgId].key.level);
     trees[orgId].level = level;
-    db.query(`SELECT img_url, org_name from Organizations WHERE org_id = ${orgId}`, function (error, results, fields) {
+    db.query(`SELECT img_url, org_name from Organizations WHERE org_id=${orgId}`, function (error, results, fields) {
       if (error) throw error;
 
       trees[orgId].org_name = results[0].org_name;
@@ -758,7 +758,7 @@ app.post('/fetch_org_data', (req, res) => {
 
 
 
-  let query = `SELECT * FROM Organizations`
+  let query = `SELECT * FROM Organizations WHERE approved=1`
   db.query(query, (err, result, fields) => {
     if (!err) {
       console.log("the query is: \n", query)
@@ -802,7 +802,7 @@ app.post('/findDuser', (req, res) => {
 app.get('/:userId/org-admin-of',
   function (req, res, next) {
     //const sqlQuery = `SELECT * FROM organizations WHERE org_admin_id = '${req.params.userId}'`;
-    const sqlQuery = `SELECT * FROM organizations WHERE org_admin_id="${req.params.userId}"`;
+    const sqlQuery = `SELECT * FROM organizations WHERE org_admin_id="${req.params.userId} AND approved=1"`;
     console.log(sqlQuery);
 
     db.query(sqlQuery, (err, result, fields) => {
@@ -816,6 +816,79 @@ app.get('/:userId/org-admin-of',
       console.log(result);
     })
   });
+//-------------------function that gets the comments of users for org page------------------
+// feeds_table:
+// feed_id, type (organization/donation/winner), id_feed_topic (org_id/donation_id/prize_id)
+// comments_table:
+// comment_id, feed_id, user_name, date, message, likes
+//-------------------function that gets the comments of users for given feed_id------------------
+app.get('/get-feed-comments',
+  function (req, res, next) {
+    const sqlQuery = `SELECT * FROM comments_table WHERE feed_id=${req.body.feed_id}`;
+
+    db.query(sqlQuery, (err, result, fields) => {
+      if (!err) {
+        console.log('res: ' + JSON.stringify(result));
+        res.send(result);
+      } else {
+        console.log('error: ' + JSON.stringify(err));
+        res.send(null);
+      };
+    })
+  });
+
+
+//-------------------get non approved orgs------------------
+app.get('/non-approved-orgs',
+  function (req, res, next) {
+    const sqlQuery = `SELECT * FROM organizations WHERE approved=0`;
+
+    db.query(sqlQuery, (err, result, fields) => {
+      if (!err) {
+        console.log('res: ' + JSON.stringify(result));
+        res.send(result);
+      } else {
+        console.log('error: ' + JSON.stringify(err));
+        res.send(null);
+      };
+    })
+  });
+
+  //---------------------approve orgs-------------------
+app.post('/approve-orgs', (req, res) => {
+  console.log(JSON.stringify(req.body.org_ids));
+  let query = `UPDATE Organizations SET approved=1 WHERE org_id IN (${req.body.org_ids})`;
+  console.log(query);
+  db.query(query, (err, result, fields) => {
+    if (!err) {
+      res.send('success');
+    }
+    else {
+      console.log('err:' + JSON.stringify(err));
+      res.send("fail");
+    }
+    console.log(result)
+  });
+});
+
+
+ //---------------------disapprove orgs-------------------
+ app.post('/disapprove-orgs', (req, res) => {
+  console.log(JSON.stringify(req.body.org_ids));
+  let query = `DELETE FROM Organizations WHERE org_id IN (${req.body.org_ids})`;
+  console.log(query);
+  db.query(query, (err, result, fields) => {
+    if (!err) {
+      res.send('success');
+    }
+    else {
+      console.log('err:' + JSON.stringify(err));
+      res.send("fail");
+    }
+    console.log(result)
+  });
+});
+
 
 //port for server
 app.listen('5000', () => {

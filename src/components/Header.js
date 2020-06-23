@@ -92,11 +92,11 @@ const HomepageHeading = ({ mobile }) => (
 	/>
 	{/* <Image bordered rounded size='large' src='https://magdilim-organization-images.s3.amazonaws.com/MagdilimLogo.jpg' /> */}
 	<Step.Group fluid>
-	<Step icon='user'/>
-	<Step icon='money bill alternate outline' />
-	<Step icon='users'/>
-	<Step icon='building'/>
-	<Step active icon='gift'/>
+	<Step icon='user' title='Join'/>
+	<Step icon='money bill alternate outline' title='Donate' />
+	<Step icon='users' title='Reffer'/>
+	<Step icon='building' title='Build'/>
+	<Step active icon='gift' title='Win!'/>
 	</Step.Group>
 	<Header
 		as='h2'
@@ -155,17 +155,8 @@ class DesktopContainer extends React.Component
 			routePrizes: false,
 		}
 
-	// this.handlerClick = this.handlerClick.bind(this);
-	//this.handlerLogoutClick = this.handlerLogoutClick.bind(this);
 	}
 
-	// handlerClick(userName) {
-    //     this.setState({
-	// 		loggedIn: true,
-	// 		userName: userName
-	// 	});
-	// 	this.props.record(userName)
-	// }
 
 	hideFixedMenu = () => this.setState({ fixed: false })
 	showFixedMenu = () => this.setState({ fixed: true })
@@ -411,8 +402,4 @@ class MobileContainer extends Component {
 	<ResponsiveContainer data={props}>
 	</ResponsiveContainer>
   )
-  
-//   export default HeaderLayout;
-  
-
 export default DesktopContainer;

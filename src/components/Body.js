@@ -15,6 +15,7 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 
 import {
+	Advertisement,
 	Button,
 	Container,
 	Divider,
@@ -232,12 +233,10 @@ class Body extends React.Component
 					<Grid container  verticalAlign='middle'>
 						<Grid.Row>
 							<Grid.Column width={10}>
-								{/*putting organizations into home page:*/}
-								{/*~~~~~~~~~~~  organization */}
+								{/*displaying organizations on home page:*/}
 								<Segment color='red'>
-									<Header as='h2' icon='globe' content='Donate to organization' />
+									<Header as='h2' icon='globe' content='Donate to Organization' />
 									<div style ={{display: 'flex', flexDirection: 'row', padding: '1em', margin:'1em'}}> 
-										{/* className = "orgComponents" */}
 										{orgComponents}
 									</div>
 								</Segment>
@@ -249,54 +248,63 @@ class Body extends React.Component
 								<Icon size="huge" name='heart outline' />
 							</Grid.Column>
 						</Grid.Row>
-							{/*~~~~~~~~~~~  last donation */}
-							<Segment color='orange'>
-								<Grid.Column floated='cener' width ={12}>
-									<Header as='h2' icon='time' content='the last donation' />
+						{/* Showing last prize winners */}
+						<Grid.Row>
+						<Grid.Column width={10}>
+						<Segment color='orange'>
+									<Header as='h2' icon='gift' content='Winners' />
 									<div  style ={{display: 'flex'}}>
 										{donationInfo}
 									</div>
-								</Grid.Column>
 							</Segment>
-						<Grid.Row >
-
+						</Grid.Column>
 						</Grid.Row>
-						<Grid.Row >
+						{/*~~~~~~~~~~~  last donation */}
+						<Grid.Row>
+							<Grid.Column width={10}>
+							<Segment color='purple'>
+									<Header as='h2' icon='time' content='Recent Donations' />
+									<div  style ={{display: 'flex'}}>
+										{donationInfo}
+									</div>
+									</Segment>
+							</Grid.Column>
 							<Grid.Column floated='right' width={6}>
 							
-								<Label as='a' color='red' tag>
-							Create Your Own!
-							</Label>
-								<Image bordered rounded size='large' src='https://i.insider.com/5ab2a71c5851aebb008b46da?width=3100&format=jpeg&auto=webp' />
-								<Button primary size='huge' onClick ={() => this.setState(prevState => {
-									return {
-											routerCreateOrgPage: !prevState.routerCreateOrgPage
-										}})}>
-									Get Started
-									<Icon name='right arrow' />
-								</Button>
-							</Grid.Column>
-							
-						</Grid.Row>
+							<Label as='a' color='red' tag>
+						Create Your Own Platform!
+						</Label>
+							<Image bordered rounded size='large' src='https://i.insider.com/5ab2a71c5851aebb008b46da?width=3100&format=jpeg&auto=webp' />
+							<Button primary size='huge' onClick ={() => this.setState(prevState => {
+								return {
+										routerCreateOrgPage: !prevState.routerCreateOrgPage
+									}})}>
+								Get Started
+								<Icon name='right arrow' />
+							</Button>
+						</Grid.Column>
+						</Grid.Row >
 					</Grid>
 				</Segment>
 					
-				<Segment style={{ padding: '0em' }} vertical>
+				<Segment style={{ padding: '0em' }} vertical color='pink'>
 					<Grid celled='internally' columns='equal' stackable>
 						<Grid.Row textAlign='center'>
 						<Grid.Column style={{ paddingBottom: '5em', paddingTop: '5em' }}>
-							<Header as='h3' style={{ fontSize: '2em' }}>
-							"What an Organization"
-							</Header>
-							<p style={{ fontSize: '1.33em' }}>That is what they all say about us</p>
+						<div as='h3' style={{ fontSize: '2em' }}>
+                        <Icon size='big' name='globe' />
+                        "Thanks Magdilim"
+                        </div>
+                        <p style={{ fontSize: '1.33em' }}>for enabling us to create an ongoing platform</p>	
 						</Grid.Column>
 						<Grid.Column style={{ paddingBottom: '5em', paddingTop: '5em' }}>
-							<Header as='h3' style={{ fontSize: '2em' }}>
-							"I shouldn't have gone with their competitor."
-							</Header>
-							<p style={{ fontSize: '1.33em' }}>
-							<b>Nan</b> Chief Fun Officer Acme Toys
-							</p>
+						<div as='h3' style={{ fontSize: '2em' }}>
+                        <Icon size='big' name='building' />
+                        "This campaign will be different!"
+                        </div>
+                        <p style={{ fontSize: '1.33em' }}>
+                        This time, our efforts will build something that will <b>last forever</b>
+                        </p>
 						</Grid.Column>
 						</Grid.Row>
 					</Grid>

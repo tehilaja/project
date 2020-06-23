@@ -56,7 +56,7 @@ class App extends React.Component {
             case 'editorgpage':
                 await this.get_is_org_admin(path[2]);
                 break;
-            case 'neworgpage':
+            case 'adminpage':
                 await this.get_is_program_admin();
                 break;
             default:

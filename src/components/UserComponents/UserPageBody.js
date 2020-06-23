@@ -141,17 +141,6 @@ class UserPage extends React.Component {
                 />)
         });
 
-
-
-
-        // //-----Redirect--------
-        // if (this.state.clickOrg === true){
-        //  return <Redirect to = {{
-        //      pathname: '/OrgPage',
-        //      state: {id: this.state.id}
-        //  }} />
-        // }
-
         //-----------return------------------------------
         return (
             <div>

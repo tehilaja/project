@@ -3,11 +3,12 @@ import axios from "axios";
 import { Button, Divider, Form, Grid, Segment } from 'semantic-ui-react'
 import { Redirect } from "react-router-dom";
 
+import UserRegistrationForm from './UserRegistrationForm.js'
 class LoginForm extends React.Component {
     constructor(props) {
         super(props)
         this.state =
-            { userName: "", pswd: "", isAdmin: false, loggedIn: false }
+            { userName: "", pswd: "", isAdmin: false, loggedIn: false, showUserRegister: false }
         this.handleChange = this.handleChange.bind(this)
     }
 
@@ -53,7 +54,8 @@ class LoginForm extends React.Component {
 
     render() {
         return (
-            <Segment placeholder>
+            <div>
+            {!this.state.showUserRegister && <Segment placeholder>
                 <Grid columns={2} relaxed='very' stackable>
                     <Grid.Column>
                         <Form onSubmit={this.handleSubmit.bind(this)}>
@@ -79,12 +81,17 @@ class LoginForm extends React.Component {
                     </Grid.Column>
 
                     <Grid.Column verticalAlign='middle'>
-                        <Button content='Sign up' icon='signup' size='big' />
+                        <Button content='Sign up' icon='signup' size='big' onClick={() => this.setState(prevState => {
+						return {
+								showUserRegister: !prevState.showUserRegister
+							}})}/>
                     </Grid.Column>
                 </Grid>
 
                 <Divider vertical>Or</Divider>
-            </Segment>
+            </Segment>}
+            {this.state.showUserRegister && <UserRegistrationForm />}
+            </div>
         )
     }
 }
