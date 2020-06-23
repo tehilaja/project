@@ -1,7 +1,7 @@
 Use magdilimdb;
 
  -- organization
-INSERT INTO organizations(org_name, org_admin_id, description, img_url, min_donation, one_time_donation, approved, pc_num, admin_name, founding_year, working, num_volunteers, num_friends, field_of_acctivity) VALUES
+INSERT INTO Organizations(org_name, org_admin_id, description, img_url, min_donation, one_time_donation, approved, pc_num, admin_name, founding_year, working, num_volunteers, num_friends, field_of_acctivity) VALUES
 ("איחוד הצלה ישראל","tehilaj97@gmail.com", "ן (אירועים רבי נפגעים), חולים ונפגעים. רכישת ציוד רפואי בסיסי ומתקדם לצורך פעילות המתנדבים. רכישת רכבי חירום והצלה, כגון אמבולנסים ואופנועים, ומימון הוצאות אחזקת רכבי החירום. הכשרת אזרחים לפעילות בקהילה לסיוע ומניעה של תאונות דרכים, פגיעות ומחלות",
 "https://upload.wikimedia.org/wikipedia/commons/b/bc/UHNewLogo.svg",12, 30, true, 580465979, "אליהו פולק", 2006,388,231,5400, "הצלת נפשות"),
 ("עזר מציון","tehilaj97@gmail.com", "וסעודית. סיוע, שיקום ושירותים לנכי בריאות הנפש. סיוע לניצולי שואה. סיוע לחולי סרטן. הפעלת מגוון שרותים לאוכלוסיית הגמלאים והקשישים ודאגה לזכויותיהם. סיוע, ייעוץ, טיפול ושיקום לבעלי צרכים מיוחדים בכל סוגי הנכויות לרבות נכויות חושיות כגון לקויות שמיעה, לקויות דיבור ולקויות ראיה. הפעלת מסגרות חינוכיות וטיפוליות. הפעלת שירותי רווחה. סיוע לנפגעי טרור להקים קרן גמילות חסדים. לעזור לחולים נזקקים בריפוי ועזרה רפואית",
@@ -10,15 +10,15 @@ INSERT INTO organizations(org_name, org_admin_id, description, img_url, min_dona
 "https://yad-sarah.net/wp-content/uploads/2019/04/logoys.png",15, 20, true, 580030104,"משה אורי כהן",1983, 55,900,123456,"ציוד רפואי");
 
 -- addresses
-select * from addresses;
-INSERT INTO addresses(org_id, country, state, city, street, building, apartment, suite, zip) VALUES
+select * from Addresses;
+INSERT INTO Addresses(org_id, country, state, city, street, building, apartment, suite, zip) VALUES
 (1, "Israel", null, "Jerusalem","ירמיהו", 78, null, null, 9446758),
 (2, "Israel", null, "Jerusalem","הרב רבינוב", 5, null, null, 5156316),
 (3, "Israel", null, "Jerusalem","שדרות הרצל", 124, null, null, 9618722);
 
 -- doners in org
-select * from doners_in_org;
-INSERT INTO doners_in_org (user_id, org_id, monthly_donation, referred_by,d_title, d_description,anonymous,status_id) VALUES
+select * from Doners_in_org;
+INSERT INTO Doners_in_org (user_id, org_id, monthly_donation, referred_by,d_title, d_description,anonymous,status_id) VALUES
 ("genstil@g.jct.ac.il",3,15,null, "תודות לארגון","נתרם עקב העזרה הרבה אשר הארגון מסייע לכלל ישראל ישר כוח!",TRUE,1),
 ("tehilaj97@gmail.com",3,45,null, "תודות לארגון","נתרם עקב העזרה הרבה אשר הארגון מסייע לכלל ישראל ישר כוח!",TRUE,1),
 ("rachelletikva@gmail.com",3,25,"genstil@g.jct.ac.il", "תודות לארגון","נתרם עקב העזרה הרבה אשר הארגון מסייע לכלל ישראל ישר כוח!",TRUE,1),
@@ -33,8 +33,8 @@ INSERT INTO doners_in_org (user_id, org_id, monthly_donation, referred_by,d_titl
 ("someid@gmail.com",2,50,null,"tanks for all halpe ","...",TRUE,1);
 
 -- levels
-select * from levels;
-INSERT INTO levels (org_id, level_num, level_name, min_people, min_sum) VALUES
+select * from Levels;
+INSERT INTO Levels (org_id, level_num, level_name, min_people, min_sum) VALUES
 (1, 1, "כסף", 5, null),
 (1, 2, "זהב", 5, 500),
 (1, 3, "פלטינום", 10, 2000),
@@ -49,8 +49,8 @@ INSERT INTO levels (org_id, level_num, level_name, min_people, min_sum) VALUES
 (3, 4, "יהלום", null, 10000);
 
 -- gifts
-select* from gifts;
-INSERT INTO gifts (gift_name, gift_description, gift_pic, org_id, level_num, g_date, raffle) VALUES
+select* from Gifts;
+INSERT INTO Gifts (gift_name, gift_description, gift_pic, org_id, level_num, g_date, raffle) VALUES
 ("רכב 7 מקומות","כב מפואר עם 7 מקומותר", null, 1, 4, "2020-08-23", true),
 ("מצלמה","מצלמת קאנון איכותית","",2,2,"2020-08-17", true),
 ("דיסק","פרחי מיאמי","",3,1,"2020-07-17", false),
