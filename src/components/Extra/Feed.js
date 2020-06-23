@@ -13,6 +13,8 @@ class CommentFeed extends React.Component{
 		{
 			loggedIn: this.props.data.loggedIn, 
       userName: this.props.data.userName, 
+      feedType: this.props.data.feedType,
+      feed_id: this.props.data.feed_id,
       comments: [],
       feedId: 0,
     };
@@ -98,6 +100,8 @@ computeFeedComments = () => {
 FeedBasic = () => (
   <Feed>
     {this.computeFeedComments()}
+    {/* Add new comment */}
+
   </Feed>
 )
 
@@ -106,6 +110,18 @@ render() {
   return (
     <div>
       {this.FeedBasic()}
+      <Segment>
+    <Form>
+    <Form.Field inline='verdical' onSubmit={this.handleSubmit.bind(this)}>
+      <UserAvatar size = '35' shape='round' name={this.state.userName} />
+        <Form.Input
+        icon = 'comment alternate'
+         placeholder='add comment...'
+         name="commentText"
+         onChange={this.handleChange.bind(this)} />
+     </Form.Field>
+   </Form>
+  </Segment>
     </div>)
 }
   

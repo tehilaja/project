@@ -17,7 +17,7 @@ import Donate from './Donate.js'
 import giftCard from './giftCard'
 
 import Doners from "./Doners.js"
-
+import FeedComponent from '../Extra/Feed.js'
 
 
 const levelOptions = [
@@ -446,7 +446,9 @@ class OrgBody extends React.Component {
                   Messages<Label>15</Label>
                 </Menu.Item>
               ),
-              render: () => <Tab.Pane  attached={false} >Tab 2 Content</Tab.Pane>,
+              render: () => <Tab.Pane  attached={false} >
+                  <FeedComponent data={{loggedIn: this.state.loggedIn, userName: this.state.userName, feedType: 'org', feed_id:this.state.org_id}}/>
+                  </Tab.Pane>,
             },
 
             // ~~~~~~~~~~~~~~ donate ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
