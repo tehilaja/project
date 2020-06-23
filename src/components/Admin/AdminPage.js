@@ -5,6 +5,8 @@ import ApproveOrgs from './ApproveOrgs.js'
 import PayOrgs from './PayOrgs.js'
 import OrgTables, * as approveOrgsUtils from './ApproveOrgs';
 
+import Header from '../Header.js'
+
 class Status {
   static None = 0;
   static ApproveOrgs = 1;
@@ -17,6 +19,8 @@ class AdminPage extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      loggedIn: this.props.data.loggedIn,
+      userName: this.props.data.userName,
       status: Status.ApproveOrgs,
       showAproveOrgs: false,
       showPayOrgsMonthly: false,
@@ -30,7 +34,12 @@ class AdminPage extends React.Component {
 
   render() {
     return (
-      <div>
+      <div textAlign='center'>
+        <Header data={{loggedIn: this.state.loggedIn, userName: this.state.userName}}/>
+        <br />
+        <br />
+        <br />
+        <div >
         <Button
           icon
           labelPosition='left'
@@ -55,6 +64,7 @@ class AdminPage extends React.Component {
         >
           <Icon name='user' /> One Time Payments
           </Button>
+          </div>
         <br/>
         <br/>
         <br/>

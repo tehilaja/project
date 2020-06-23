@@ -176,9 +176,16 @@ render() {
 
 	//redirecting to User Profile TODO: route to correct page!
 	if (this.state.routeUserProfile === true){
-		alert("route user profile:"+JSON.stringify(this.state))
 		return <Redirect to = {{
 			pathname: '/UserPage',
+			state: {userName: this.state.userName, loggedIn: this.state.loggedIn}
+		}} />
+	} 
+
+	//redirecting to User Profile TODO: route to correct page!
+	if (this.state.routeAdminPage === true){
+		return <Redirect to = {{
+			pathname: '/AdminPage',
 			state: {userName: this.state.userName, loggedIn: this.state.loggedIn}
 		}} />
 	} 
@@ -240,6 +247,13 @@ render() {
 					}})}>
 					My Profile
 				</Menu.Item>}
+				{this.state.loggedIn &&
+			  <Menu.Item as='a' onClick ={() => this.setState(prevState => {
+				  return {
+					routeAdminPage: !prevState.routeAdminPage
+					}})}>
+					Admin Page
+				</Menu.Item>}
 			  <Menu.Item position='right'>
 			  {this.state.showLogin && <LoginForm record={this.handlerClick} data={{userName:this.state.userName, loggedIn:this.state.loggedIn}}/>}
                 {this.state.showUser && <UserRegistrationForm record={this.handlerClick} data={{userName:this.state.userName, loggedIn:this.state.loggedIn}}/>}
@@ -283,6 +297,7 @@ class MobileContainer extends Component {
 			routeUserProfile: false,
 			routeOrgSearch: false,
 			routePrizes: false,
+			routeAdminPage: false
 		}
 		// alert("in Header Mobile:"+JSON.stringify(this.state))
 
