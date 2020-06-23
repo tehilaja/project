@@ -40,13 +40,15 @@ class OrgBody extends React.Component {
         // }
         this.state = 
         {
+            loggedIn: this.props.data.loggedIn,
+			userName: this.props.data.userName,
             org_id: this.props.data.orgDetails.org_id,
             Allgifts : [], // the information about gifts
             giftShow: [],
-            // firstName: "",
-            // email: "",
+
             showLogin: false,
             showUser: false,
+
             // organization: orgData,
             btnDonateClicked: false,
             confirmBtn: false,
@@ -58,11 +60,10 @@ class OrgBody extends React.Component {
 
 
             color: "F33333",
-            userName: "a", // -
             DuserName: "",
             DuserId: "",
             userEmail: "", // -
-            // user_id: 5 // todo : real info
+
             activeIndex: 0, // to active >
             selectedOptionLevel: null // gift
         }
