@@ -1,5 +1,5 @@
 import React from 'react'
-import { Feed, Icon, Segment, Form } from 'semantic-ui-react'
+import { Button, Feed, Icon, Segment, Form } from 'semantic-ui-react'
 import axios from 'axios';
 
 import UserAvatar from 'react-avatar';
@@ -22,6 +22,7 @@ class CommentFeed extends React.Component{
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.updateLikes = this.updateLikes.bind(this)
+    this.calculateDate =this.calculateDate.bind(this)
   }
 
 // const FeedContent = {
@@ -32,6 +33,18 @@ class CommentFeed extends React.Component{
 //     numLikes: 5
 // }
 
+//TODO take care of ends ad beginnings of new months:
+calculateDate(date){
+  var now = new Date;
+
+if (date.getDate() == now.getDate() && date.getMonth() == now.getMonth() && date.getYear() == now.getYear())
+  return "Today";
+else if (date.getDate() == now.getDate()-1 && date.getMonth() == now.getMonth() && date.getYear() == now.getYear())
+  return "Yesterday";
+else if ((date.getDate() > now.getDate()-7 && date.getMonth() == now.getMonth() && date.getYear() == now.getYear()))
+  return "Less than a week";
+}
+
 getFeedComments = () => {
   this.state.comments.length = 0;
   // (async () => {
@@ -40,13 +53,15 @@ getFeedComments = () => {
   //     { headers: { 'Content-Type': 'application/json' } });
   //   this.setState({ comments: response.data || [] });
   // })();
+  //TODO: calculate date for the correct date and not just for now
   this.state.comments.push({
     feedUserName: 'TehilaJ', 
     feedAction: 'commented', 
-    feedDate: 'yesterday', 
+    feedDate: this.calculateDate(new Date),
     feedText: 'feed text here...', 
     numLikes: 5
 })
+this.calculateDate(new Date)
   alert(JSON.stringify(this.state))
 }
 
@@ -61,8 +76,9 @@ handleSubmit(){
     feedUserName: this.state.userName, 
     feedDate: new Date, 
     feedText: this.state.commentText, 
-    numLikes: 5
+    numLikes: 0
 }
+alert(JSON.stringify(this.state.newComment))
 }
 
 updateLikes(){
@@ -111,8 +127,8 @@ render() {
     <div>
       {this.FeedBasic()}
       <Segment>
-    <Form>
-    <Form.Field inline='verdical' onSubmit={this.handleSubmit.bind(this)}>
+    <Form onSubmit={this.handleSubmit.bind(this)}>
+    <Form.Field inline='verdical' >
       <UserAvatar size = '35' shape='round' name={this.state.userName} />
         <Form.Input
         icon = 'comment alternate'
@@ -120,6 +136,7 @@ render() {
          name="commentText"
          onChange={this.handleChange.bind(this)} />
      </Form.Field>
+     {/* <Button content='send' primary /> */}
    </Form>
   </Segment>
     </div>)
