@@ -123,14 +123,34 @@ CREATE TABLE IF NOT EXISTS Levels_in_org (
 );
 -- כל כמה זמן לעדכן ?
 
-CREATE TABLE IF NOT EXISTS fields_of_activity (
+CREATE TABLE IF NOT EXISTS Fields_of_activity (
 	field_id int(11),
     field_name varchar(255)
 );
 
-CREATE TABLE IF NOT EXISTS org_field_of_activity(
+CREATE TABLE IF NOT EXISTS Org_field_of_activity(
 	org_id int(11),
     field_id int (11)
+);
+
+-- Adding this tables to keep track of admin pages --
+-- One_time_donations --
+CREATE TABLE IF NOT EXISTS One_time_donations (
+  donation_id int(11) AUTO_INCREMENT PRIMARY KEY,
+  user_id varchar(25),
+  org_id int(11),
+  referred_by varchar(25),
+  sum_donation int(11),
+  d_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- ??
+  anonymous tinyint, -- default -> false
+);
+
+CREATE TABLE IF NOT EXISTS One_time_donations (
+  payment_id int(11) AUTO_INCREMENT PRIMARY KEY,
+  org_id int(11),
+  amount_paid int(11),
+  date_paid TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  still_owed int(11),
 );
 
 

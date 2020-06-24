@@ -198,8 +198,8 @@ app.get(`/orgPage/get_org_field_of_activity/:orgId`, (req, res, next) => {
 
     const q_org_field_name = 
       `select f.field_name
-      from org_field_of_activity o
-        inner join fields_of_activity f ON o.field_id = f.field_id
+      from Org_field_of_activity o
+        inner join Fields_of_activity f ON o.field_id = f.field_id
       where o.org_id ="${req.params.orgId}";`
 
     console.log("query: \n" + q_org_field_name);
