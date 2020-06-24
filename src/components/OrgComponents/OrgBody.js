@@ -448,7 +448,7 @@ class OrgBody extends React.Component {
                 </Menu.Item>
               ),
               render: () => <Tab.Pane  attached={false} >
-                  <FeedComponent data={{loggedIn: this.state.loggedIn, userName: this.state.userName, feedType: 'org', feed_id:this.state.org_id}}/>
+                  <FeedComponent data={{loggedIn: this.state.loggedIn, userName: this.state.userName, feed_type: 'org', feed_type_id:this.state.org_id}}/>
                   </Tab.Pane>,
             },
 
@@ -532,9 +532,6 @@ class OrgBody extends React.Component {
                     <Header as='h2' icon='comment' content='Comment' />
                     <Feed>
                         <Feed.Event>
-                        <Feed.Label>
-                            <img src='/images/avatar/small/elliot.jpg' />
-                        </Feed.Label>
                         <Feed.Content>
                             <Feed.Summary>
                             <Feed.User>Elliot Fu</Feed.User> added you as a friend

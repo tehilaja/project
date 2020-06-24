@@ -1,7 +1,6 @@
 -- ~~~~~~~~~~~~ CREATE TABLE ~~~~~~~~~~~~~~~~ --
 
  -- ~~~~ DROP
-DROP TABLE doners_in_org;
 DROP TABLE bank_info;
 DROP TABLE addresses;
 DROP TABLE doners_in_org;
@@ -111,7 +110,7 @@ CREATE TABLE IF NOT EXISTS Doners_in_org (
   d_description text
 );
 
--- האם לא כדאי לשמור שתי שדות נופים בטבלה של doners_in_org ? --
+-- האם לא כדאי לשמור שתי שדות נופים בטבלה של Doners_in_org ? --
 
 -- Levels_in_org --
 CREATE TABLE IF NOT EXISTS Levels_in_org (
@@ -142,7 +141,7 @@ CREATE TABLE IF NOT EXISTS One_time_donations (
   referred_by varchar(25),
   sum_donation int(11),
   d_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- ??
-  anonymous tinyint, -- default -> false
+  anonymous tinyint -- default -> false
 );
 
 CREATE TABLE IF NOT EXISTS Payments (
@@ -150,9 +149,18 @@ CREATE TABLE IF NOT EXISTS Payments (
   org_id int(11),
   amount_paid int(11),
   date_paid TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  still_owed int(11),
+  still_owed int(11)
 );
 
+CREATE TABLE IF NOT EXISTS Feed_comments (
+  comment_id int(11) AUTO_INCREMENT PRIMARY KEY,
+  feed_type varchar(25),
+  feed_type_id int(11),
+  user_id varchar(25),
+  date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  comment_text varchar(3000),
+  likes int(11)
+);
 
 
 

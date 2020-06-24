@@ -198,13 +198,14 @@ render() {
 			state: {userName: this.state.userName, loggedIn: this.state.loggedIn}
 		}} />
 	} 
-		//redirecting to OrgSearch page
-		if (this.state.routeOrgSearch === true){
-			return <Redirect to = {{
-				pathname: '/OrgSearch',
-				state: {userName: this.state.userName, loggedIn: this.state.loggedIn}
-			}} />
-		} 
+
+	//redirecting to OrgSearch page
+	if (this.state.routeOrgSearch === true){
+		return <Redirect to = {{
+			pathname: '/OrgSearch',
+			state: {userName: this.state.userName, loggedIn: this.state.loggedIn}
+		}} />
+	} 
 	
   return (
 	<Responsive getWidth={getWidth} minWidth={Responsive.onlyTablet.minWidth}>
@@ -256,9 +257,7 @@ render() {
 					Admin Page
 				</Menu.Item>}
 			  <Menu.Item position='right'>
-			  {this.state.showLogin && <LoginForm record={this.handlerClick} data={{userName:this.state.userName, loggedIn:this.state.loggedIn}}/>}
-                {this.state.showUser && <UserRegistrationForm record={this.handlerClick} data={{userName:this.state.userName, loggedIn:this.state.loggedIn}}/>}
-				{!this.state.loggedIn &&
+			  {!this.state.loggedIn &&
 				<div>
 				<Button as='a' inverted={!fixed} onClick={() => this.setState({showLogin: true, showUser: false, showBackButton: true})}>
 				  Log in
@@ -273,6 +272,8 @@ render() {
 			  </Menu.Item>
 			</Container>
 		  </Menu>
+		  {this.state.showLogin && <LoginForm record={this.handlerClick} data={{userName:this.state.userName, loggedIn:this.state.loggedIn}}/>}
+        	{this.state.showUser && <UserRegistrationForm record={this.handlerClick} data={{userName:this.state.userName, loggedIn:this.state.loggedIn}}/>}
 		  <HomepageHeading />
 		</Segment> 
 	  </Visibility>

@@ -59,7 +59,13 @@ INSERT INTO Gifts (gift_name, gift_description, gift_pic, org_id, level_num, g_d
 ("dfdfדיסק","פרחי מיאמי","",3,1,"2020-07-17", false),
 ("מכונת תפירה","חדשה במחיוחד","",1,2,"2020-09-23", false);
 
-
+-- inserting comments into the feed --
+select* from Feed_comments;
+INSERT INTO Feed_comments (feed_type, feed_type_id, user_id, date, comment_text, likes) VALUES
+('org', 2, 'tehilaj97@gmail.com', "2020-08-23", 'I love this organization', 3)
+('org', 2, 'rachelletikva@gmail.com', "2020-08-23", "I know, they're the best", 2)
+('org', 2, 'tehilaj97@gmail.com', "2020-08-23", 'oh! you like them too???', 3)
+('org', 2, 'rachelletikva@gmail.com', "2020-08-23", "they are life changing:) ", 2)
 -- ~~~~~~~~~~~~~~~~ gifts & level ~~~~~~~~~~~~~~~~~~~
  
  -- ~~~ whith a  gifts_levels table

@@ -40,7 +40,6 @@ const sendEmail = require('./utilities/email').methods.sendEmail;
 
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true, parameterLimit: 50000 }));
-var my_user = null
 var pic = "https://yad-sarah.net/wp-content/uploads/2019/04/logoys.png"
 
 //routering 
@@ -153,7 +152,7 @@ userLoginService.isAuthenticated(function (message, isLoggedIn) {
   14.05
 */
 
-/* SELECT d.user_id, d.org_id, u.user_name ,d.d_title,d.d_description, d.is_anonim,d.d_date, d.referred_by, o.img_url FROM doners_in_org d 
+/* SELECT d.user_id, d.org_id, u.user_name ,d.d_title,d.d_description, d.is_anonim,d.d_date, d.referred_by, o.img_url FROM Doners_in_org d 
 INNER JOIN users u ON u.user_id = d.user_id 
 INNER JOIN organizations o ON o.org_id = d.org_id
  ORDER BY d_date DESC LIMIT 20
@@ -162,11 +161,11 @@ INNER JOIN organizations o ON o.org_id = d.org_id
 // TODO: make in prochedure?
 app.get('/lastDonation', (req, res, next) => {
   try {
-    // const qLDonation = `SELECT d.user_id, d.org_id, u.user_name ,d.d_title,d.d_description, d.is_anonim,d.referred_by, d.d_date, o.img_url FROM doners_in_org d 
+    // const qLDonation = `SELECT d.user_id, d.org_id, u.user_name ,d.d_title,d.d_description, d.is_anonim,d.referred_by, d.d_date, o.img_url FROM Doners_in_org d 
     //   INNER JOIN users u ON u.user_id = d.user_id 
     //   INNER JOIN organizations o ON o.org_id = d.org_id
     //   ORDER BY d_date DESC LIMIT 20`;
-    const qLDonation = `SELECT d.user_id, d.org_id, d.d_title,d.d_description, d.anonymous,d.referred_by, d.d_date, o.img_url FROM doners_in_org d 
+    const qLDonation = `SELECT d.user_id, d.org_id, d.d_title,d.d_description, d.anonymous,d.referred_by, d.d_date, o.img_url FROM Doners_in_org d 
       INNER JOIN organizations o ON o.org_id = d.org_id
       ORDER BY d_date DESC LIMIT 20`
     //d.referred_by,
@@ -422,7 +421,7 @@ app.post('/addOrg', (req, res, next) => {
 
 app.post('/addOrg/firstStep', (req, res, next) => {
 
-  const qFirstAdd = `INSERT INTO doners_in_org (org_id,org_name,min_donation,one_time_donation,approved)
+  const qFirstAdd = `INSERT INTO Doners_in_org (org_id,org_name,min_donation,one_time_donation,approved)
     VALUES(${req.body.org_id},${req.body.org_name},${req.body.min_donation},${req.body.one_time_donation},0,
     );`
   // ,org_num,branch,account_num,bank_num,account_owner
@@ -435,7 +434,7 @@ app.post('/addOrg/firstStep', (req, res, next) => {
 // check which details exsist and do a query
 function checkDonateDetails(paramO) {
   // user_id, org_id, monthly_donation, referred_by,d_title, d_description,is_anonim,status_id
-  var q = ` INSERT INTO doners_in_org (`
+  var q = ` INSERT INTO Doners_in_org (`
   var insertinfValue = `)VALUES(`
 
   // neccesery
@@ -473,9 +472,8 @@ app.post('/donationProcess', (req, res, next) => {
   try {
     console.log("in /donationProcess \n ")
 
-    // let queryD = `INSERT INTO Doners_in_org (user_id, org_id, monthly_donation, referred_by) VALUES (${my_user.user_id} , ${req.body.org_id}, ${req.body.monthly_donation},(select user_id from Users where user_name = "${req.body.referred_by}" ));`
 
-    // let qDonate = ` INSERT INTO doners_in_org SET ?', ${JSON.stringify(req.body)}`
+    // let qDonate = ` INSERT INTO Doners_in_org SET ?', ${JSON.stringify(req.body)}`
     //  ${req.body.is_admin });`
 
 
@@ -574,13 +572,6 @@ app.get('/:userId/is-program-admin', function (req, res, next) {
   res.send(req.params.userId === 'tehilaj97@gmail.com');
 });
 
-/// -- userProfile 
-app.get('/userProfile ', function (req, res, next) {
-  db.query(`SELECT * FROM Users WHERE user_name="${my_user.user_id}"`, function (error, results, fields) {
-    if (error) throw error;
-    res.send(JSON.stringify(results));
-  });
-});
 
 
 
@@ -661,15 +652,6 @@ app.post('/logout', function (req, res) {
 });
 
 
-//--------------check if user is logged in -----------------
-app.post('/is_logged_in', function (req, res) {
-  if (my_user == null)
-    res.end("no user");
-  else {
-    console.log("in is logged. my_user: " + my_user.user_name)
-    res.end(my_user.user_name)
-  }
-});
 
 
 //---------------get current user--------------
@@ -704,16 +686,6 @@ app.get('/data', function (req, res, next) {
   });
 });
 
-// -- userProfile 
-app.get('/userProfile ', function (req, res, next) {
-  db.query(`SELECT * FROM Users WHERE user_name="${my_user.user_id}"`, function (error, results, fields) {
-    if (error) throw error;
-    // res.send(JSON.stringify(results));
-    res.send(JSON.stringify(results));
-
-
-  });
-});
 
 
 //-------------------get org trees from cache for user------------------------
@@ -770,6 +742,7 @@ app.post('/fetch_org_data', (req, res) => {
 })
 
 
+
 //------------- ??? -------
 //---findDuser ---
 app.post('/findDuser', (req, res) => {
@@ -807,16 +780,15 @@ app.get('/:userId/org-admin-of',
       console.log(result);
     })
   });
-//-------------------function that gets the comments of users for org page------------------
-// feeds_table:
-// feed_id, type (organization/donation/winner), id_feed_topic (org_id/donation_id/prize_id)
-// comments_table:
-// comment_id, feed_id, user_name, date, message, likes
-//-------------------function that gets the comments of users for given feed_id------------------
-app.get('/get-feed-comments',
-  function (req, res, next) {
-    const sqlQuery = `SELECT * FROM comments_table WHERE feed_id=${req.body.feed_id}`;
 
+//-------------------function that gets the comments of users for given feed_id------------------
+app.post('/OrgPage/fetch-feed-comments/:feed_type/:feed_type_id',
+// app.post('/fetch-feed-comments',
+function (req, res, next) {
+  console.log('in fetch feed comments');
+    const sqlQuery = `SELECT * FROM Feed_comments WHERE feed_type="${req.params.feed_type}" and feed_type_id=${req.params.feed_type_id}`
+    // const sqlQuery = `SELECT * FROM Feed_comments WHERE feed_type="org" and feed_type_id=2`
+    console.log(sqlQuery)
     db.query(sqlQuery, (err, result, fields) => {
       if (!err) {
         console.log('res: ' + JSON.stringify(result));
@@ -827,7 +799,6 @@ app.get('/get-feed-comments',
       };
     })
   });
-
 
 //-------------------get non approved orgs------------------
 app.get('/non-approved-orgs',

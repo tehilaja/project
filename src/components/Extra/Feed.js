@@ -13,10 +13,11 @@ class CommentFeed extends React.Component{
 		{
 			loggedIn: this.props.data.loggedIn, 
       userName: this.props.data.userName, 
-      feedType: this.props.data.feedType,
-      feed_id: this.props.data.feed_id,
+      feed_type: this.props.data.feed_type,
+      feed_type_id: this.props.data.feed_type_id,
       comments: [],
       feedId: 0,
+      gotFeedFlag: false
     };
     this.getFeedComments();
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -43,26 +44,31 @@ else if (date.getDate() == now.getDate()-1 && date.getMonth() == now.getMonth() 
   return "Yesterday";
 else if ((date.getDate() > now.getDate()-7 && date.getMonth() == now.getMonth() && date.getYear() == now.getYear()))
   return "Less than a week";
+return 'other';
 }
 
 getFeedComments = () => {
   this.state.comments.length = 0;
-  // (async () => {
-  //   const response = await axios.get('get-feed-comments',
-  //   { feed_id: this.state.feedId },
-  //     { headers: { 'Content-Type': 'application/json' } });
-  //   this.setState({ comments: response.data || [] });
-  // })();
-  //TODO: calculate date for the correct date and not just for now
-  this.state.comments.push({
-    feedUserName: 'TehilaJ', 
-    feedAction: 'commented', 
-    feedDate: this.calculateDate(new Date),
-    feedText: 'feed text here...', 
-    numLikes: 5
-})
-this.calculateDate(new Date)
-  alert(JSON.stringify(this.state))
+  (async () => {
+    const response = await axios.post(`fetch-feed-comments/${this.state.feed_type}/${this.state.feed_type_id}`,
+    // const response = await axios.post(`/fetch-feed-comments`,
+    { feed_type: this.state.feed_type,
+     feed_type_id: this.state.feed_type_id },
+      { headers: { 'Content-Type': 'application/json' } });
+      response.data.forEach(comment => {
+        this.state.comments.push(comment);
+      });
+      alert(JSON.stringify(this.state.comments))
+      this.setState({gotFeedFlag: !this.state.gotFeedFlag})
+  })();
+//   this.state.comments.push({
+//     feedUserName: 'TehilaJ', 
+//     feedAction: 'commented', 
+//     feedDate: this.calculateDate(new Date),
+//     feedText: 'feed text here...', 
+//     numLikes: 5
+// })
+// this.calculateDate(new Date)
 }
 
 handleChange(event) {
@@ -89,22 +95,22 @@ computeFeedComments = () => {
   return this.state.comments.map(comment => (
     <Feed.Event>
     <Feed.Label>
-    <UserAvatar size = '35' shape='round' name={comment.feedUserName} />
+    <UserAvatar size = '35' shape='round' name={comment.user_id} />
     </Feed.Label>
     <Feed.Content>
       <Feed.Summary>
-      <Feed.User>{comment.feedUserName}</Feed.User> 
-      {comment.feedAction}
-      <Feed.Date>{comment.feedDate}</Feed.Date>
+      <Feed.User>{comment.user_id}</Feed.User> 
+      commented
+      <Feed.Date>{comment.date}</Feed.Date>
       </Feed.Summary>
       <Feed.Extra text>
-        {comment.feedText}
+        {comment.comment_text}
       </Feed.Extra>
       <Feed.Meta>
         <Feed.Like>
           <Icon name='like'
-          onClick ={() => comment.numLikes = comment.numLikes+1}/>
-              {comment.numLikes}
+          onClick ={() => comment.likes = comment.likes+1}/>
+              {comment.likes}
                Likes
         </Feed.Like>
       </Feed.Meta>

@@ -91,11 +91,8 @@ class OrgPage extends React.Component{
 	
 
 	render() {
-		// if(!this.state.check_login_status)
-		// 	return(<h1>loading...</h1>)
 		if (this.state.orgDetails == null || this.state.org_field_of_activity == null)
 			return(
-			// <h1>not load data...</h1>
 			<Segment>
 				<Dimmer active  inverted>
 				<Loader size='massive'>Loading</Loader>

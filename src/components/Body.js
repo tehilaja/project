@@ -94,6 +94,11 @@ class Body extends React.Component
 
 		
 	}
+
+//function to get three org components each time:
+getThreeOrgs(){
+	
+}
 //------------function-------------------------
 
 	componentDidMount () {
