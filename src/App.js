@@ -51,19 +51,18 @@ class App extends React.Component {
     }
 
     async run_necessary_guard_checks() {
+        await this.get_is_program_admin();
+        
         const path = window.location.pathname.split('/');
         switch (path[1].toLowerCase()) {
             case 'editorgpage':
                 await this.get_is_org_admin(path[2]);
                 break;
-            case 'adminpage':
-                await this.get_is_program_admin();
-                break;
             default:
                 break;
         }
     }
-
+    
     async get_user_params() {
         await (async () => {
             const response = await axios.post(

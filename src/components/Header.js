@@ -148,6 +148,7 @@ class DesktopContainer extends React.Component
 		this.state = {
 			loggedIn: props.data.loggedIn,
 			userName: props.data.userName,
+			program_admin: props.data.program_admin,
 			activePage: props.activePage,
 			routeMain: false,
 			routeUserProfile: false, 
@@ -247,7 +248,7 @@ render() {
 					}})}>
 					My Profile
 				</Menu.Item>}
-				{this.state.loggedIn &&
+				{this.state.program_admin &&
 			  <Menu.Item as='a' onClick ={() => this.setState(prevState => {
 				  return {
 					routeAdminPage: !prevState.routeAdminPage
@@ -292,6 +293,7 @@ class MobileContainer extends Component {
 		this.state = {
 			loggedIn: props.data.loggedIn,
 			userName: props.data.userName,
+			program_admin: props.data.program_admin,
 			activePage: props.activePage,
 			routeMain: false,
 			routeUserProfile: false,

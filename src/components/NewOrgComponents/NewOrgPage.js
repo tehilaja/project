@@ -19,7 +19,8 @@ class NewOrgPage extends React.Component{
 		super(props)	
 		this.state = {
             loggedIn: this.props.data.loggedIn,
-            userName: this.props.data.userName,
+			userName: this.props.data.userName,
+			program_admin: this.props.data.program_admin,
 			routeMain: false,
 			allowAddPrize: false,
 			showAddPrize: false,
@@ -61,8 +62,7 @@ class NewOrgPage extends React.Component{
 	render() {
 		return(
 			<div>
-                <Header data={{loggedIn: this.state.loggedIn, userName: this.state.userName}}/>
-				<Grid container stackable verticalAlign='middle'>
+				<Header data={{ loggedIn: this.state.loggedIn, program_admin: this.state.program_admin, userName: this.state.userName }} />				<Grid container stackable verticalAlign='middle'>
 				<Grid.Row>
 					<Grid.Column width={8}>
 					<NewOrg record={this.handlerClick} data = {this.state}/>

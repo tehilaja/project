@@ -96,10 +96,30 @@ const job = schedule.scheduleJob(rule, function () {
   console.log(`The time is: ${new Date()}`);
   statusCache.setCache(db, () => {
     statusCache.getGiftsReceivers(db, (giftReceivers) => {
+
+      Object.keys(giftReceivers).forEach(gift_id => {
+        const query = `SELECT g.gift_name, g.gift_description, g.gift_pic, o.org_name FROM Gifts g INNER JOIN Organizations o WHERE gift_id=${gift_id}`;
+        db.query(qLDonation, (err, result, fields) => {
+          if (err) throw err;
+          const gift = result[0];
+
+          sendEmail(
+            giftReceivers,
+            null,
+            null,
+            'Congratualtions! You won a prize through Magdilim!',
+            `We are happy to tell you you won a prize from ${gift.org_name}.\n\nThe prize you won: ${gift.gift_name}.\nDescription:${gift.gift_description}\n\nWe are very gratefull to you for your donations which help keep our important organizations going.\n\nYours, the Magdilim team`,
+            [{path: gift.gift_pic, filename: gift.gift_pic.substr(gift.gift_pic.lastIndexOf('_')+1)}]
+            );
+        });
+        
+      })
+
       console.log('gift receivers: ' + JSON.stringify(giftReceivers));
     });
   });
 });
+
 
 // ~~~~~~~~~~ userLoginService ~~~~~~~
 userLoginService.isAuthenticated(function (message, isLoggedIn) {
@@ -541,7 +561,7 @@ INNER JOIN gifts g
 // @ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //the function bellow checks if the user is the program Admin to enable special routing
 
-//------------is program admin--------------
+//------------is org admin--------------
 app.get('/EditOrgPage/:userId/is-org-admin/:orgId', function (req, res, next) {
   const sqlQuery = `SELECT org_admin_id FROM Organizations WHERE org_id='${req.params.orgId}' AND approved=1`;
   db.query(sqlQuery, function (error, results, fields) {
@@ -632,23 +652,6 @@ app.post('/login', (req, res) => {
     console.log("error: " + JSON.stringify(error));
     res.send('Unknown error logging in. Please try again later.');
   }
-  // console.log("login");
-  // let query = `SELECT * FROM Users WHERE user_name="${req.body.userName}"`
-  // db.query(query,(err,result,fields)=>{
-  //   if(!err){
-  //     console.log("found user")
-  //     if(result.length && result[0].pswd==req.body.pswd){
-  //       let resToSend={...result[0]}
-  //       delete resToSend.pswd
-  //       my_user = resToSend
-  //       console.log("user: ", my_user.user_name)
-  //       res.end("found user")
-  //     }
-  //     else return res.end("user dosent exist")
-  //   }
-  //   else
-  //     res.send("fail")
-  // })
 })
 
 //------------logout----------
@@ -746,18 +749,6 @@ app.get('/userOrgTrees/:user_id', function (req, res, next) {
 //----------fetch organization data from data base-----------
 app.post('/fetch_org_data', (req, res) => {
   console.log("fetch_org_data");
-
-  // let {query} = await stripe.charges.create({
-  //   amount: 2000,
-  //   currency: "usd",
-  //   description: "An example charge",
-  //   source: req.body
-  // });
-
-  // res.json({status});
-
-
-
   let query = `SELECT * FROM Organizations WHERE approved=1`
   db.query(query, (err, result, fields) => {
     if (!err) {
@@ -802,7 +793,7 @@ app.post('/findDuser', (req, res) => {
 app.get('/:userId/org-admin-of',
   function (req, res, next) {
     //const sqlQuery = `SELECT * FROM organizations WHERE org_admin_id = '${req.params.userId}'`;
-    const sqlQuery = `SELECT * FROM organizations WHERE org_admin_id="${req.params.userId} AND approved=1"`;
+    const sqlQuery = `SELECT * FROM organizations WHERE org_admin_id='${req.params.userId}' AND approved=1`;
     console.log(sqlQuery);
 
     db.query(sqlQuery, (err, result, fields) => {

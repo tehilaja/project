@@ -23,6 +23,7 @@ class OrgSearch extends React.Component{
     this.state = {
             loggedIn: this.props.data.loggedIn,
             userName: this.props.data.userName,
+            program_admin: this.props.data.program_admin,
             routeMain: false,
             check_login_status: false,
             images: [],
@@ -56,8 +57,7 @@ class OrgSearch extends React.Component{
     
     return(
       <div>
-                <Header data={{loggedIn: this.state.loggedIn, userName: this.state.userName}}/>
-                <ImageGallery items={this.state.images} />
+                <Header data={{ loggedIn: this.state.loggedIn, program_admin: this.state.program_admin, userName: this.state.userName }} />                <ImageGallery items={this.state.images} />
                 <Segment>
                 <Grid celled='internally' columns='equal' stackable>
                     <Grid.Row textAlign='center'>

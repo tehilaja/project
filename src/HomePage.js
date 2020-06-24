@@ -28,6 +28,7 @@ class App extends React.Component
 		{
 			loggedIn: this.props.data.loggedIn, 
 			userName: this.props.data.userName,
+			program_admin: this.props.data.program_admin,
 			org: null,
     }
 	}
@@ -37,8 +38,7 @@ class App extends React.Component
 	{
 		return(
 			<div>
-				<Header data={{loggedIn: this.state.loggedIn, userName: this.state.userName}}/>
-				<Body data={{loggedIn: this.state.loggedIn, userName: this.state.userName}}/>
+				<Header data={{ loggedIn: this.state.loggedIn, program_admin: this.state.program_admin, userName: this.state.userName }} />				<Body data={{loggedIn: this.state.loggedIn, userName: this.state.userName}}/>
 				<Feed data={{loggedIn: this.state.loggedIn, userName: this.state.userName}}/>
 				<Footer />
 				{/*<button onClick={this.check.bind(this)}>button</button>*/}

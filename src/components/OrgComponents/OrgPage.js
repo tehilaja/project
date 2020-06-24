@@ -16,6 +16,9 @@ class OrgPage extends React.Component{
 	constructor(props) {
 		super(props)	
 		this.state = {
+			userName: this.props.data.userName,
+			loggedIn: this.props.data.loggedIn,
+			program_admin: this.props.data.program_admin,
 			
 			loadData: false,
 			orgDetails: null, // all details from DB
@@ -26,9 +29,6 @@ class OrgPage extends React.Component{
 			// $$$$$$$$$
 
 			routeMain: false,
-
-			userName: this.props.data.userName,
-			loggedIn: this.props.data.loggedIn
 		}
 		this.get_field_of_activity = this.get_field_of_activity.bind(this);
 	}	
@@ -108,8 +108,7 @@ class OrgPage extends React.Component{
 			)
 		return(
 			<div >
-                <HeaderPage data={{loggedIn: this.state.loggedIn, userName: this.state.userName}}/>
-				{/* <header>
+				<HeaderPage data={{ loggedIn: this.state.loggedIn, program_admin: this.state.program_admin, userName: this.state.userName }} />				{/* <header>
 					<img src = {this.state.img} ></img>
 				</header> */}
 
