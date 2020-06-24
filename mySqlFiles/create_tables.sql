@@ -145,12 +145,14 @@ CREATE TABLE IF NOT EXISTS One_time_donations (
   anonymous tinyint, -- default -> false
 );
 
-CREATE TABLE IF NOT EXISTS One_time_donations (
+CREATE TABLE IF NOT EXISTS Payments (
   payment_id int(11) AUTO_INCREMENT PRIMARY KEY,
   org_id int(11),
   amount_paid int(11),
   date_paid TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   still_owed int(11),
 );
+
+
 
 
