@@ -43,8 +43,8 @@ export default class Donate extends Component {
             // set json to state
             massageErrRequireFIeld: {},
             // the request to donation for server
-            donate_req: {"user_id": 2, "org_id":this.props.data.org_id, "monthly_donation": this.props.data.initialDonation,
-            "referred_by": '',"d_title": '',"d_description": '',"is_anonim" : false },
+            donate_req: {"user_id": "tehilaj97@gmail.com", "org_id":this.props.data.org_id, "monthly_donation": this.props.data.initialDonation,
+            "referred_by": '',"d_title": '',"d_description": '',"anonymous" : false },
             
             findDuser: true,
             // next level
@@ -53,7 +53,7 @@ export default class Donate extends Component {
             pass2step: false,
             ableDonate:false
 
-            // (user_id, org_id, monthly_donation, referred_by,d_title, d_description,is_anonim,status_id
+            // (user_id, org_id, monthly_donation, referred_by,d_title, d_description,anonymous,status_id
             // TODO: 
       
         }
@@ -704,20 +704,7 @@ export default class Donate extends Component {
             </Modal.Actions>
         </Modal> */}
         {/* ~~~ @ check ~~~ */}
-        <div>
-            <Button
-                onClick = {this.switchStep}
-            >
-            </Button>
-            
-            {/* <p> {this.state.sumDonate} </p> */}
-            <p>"referBy" {this.state.donate_req.referred_by} </p>
-            <p>"sum " {this.state.donate_req.monthly_donation} </p>
-            <p> "finish donae" {this.state.donate_req.referred_by}</p>
-            <p> "dThrough": {this.state.dThrough} </p>
-            <p>"core step" {this.state.coreStep} </p>
-
-        </div>
+       
     </div>
     )
   }

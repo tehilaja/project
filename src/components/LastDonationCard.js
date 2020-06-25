@@ -15,7 +15,7 @@ class LastDonationCard extends React.Component{
         }
     }
     /*
-     d.user_id, d.org_id, u.user_name ,d.d_title,d.d_description, d.is_anonim,d.d_date, d.referred_by, o.img_url
+     d.user_id, d.org_id, u.user_name ,d.d_title,d.d_description, d.anonymous,d.d_date, d.referred_by, o.img_url
     */
 
     spliteDate()

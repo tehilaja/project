@@ -172,7 +172,7 @@ app.get('/lastDonation', (req, res, next) => {
     console.log("query: " + qLDonation);
     db.query(qLDonation, (err, result, fields) => {
       if (err) throw err;
-      if (result.length == 0)
+      if (result.length === 0)
         res.send("no data")
       else {
         console.log("res:" + JSON.stringify(result));
@@ -276,14 +276,14 @@ app.get('/get-files-of-folder/:folder', (req, res, next) => {
 
 
 // -- /donate/findDThrouhUser
-app.get('/donate/findDThrouhUser/:dUser', (req, res, next) => {
+app.get('/donate/findDThrouhUser/:user_mail', (req, res, next) => {
   try {
-    console.log("in donate/findDThrouhUser/:dUser")
-    const qDUser = `select user_id from users where email ="${req.params.dUser}"`;
+    console.log("in donate/findDThrouhUser/:user_mail")
+    const qDUser = `select user_id from doners_in_org where user_id ="${req.params.user_mail}"`;
     console.log("query: \n" + qDUser + "\n");
     db.query(qDUser, (err, result, fields) => {
       if (err) throw err;
-      if (result.length == 0)
+      if (result.length === 0)
         res.send("no data")
       else {
         console.log("res:  " + result[0].user_id);
@@ -441,14 +441,14 @@ function checkDonateDetails(paramO) {
   // TODO: check if the neccesery value input? -> before?
 
   q += `user_id,org_id,monthly_donation`;
-  insertinfValue += ` ${paramO.user_id},${paramO.org_id},${paramO.monthly_donation}`
+  insertinfValue += `"${paramO.user_id}",${paramO.org_id},${paramO.monthly_donation}`
 
   // --- check
-  if (paramO.referred_by != '') {
+  if (paramO.referred_by !== '') {
     q += `,referred_by`;
-    insertinfValue += `,${paramO.referred_by}`;
+    insertinfValue += `,"${paramO.referred_by}"`;
   }
-  if (paramO.d_title != '') {
+  if (paramO.d_title !== '') {
     q += `,d_title`;
     insertinfValue += `,"${paramO.d_title}"`;
   }
@@ -458,8 +458,8 @@ function checkDonateDetails(paramO) {
   }
   // nessecery
 
-  q += `,is_anonim,status_id`;
-  insertinfValue += `,${paramO.is_anonim},1);`
+  q += `,anonymous,status_id`;
+  insertinfValue += `,${paramO.anonymous},1);`
 
   const query = q + insertinfValue;
   console.log("param (in fun) \n" + query);
@@ -472,7 +472,6 @@ app.post('/donationProcess', (req, res, next) => {
   try {
     console.log("in /donationProcess \n ")
 
-
     // let qDonate = ` INSERT INTO Doners_in_org SET ?', ${JSON.stringify(req.body)}`
     //  ${req.body.is_admin });`
 
@@ -483,7 +482,7 @@ app.post('/donationProcess', (req, res, next) => {
     db.query(qDonate, (err, result, fields) => {
       if (!err) {
         res.send("insert donation");//response
-        console.log("sucבses! ");
+        console.log("succses! ");
       }
       else {
         res.end("db fail");
