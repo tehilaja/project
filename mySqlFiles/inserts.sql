@@ -62,10 +62,16 @@ INSERT INTO Gifts (gift_name, gift_description, gift_pic, org_id, level_num, g_d
 -- inserting comments into the feed --
 select* from Feed_comments;
 INSERT INTO Feed_comments (feed_type, feed_type_id, user_id, date, comment_text, likes) VALUES
-('org', 2, 'tehilaj97@gmail.com', "2020-08-23", 'I love this organization', 3)
-('org', 2, 'rachelletikva@gmail.com', "2020-08-23", "I know, they're the best", 2)
-('org', 2, 'tehilaj97@gmail.com', "2020-08-23", 'oh! you like them too???', 3)
-('org', 2, 'rachelletikva@gmail.com', "2020-08-23", "they are life changing:) ", 2)
+('org', 2, 'tehilaj97@gmail.com', "2020-08-23", 'I love this organization', 3),
+('org', 2, 'rachelletikva@gmail.com', "2020-08-23", "I know, they're the best", 2),
+('org', 2, 'tehilaj97@gmail.com', "2020-08-23", 'oh! you like them too???', 3),
+('org', 2, 'rachelletikva@gmail.com', "2020-08-23", "they are life changing:) ", 2),
+('org', 1, 'tehilaj97@gmail.com', "2020-08-23", 'I love this organization', 3),
+('org', 1, 'rachelletikva@gmail.com', "2020-08-23", "I know, they're the best", 2),
+('org', 3, 'tehilaj97@gmail.com', "2020-08-23", 'oh! you like them too???', 3),
+('org', 3, 'rachelletikva@gmail.com', "2020-08-23", "they are life changing:) ", 2),
+('org', 1, 'Avital05484@gmail.com', "2020-08-23", "common! get your friends!", 2)
+
 -- ~~~~~~~~~~~~~~~~ gifts & level ~~~~~~~~~~~~~~~~~~~
  
  -- ~~~ whith a  gifts_levels table

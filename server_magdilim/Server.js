@@ -412,7 +412,7 @@ app.post('/addOrg', (req, res, next) => {
     // console.log("string obj \n "+ JSON.stringify(req.body));
   }
   catch (err) {
-    console.log("erroe " + err.code);
+    console.log("error " + err.code);
     res.end("err server ", err.code)
   }
 
@@ -740,7 +740,14 @@ app.post('/fetch_org_data', (req, res) => {
   })
 })
 
+// function to add another comment to the feed
+app.post('/add-comment', (req, res, next) => {
 
+  const qFirstAdd = `INSERT INTO Feed_comments (feed_type, feed_type_id, user_id, date, comment_text, likes) VALUES
+  (${req.body.feed_type},${req.body.feed_type_id}, ${req.body.user_id}, ${req.body.date}, ${req.body.comment_text}, ${req.body.likes});` 
+  console.log('in add-comment in server. query: '+ qFirstAdd)
+  res.send('done add-comment')
+});
 
 //------------- ??? -------
 //---findDuser ---

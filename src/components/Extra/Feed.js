@@ -26,14 +26,6 @@ class CommentFeed extends React.Component{
     this.calculateDate =this.calculateDate.bind(this)
   }
 
-// const FeedContent = {
-//     feedUserName: 'TehilaJ', 
-//     feedAction: 'added you as a friend', 
-//     feedDate: 'yesterday', 
-//     feedText: 'feed text here...', 
-//     numLikes: 5
-// }
-
 //TODO take care of ends ad beginnings of new months:
 calculateDate(date){
   var now = new Date;
@@ -61,14 +53,6 @@ getFeedComments = () => {
       alert(JSON.stringify(this.state.comments))
       this.setState({gotFeedFlag: !this.state.gotFeedFlag})
   })();
-//   this.state.comments.push({
-//     feedUserName: 'TehilaJ', 
-//     feedAction: 'commented', 
-//     feedDate: this.calculateDate(new Date),
-//     feedText: 'feed text here...', 
-//     numLikes: 5
-// })
-// this.calculateDate(new Date)
 }
 
 handleChange(event) {
@@ -79,12 +63,23 @@ handleChange(event) {
 
 handleSubmit(){
   this.state.newComment = {
-    feedUserName: this.state.userName, 
-    feedDate: new Date, 
-    feedText: this.state.commentText, 
-    numLikes: 0
+    feed_type: this.state.feed_type,
+    feed_type_id: this.state.feed_type_id,
+    user_id: this.state.userName, 
+    date: (new Date).getTime(), 
+    comment_text: this.state.commentText, 
+    likes: 0
 }
-alert(JSON.stringify(this.state.newComment))
+//TODO: add to DB
+axios.post('/add-comment', this.state.newComment
+    ).then(res => 
+    {
+      this.state.comments.push(this.state.newComment);
+      this.setState({gotFeedFlag: !this.state.gotFeedFlag})
+
+    }).catch(error=> {
+        alert("error adding comment" +  error);
+    })
 }
 
 updateLikes(){
@@ -170,7 +165,7 @@ render() {
   //         <Feed.Like>
   //           <Icon name='like'
   //           onClick ={this.updateLikes.bind(this)}/>
-  //               {FeedContent.numLikes}
+  //               {FeedContent.likes}
   //                Likes
   //         </Feed.Like>
   //       </Feed.Meta>

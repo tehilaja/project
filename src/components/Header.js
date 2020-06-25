@@ -78,7 +78,7 @@ class ActivePage {
  * such things.
  */
 const HomepageHeading = ({ mobile }) => (
-<Container text>
+<Container>
 	<Header
 		as='h1'
 		content='MAGDILIM'
@@ -87,17 +87,9 @@ const HomepageHeading = ({ mobile }) => (
 			fontSize: mobile ? '2em' : '4em',
 			fontWeight: 'normal',
 			marginBottom: 0,
-			marginTop: mobile ? '1.5em' : '3em',
+			marginTop: '1.5em' //mobile ? '1.5em' : '3em',
 		}}
 	/>
-	{/* <Image bordered rounded size='large' src='https://magdilim-organization-images.s3.amazonaws.com/MagdilimLogo.jpg' /> */}
-	<Step.Group fluid>
-	<Step icon='user' title='Join'/>
-	<Step icon='money bill alternate outline' title='Donate' />
-	<Step icon='users' title='Reffer'/>
-	<Step icon='building' title='Build'/>
-	<Step active icon='gift' title='Win!'/>
-	</Step.Group>
 	<Header
 		as='h2'
 		content='Multilevel crowd fundraising platform.'
@@ -105,35 +97,21 @@ const HomepageHeading = ({ mobile }) => (
 		style={{
 			fontSize: mobile ? '1.5em' : '1.7em',
 			fontWeight: 'normal',
-			marginTop: mobile ? '0.5em' : '1.5em',
+			marginTop:'0.5em'//mobile ? '0.5em' : '1.5em',
 		}}
 	/>
-	<Menu compact>
-    <Menu.Item as='a'>
-      <Icon name='user' /> Sign Up
-      <Label basic color='red' pointing='below' floating>
-        1
-      </Label>
-    </Menu.Item>
-	<Menu.Item as='a'>
-      <Icon name='dollar' /> Donate
-      <Label basic color='red' pointing='below' floating>
-        2
-      </Label>
-    </Menu.Item>
-	<Menu.Item as='a'>
-      <Icon name='users' /> Reffer others
-      <Label basic color='red' pointing='below' floating>
-        3
-      </Label>
-    </Menu.Item>
-    <Menu.Item as='a' active>
-      <Icon name='gift' /> win a prize!
-      <Label basic color='red' pointing='below' floating>
-        4
-      </Label>
-    </Menu.Item>
-  </Menu>
+	{/* <Image bordered rounded size='large' src='https://magdilim-organization-images.s3.amazonaws.com/MagdilimLogo.jpg' /> */}
+	<Step.Group fluid
+	style={{
+		marginTop: '3em',
+		marginBottom:'8em'
+	}}>
+	<Step icon='user' title='Join' />
+	<Step icon='money bill alternate outline' title='Donate' />
+	<Step icon='users' title='Reffer'/>
+	<Step icon='building' title='Build'/>
+	<Step active icon='gift' title='Win!'/>
+	</Step.Group>
 </Container>
 )
 
@@ -217,7 +195,7 @@ render() {
 		<Segment
 		  inverted
 		  textAlign='center'
-		  style={{ minHeight: 700, padding: '1em 0em' }}
+		  style={{ minHeight: 0, padding: '1em 0em' }}
 		  vertical
 		>
 		  <Menu
