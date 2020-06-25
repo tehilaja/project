@@ -97,7 +97,7 @@ class Body extends React.Component
 
 //function to get three org components each time:
 getThreeOrgs(){
-	
+
 }
 //------------function-------------------------
 
@@ -183,12 +183,8 @@ getThreeOrgs(){
 
 		const orgComponents = this.state.organizations.map(org =>{
 			return(
-				<OrgCard key={org.org_id} imgUrl={org.img_url} name={org.org_name} id= {org.org_id} initialDonation= {org.min_donation} 
-				/>)
-				// 	admin_name = {org.admin_name} field_of_activity = {org.field_of_activity} org_num = {org.org_num} description = {org.description}
-				// 	working = {org.working} volunteers = {org.volunteers} friends = {org.friends}
-				// />)
-			// -- $$$$$$$ ---
+				<OrgCard key={org.org_id} imgUrl={org.img_url} name={org.org_name} id= {org.org_id} initialDonation= {org.min_donation} />
+				)
 		})
 
 		const donationInfo = this.state.lastDonation.map(donation =>{
@@ -197,44 +193,9 @@ getThreeOrgs(){
 				/>)
 		})
 
-		// const carouselOrganizations = this.orgComponents.map(org =>{
-		// 	<Carousel>
-		// 	<div>
-		// 		org
-		// 	</div>
-		// </Carousel>
-		// })
-			
-		const settings = {
-			dots: true,
-			infinite: true,
-			speed: 500,
-			slidesToShow: 1,
-			slidesToScroll: 1
-		  };
-			 
-
-		// ---orgComponents (card)---
-		// const orgComponents = this.state.organizations.map(org => {
-		// 		return (
-		// 	<OrgCard key={org.id} imgUrl={org.imgUrl} name={org.name} id= {org.id} initialDonation= {org.initialDonation}/>)
-		// })
-
-
-		
-
-		// //-----Redirect--------
-		// if (this.state.clickOrg === true){
-		// 	return <Redirect to = {{
-		// 		pathname: '/OrgPage',
-		// 		state: {id: this.state.id}
-		// 	}} />
-		// }
-
-	//-----------return------------------------------
 		return(
 			<div>
-				<Segment style={{ padding: '8em 0em', width: '100%' }} vertical >
+				<Segment style={{ padding: '5em 0em', width: '100%' }} vertical >
 					<Grid container  verticalAlign='middle'>
 						<Grid.Row>
 							<Grid.Column width={10}>
@@ -280,13 +241,14 @@ getThreeOrgs(){
 						Create Your Own Platform!
 						</Label>
 							<Image bordered rounded size='large' src='https://i.insider.com/5ab2a71c5851aebb008b46da?width=3100&format=jpeg&auto=webp' />
-							<Button primary size='huge' onClick ={() => this.setState(prevState => {
+							{this.state.loggedIn && <Button primary size='huge' onClick ={() => this.setState(prevState => {
 								return {
 										routerCreateOrgPage: !prevState.routerCreateOrgPage
 									}})}>
 								Get Started
 								<Icon name='right arrow' />
-							</Button>
+							</Button>}
+							{!this.state.loggedIn && <Label>Login or Sign Up to build your own platform!</Label>}
 						</Grid.Column>
 						</Grid.Row >
 					</Grid>
@@ -333,13 +295,17 @@ getThreeOrgs(){
 					</Header>
 					<p style={{ fontSize: '1.33em' }}>
 					Yes that's right, you too can become a part of this wonderful community, helping to build something greater.
+					</p>
 					<br></br>
-					If you already have a user account, you're good to go to the next step!
+					{!this.state.loggedIn &&
+					<div>
+					<p style={{ fontSize: '1.33em' }}>
+					If you already have a user account, please login!
 					If you don't already have an account then create a user account.
 					</p>
-					<Button as='a' size='large'>
+					 <Button as='a' size='large' onClick={() => window.scrollTo(0, 0)}>
 					Sign Up
-					</Button>
+					</Button></div>}
 
 					<Header as='h3' style={{ fontSize: '2em' }}>
 					<Icon size="huge" name='handshake outline' />
@@ -351,14 +317,14 @@ getThreeOrgs(){
 					All we left for you to do, is focus on content that will be appealing and attract your ongoing doners.
 					Tell us about your organization. We will be in touch with you shortly, and create your platform.
 					</p>
-					<Button as='a' size='large'
+					{this.state.loggedIn && <Button as='a' size='large'
 					onClick ={() => this.setState(prevState => {
 						return {
 								routerCreateOrgPage: !prevState.routerCreateOrgPage
 							}})}
 					>
 					Get Approved To Create Platform
-					</Button>
+					</Button>}
 				</Container>
 			</Segment>
 			</div>

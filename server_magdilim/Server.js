@@ -743,10 +743,29 @@ app.post('/fetch_org_data', (req, res) => {
 // function to add another comment to the feed
 app.post('/add-comment', (req, res, next) => {
 
-  const qFirstAdd = `INSERT INTO Feed_comments (feed_type, feed_type_id, user_id, date, comment_text, likes) VALUES
+  const qAddComment = `INSERT INTO Feed_comments (feed_type, feed_type_id, user_id, date, comment_text, likes) VALUES
   (${req.body.feed_type},${req.body.feed_type_id}, ${req.body.user_id}, ${req.body.date}, ${req.body.comment_text}, ${req.body.likes});` 
-  console.log('in add-comment in server. query: '+ qFirstAdd)
+  console.log('in add-comment in server. query: '+ qAddComment)
   res.send('done add-comment')
+try{
+  db.query(qAddComment, (err, result, fields) => {
+    if (!err) {
+      res.send('done add-comment');//response
+      console.log("succses in done add-comment! ");
+    }
+    else {
+      res.end('failed to add-comment');
+      console.log('failed to add-comment ' + err.code);
+    }
+
+  })
+ 
+}
+catch (err) {
+  console.log("error in add-comment" + err.code);
+  res.end("err server ", err.code)
+}
+
 });
 
 //------------- ??? -------

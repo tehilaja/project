@@ -562,7 +562,7 @@ class OrgBody extends React.Component {
                     {/* <Grid style = {{margin: '2em, 0.7em'}}> */}
 
                         <Grid.Row>
-                            <header style ={{backgroundColor: '#20B2AA' ,backgroundImage : this.props.data.orgDetails.img_url ,width:'100%',height: '20em' ,padding: '2em ,2em', margin: ''}}>
+                            <header style ={{backgroundColor: '#008080' ,backgroundImage : this.props.data.orgDetails.img_url ,width:'100%',height: '100%' ,padding: '2em ,2em', margin: ''}}>
                             {/* background-color: green;0.3; */}
                                 <img  src={this.props.data.orgDetails.img_url} style = {{display: 'block',marginLeft: 'auto',marginRight: 'auto',width: '28%'}}/>
                                 
@@ -573,7 +573,7 @@ class OrgBody extends React.Component {
                         </Grid.Row>
 
                         <Grid.Row>
-                            <Tab style={{ padding: '0.2em 1.5em' }} defaultActiveIndex={2} menu={{ color:'blue' ,vertical: true, inverted: true, attached: true, tabular: true, pointing: true}} panes={panes} />
+                            <Tab style={{ padding: '0.2em 1.5em' }} defaultActiveIndex={2} menu={{ color:'teal' ,vertical: true, inverted: true, attached: true, tabular: true, pointing: true}} panes={panes} />
 
                         </Grid.Row>
                         
