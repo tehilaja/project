@@ -7,7 +7,7 @@ import { async } from "q";
 
 import OrgCard from './OrgComponents/OrgCard.js'
 import orgData from './OrgComponents/orgData.js'
-import LastDonation from './LastDonationCard.js'
+import LastDonationCard from './LastDonationCard.js'
 
 import { Carousel } from 'react-responsive-carousel';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
@@ -31,6 +31,8 @@ import {
 	Sidebar,
 	Step,
 	Visibility,
+	Dimmer,
+	Loader
   } from 'semantic-ui-react'
 
 
@@ -103,7 +105,21 @@ getThreeOrgs(){
 
 	componentDidMount () {
 
-// ~~~~~~~~~~ get (select *) 
+		fetch('/lastDonation', {
+            method: 'GET'
+        }).then(function(response) {
+            if (response.status >= 400) {
+                throw new Error("Bad response from server");
+            }
+            return response.json();
+        }).then(function(data) {
+            self.setState({lastDonation: data});
+        }).catch(err => {
+        console.log('caught it!',err);
+		})
+
+
+		// ~~~~~~~~~~ get (select *) 
 		let self = this;
         fetch('/data', {
             method: 'GET'
@@ -119,7 +135,7 @@ getThreeOrgs(){
 		})
 
 		// lastDonation
-		this.getLastDonation()
+		// this.getLastDonation()
 		
 		
 	}
@@ -165,75 +181,89 @@ getThreeOrgs(){
 //--------------render------------------------
 	render()
 	{
-
-		// **
-		// if (!this.state.isLoading) 
-		// {
-		// 	return <p>Loading data</p>;
-		// }
-
-
-		//redirecting to create organization page
-		//TODO: make sure the user is signed in! take care of other option!
-		if (this.state.routerCreateOrgPage === true){
-			return <Redirect to = {{
-				pathname: '/NewOrgPage',
-			}} />
-		} 
-
-		const orgComponents = this.state.organizations.map(org =>{
+		if (this.state.lastDonation === null)
 			return(
-				<OrgCard key={org.org_id} imgUrl={org.img_url} name={org.org_name} id= {org.org_id} initialDonation= {org.min_donation} 
-				/>)
-				// 	admin_name = {org.admin_name} field_of_activity = {org.field_of_activity} org_num = {org.org_num} description = {org.description}
-				// 	working = {org.working} volunteers = {org.volunteers} friends = {org.friends}
-				// />)
-			// -- $$$$$$$ ---
-		})
-
-		const donationInfo = this.state.lastDonation.map(donation =>{
-			return(
-				<LastDonation ldonation ={donation}  
-				/>)
-		})
-
-		// const carouselOrganizations = this.orgComponents.map(org =>{
-		// 	<Carousel>
-		// 	<div>
-		// 		org
-		// 	</div>
-		// </Carousel>
-		// })
+				<Segment>
+					<Dimmer active  inverted>
+					<Loader size='massive'>Loading</Loader>
+					</Dimmer>
 			
-		const settings = {
-			dots: true,
-			infinite: true,
-			speed: 500,
-			slidesToShow: 1,
-			slidesToScroll: 1
-		  };
-			 
+					<Image src='https://react.semantic-ui.com/images/wireframe/short-paragraph.png' />
+					<Image src='https://react.semantic-ui.com/images/wireframe/short-paragraph.png' />
+					<Image src='https://react.semantic-ui.com/images/wireframe/short-paragraph.png' />
+			</Segment>
+			)
 
-		// ---orgComponents (card)---
-		// const orgComponents = this.state.organizations.map(org => {
-		// 		return (
-		// 	<OrgCard key={org.id} imgUrl={org.imgUrl} name={org.name} id= {org.id} initialDonation= {org.initialDonation}/>)
-		// })
+			// **
+			// if (!this.state.isLoading) 
+			// {
+			// 	return <p>Loading data</p>;
+			// }
 
 
+			//redirecting to create organization page
+			//TODO: make sure the user is signed in! take care of other option!
+			if(this.state.routerCreateOrgPage === true){
+				return <Redirect to = {{
+					pathname: '/NewOrgPage',
+				}} />
+			} 
+
+			const orgComponents = this.state.organizations.map(org =>{
+				return(
+					<OrgCard key={org.org_id} imgUrl={org.img_url} name={org.org_name} id= {org.org_id} initialDonation= {org.min_donation} 
+					/>)
+					// 	admin_name = {org.admin_name} field_of_activity = {org.field_of_activity} org_num = {org.org_num} description = {org.description}
+					// 	working = {org.working} volunteers = {org.volunteers} friends = {org.friends}
+					// />)
+				// -- $$$$$$$ ---
+			})
+
+			const donationInfo = this.state.lastDonation.map(donation =>{
+				return(
+					<LastDonationCard ldonation ={donation}  
+					/>)
+			})
+
+			// const carouselOrganizations = this.orgComponents.map(org =>{
+			// 	<Carousel>
+			// 	<div>
+			// 		org
+			// 	</div>
+			// </Carousel>
+			// })
+				
+			const settings = {
+				dots: true,
+				infinite: true,
+				speed: 500,
+				slidesToShow: 1,
+				slidesToScroll: 1
+			};
+				
+
+			// ---orgComponents (card)---
+			// const orgComponents = this.state.organizations.map(org => {
+			// 		return (
+			// 	<OrgCard key={org.id} imgUrl={org.imgUrl} name={org.name} id= {org.id} initialDonation= {org.initialDonation}/>)
+			// })
+
+
+			
+
+			// //-----Redirect--------
+			// if (this.state.clickOrg === true){
+			// 	return <Redirect to = {{
+			// 		pathname: '/OrgPage',
+			// 		state: {id: this.state.id}
+			// 	}} />
+			// }
 		
-
-		// //-----Redirect--------
-		// if (this.state.clickOrg === true){
-		// 	return <Redirect to = {{
-		// 		pathname: '/OrgPage',
-		// 		state: {id: this.state.id}
-		// 	}} />
-		// }
 
 	//-----------return------------------------------
 		return(
 			<div>
+				{this.state.lastDonation !== null && <div>
 				<Segment style={{ padding: '8em 0em', width: '100%' }} vertical >
 					<Grid container  verticalAlign='middle'>
 						<Grid.Row>
@@ -361,6 +391,10 @@ getThreeOrgs(){
 					</Button>
 				</Container>
 			</Segment>
+			<div>
+			</div>
+			
+		</div>}
 			</div>
 		)
 	}

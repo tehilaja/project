@@ -11,12 +11,26 @@ class LastDonationCard extends React.Component{
         super(props)
         this.state =
         {
-            timeDate: JSON.stringify(this.props.ldonation.d_date)
+            timeDate: JSON.stringify(this.props.ldonation.d_date),
+            name: null,
+            time: null,
+            date:null
         }
     }
     /*
      d.user_id, d.org_id, u.user_name ,d.d_title,d.d_description, d.anonymous,d.d_date, d.referred_by, o.img_url
     */
+   componentDidMount () {
+    let time ;
+    let date;
+
+    this.setState({name: this.props.ldonation.user_id.split("@")[0]});
+
+    this.setState({date: this.state.timeDate.split("T")[0]});
+    this.setState({time: (this.state.timeDate.split("T")[1]).split(".")[0] });
+
+
+   }
 
     spliteDate()
     {
@@ -39,12 +53,14 @@ class LastDonationCard extends React.Component{
                         />
                         <Card.Header>
                             <Icon name = 'user'/>
-                            {this.props.ldonation.user_name}
+                            {this.state.name}
                             </Card.Header>
                         <Card.Meta>
-                            {this.state.timeDate}
+                            {this.state.date}
+                            <br/>
+                            {this.state.time}
                             {/* {this.props.ldonation.d_date.splite("T")} */}
-                            </Card.Meta>
+                        </Card.Meta>
                         <Card.Description>
                             <strong> {this.props.ldonation.d_title}</strong> 
                             <br></br> 
