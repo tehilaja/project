@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Step, Segment, Image , Button, Grid,Form,Checkbox, Icon, Input, Label,Accordion, Message, Modal} from 'semantic-ui-react'
 import axios from "axios";
 
+
 ////#08.05
 import { PayPalButton } from "react-paypal-button-v2";
 
@@ -51,7 +52,7 @@ export default class Donate extends Component {
             finishDonate: false,
             //////
             pass2step: false,
-            ableDonate:false
+            ableDonate:false,
 
             // (user_id, org_id, monthly_donation, referred_by,d_title, d_description,anonymous,status_id
             // TODO: 
@@ -72,6 +73,7 @@ export default class Donate extends Component {
 
         // next butten
         this.nextButton = this.nextButton.bind(this);
+        this.prevButton = this.prevButton.bind(this);
         this.disableNextBtn = this.disableNextBtn.bind(this);
 
     
@@ -107,7 +109,7 @@ export default class Donate extends Component {
         ).then(res => 
         {
             alert("res is: " + res.data)
-
+            this.setState({divActiveDonation:true,divActiveMore: false, divActivePayment: false, coreStep: 1, nextAble: false});
         }).catch(error=> {
             alert("error donationProcess" +  error);
         })
@@ -252,8 +254,7 @@ export default class Donate extends Component {
                                 {
                                     alert ("there are no user in system!")
                                     this.setState({dThrough: '' ,ableDonate: false});
-
-                                    
+              
                                     // , nextAble:false});
                                     // TODO: alert message in UI
                                 }
@@ -267,7 +268,6 @@ export default class Donate extends Component {
                             alert(error);
                         })
                     }
-                    
                     // check if finish a req
                     if (this.state.donate_req.referred_by !== ''){
                         this.setState({ableDonate: false});
@@ -280,23 +280,7 @@ export default class Donate extends Component {
                 else{ // the mail is ok
                     this.switchStep(); // switch step
                 }
-                // // ~~ end dThrow 
-                // if(this.state.donate_req.referred_by === '' && this.dThrough !== '') // the mail doas not checkin
-            // }
-            // // # TODO !!!!
-            // // ? מיותר? הכפתור לא מאופשר... DELETE?
-            // else// the sum is empty
-            // {
-            //     alert(" not ok") // sun is empty
-            //     this.setState({showMessageReq : true});
-            //         // , sumDonate: this.props.data.initialDonation} );
-            //     this.setState(Object.assign(this.state.donate_req,{monthly_donation: this.props.data.initialDonation}));
-            //     // <Message
-            //     //     error
-            //     //     header='Action Forbidden'
-            //     //     content='You must enter a sum of donation.'
-            //     // />
-            // }
+              
 
             // -> // DO: delete the option of a empty sum
             if (this.state.donate_req.referred_by !== '')
@@ -304,6 +288,26 @@ export default class Donate extends Component {
         } // ~~end step 1~~~
         else   // step 2 or 3                
             this.switchStep(); // switch step
+    }
+
+    prevButton(e){
+        switch(this.state.coreStep) {
+            case 1:
+                    // this.setState({prevAble: true});
+                    // activeStep:'more datails'   
+                // }
+                break;
+            case 2:
+                this.setState({divActiveDonation: false,divActiveMore: false, divActivePayment: false, coreStep: 1,prevAble: false});
+                // activeStep:'payment'
+                break;
+            case 3:
+                this.setState({divActiveDonation: false,divActiveMore: true,divActivePayment: false});
+                break;
+            default:
+                // this.setState({ activeStep:' select Amount', coreStep: 1 })
+                this.setState({ coreStep:1})
+          }
     }
 
     // # 08.05 -> paypel
@@ -356,7 +360,6 @@ export default class Donate extends Component {
   render() 
   {
    
-
     const styleBotton = 
     {
         margin: '1em',
@@ -368,6 +371,7 @@ export default class Donate extends Component {
         padding: '32px 32px',
         border: '0.1em solid black' 
     }
+    const backgroundColor = '#20B2AA';
 
     return (
       <div>
@@ -391,7 +395,6 @@ export default class Donate extends Component {
             />
             <Step
                 id = 'step2'
-
                 // active={active === 'more datails'}
                 active = {this.state.divActiveMore}
                 completed = {this.state.divActivePayment}
@@ -399,12 +402,12 @@ export default class Donate extends Component {
                 icon='edit outline'
                 link
                 // onClick={this.handleClick}
-                title='more datails'
-                description='an additional information'
+                title='dedication'
+                description='Add a dedication'
             />
 
             <Step
-                id = 'step1' 
+                id = 'step3' 
                 // active={active === 'payment'}
                 active = {this.state.divActivePayment}
                 disabled = {!this.state.divActivePayment}
@@ -435,18 +438,23 @@ export default class Donate extends Component {
                     <Grid.Row>
                     
                         {/* <h3 style = {{textAlign: 'center'}}>select amount:</h3> */}
-                        <div>
+                        <div style = {{marginLeft :'5em'}}>
                             {/* ~~ the sum buttons */}
                             {this.state.sumBtn.map(sums =>
-                                <Button inverted circular style = {styleBotton} key={sums} data-letter={sums} onClick={this.handleClickBtn}>
-                                {sums}
+                                <Button 
+                                    inverted circular 
+                                    style = {styleBotton} 
+                                    key={sums} 
+                                    data-letter={sums} o
+                                    nClick={this.handleClickBtn}>
+                                    {sums}
                                 </Button>
                             )}
                         </div>
                     </Grid.Row>
                     <Grid.Row style ={{paddingLeft: '10em'}}>
                         <div style ={{padding: '0.2em'}}>
-                            {/* <label  > other: </label> */}
+                           
                             {/* ~~ amount */}
                             <Input required
                                 action={{
@@ -478,23 +486,13 @@ export default class Donate extends Component {
                                 onChange={this.handleChange}
 
                             />
-                            {this.state.donate_req.monthly_donation == '' &&
+                            {this.state.donate_req.monthly_donation === '' &&
                             <Message
                                 error
                                 header='Action Forbidden'
                                 content='You must enter a sum of donation.'
                                 />
                             }
-                            {/* <Input
-                                icon='tags'
-                                iconPosition='left'
-                                label={{ tag: true, content: 'Add Tag' }}
-                                labelPosition='right'
-                                placeholder='Enter tags'
-                            /> */}
-
-                            {/* <input value={this.state.sumDonate} style = {{textAlign: 'center'}} onChange={this.handleChange} /> */}
-                            {/* <label> USD</label> */}
                         </div>
                         
                     </Grid.Row> 
@@ -506,9 +504,15 @@ export default class Donate extends Component {
                             _________________________________________________________</label>
                     </Grid.Row>  
                 </Grid>
-
+                        
+                {/*  ~~~~~~ Donate through ~~~~~~~~~~~~*/}
+                <Label style = {{backgroundColor: '#e6f2ff', fontSize: '14px',higth:'30px', marginTop: '3em'}}> 
+                            <Icon name='hand point right' /> 
+                                if you donation becous .... 
+                                please enter his mail that his status could update :)
+                </Label>
                 {/* ~~ form */}
-                <Form style = {{paddingTop: '1.5em' , paddingLeft: '1.5em'}}>
+                <Form style = {{paddingTop: '1.5em' , paddingLeft: '1.5em', marginLeft: '8em'}}>
                     {/* <Form.Input
                         width={4}
 						label= 'Donate through:'
@@ -518,15 +522,17 @@ export default class Donate extends Component {
 						name="dThrough"
 						// onChange={this.handleChange.bind(this)}
 					/> */}
+                    <br/>
+
                     <Form.Input
                             icon='mail'
                             iconPosition='left'
                             name = "dThrough"
                             id='dedicationEmail'
                             placeholder='mail'
-                            width ={4}
+                            width ={6}
                             // control={Input}
-                            label= 'Donate through: (mail)'
+                            // label= 'Donate through: (mail)'
                             placeholder='joe@schmoe.com'
                             value = {this.state.dThrough}
                             onChange = {this.handleChangeMail}
@@ -542,8 +548,6 @@ export default class Donate extends Component {
                         <div>valid</div> }
                         </div>
                     } */}
-                    <Form.Button content='check' />
-
                         
                         {/* <Form.Field
                             label = 'Last Name'
@@ -552,37 +556,22 @@ export default class Donate extends Component {
                             placeholder='Sum donation'
                         /> */}
                         {/* Add a dedication */}
-                        <Label tag style = {{backgroundColor: '#e6f2ff', fontSize: '12px' ,marginTop:'2em', marginBottom:'2em'}}> 
-                            {/* <Icon name='heart'   */}
-                            Add a dedication (optional)
-                        </Label>
+                        
+                        <br/>
+                        <br/>
+                        {/* <Button 
+                        width ={6}
+                        style = {{
+                            backgroundColor: backgroundColor,
+                            textAlign: 'center',
+                            // text-decoration: none;
+                            // display: 'inline-block',
+                            fontSize: '16px',
+                           
+                        }} 
+                        type='submit'>Submit</Button> */}
 
 
-
-                         {/* /// TODO ! toggel to show their namw */}
-                        <Form.Input
-                            width={4}
-                            label= 'In Honor of:'
-                            icon='heart'
-                            iconPosition='left'
-                            placeholder='name'
-                            name="dedicatedTo"
-                            onChange={this.handleChangeTitle.bind(this)}
-					    />
-                        <Form.TextArea 
-                            width={12}
-                            label= 'Write a Dedication:'
-                            rows={3} 
-                            placeholder='Text'
-                            name="more"
-                            onChange={this.handleChangeDescription.bind(this)}
-
-                        />
-                        <Form.Field required>
-                            < Checkbox label='I agree to the Terms and Conditions' />
-                        </Form.Field>
-
-                        <Button type='submit'>Submit</Button>
                     </Form>
                     {/* <Grid.Row>
                         sum of donation: {this.state.sumDonate}
@@ -595,21 +584,32 @@ export default class Donate extends Component {
         {/*  // TODO: check if thesync find duser (by mail) found */}
         {this.state.coreStep === 2 && 
             <div>
-                i am at 2
+                <Label tag style = {{backgroundColor: '#e6f2ff', fontSize: '12px' ,marginTop:'2em', marginBottom:'2em'}}> 
+                            {/* <Icon name='heart'   */}
+                            Add a dedication (optional)
+                </Label>
                  <Form>
-                    <Form.Field>
-                    <label>First Name</label>
-                    <input placeholder='First Name' />
-                    </Form.Field>
-                    <Form.Field>
-                    <label>Last Name</label>
-                    <input placeholder='Last Name' />
-                    </Form.Field>
-                    <Form.Field>
-                    <Checkbox label='I agree to the Terms and Conditions' />
-                    </Form.Field>
-                    <Button type='submit'>Submit</Button>
+                        {/* /// TODO ! toggel to show their namw */}
+                    <Form.Input
+                        width={4}
+                        label= 'In Honor of:'
+                        icon='heart'
+                        iconPosition='left'
+                        placeholder='name'
+                        name="dedicatedTo"
+                        onChange={this.handleChangeTitle.bind(this)}
+                    />
+                    <Form.TextArea 
+                        width={12}
+                        label= 'Write a Dedication:'
+                        rows={3} 
+                        placeholder='Text'
+                        name="more"
+                        onChange={this.handleChangeDescription.bind(this)}
+
+                    />
                 </Form>
+                
                 <br></br>
 
             </div>
@@ -644,17 +644,18 @@ export default class Donate extends Component {
                     <But */}
 
         <div style ={{alignSelf: 'center'}}>
-        <Button.Group >
+        <Button.Group style = {{marginTop:'2em'}} >
             <Button
                 name = 'btnPrev'
                 // disabled = {this.disableButtons}
-                disabled ={true}
+                disabled ={false}
                 // active={active === 'select Amount'}
 
                 color='blue'
                 labelPosition='left' 
                 icon='left arrow'
                 content='prev'
+                onClick = {this.prevButton}
             />
             <Button
                 disabled ={this.state.nextAble}
