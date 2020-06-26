@@ -16,7 +16,8 @@ export default class Donate extends Component {
     {
         super(props)
         this.state = {
-
+            loggedIn: this.props.data.loggedIn,
+            userName: this.props.data.userName,
             // stef functionalety
             coreStep : 1, // the corrent step
             dicCompleteDonation: false,
@@ -44,7 +45,7 @@ export default class Donate extends Component {
             // set json to state
             massageErrRequireFIeld: {},
             // the request to donation for server
-            donate_req: {"user_id": "tehilaj97@gmail.com", "org_id":this.props.data.org_id, "monthly_donation": this.props.data.initialDonation,
+            donate_req: {"user_id": null, "org_id":this.props.data.org_id, "monthly_donation": this.props.data.initialDonation,
             "referred_by": '',"d_title": '',"d_description": '',"anonymous" : false },
             
             findDuser: true,
@@ -89,6 +90,14 @@ export default class Donate extends Component {
     
 
     }
+    //before all
+    componentDidMount(){
+        alert ("user: "+this.props.data.userName)
+        if(this.state.loggedIn){
+            this.setState(Object.assign(this.state.donate_req,{user_id:this.props.data.userName}));
+        }
+
+    }
 
     //~~~~~~~~~~~~~~~~~~ function ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
     donateDisabel()
@@ -117,7 +126,7 @@ export default class Donate extends Component {
 
     //~~~~~~~~~~ disableNextBtn  ~~~~~~``
     disableNextBtn(e){
-        if(this.state.finishDonate)
+        if(this.state.finishDonate || !this.state.loggedIn)
             return true;
         else
             return false;
@@ -232,83 +241,91 @@ export default class Donate extends Component {
     // nextButton -> functionalety of donate proggress
     nextButton(e)
     {
-        // ~~ start step 1~~~
-        if( this.state.coreStep === 1) 
+        if(this.state.loggedIn)
         {
-                    // TODO: מיותר? מתי נעשת הבדיקה
-            // if(this.state.donate_req.monthly_donation !== '') // sume field is not empty 
-            // {
-                // ~~ statr dThrow 
-                if(this.state.dThrough !== '')  // dTrow -> need check if user exist in system (give a id)
-                {
-                    // TODO:    check the email syntax    
-                    if(this.state.donate_req.referred_by === '') //-> check if do a request before
+            // ~~ start step 1~~~
+            if( this.state.coreStep === 1) 
+            {
+                        // TODO: מיותר? מתי נעשת הבדיקה
+                // if(this.state.donate_req.monthly_donation !== '') // sume field is not empty 
+                // {
+                    // ~~ statr dThrow 
+                    if(this.state.dThrough !== '')  // dTrow -> need check if user exist in system (give a id)
                     {
-                        this.setState({ableDonate: true});
-                        axios.get('/donate/findDThrouhUser/'+this.state.dThrough
-                        ).then(res => 
+                        // TODO:    check the email syntax    
+                        if(this.state.donate_req.referred_by === '') //-> check if do a request before
                         {
-                            if (res.status >= 400) {
-                                throw new Error("Bad response from server");}
-                            else if (res === "not found" || res.data.user_id === undefined) // the data is not null
-                                {
-                                    alert ("there are no user in system!")
-                                    this.setState({dThrough: '' ,ableDonate: false});
-              
-                                    // , nextAble:false});
-                                    // TODO: alert message in UI
-                                }
-                            else{ // give a id of the donate through
-                                this.setState(Object.assign(this.state.donate_req,{referred_by: res.data.user_id}));
-                                this.setState({ableDonate: false}); // donate able 
-                                this.setState({nextAble: false});
-                                
-                            }	
-                        }).catch(error=> {
-                            alert(error);
-                        })
-                    }
-                    // check if finish a req
-                    if (this.state.donate_req.referred_by !== ''){
-                        this.setState({ableDonate: false});
-                        this.switchStep();
+                            this.setState({ableDonate: true});
+                            axios.get('/donate/findDThrouhUser/'+this.state.dThrough
+                            ).then(res => 
+                            {
+                                if (res.status >= 400) {
+                                    throw new Error("Bad response from server");}
+                                else if (res === "not found" || res.data.user_id === undefined) // the data is not null
+                                    {
+                                        alert ("there are no user in system!")
+                                        this.setState({dThrough: '' ,ableDonate: false});
+                
+                                        // , nextAble:false});
+                                        // TODO: alert message in UI
+                                    }
+                                else{ // give a id of the donate through
+                                    this.setState(Object.assign(this.state.donate_req,{referred_by: res.data.user_id}));
+                                    this.setState({ableDonate: false}); // donate able 
+                                    this.setState({nextAble: false});
+                                    
+                                }	
+                            }).catch(error=> {
+                                alert(error);
+                            })
+                        }
+                        // check if finish a req
+                        if (this.state.donate_req.referred_by !== ''){
+                            this.setState({ableDonate: false});
+                            this.switchStep();
 
+                        }
+                        alert("findDuser: " + this.state.findDuser + " finishDonate " + this.state.finishDonate)
                     }
-                    alert("findDuser: " + this.state.findDuser + " finishDonate " + this.state.finishDonate)
-                }
-                // TODO (alert)
-                else{ // the mail is ok
-                    this.switchStep(); // switch step
-                }
-              
+                    // TODO (alert)
+                    else{ // the mail is ok
+                        this.switchStep(); // switch step
+                    }
+                
 
-            // -> // DO: delete the option of a empty sum
-            if (this.state.donate_req.referred_by !== '')
-                this.switchStep();
-        } // ~~end step 1~~~
-        else   // step 2 or 3                
-            this.switchStep(); // switch step
+                // -> // DO: delete the option of a empty sum
+                if (this.state.donate_req.referred_by !== '')
+                    this.switchStep();
+            } // ~~end step 1~~~
+            else   // step 2 or 3                
+                this.switchStep(); // switch step
+        }
+        else{
+            alert("you mast loggin for donation")
+        }
     }
 
-    prevButton(e){
-        switch(this.state.coreStep) {
-            case 1:
-                    // this.setState({prevAble: true});
-                    // activeStep:'more datails'   
-                // }
-                break;
-            case 2:
-                this.setState({divActiveDonation: false,divActiveMore: false, divActivePayment: false, coreStep: 1,prevAble: false});
-                // activeStep:'payment'
-                break;
-            case 3:
-                this.setState({divActiveDonation: false,divActiveMore: true,divActivePayment: false});
-                break;
-            default:
-                // this.setState({ activeStep:' select Amount', coreStep: 1 })
-                this.setState({ coreStep:1})
-          }
-    }
+        prevButton(e){
+            switch(this.state.coreStep) {
+                case 1:
+                        // this.setState({prevAble: true});
+                        // activeStep:'more datails'   
+                    // }
+                    break;
+                case 2:
+                    this.setState({divActiveDonation: false,divActiveMore: false, divActivePayment: false, coreStep: 1,prevAble: false});
+                    // activeStep:'payment'
+                    break;
+                case 3:
+                    this.setState({divActiveDonation: false,divActiveMore: true,divActivePayment: false,coreStep:2,nextAble:false});
+                    break;
+                default:
+                    // this.setState({ activeStep:' select Amount', coreStep: 1 })
+                    this.setState({ coreStep:1})
+            }
+        }
+    
+    
 
     // # 08.05 -> paypel
     createPayPalSubscriptionButton(vault) {
@@ -420,8 +437,15 @@ export default class Donate extends Component {
             />
         </Step.Group>
         {/*       
-
+        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        if not login
         {/* divActiveDonation */}
+        {!this.state.loggedIn
+        &&
+          <div>
+                you need to loggedIn!
+          </div>  
+        }
         {this.state.coreStep === 1 && 
         // {this.state.divActiveDonation && 
             <Segment >
@@ -446,7 +470,7 @@ export default class Donate extends Component {
                                     style = {styleBotton} 
                                     key={sums} 
                                     data-letter={sums} o
-                                    nClick={this.handleClickBtn}>
+                                    onClick={this.handleClickBtn}>
                                     {sums}
                                 </Button>
                             )}

@@ -469,7 +469,7 @@ class OrgBody extends React.Component {
                             </Grid.Row>
                             <Grid.Row>                           
                                 <div>
-                                    <Donate data={{initialDonation: this.state.initialDonation, org_id: this.props.data.orgDetails.org_id}} />
+                                    <Donate data={{initialDonation: this.state.initialDonation, org_id: this.props.data.orgDetails.org_id,loggedIn: this.props.data.loggedIn,userName: this.props.data.userName}} />
                                    
                                 </div>
                                                             
