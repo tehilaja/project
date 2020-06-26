@@ -5,6 +5,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Card, Icon, Image,Segment ,Label,Grid,Feed,Button} from 'semantic-ui-react'
+import {Redirect} from "react-router-dom";
+
 
 class LastDonationCard extends React.Component{
     constructor(props){
@@ -14,7 +16,9 @@ class LastDonationCard extends React.Component{
             timeDate: JSON.stringify(this.props.ldonation.d_date),
             name: null,
             time: null,
-            date:null
+            date:null,
+            routeOrgPage: false,
+            move: "donate to " + this.props.ldonation.org_name
         }
     }
     /*
@@ -23,6 +27,7 @@ class LastDonationCard extends React.Component{
    componentDidMount () {
     let time ;
     let date;
+    const name = "donate to " + this.props.ldonation.org_name
 
     this.setState({name: this.props.ldonation.user_id.split("@")[0]});
 
@@ -40,6 +45,16 @@ class LastDonationCard extends React.Component{
     }
       
     render(){
+
+        if (this.state.routeOrgPage === true){
+            return <Redirect to = {{
+              pathname: `/OrgPage/`+`${this.props.ldonation.org_id}`
+              // -- $$$$$$$ ---
+                // state: {id: this.props.id}
+    
+            }} />
+            } 
+
         return(
             // <Segment>
             <div style ={{marging: '0.8em' ,padding: '0.8em'}}>
@@ -78,7 +93,13 @@ class LastDonationCard extends React.Component{
                                 labelPosition='right' 
                                 icon='right arrow'
                                 lableColor = 'green'
-                                content='move to organitation page'
+                                content= {this.state.move}
+                                onClick = {() => this.setState(prevState => {
+                                    return {
+                                        routeOrgPage: !prevState.routeOrgPage}
+                                      })}
+                                    
+
                             />
                         </div>
                         {/* <div className='ui two buttons'>

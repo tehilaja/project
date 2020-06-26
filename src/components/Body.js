@@ -289,7 +289,7 @@ getThreeOrgs(){
 						<Segment color='orange'>
 									<Header as='h2' icon='gift' content='Winners' />
 									<div  style ={{display: 'flex'}}>
-										{donationInfo}
+										{/* {donationInfo} */}
 									</div>
 							</Segment>
 						</Grid.Column>
