@@ -461,7 +461,7 @@ export default class Donate extends Component {
                     </Grid.Row>
 
                     <Grid.Row>
-                    
+
                         {/* <h3 style = {{textAlign: 'center'}}>select amount:</h3> */}
                         <div style = {{marginLeft :'5em'}}>
                             {/* ~~ the sum buttons */}

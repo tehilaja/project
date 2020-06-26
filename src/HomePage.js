@@ -38,9 +38,8 @@ class App extends React.Component
 	{
 		return(
 			<div>
-				<Header data={{ loggedIn: this.state.loggedIn, program_admin: this.state.program_admin, userName: this.state.userName }} />				<Body data={{loggedIn: this.state.loggedIn, userName: this.state.userName}}/>
-				<Feed data={{loggedIn: this.state.loggedIn, userName: this.state.userName}}/>
-				<Footer />
+				<Body data={{loggedIn: this.state.loggedIn, userName: this.state.userName}}/>
+				{/* <Feed data={{loggedIn: this.state.loggedIn, userName: this.state.userName}}/> */}
 				{/*<button onClick={this.check.bind(this)}>button</button>*/}
 			</div>
         )

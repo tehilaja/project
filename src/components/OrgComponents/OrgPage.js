@@ -105,14 +105,8 @@ class OrgPage extends React.Component{
 			)
 		return(
 			<div >
-				<HeaderPage data={{ loggedIn: this.state.loggedIn, program_admin: this.state.program_admin, userName: this.state.userName }} />				{/* <header>
-					<img src = {this.state.img} ></img>
-				</header> */}
-
 				<OrgBody 
 					data = {this.state}/>
-				<Footer />
-
 			</div>
 		)
 	}	

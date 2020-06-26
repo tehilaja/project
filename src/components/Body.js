@@ -372,6 +372,9 @@ getThreeOrgs(){
 					All we left for you to do, is focus on content that will be appealing and attract your ongoing doners.
 					Tell us about your organization. We will be in touch with you shortly, and create your platform.
 					</p>
+					{!this.state.loggedIn && <p style={{ fontSize: '1.33em' }}>
+					Please Login or Sign Up to send a request to build a platform.
+					</p>}
 					{this.state.loggedIn && <Button as='a' size='large'
 					onClick ={() => this.setState(prevState => {
 						return {

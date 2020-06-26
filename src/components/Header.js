@@ -70,6 +70,7 @@ class ActivePage {
 	static Organizations = 2;
 	static Prizes = 3;
 	static MyProfile = 4;
+	static AdminPage = 5;
 }
 
 
@@ -127,7 +128,7 @@ class DesktopContainer extends React.Component
 			loggedIn: props.data.loggedIn,
 			userName: props.data.userName,
 			program_admin: props.data.program_admin,
-			activePage: props.activePage,
+			activePage: props.data.activePage,
 			routeMain: false,
 			routeUserProfile: false, 
 			routeOrgSearch: false,
@@ -135,7 +136,6 @@ class DesktopContainer extends React.Component
 		}
 
 	}
-
 
 	hideFixedMenu = () => this.setState({ fixed: false })
 	showFixedMenu = () => this.setState({ fixed: true })
@@ -153,7 +153,7 @@ render() {
 		}} />
 	} 
 
-	//redirecting to User Profile TODO: route to correct page!
+	//redirecting to User Profile
 	if (this.state.routeUserProfile === true){
 		return <Redirect to = {{
 			pathname: '/UserPage',
@@ -161,7 +161,7 @@ render() {
 		}} />
 	} 
 
-	//redirecting to User Profile TODO: route to correct page!
+	//redirecting to Admin page - App will check that user is actually admin
 	if (this.state.routeAdminPage === true){
 		return <Redirect to = {{
 			pathname: '/AdminPage',
@@ -212,23 +212,23 @@ render() {
 					}})}>
 					Home
 			  </Menu.Item>
-			  <Menu.Item as='a' onClick ={() => this.setState(prevState => {
+			  <Menu.Item as='a' active={this.state.activePage===ActivePage.Organizations} onClick ={() => this.setState(prevState => {
 				  return {
 						routeOrgSearch: !prevState.routeOrgSearch
 					}})}>Organizations</Menu.Item>
-			  <Menu.Item as='a' onClick ={() => this.setState(prevState => {
+			  <Menu.Item as='a' active={this.state.activePage===ActivePage.Prizes} onClick ={() => this.setState(prevState => {
 				  return {
 						routePrizes: !prevState.routePrizes
 					}})}>Prizes</Menu.Item>
 			  {this.state.loggedIn &&
-			  <Menu.Item as='a' onClick ={() => this.setState(prevState => {
+			  <Menu.Item as='a' active={this.state.activePage===ActivePage.MyProfile} onClick ={() => this.setState(prevState => {
 				  return {
 						routeUserProfile: !prevState.routeUserProfile
 					}})}>
 					My Profile
 				</Menu.Item>}
 				{this.state.program_admin &&
-			  <Menu.Item as='a' onClick ={() => this.setState(prevState => {
+			  <Menu.Item as='a' active={this.state.activePage===ActivePage.AdminPage} onClick ={() => this.setState(prevState => {
 				  return {
 					routeAdminPage: !prevState.routeAdminPage
 					}})}>

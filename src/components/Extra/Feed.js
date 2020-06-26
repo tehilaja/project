@@ -66,7 +66,7 @@ handleSubmit(){
     feed_type: this.state.feed_type,
     feed_type_id: this.state.feed_type_id,
     user_id: this.state.userName, 
-    date: (new Date).getTime(), 
+    date: new Date().toJSON().slice(0, 19).replace('T', ' '), 
     comment_text: this.state.commentText, 
     likes: 0
 }
@@ -82,8 +82,17 @@ axios.post('/add-comment', this.state.newComment
     })
 }
 
-updateLikes(){
-//TODO: update number of likes
+updateLikes(comment_id){
+  alert("in update likes")
+  axios.post('/add-like', comment_id
+    ).then(res => 
+    {
+      this.state.comments[comment_id].likes = this.state.comments[comment_id].likes + 1;
+      this.setState({gotFeedFlag: !this.state.gotFeedFlag})
+
+    }).catch(error=> {
+        alert("error updating likes" +  error);
+    })
 }
 
 computeFeedComments = () => {
@@ -104,7 +113,7 @@ computeFeedComments = () => {
       <Feed.Meta>
         <Feed.Like>
           <Icon name='like'
-          onClick ={() => comment.likes = comment.likes+1}/>
+          onClick ={() => alert("hello")}/>
               {comment.likes}
                Likes
         </Feed.Like>
@@ -142,49 +151,5 @@ render() {
   </Segment>
     </div>)
 }
-  
-  //  render(){
-  //     return(
-  //       <Feed>
-  //   <Feed.Event>
-  //     <Feed.Label>
-  //     <UserAvatar size = '35' shape='round' name={FeedContent.feedUserName} />
-  //     </Feed.Label>
-  //     <Feed.Content>
-  //       <Feed.Summary>
-  //       <Feed.User>{FeedContent.feedUserName}</Feed.User> 
-  //       {FeedContent.feedAction}
-  //         <Feed.Date>{FeedContent.feedDate}</Feed.Date>
-  //       </Feed.Summary>
-  //       <Feed.Extra text>
-  //       <Feed.Extra text>
-  //         {FeedContent.feedText}
-  //       </Feed.Extra>
-  //       </Feed.Extra>
-  //       <Feed.Meta>
-  //         <Feed.Like>
-  //           <Icon name='like'
-  //           onClick ={this.updateLikes.bind(this)}/>
-  //               {FeedContent.likes}
-  //                Likes
-  //         </Feed.Like>
-  //       </Feed.Meta>
-  //     </Feed.Content>
-  //   </Feed.Event>
-  //   <Segment>
-  //   <Form>
-  //   <Form.Field inline='verdical' onSubmit={this.handleSubmit.bind(this)}>
-  //     <UserAvatar size = '35' shape='round' name={this.state.userName} />
-  //       <Form.Input
-  //        icon = 'comment alternate'
-  //        placeholder='add comment...'
-  //        name="commentText"
-  //        onChange={this.handleChange.bind(this)} />
-  //     </Form.Field>
-  //   </Form>
-  //   </Segment>
-  //   </Feed>
-  //     )
-  //   }
 }
 export default CommentFeed;

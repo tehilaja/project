@@ -226,7 +226,7 @@ class EditOrgPage extends React.Component {
 	render() {
 		return(
 			<div>
-                <Header data={{ loggedIn: this.state.loggedIn, program_admin: this.state.program_admin, userName: this.state.userName }} />				<Grid container stackable verticalAlign='middle'>
+                <Grid container stackable verticalAlign='middle'>
 				<Grid.Row>
 					<Grid.Column width={8}>
                         <div>
@@ -484,7 +484,6 @@ class EditOrgPage extends React.Component {
 							</Grid.Column>
 						</Grid.Row>
 					</Grid>
-				<Footer />
 			</div>
 		)
 	}	

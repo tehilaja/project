@@ -57,7 +57,7 @@ class OrgSearch extends React.Component{
     
     return(
       <div>
-                <Header data={{ loggedIn: this.state.loggedIn, program_admin: this.state.program_admin, userName: this.state.userName }} />                <ImageGallery items={this.state.images} />
+                <ImageGallery items={this.state.images} />
                 <Segment>
                 <Grid celled='internally' columns='equal' stackable>
                     <Grid.Row textAlign='center'>
@@ -80,7 +80,6 @@ class OrgSearch extends React.Component{
                     </Grid.Row>
                 </Grid>
                 </Segment>
-        <Footer />
       </div>
     )
   } 

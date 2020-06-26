@@ -332,3 +332,34 @@ adding components for feed
 20/6/2020
 Adding comment to feed
 sending email when new organization was requested, and adding the correnct fields to the page to Edit org Page
+
+21/6/2020
+Adding pages for Admin of organization - approving organizations
+
+22/6/2020
+Adding pages for Admin of organization - approving organizations
+sending email to organization upon approval
+button to approve all requests
+button to dissaprove a request
+
+23/6/2020
+Adding page for admin to take care of payments for organizations
+bug on displaying the edit org page on the user page -
+need two seperate requests in server, one for admin of org to edit his page,
+and a seperate one for the admin of the program to get to his pages.
+
+24/6/2020
+Adding page for admin to take care of payments for organizations
+adding needed tables to DB
+
+25/6/2020
+Adding page for admin to take care of payments for organizations
+Working on inserting the new Feed comment to the DB
+working on the דוח סופי 
+
+26/6/2020
+Adding page for admin to take care of payments for organizations
+only app containing Header and Footer components
+sending activePage to header - problem when trying to send in state- created an infinate loop
+(in render tried setting state based on the path caused an endless loop, since changing state triggers render)
+working on donation

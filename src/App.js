@@ -5,6 +5,8 @@ import axios from "axios";
 import { async } from "q";
 
 import { Dimmer, Image, Loader, Segment } from 'semantic-ui-react';
+import Header from './components/Header.js'
+import Footer from './components/Footer.js'
 //App being father component of all components:
 import HomePage from './HomePage.js'
 import OrgPage from './components/OrgComponents/OrgPage.js';
@@ -22,6 +24,7 @@ class ActivePage {
     static Organizations = 2;
     static Prizes = 3;
     static MyProfile = 4;
+    static AdminPage = 5;
 }
 
 class App extends React.Component {
@@ -30,8 +33,10 @@ class App extends React.Component {
         super()
         this.state = {}
         this.org = {};
+        this.activePage = 0;
         this.get_user_params();
         this.guardRoute = this.guardRoute.bind(this);
+        this.renderPageBody = this.renderPageBody.bind(this);
     }
 
     async get_is_program_admin() {
@@ -111,6 +116,37 @@ class App extends React.Component {
         })();
     }
 
+    renderPageBody(path){
+        const spliting = path.split("/")
+            switch (path.toLowerCase()) {
+                case "/":
+                    {
+                    return [ActivePage.Home, <HomePage data={this.state}/>];
+                    }
+                case "/userpage":
+                    {
+                    return [ActivePage.MyProfile, <UserPage data={this.state}/>];
+                    }
+                case `/orgpage/${spliting[2]}`:
+                    {
+                    return [ ActivePage.Organizations, <OrgPage data={this.state} id={spliting[2]} />];
+                    }
+                //The following case to get to Admin page will be guarded:
+                case "/adminpage":
+                    return [ActivePage.AdminPage, this.guardRoute('program_admin', (<AdminPage data={this.state} />), '/')];
+                case "/neworgpage":
+                return [0, <NewOrgPage data={this.state} />];
+                case `/editorgpage/${spliting[2]}`:
+                    return [0, this.guardRoute('org_admin', (<EditOrgPage data={this.state} id={spliting[2]} />), '/')];
+                case "/orgsearch":
+                return [ActivePage.Organizations, <OrgSearch data={this.state} activePage={ActivePage.Organizations}/>];
+                case "/prizes":
+                return [ActivePage.Prizes, <Prizes data={this.state} activePage={ActivePage.Prizes}/>];
+                default:
+                    break;
+            }
+    }
+
     componentDidMount() {
         // alert("window.location.pathname: \n" + window.location.pathname)
     }
@@ -147,30 +183,13 @@ class App extends React.Component {
         else {
 
             const path = window.location.pathname;
-            const spliting = path.split("/")
-            switch (path.toLowerCase()) {
-                case "/":
-                    return (<HomePage data={this.state} activePage={ActivePage.Home} />);
-                case "/userpage":
-                    return (<UserPage data={this.state} />);
-                case `/orgpage/${spliting[2]}`:
-                    {
-                        return (<OrgPage data={this.state} id={spliting[2]} />);
-                    }
-                //The following case to get to Admin page will be guarded:
-                case "/adminpage":
-                    return this.guardRoute('program_admin', (<AdminPage data={this.state} />), '/');
-                case "/neworgpage":
-                    return (<NewOrgPage data={this.state} />);
-                case `/editorgpage/${spliting[2]}`:
-                    return this.guardRoute('org_admin', (<EditOrgPage data={this.state} id={spliting[2]} />), '/');
-                case "/orgsearch":
-                    return (<OrgSearch data={this.state} />);
-                case "/prizes":
-                    return (<Prizes data={this.state} />);
-                default:
-                    break;
-            }
+            const [activePage, renderObject] = this.renderPageBody(path)
+           return( 
+           <div>
+            <Header data={{ loggedIn: this.state.loggedIn, program_admin: this.state.program_admin, userName: this.state.userName, activePage: activePage}}/>
+            {renderObject}
+            <Footer />
+            </div>)
         }
     }
 }

@@ -568,10 +568,14 @@ app.get('/EditOrgPage/:userId/is-org-admin/:orgId', function (req, res, next) {
   });
 });
 
-app.get('/:userId/is-program-admin', function (req, res, next) {
+app.get('/EditOrgPage/:userId/is-program-admin', function (req, res, next) {
   res.send(req.params.userId === 'tehilaj97@gmail.com');
 });
 
+//for admin page
+app.get('/:userId/is-program-admin', function (req, res, next) {
+  res.send(req.params.userId === 'tehilaj97@gmail.com');
+});
 
 
 
@@ -741,13 +745,33 @@ app.post('/fetch_org_data', (req, res) => {
   })
 })
 
+//FUNCTIONS FOR DEALING WITH FEED:
+
+//-------------------function that gets the comments of users for given feed_id------------------
+app.post('/OrgPage/fetch-feed-comments/:feed_type/:feed_type_id',
+// app.post('/fetch-feed-comments',
+function (req, res, next) {
+  console.log('in fetch feed comments');
+    const sqlQuery = `SELECT * FROM Feed_comments WHERE feed_type="${req.params.feed_type}" and feed_type_id=${req.params.feed_type_id}`
+    // const sqlQuery = `SELECT * FROM Feed_comments WHERE feed_type="org" and feed_type_id=2`
+    console.log(sqlQuery)
+    db.query(sqlQuery, (err, result, fields) => {
+      if (!err) {
+        console.log('res: ' + JSON.stringify(result));
+        res.send(result);
+      } else {
+        console.log('error: ' + JSON.stringify(err));
+        res.send(null);
+      };
+    })
+  });
+
 // function to add another comment to the feed
 app.post('/add-comment', (req, res, next) => {
 
   const qAddComment = `INSERT INTO Feed_comments (feed_type, feed_type_id, user_id, date, comment_text, likes) VALUES
-  (${req.body.feed_type},${req.body.feed_type_id}, ${req.body.user_id}, ${req.body.date}, ${req.body.comment_text}, ${req.body.likes});` 
+  ("${req.body.feed_type}",${req.body.feed_type_id}, "${req.body.user_id}", "${req.body.date}", "${req.body.comment_text}", ${req.body.likes});` 
   console.log('in add-comment in server. query: '+ qAddComment)
-  res.send('done add-comment')
 try{
   db.query(qAddComment, (err, result, fields) => {
     if (!err) {
@@ -768,6 +792,24 @@ catch (err) {
 }
 
 });
+
+  //---------------------add likes-------------------
+  app.post('/add-like', (req, res) => {
+    console.log(JSON.stringify(req.body));
+    let query = `UPDATE Feed_comments SET likes = likes + 1 WHERE comment_id=${req.params.comment_id}`;
+    console.log(query);
+    db.query(query, (err, result, fields) => {
+      if (!err) {
+        res.send('success');
+      }
+      else {
+        console.log('err:' + JSON.stringify(err));
+        res.send("fail");
+      }
+      console.log(result)
+    });
+  });
+  
 
 //------------- ??? -------
 //---findDuser ---
@@ -807,24 +849,6 @@ app.get('/:userId/org-admin-of',
     })
   });
 
-//-------------------function that gets the comments of users for given feed_id------------------
-app.post('/OrgPage/fetch-feed-comments/:feed_type/:feed_type_id',
-// app.post('/fetch-feed-comments',
-function (req, res, next) {
-  console.log('in fetch feed comments');
-    const sqlQuery = `SELECT * FROM Feed_comments WHERE feed_type="${req.params.feed_type}" and feed_type_id=${req.params.feed_type_id}`
-    // const sqlQuery = `SELECT * FROM Feed_comments WHERE feed_type="org" and feed_type_id=2`
-    console.log(sqlQuery)
-    db.query(sqlQuery, (err, result, fields) => {
-      if (!err) {
-        console.log('res: ' + JSON.stringify(result));
-        res.send(result);
-      } else {
-        console.log('error: ' + JSON.stringify(err));
-        res.send(null);
-      };
-    })
-  });
 
 //-------------------get non approved orgs------------------
 app.get('/non-approved-orgs',

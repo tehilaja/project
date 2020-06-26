@@ -33,12 +33,10 @@ class UserPage extends React.Component {
     render() {
         return (
             <div>
-                <Header data={{ loggedIn: this.state.loggedIn, program_admin: this.state.program_admin, userName: this.state.userName }} />
                 <UserPageBody data={this.state} />
                 {this.state.userIsAdmin && <Segment relaxed='very'>
                 <AddPrize />
                 </Segment>}
-                <Footer />
             </div>
         )
     }
