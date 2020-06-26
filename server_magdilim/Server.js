@@ -98,7 +98,7 @@ const job = schedule.scheduleJob(rule, function () {
 
       Object.keys(giftReceivers).forEach(gift_id => {
         const query = `SELECT g.gift_name, g.gift_description, g.gift_pic, o.org_name FROM Gifts g INNER JOIN Organizations o WHERE gift_id=${gift_id}`;
-        db.query(qLDonation, (err, result, fields) => {
+        db.query(query, (err, result, fields) => {
           if (err) throw err;
           const gift = result[0];
 
@@ -165,9 +165,9 @@ app.get('/lastDonation', (req, res, next) => {
     //   INNER JOIN users u ON u.user_id = d.user_id 
     //   INNER JOIN organizations o ON o.org_id = d.org_id
     //   ORDER BY d_date DESC LIMIT 20`;
-    const qLDonation = `SELECT d.user_id, d.org_id, d.d_title,d.d_description, d.anonymous,d.referred_by, d.d_date, o.img_url FROM Doners_in_org d 
+    const qLDonation = `SELECT d.user_id, d.org_id, d.d_title,d.d_description, d.anonymous,d.referred_by, d.d_date, o.img_url,o.org_name FROM Doners_in_org d 
       INNER JOIN organizations o ON o.org_id = d.org_id
-      ORDER BY d_date DESC LIMIT 20`
+      ORDER BY d_date DESC LIMIT 20;`
     //d.referred_by,
     console.log("query: " + qLDonation);
     db.query(qLDonation, (err, result, fields) => {
@@ -504,6 +504,7 @@ app.post('/donationProcess', (req, res, next) => {
 app.get('/orgPage/gifts/:org_id', (req, res, next) => {
   try {
     console.log(" in orgPage/gifts \n")
+    console.log("org_id: \n "+ req.params.org_id)
     const qGifts =
       `
       SELECT 

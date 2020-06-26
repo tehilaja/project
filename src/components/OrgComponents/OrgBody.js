@@ -129,7 +129,7 @@ class OrgBody extends React.Component {
 
     getGifts()
     {
-        axios.get('/orgPage/gifts/'+this.state.org_id).then(res => 
+        axios.get('/orgPage/gifts/'+this.props.data.orgDetails.org_id).then(res => 
         {
             if (res.status >= 400) {
                 throw new Error("Bad response from server");}
@@ -469,7 +469,7 @@ class OrgBody extends React.Component {
                             </Grid.Row>
                             <Grid.Row>                           
                                 <div>
-                                    <Donate data={{initialDonation: this.state.initialDonation, org_id: this.props.data.orgDetails.org_id}} />
+                                    <Donate data={{initialDonation: this.state.initialDonation, org_id: this.props.data.orgDetails.org_id,loggedIn: this.props.data.loggedIn,userName: this.props.data.userName}} />
                                    
                                 </div>
                                                             
