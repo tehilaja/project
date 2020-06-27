@@ -148,18 +148,20 @@ render() {
 
 	//redirecting to Home
 	if (this.state.routeMain === true){
-		return <Redirect to = {{
-			pathname: '/',
-			state: {userName: this.state.userName, loggedIn: this.state.loggedIn}
-		}} />
+		// return <Redirect to = {{
+		// 	pathname: '/',
+		// 	state: {userName: this.state.userName, loggedIn: this.state.loggedIn}
+		// }} />
+		window.location.assign('/');
 	} 
 
 	//redirecting to User Profile
 	if (this.state.routeUserProfile === true){
-		return <Redirect to = {{
-			pathname: '/UserPage',
-			state: {userName: this.state.userName, loggedIn: this.state.loggedIn}
-		}} />
+		// return <Redirect to = {{
+		// 	pathname: '/UserPage',
+		// 	state: {userName: this.state.userName, loggedIn: this.state.loggedIn}
+		// }} />
+		window.location.assign('/UserPage');
 	} 
 
 	//redirecting to Admin page - App will check that user is actually admin

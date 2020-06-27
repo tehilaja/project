@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from "axios";
-import { Button, Divider, Form, Grid, Segment } from 'semantic-ui-react'
+import { Button, Dimmer, Divider, Form, Grid, Loader, Segment } from 'semantic-ui-react'
 import { Redirect } from "react-router-dom";
 
 import UserRegistrationForm from './UserRegistrationForm.js'
@@ -8,7 +8,14 @@ class LoginForm extends React.Component {
     constructor(props) {
         super(props)
         this.state =
-            { userName: "", pswd: "", isAdmin: false, loggedIn: false, showUserRegister: false }
+            { 
+                userName: "",
+                pswd: "",
+                isAdmin: false,
+                loggedIn: false,
+                showUserRegister: false,
+                loading: false
+            }
         this.handleChange = this.handleChange.bind(this)
     }
 
@@ -37,6 +44,7 @@ class LoginForm extends React.Component {
             return;
         }
         //login user to server
+        this.setState({loading: true});
         (async () => {
             const response = await axios.post(
                 '/login',
@@ -52,6 +60,7 @@ class LoginForm extends React.Component {
                 // this.props.record(this.state.userName)
             } else {
                 alert(response.data);
+                this.setState({loading: false});
             }
         })();
     }
@@ -59,6 +68,10 @@ class LoginForm extends React.Component {
     render() {
         return (
             <div>
+            {this.state.loading && <Dimmer active inverted>
+                        <Loader size='massive'>Logging in...</Loader>
+                    </Dimmer>}
+            {!this.state.loading && <div>
             {!this.state.showUserRegister && <Segment placeholder>
                 <Grid columns={2} relaxed='very' stackable>
                     <Grid.Column>
@@ -95,6 +108,7 @@ class LoginForm extends React.Component {
                 <Divider vertical>Or</Divider>
             </Segment>}
             {this.state.showUserRegister && <UserRegistrationForm />}
+            </div>}
             </div>
         )
     }
