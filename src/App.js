@@ -102,7 +102,6 @@ class App extends React.Component {
                     check_login_status: true,
                 });
 
-                //await this.get_is_program_admin();
                 await this.run_necessary_guard_checks();
             } else {
                 this.setState({
@@ -184,7 +183,9 @@ class App extends React.Component {
 
             const path = window.location.pathname;
             const [activePage, renderObject] = this.renderPageBody(path)
-           return( 
+            const details = {loggedIn: this.state.loggedIn, program_admin: this.state.program_admin, userName: this.state.userName, activePage: activePage}
+            alert(JSON.stringify(details))
+            return( 
            <div>
             <Header data={{ loggedIn: this.state.loggedIn, program_admin: this.state.program_admin, userName: this.state.userName, activePage: activePage}}/>
             {renderObject}

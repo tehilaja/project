@@ -134,6 +134,7 @@ class DesktopContainer extends React.Component
 			routeOrgSearch: false,
 			routePrizes: false,
 		}
+		console.log(JSON.stringify(props.data))
 
 	}
 
@@ -141,7 +142,7 @@ class DesktopContainer extends React.Component
 	showFixedMenu = () => this.setState({ fixed: true })
 	  
 render() {
-	// alert("in desktop render:"+ JSON.stringify(this.state))
+	alert("in desktop render:"+ JSON.stringify(this.state))
 	const { children } = this.props
     const { fixed } = this.state
 
@@ -163,26 +164,29 @@ render() {
 
 	//redirecting to Admin page - App will check that user is actually admin
 	if (this.state.routeAdminPage === true){
-		return <Redirect to = {{
-			pathname: '/AdminPage',
-			state: {userName: this.state.userName, loggedIn: this.state.loggedIn}
-		}} />
+		// return <Redirect to = {{
+		// 	pathname: '/AdminPage',
+		// 	state: {userName: this.state.userName, loggedIn: this.state.loggedIn}
+		// }} />
+		window.location.assign('/AdminPage');
 	} 
 
 	//redirecting to Prizes
 	if (this.state.routePrizes === true){
-		return <Redirect to = {{
-			pathname: '/Prizes',
-			state: {userName: this.state.userName, loggedIn: this.state.loggedIn}
-		}} />
+		// return <Redirect to = {{
+		// 	pathname: '/Prizes',
+		// 	state: {userName: this.state.userName, loggedIn: this.state.loggedIn}
+		// }} />
+		window.location.assign('/Prizes');
 	} 
 
 	//redirecting to OrgSearch page
 	if (this.state.routeOrgSearch === true){
-		return <Redirect to = {{
-			pathname: '/OrgSearch',
-			state: {userName: this.state.userName, loggedIn: this.state.loggedIn}
-		}} />
+		// return <Redirect to = {{
+		// 	pathname: '/OrgSearch',
+		// 	state: {userName: this.state.userName, loggedIn: this.state.loggedIn}
+		// }} />
+		window.location.assign('/OrgSearch');
 	} 
 	
   return (

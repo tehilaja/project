@@ -10,8 +10,7 @@ import Header from '../Header.js'
 class Status {
   static None = 0;
   static ApproveOrgs = 1;
-  static MonthlyPayments = 2;
-  static OneTimePayments = 3;
+  static PayOrgs = 2;
 }
 
 class AdminPage extends React.Component {
@@ -21,7 +20,7 @@ class AdminPage extends React.Component {
     this.state = {
       loggedIn: this.props.data.loggedIn,
       userName: this.props.data.userName,
-      status: Status.ApproveOrgs,
+      status: Status.None,
       showAproveOrgs: false,
       showPayOrgsMonthly: false,
       showPayOrgsOneTime: false,
@@ -29,47 +28,36 @@ class AdminPage extends React.Component {
   }
 
 
-
-
-
   render() {
     return (
       <div textAlign='center'>
+        <Header data={{ loggedIn: this.state.loggedIn, program_admin: true, userName: this.state.userName }} />
         <br />
         <br />
         <br />
         <div >
-        <Button
-          icon
-          labelPosition='left'
-          primary
-          size='small'
-        >
-          <Icon name='user' /> Approve Organizations
+          <Button
+            icon
+            labelPosition='left'
+            primary
+            size='small'
+            onClick={() => this.setState({ status: Status.ApproveOrgs })}
+          >
+            <Icon name='user' /> Approve Organizations
           </Button>
-        <Button
-          icon
-          labelPosition='left'
-          primary
-          size='small'
-        >
-          <Icon name='user' /> Monthly Payments
+          <Button
+            icon
+            labelPosition='left'
+            primary
+            size='small'
+            onClick={() => this.setState({ status: Status.PayOrgs })}
+          >
+            <Icon name='user' /> Pay Organizations
           </Button>
-        <Button
-          icon
-          labelPosition='left'
-          primary
-          size='small'
-        >
-          <Icon name='user' /> One Time Payments
-          </Button>
-          </div>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        {this.state.showAproveOrgs && <ApproveOrgs />}
-        {this.state.showPayOrgsMonthly && <PayOrgs />}
+        </div>
+        <br />
+        <br />
+        <br />
         {this.getComponentByStatus()}
       </div>)
   }
@@ -78,6 +66,8 @@ class AdminPage extends React.Component {
     switch (this.state.status) {
       case Status.ApproveOrgs:
         return <ApproveOrgs />;
+      case Status.PayOrgs:
+        return <PayOrgs />
       case Status.None:
       default:
         return null;

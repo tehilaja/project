@@ -3,7 +3,7 @@ let usersToOrganizationTrees = {}; // usersToOrganizationTrees[user_id][org_id] 
 let orgToLevels = undefined; // 
 
 const getDonersFromDbAndSetCache = (db, callback) => {
-    const sqlQuery = `SELECT * FROM Doners_in_org`; console.log(sqlQuery);
+    const sqlQuery = `SELECT * FROM doners_in_org WHERE status_id=1`;
     try{
         db.query(sqlQuery, (err, result, fields) => {
             if (err) throw err;

@@ -104,7 +104,7 @@ CREATE TABLE IF NOT EXISTS Doners_in_org (
   anonymous tinyint, -- default -> false
  
   -- האם לשנות ל enum() ? --
-  status_id int(4),
+  status_id tinyint,
  
   d_title varchar(250),
   d_description text

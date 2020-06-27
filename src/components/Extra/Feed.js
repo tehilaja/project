@@ -82,12 +82,16 @@ axios.post('/add-comment', this.state.newComment
     })
 }
 
+getCommentForCommentId(comment_id){
+  return this.state.comments.find( c => c.comment_id === comment_id )
+}
+
 updateLikes(comment_id){
   alert("in update likes")
-  axios.post('/add-like', comment_id
+  axios.post('/add-like', {comment_id: comment_id} 
     ).then(res => 
     {
-      this.state.comments[comment_id].likes = this.state.comments[comment_id].likes + 1;
+      this.getCommentForCommentId(comment_id).likes += 1;
       this.setState({gotFeedFlag: !this.state.gotFeedFlag})
 
     }).catch(error=> {
@@ -103,18 +107,17 @@ computeFeedComments = () => {
     </Feed.Label>
     <Feed.Content>
       <Feed.Summary>
-      <Feed.User>{comment.user_id}</Feed.User> 
-      commented
+      <Feed.User>{`${comment.user_id} `}</Feed.User> 
+      {` commented`}
       <Feed.Date>{comment.date}</Feed.Date>
       </Feed.Summary>
       <Feed.Extra text>
         {comment.comment_text}
       </Feed.Extra>
       <Feed.Meta>
-        <Feed.Like>
-          <Icon name='like'
-          onClick ={() => alert("hello")}/>
-              {comment.likes}
+        <Feed.Like onClick ={() => this.updateLikes(comment.comment_id)}>
+          <Icon name='like'/>
+              {`${comment.likes} `}
                Likes
         </Feed.Like>
       </Feed.Meta>

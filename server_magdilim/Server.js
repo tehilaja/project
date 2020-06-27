@@ -27,6 +27,8 @@ const awsUtil = awsServiceFile.data.awsUtil;
 const s3Util = require('./utilities/s3-utilities.js').methods;
 const reactor = require("./utilities/custom-event").data.reactor;
 const statusCache = require('./utilities/status-cache');
+const paymentsUtil = require('./utilities/payments');
+const dbUtil = require('./utilities/db');
 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -40,6 +42,7 @@ const sendEmail = require('./utilities/email').methods.sendEmail;
 
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true, parameterLimit: 50000 }));
+var my_user = null
 var pic = "https://yad-sarah.net/wp-content/uploads/2019/04/logoys.png"
 
 //routering 
@@ -86,6 +89,8 @@ statusCache.setCache(db, () => {
 
 // ~~~~~~~~~~~~~~~~~~~ scheduled jobs ~~~~~~~~~~~~~~~~~
 const schedule = require('node-schedule');
+const { json } = require('body-parser');
+const { Snowball } = require('aws-sdk');
 
 const rule = new schedule.RecurrenceRule;
 rule.minute = 0;
@@ -108,7 +113,7 @@ const job = schedule.scheduleJob(rule, function () {
             null,
             'Congratualtions! You won a prize through Magdilim!',
             `We are happy to tell you you won a prize from ${gift.org_name}.\n\nThe prize you won: ${gift.gift_name}.\nDescription:${gift.gift_description}\n\nWe are very gratefull to you for your donations which help keep our important organizations going.\n\nYours, the Magdilim team`,
-            [{path: gift.gift_pic, filename: gift.gift_pic.substr(gift.gift_pic.lastIndexOf('_')+1)}]
+            [{ path: gift.gift_pic, filename: gift.gift_pic.substr(gift.gift_pic.lastIndexOf('_') + 1) }]
             );
         });
         
@@ -581,7 +586,7 @@ app.get('/:userId/is-program-admin', function (req, res, next) {
 
 //-~~~~~~~~~~~~~~~~~~ code ~~~~~~~~~~~~~~~~~~
 
-app.post('/add_user', function(req,res){
+app.post('/add_user', function (req, res) {
   console.log("start signup....");
   try {
     const response = userRestirationService.register(req.body.user, (err, result) => {
@@ -593,9 +598,10 @@ app.post('/add_user', function(req,res){
       }
     });
   } catch (error) {
-    console.log("error: "+JSON.stringify(error));  
+    console.log("error: " + JSON.stringify(error));
     res.send('Unknown error registering user. Please try again later.');
-  }});
+  }
+});
 
 
 // @ check server connection
@@ -613,7 +619,7 @@ app.post('/add_user', function(req,res){
 
 
 //-----confirm registerd user ------
-app.post('/confirm_registerd_user', function(req,res){
+app.post('/confirm_registerd_user', function (req, res) {
   console.log("start confirmation....");
   try {
     const response = userRestirationService.confirmRegistration(req.body.user_name, req.body.confirmation_code, (err, result) => {
@@ -624,7 +630,7 @@ app.post('/confirm_registerd_user', function(req,res){
       }
     });    
   } catch (error) {
-    console.log("error: "+JSON.stringify(error));
+    console.log("error: " + JSON.stringify(error));
     res.send('Unknown error confirming user. Please try again later.'); 
   }
 });
@@ -695,7 +701,7 @@ app.get('/data', function (req, res, next) {
 //-------------------get org trees from cache for user------------------------
 app.get('/userOrgTrees/:user_id', function (req, res, next) {
   const trees = statusCache.getOrgsForUser(req.params.user_id);
-  console.log('my trees:\n' + JSON.stringify(trees));
+  //console.log('my trees:\n' + JSON.stringify(trees));
 
   const orgIds = Object.keys(trees);
   let index = 0;
@@ -881,6 +887,68 @@ app.post('/approve-orgs', (req, res) => {
     }
     console.log(result)
   });
+});
+
+//---------------------get orgs to pay------------------
+app.get('/get-orgs-to-pay',
+  function (req, res, next) {
+    paymentsUtil.getOrgsToPay(db, (err, result) => {
+      if (err) {
+        console.log('error getting orgs to pay: ' + JSON.stringify(err));
+        res.send(null);
+      } else {
+        let index = 0;
+        Object.keys(result).forEach(org_id => {
+          const sqlQuery = `SELECT o.org_id, o.org_name, o.org_admin_id, o.admin_name, o.img_url, b.branch, b.account_num, b.bank_num, b.account_owner from Organizations o Inner Join bank_info b WHERE o.org_id=${org_id} AND b.org_id=${org_id}`;
+          db.query(sqlQuery, (error, results, fields) => {
+            if (!error) {
+              index++;
+              Object.assign(result[org_id], results[0]);
+
+              if (index === Object.keys(result).length) {
+                res.send(result);
+              }
+            } else {
+              console.log('error getting org info:\n' + JSON.stringify(error));
+              res.end(result);
+            }
+          })
+        })
+      }
+    })
+  });
+
+
+//--------------------pay orgs------------------
+app.post('/pay-orgs', (req, res) => {
+  paymentsUtil.payOrgs(db, req.body.orgs, (err, result) => {
+    if (!err) {
+      res.send('success');
+    } else {
+      console.log('error paying orgs: '+JSON.stringify(err));
+      res.end();
+    }
+  })  
+});
+
+
+//-------------------org donations to display---------------
+app.post('/get-org-donations-to-display', (req, res) => {
+  const [beginningOfCurrent, beginningOfPrev] = paymentsUtil.beginningOfCurrAndPrevMonth();
+  const condition = `WHERE org_id=${req.body.org_id} AND d_date < "${beginningOfCurrent}"`;
+  const sqlDioTable = `SELECT user_id, referred_by, monthly_donation as sum_donation, d_date, d_title, d_description, "Monthly" as monthly_oneTime FROM doners_in_org ${condition} AND status_id=1`;
+  const sqlOneTimeTable = `SELECT user_id, referred_by, sum_donation, d_date, '' as d_title, '' as d_description, "One Time" as monthly_oneTime FROM one_time_donations ${condition} AND d_date >= "${beginningOfPrev}"`;
+  const sqlQuery = `${sqlDioTable} UNION  ${sqlOneTimeTable}`;
+  console.log(sqlQuery);
+
+  dbUtil.callDB(db, sqlQuery, (err, result) => {
+    if (!err) {
+      res.send(result);
+    } else {
+      console.log('error getting donations to display:\n'+JSON.stringify(err));
+      res.send(false);
+    }
+  })
 });
 
 
