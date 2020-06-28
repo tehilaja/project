@@ -69,7 +69,7 @@ class LoginForm extends React.Component {
         return (
             <div>
             {this.state.loading && <Dimmer active inverted>
-                        <Loader size='massive'>Logging in...</Loader>
+                        <Loader size='massive' />
                     </Dimmer>}
             {!this.state.loading && <div>
             {!this.state.showUserRegister && <Segment placeholder>

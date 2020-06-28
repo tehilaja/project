@@ -9,9 +9,11 @@ import OrgCard from './OrgComponents/OrgCard.js'
 import orgData from './OrgComponents/orgData.js'
 import LastDonationCard from './LastDonationCard.js'
 
-import { Carousel } from 'react-responsive-carousel';
-import "react-responsive-carousel/lib/styles/carousel.min.css";
+// import { Carousel } from 'react-responsive-carousel';
+// import "react-responsive-carousel/lib/styles/carousel.min.css";
 
+import Carousel from 'react-multi-carousel';
+import 'react-multi-carousel/lib/styles.css';
 
 
 import {
@@ -32,7 +34,8 @@ import {
 	Step,
 	Visibility,
 	Dimmer,
-	Loader
+	Loader,
+	Card
   } from 'semantic-ui-react'
 
 
@@ -97,6 +100,7 @@ class Body extends React.Component
 		
 	}
 
+	
 //function to get three org components each time:
 getThreeOrgs(){
 
@@ -211,8 +215,10 @@ getThreeOrgs(){
 
 			const orgComponents = this.state.organizations.map(org =>{
 				return(
+					<div style ={{display: 'flex', flexDirection: 'row', padding: '0.5em', margin:'0.5em', border_color: 'coral'}}>
 					<OrgCard key={org.org_id} imgUrl={org.img_url} name={org.org_name} id= {org.org_id} initialDonation= {org.min_donation} 
-					/>)
+					/>
+					</div>)
 					// 	admin_name = {org.admin_name} field_of_activity = {org.field_of_activity} org_num = {org.org_num} description = {org.description}
 					// 	working = {org.working} volunteers = {org.volunteers} friends = {org.friends}
 					// />)
@@ -241,6 +247,26 @@ getThreeOrgs(){
 				slidesToScroll: 1
 			};
 				
+			const responsive = {
+				superLargeDesktop: {
+				  // the naming can be any, depends on you.
+				  breakpoint: { max: 4000, min: 3000 },
+				  items: 5
+				},
+				desktop: {
+				  breakpoint: { max: 3000, min: 1024 },
+				  items: 3
+				},
+				tablet: {
+				  breakpoint: { max: 1024, min: 464 },
+				  items: 2
+				},
+				mobile: {
+				  breakpoint: { max: 464, min: 0 },
+				  items: 1
+				}
+			  };
+		
 
 			// ---orgComponents (card)---
 			// const orgComponents = this.state.organizations.map(org => {
@@ -257,9 +283,28 @@ getThreeOrgs(){
 								{/*displaying organizations on home page:*/}
 								<Segment color='red'>
 									<Header as='h2' icon='globe' content='Donate to Organization' />
-									<div style ={{display: 'flex', flexDirection: 'row', padding: '1em', margin:'1em'}}> 
+									<Carousel 
+									swipeable={false}
+									draggable={false}
+									showDots={true}
+									responsive={responsive}
+									ssr={true} // means to render carousel on server-side.
+									infinite={true}
+									autoPlay={this.props.deviceType !== "mobile" ? true : false}
+									autoPlaySpeed={2000}
+									keyBoardControl={true}
+									customTransition="all .5"
+									transitionDuration={500}
+									containerClass="carousel-container"
+									removeArrowOnDeviceType={["tablet", "mobile"]}
+									deviceType={this.props.deviceType}
+									dotListClass="custom-dot-list-style"
+									itemClass="carousel-item-padding-40-px">
 										{orgComponents}
-									</div>
+									</Carousel>
+									{/* <div style ={{display: 'flex', flexDirection: 'row', padding: '1em', margin:'1em'}}> 
+										{orgComponents}
+									</div> */}
 								</Segment>
 							</Grid.Column>
 							<Grid.Column textAlign='center' width={6}>
@@ -285,9 +330,28 @@ getThreeOrgs(){
 							<Grid.Column width={10}>
 							<Segment color='purple'>
 									<Header as='h2' icon='time' content='Recent Donations' />
-									<div  style ={{display: 'flex'}}>
+									<Carousel 
+									swipeable={false}
+									draggable={false}
+									showDots={true}
+									responsive={responsive}
+									ssr={true} // means to render carousel on server-side.
+									infinite={true}
+									autoPlay={this.props.deviceType !== "mobile" ? true : false}
+									autoPlaySpeed={3000}
+									keyBoardControl={true}
+									customTransition="all .5"
+									transitionDuration={500}
+									containerClass="carousel-container"
+									removeArrowOnDeviceType={["tablet", "mobile"]}
+									deviceType={this.props.deviceType}
+									dotListClass="custom-dot-list-style"
+									itemClass="carousel-item-padding-40-px">
 										{donationInfo}
-									</div>
+									</Carousel>
+									{/* <div  style ={{display: 'flex'}}>
+									{donationInfo}
+									</div> */}
 									</Segment>
 							</Grid.Column>
 							<Grid.Column floated='right' width={6}>

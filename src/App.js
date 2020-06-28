@@ -128,7 +128,7 @@ class App extends React.Component {
                     }
                 case `/orgpage/${spliting[2]}`:
                     {
-                    return [ ActivePage.Organizations, <OrgPage data={this.state} id={spliting[2]} />];
+                    return [ 0, <OrgPage data={this.state} id={spliting[2]} />];
                     }
                 //The following case to get to Admin page will be guarded:
                 case "/adminpage":
@@ -151,7 +151,7 @@ class App extends React.Component {
     }
 
     guardRoute(activateAttributeName, componentToRender, elsePath) {
-        alert(this.state[activateAttributeName]);
+        // alert(this.state[activateAttributeName]);
         switch (this.state[activateAttributeName]) {
             case undefined:
                 return null;
@@ -183,8 +183,6 @@ class App extends React.Component {
 
             const path = window.location.pathname;
             const [activePage, renderObject] = this.renderPageBody(path)
-            const details = {loggedIn: this.state.loggedIn, program_admin: this.state.program_admin, userName: this.state.userName, activePage: activePage}
-            alert(JSON.stringify(details))
             return( 
            <div>
             <Header data={{ loggedIn: this.state.loggedIn, program_admin: this.state.program_admin, userName: this.state.userName, activePage: activePage}}/>

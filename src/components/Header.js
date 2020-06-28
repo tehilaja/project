@@ -142,7 +142,7 @@ class DesktopContainer extends React.Component
 	showFixedMenu = () => this.setState({ fixed: true })
 	  
 render() {
-	alert("in desktop render:"+ JSON.stringify(this.state))
+	// alert("in desktop render:"+ JSON.stringify(this.state))
 	const { children } = this.props
     const { fixed } = this.state
 
@@ -322,7 +322,7 @@ class MobileContainer extends Component {
 			vertical
 			visible={sidebarOpened}
 		  >
-			<Menu.Item as='a' active>
+			<Menu.Item as='a' active={this.state.activePage===ActivePage.Home}>
 			  Home
 			</Menu.Item>
 			<Menu.Item as='a'>Organizations</Menu.Item>
