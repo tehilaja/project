@@ -56,7 +56,7 @@ class OrgCard extends React.Component{
             </a>
             <br />
             <Feed.Like>
-            <Icon name='like' /> 5 Monthly Doners
+            <Icon name='like' /> 5 Monthly Donors
           </Feed.Like>
           </Card.Content>
         </Card>

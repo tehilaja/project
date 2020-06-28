@@ -16,9 +16,9 @@ INSERT INTO Addresses(org_id, country, state, city, street, building, apartment,
 (2, "Israel", null, "Jerusalem","הרב רבינוב", 5, null, null, 5156316),
 (3, "Israel", null, "Jerusalem","שדרות הרצל", 124, null, null, 9618722);
 
--- doners in org
-select * from Doners_in_org;
-INSERT INTO Doners_in_org (user_id, org_id, monthly_donation, referred_by,d_title, d_description,anonymous,status_id) VALUES
+-- donors in org
+select * from Donors_in_org;
+INSERT INTO Donors_in_org (user_id, org_id, monthly_donation, referred_by,d_title, d_description,anonymous,status_id) VALUES
 ("genstil@g.jct.ac.il",3,15,null, "תודות לארגון","נתרם עקב העזרה הרבה אשר הארגון מסייע לכלל ישראל ישר כוח!",TRUE,1),
 ("tehilaj97@gmail.com",3,45,null, "תודות לארגון","נתרם עקב העזרה הרבה אשר הארגון מסייע לכלל ישראל ישר כוח!",TRUE,1),
 ("rachelletikva@gmail.com",3,25,"genstil@g.jct.ac.il", "תודות לארגון","נתרם עקב העזרה הרבה אשר הארגון מסייע לכלל ישראל ישר כוח!",TRUE,1),

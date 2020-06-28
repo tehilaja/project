@@ -74,9 +74,9 @@ db.connect((err) => {
 
 statusCache.setCache(db, () => {
   console.log(`\n\n\norg 1 before anything:\n` + JSON.stringify(statusCache.getOrgTree(1)));
-  // statusCache.addDonerToOrg('anotherid@id.com', 1, 3000, 'someid@id.com');
+  // statusCache.addDonorToOrg('anotherid@id.com', 1, 3000, 'someid@id.com');
   // console.log(`\n\n\norg 1 after adding:\n`+JSON.stringify(statusCache.getOrgTree(1)));
-  // statusCache.updateDonerInOrg('someotherid@id.com', 1, 80, 500);
+  // statusCache.updateDonorInOrg('someotherid@id.com', 1, 80, 500);
   // console.log(`\n\n\norg 1 after updating:\n`+JSON.stringify(statusCache.getOrgTree(1)));
   // statusCache.updateLevelInOrg(1, {"org_id":1,"level_num":4,"level_name":"כסף","min_sum":3000});
   // console.log(`\n\n\norg 1 after updating level:\n`+JSON.stringify(statusCache.getOrgTree(1)));
@@ -157,7 +157,7 @@ userLoginService.isAuthenticated(function (message, isLoggedIn) {
   14.05
 */
 
-/* SELECT d.user_id, d.org_id, u.user_name ,d.d_title,d.d_description, d.is_anonim,d.d_date, d.referred_by, o.img_url FROM Doners_in_org d 
+/* SELECT d.user_id, d.org_id, u.user_name ,d.d_title,d.d_description, d.is_anonim,d.d_date, d.referred_by, o.img_url FROM Donors_in_org d 
 INNER JOIN users u ON u.user_id = d.user_id 
 INNER JOIN organizations o ON o.org_id = d.org_id
  ORDER BY d_date DESC LIMIT 20
@@ -166,11 +166,11 @@ INNER JOIN organizations o ON o.org_id = d.org_id
 // TODO: make in prochedure?
 app.get('/lastDonation', (req, res, next) => {
   try {
-    // const qLDonation = `SELECT d.user_id, d.org_id, u.user_name ,d.d_title,d.d_description, d.is_anonim,d.referred_by, d.d_date, o.img_url FROM Doners_in_org d 
+    // const qLDonation = `SELECT d.user_id, d.org_id, u.user_name ,d.d_title,d.d_description, d.is_anonim,d.referred_by, d.d_date, o.img_url FROM Donors_in_org d 
     //   INNER JOIN users u ON u.user_id = d.user_id 
     //   INNER JOIN organizations o ON o.org_id = d.org_id
     //   ORDER BY d_date DESC LIMIT 20`;
-    const qLDonation = `SELECT d.user_id, d.org_id, d.d_title,d.d_description, d.anonymous,d.referred_by, d.d_date, o.img_url,o.org_name FROM Doners_in_org d 
+    const qLDonation = `SELECT d.user_id, d.org_id, d.d_title,d.d_description, d.anonymous,d.referred_by, d.d_date, o.img_url,o.org_name FROM Donors_in_org d 
       INNER JOIN organizations o ON o.org_id = d.org_id
       ORDER BY d_date DESC LIMIT 20;`
     //d.referred_by,
@@ -284,7 +284,7 @@ app.get('/get-files-of-folder/:folder', (req, res, next) => {
 app.get('/donate/findDThrouhUser/:user_mail', (req, res, next) => {
   try {
     console.log("in donate/findDThrouhUser/:user_mail")
-    const qDUser = `select user_id from doners_in_org where user_id ="${req.params.user_mail}"`;
+    const qDUser = `select user_id from donors_in_org where user_id ="${req.params.user_mail}"`;
     console.log("query: \n" + qDUser + "\n");
     db.query(qDUser, (err, result, fields) => {
       if (err) throw err;
@@ -426,7 +426,7 @@ app.post('/addOrg', (req, res, next) => {
 
 app.post('/addOrg/firstStep', (req, res, next) => {
 
-  const qFirstAdd = `INSERT INTO Doners_in_org (org_id,org_name,min_donation,one_time_donation,approved)
+  const qFirstAdd = `INSERT INTO Donors_in_org (org_id,org_name,min_donation,one_time_donation,approved)
     VALUES(${req.body.org_id},${req.body.org_name},${req.body.min_donation},${req.body.one_time_donation},0,
     );`
   // ,org_num,branch,account_num,bank_num,account_owner
@@ -439,7 +439,7 @@ app.post('/addOrg/firstStep', (req, res, next) => {
 // check which details exsist and do a query
 function checkDonateDetails(paramO) {
   // user_id, org_id, monthly_donation, referred_by,d_title, d_description,is_anonim,status_id
-  var q = ` INSERT INTO Doners_in_org (`
+  var q = ` INSERT INTO Donors_in_org (`
   var insertinfValue = `)VALUES(`
 
   // neccesery
@@ -477,7 +477,7 @@ app.post('/donationProcess', (req, res, next) => {
   try {
     console.log("in /donationProcess \n ")
 
-    // let qDonate = ` INSERT INTO Doners_in_org SET ?', ${JSON.stringify(req.body)}`
+    // let qDonate = ` INSERT INTO Donors_in_org SET ?', ${JSON.stringify(req.body)}`
     //  ${req.body.is_admin });`
 
 
@@ -936,7 +936,7 @@ app.post('/pay-orgs', (req, res) => {
 app.post('/get-org-donations-to-display', (req, res) => {
   const [beginningOfCurrent, beginningOfPrev] = paymentsUtil.beginningOfCurrAndPrevMonth();
   const condition = `WHERE org_id=${req.body.org_id} AND d_date < "${beginningOfCurrent}"`;
-  const sqlDioTable = `SELECT user_id, referred_by, monthly_donation as sum_donation, d_date, d_title, d_description, "Monthly" as monthly_oneTime FROM doners_in_org ${condition} AND status_id=1`;
+  const sqlDioTable = `SELECT user_id, referred_by, monthly_donation as sum_donation, d_date, d_title, d_description, "Monthly" as monthly_oneTime FROM donors_in_org ${condition} AND status_id=1`;
   const sqlOneTimeTable = `SELECT user_id, referred_by, sum_donation, d_date, '' as d_title, '' as d_description, "One Time" as monthly_oneTime FROM one_time_donations ${condition} AND d_date >= "${beginningOfPrev}"`;
   const sqlQuery = `${sqlDioTable} UNION  ${sqlOneTimeTable}`;
   console.log(sqlQuery);

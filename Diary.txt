@@ -28,7 +28,7 @@ Nov 5, 2019
 changing functions to class conponents and using state components.
 
 Nov 12, 2019
-changing state, Login and Signup pages for individual doner
+changing state, Login and Signup pages for individual donor
 
 Nov 14, 2019
 using router to change pages displayed on screen. /**problem passing info between the pages**/
@@ -253,7 +253,7 @@ bug with passign id for specific org page - fixed
 
 14/5/2020
 Making changes based on users:
-enabling Admin of organization to send fliers to emails of all Doners via magdilim email address when adding a prize or raffle to organization.
+enabling Admin of organization to send fliers to emails of all Donors via magdilim email address when adding a prize or raffle to organization.
 adding option to have state of user be based on sum of money in downline or num of people in downline.
 chaning layout of home page based on the request of user
 writing beta document
@@ -292,9 +292,9 @@ hold the instance in the server and it's functions somewhere else?
 
 collection of Org
 each org has a tree
-for each doner (in a dictionary) would have a refference to the correct node
+for each donor (in a dictionary) would have a refference to the correct node
 **********************
-has an update command - to update an organization / update a doner and his ansestors
+has an update command - to update an organization / update a donor and his ansestors
 
 31/05/2020 - 9/06/2020
 writing code for functionality of cache
@@ -360,6 +360,13 @@ working on the דוח סופי
 26/6/2020
 Adding page for admin to take care of payments for organizations
 only app containing Header and Footer components
-sending activePage to header - problem when trying to send in state- created an infinate loop
+sending activePage to header - problem when trying to send in state - created an infinate loop
 (in render tried setting state based on the path caused an endless loop, since changing state triggers render)
 working on donation
+
+28/6/2020
+editing organization details
+updating feed every five seconds - to get othere users comments
+adding carousel to the components on home page
+having page scroll to the desired place on screen
+

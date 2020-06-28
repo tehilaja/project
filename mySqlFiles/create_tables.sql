@@ -4,13 +4,16 @@
 DROP TABLE bank_info;
 DROP TABLE addresses;
 DROP TABLE doners_in_org;
-DROP TABLE field_of_acctivity;
+DROP TABLE fields_of_activity;
 DROP TABLE gifts;
-DROP TABLE gifts_levels;
+-- DROP TABLE gifts_levels;
 DROP TABLE levels_in_org;
 DROP TABLE levels;
-DROP TABLE org_field_of_acctivity;
+DROP TABLE org_field_of_activity;
 DROP TABLE organizations;
+DROP TABLE feed_comments;
+DROP TABLE payments;
+DROP TABLE one_time_donations;
 
 
 -- Addresses--
@@ -92,9 +95,9 @@ CREATE TABLE IF NOT EXISTS Gifts (
   raffle boolean
 );
 
--- DROP TABLE Doners_in_org
--- Doners_in_org --
-CREATE TABLE IF NOT EXISTS Doners_in_org (
+-- DROP TABLE Donors_in_org
+-- Donors_in_org --
+CREATE TABLE IF NOT EXISTS Donors_in_org (
   d_i_o_id int(11) AUTO_INCREMENT PRIMARY KEY,
   user_id varchar(25),
   org_id int(11),
@@ -110,12 +113,12 @@ CREATE TABLE IF NOT EXISTS Doners_in_org (
   d_description text
 );
 
--- האם לא כדאי לשמור שתי שדות נופים בטבלה של Doners_in_org ? --
+-- האם לא כדאי לשמור שתי שדות נופים בטבלה של Donors_in_org ? --
 
 -- Levels_in_org --
 CREATE TABLE IF NOT EXISTS Levels_in_org (
   level_id int(11),
-  fk_d_i_o_id int(11), -- for each foreign key to doners in org save:
+  fk_d_i_o_id int(11), -- for each foreign key to donors in org save:
   num_people_downline int(11),
   sum_money_downline int(11),
   PRIMARY KEY(level_id, fk_d_i_o_id)

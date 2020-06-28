@@ -245,14 +245,14 @@ class EditOrgPage extends React.Component {
                         <br></br>
                         <div as='h3' style={{ fontSize: '2em' }}>
                         <Icon size='big' name='handshake' />
-                             Nice to work with you.
+                             {`  Nice to work with you.`}
                         </div>
                         <Label as='a' color='teal' ribbon left>
                             Edit Your Organization Page!
                         </Label>
                         <Segment>
                             <p style={{ fontSize: '1.33em' }}>
-                                We have kept your initial information. We invite you to Edit the information bellow:
+                                We have kept your initial information. We invite you to Edit the information bellow, and add the necessary details:
                             </p>
                         </Segment>
                         <br></br>
@@ -506,7 +506,7 @@ class EditOrgPage extends React.Component {
                                 label="User status is based on the sum of money brought to the organiztion in his downline" />
                             <br></br>
                             <br></br>
-                            <Label>Default: User status is based only on the number of Doners in his Downline</Label>
+                            <Label>Default: User status is based only on the number of Donors in his Downline</Label>
                             <br /><br />
                             <br />
                             <Button content='Submit' primary />

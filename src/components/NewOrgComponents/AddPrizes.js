@@ -111,10 +111,10 @@ handleSubmit=(e)=>
                         name="giftName:"
                         onChange={this.handleChangeName.bind(this)}
                     />
-            <label><b>Select the status of the Doners to enter the raffle:</b></label>
+            <label><b>Select the status of the Donors to enter the raffle:</b></label>
         <Form.Group inline>
           <Form.Radio
-            label='All Doners'
+            label='All Donors'
             statusInRaffle='all'
             checked={statusInRaffle === 'all'}
             onChange={this.handleChange}
@@ -149,7 +149,7 @@ handleSubmit=(e)=>
             onChange={this.handleWinnerChange}
           />
           <Form.Radio
-            label='Send List of Doners to Enter Raffle'
+            label='Send List of Donors to Enter Raffle'
             autowinner = 'false'
             checked={autowinner === 'false'}
             onChange={this.handleWinnerChange}
@@ -167,7 +167,7 @@ handleSubmit=(e)=>
         >
         <a href='#'>Upload a Raffle Flier (optional):</a>
         </Divider>
-        <label><b>The flier will automatically be emailed to all doners</b></label>
+        <label><b>The flier will automatically be emailed to all donors</b></label>
         <Segment raised>
             <input label='Choose images' type='file' onChange={this.onDrop} multiple/>
         {/* <ImageUploader

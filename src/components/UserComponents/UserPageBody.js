@@ -79,7 +79,7 @@ class UserPage extends React.Component {
                     id: orgId,
                     myMonthlyDonation: orgTree.key.donated,
                     myStatus: orgTree.level.level_name,
-                    reffered: orgTree.key.referred_doners,
+                    reffered: orgTree.key.referred_donors,
                     collected: orgTree.key.collected,
                 }
             });

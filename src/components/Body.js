@@ -431,7 +431,7 @@ getThreeOrgs(){
 					<p style={{ fontSize: '1.33em' }}>
 					We will provide you with the design and software necessary to create an online platform for ongoing or one-time donations. 
 					<br></br>
-					All we left for you to do, is focus on content that will be appealing and attract your ongoing doners.
+					All we left for you to do, is focus on content that will be appealing and attract your ongoing donors.
 					Tell us about your organization. We will be in touch with you shortly, and create your platform.
 					</p>
 					{!this.state.loggedIn && <p style={{ fontSize: '1.33em' }}>
