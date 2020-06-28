@@ -19,11 +19,13 @@ class CommentFeed extends React.Component{
       feedId: 0,
       gotFeedFlag: false
     };
-    this.getFeedComments();
+    this.getFeedCommentsPeriodically(5);
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.updateLikes = this.updateLikes.bind(this)
     this.calculateDate =this.calculateDate.bind(this)
+    this.getCommentForCommentId = this.getCommentForCommentId.bind(this)
+    this.getFeedCommentsPeriodically = this.getFeedCommentsPeriodically.bind(this)
   }
 
 //TODO take care of ends ad beginnings of new months:
@@ -50,7 +52,7 @@ getFeedComments = () => {
       response.data.forEach(comment => {
         this.state.comments.push(comment);
       });
-      alert(JSON.stringify(this.state.comments))
+      // alert(JSON.stringify(this.state.comments))
       this.setState({gotFeedFlag: !this.state.gotFeedFlag})
   })();
 }
@@ -86,8 +88,15 @@ getCommentForCommentId(comment_id){
   return this.state.comments.find( c => c.comment_id === comment_id )
 }
 
+getFeedCommentsPeriodically(seconds) {
+  this.getFeedComments();
+
+  setTimeout(() => {
+    this.getFeedCommentsPeriodically(seconds);
+  }, seconds * 1000);
+}
+
 updateLikes(comment_id){
-  alert("in update likes")
   axios.post('/add-like', {comment_id: comment_id} 
     ).then(res => 
     {

@@ -213,7 +213,7 @@ class UserPage extends React.Component {
 										{orgComponents}
 									</div> */}
 								</Segment>
-                    { this.state.treeDownline &&<Header as='h2'>
+                    { this.state.treeDownline && <Header as='h2'>
                     <Icon name='users'></Icon>
                     {`My downline for ${this.state.orgsTrees[this.state.orgId].org_name}:`}
                     </Header>}

@@ -763,7 +763,7 @@ function (req, res, next) {
     console.log(sqlQuery)
     db.query(sqlQuery, (err, result, fields) => {
       if (!err) {
-        console.log('res: ' + JSON.stringify(result));
+        // console.log('res: ' + JSON.stringify(result));
         res.send(result);
       } else {
         console.log('error: ' + JSON.stringify(err));
@@ -801,8 +801,8 @@ catch (err) {
 
   //---------------------add likes-------------------
   app.post('/add-like', (req, res) => {
-    console.log(JSON.stringify(req.body));
-    let query = `UPDATE Feed_comments SET likes = likes + 1 WHERE comment_id=${req.params.comment_id}`;
+    console.log(JSON.stringify(req.body.comment_id));
+    let query = `UPDATE Feed_comments SET likes = likes + 1 WHERE comment_id=${req.body.comment_id}`;
     console.log(query);
     db.query(query, (err, result, fields) => {
       if (!err) {
