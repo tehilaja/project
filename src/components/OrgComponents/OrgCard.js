@@ -36,7 +36,7 @@ class OrgCard extends React.Component{
         } 
     //-----------return---------------------- 
       return( 
-        <Card style ={{margin: '1em'}} 
+        <Card style ={{margin: '1em', border: '2px solid #DC143C'}} 
           onClick = {() => this.setState(prevState => {
             return {
                 routeOrgPage: !prevState.routeOrgPage}

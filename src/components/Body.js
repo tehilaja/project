@@ -308,7 +308,7 @@ getThreeOrgs(){
 								</Segment>
 							</Grid.Column>
 							<Grid.Column textAlign='center' width={6}>
-								<Header as='h3' style={{ fontSize: '1.5em' }}>
+								<Header as='h3' style={{ fontSize: '1.2em' }}>
 									Create an account so you too can donate!
 								</Header>
 								<Icon size="huge" name='heart outline' />

@@ -40,26 +40,20 @@ class LastDonationCard extends React.Component{
     spliteDate()
     {
         const date = this.state.timeDate
-        // splite("T")
 
     }
       
     render(){
 
         if (this.state.routeOrgPage === true){
-            return <Redirect to = {{
-              pathname: `/OrgPage/`+`${this.props.ldonation.org_id}`
-              // -- $$$$$$$ ---
-                // state: {id: this.props.id}
-    
-            }} />
+            window.location.assign(`/OrgPage/`+`${this.props.ldonation.org_id}`);
             } 
 
         return(
             // <Segment>
             <div style ={{marging: '0.8em' ,padding: '0.8em'}}>
                 {/* <Segment style ={{marging: '0.8em'}}> */}
-                <Card style ={{border: '5px solid #999'}} >
+                <Card style ={{border: '2px solid #9400D3'}} >
                     <Card.Content>
                         <Image 
                         floated='right'
