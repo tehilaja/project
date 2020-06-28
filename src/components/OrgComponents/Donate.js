@@ -92,7 +92,6 @@ export default class Donate extends Component {
     }
     //before all
     componentDidMount(){
-        alert ("user: "+this.props.data.userName)
         if(this.state.loggedIn){
             this.setState(Object.assign(this.state.donate_req,{user_id:this.props.data.userName}));
         }
@@ -175,7 +174,6 @@ export default class Donate extends Component {
                 // }
                              
                 // else{
-                    alert("pass to 2")
                     this.setState({divActiveDonation: false, divActiveMore: true, dicCompleteDonation:true, coreStep: 2});
                     // activeStep:'more datails'
                    
@@ -301,7 +299,7 @@ export default class Donate extends Component {
                 this.switchStep(); // switch step
         }
         else{
-            alert("you mast loggin for donation")
+            alert("you must loggin to donate")
         }
     }
 

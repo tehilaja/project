@@ -7,8 +7,10 @@ import UserAvatar from 'react-avatar';
 import Tree from 'react-vertical-tree';
 
 import UserOrgCard from './UserOrgCard.js'
-import { Carousel } from 'react-responsive-carousel';
-import "react-responsive-carousel/lib/styles/carousel.min.css";
+
+import Carousel from 'react-multi-carousel';
+import 'react-multi-carousel/lib/styles.css';
+
 import axios from "axios";
 
 import {
@@ -21,12 +23,14 @@ import {
     Image,
     List,
     Menu,
+    Popup,
     Responsive,
     Segment,
     Sidebar,
     Step,
     Visibility,
 } from 'semantic-ui-react'
+import { AiFillCalendar } from 'react-icons/ai';
 
 
 const WIDTH = 70;
@@ -102,10 +106,14 @@ class UserPage extends React.Component {
     }
 
 
-    //TODO: return list of downline for user, in specific organization that was clicked. chose max height
      getMyDownLine(orgId) {
         const orgTree = this.state.orgsTrees && this.state.orgsTrees[orgId];
-        console.log('organization 1:\n' + JSON.stringify(orgTree));
+        window.scrollTo({
+            top: 1250,
+            left: 0,
+            behavior: 'smooth'
+          });
+        // console.log('organization 1:\n' + JSON.stringify(orgTree));
         return ([orgTree]);
     }
 
@@ -135,11 +143,41 @@ class UserPage extends React.Component {
         // send the list of the organization for this user   
         const orgComponents = this.state.organizations.map(org => {
             return (
+                <div style={{padding: '3em'}}>
                 <UserOrgCard key={org.key} imgUrl={org.imgUrl} orgName={org.name} orgId={org.id}
                     myMonthlyDonation={org.myMonthlyDonation} myStatus={org.myStatus} reffered={org.reffered}
                     collected={org.collected}
-                />)
-        });
+            />
+            </div>
+            //     <Popup
+            //     trigger={<UserOrgCard key={org.key} imgUrl={org.imgUrl} orgName={org.name} orgId={org.id}
+            //         myMonthlyDonation={org.myMonthlyDonation} myStatus={org.myStatus} reffered={org.reffered}
+            //         collected={org.collected}
+            // />}
+            // content='I am positioned to the right center'
+            // position='right center' />
+            )}
+        );
+
+        const responsive = {
+            superLargeDesktop: {
+              // the naming can be any, depends on you.
+              breakpoint: { max: 4000, min: 3000 },
+              items: 5
+            },
+            desktop: {
+              breakpoint: { max: 3000, min: 1024 },
+              items: 3
+            },
+            tablet: {
+              breakpoint: { max: 1024, min: 464 },
+              items: 2
+            },
+            mobile: {
+              breakpoint: { max: 464, min: 0 },
+              items: 1
+            }
+          };
 
         //-----------return------------------------------
         return (
@@ -148,16 +186,38 @@ class UserPage extends React.Component {
                     <Grid container stackable verticalAlign='middle'>
                         <UserAvatar size={100} name={this.state.userName} />
                         <Grid.Row>
-                            <Grid.Column width={8}>
-                                <Header as='h3' style={{ fontSize: '2em' }}>
-                                    Your Donations:
-                    </Header>
-                    {/* <div style ={{display: 'flex', flexDirection: 'row',  justify_content: 'space-between'}}>  */}
-						{orgComponents}
-					{/* </div> */}
-                     <p style={{ fontSize: '1.33em' }}>
-                    { this.state.treeDownline &&`My downline for ${this.state.orgsTrees[this.state.orgId].org_name}:`}
-                    </p>
+                            <Grid.Column width={15} padding={5}>
+                    <Segment color='red'>
+									<Header as='h2' icon='globe' content='Your Donations:' width='500px' />
+									<Carousel 
+									centerMode={true}
+									swipeable={false}
+									draggable={false}
+									showDots={true}
+									responsive={responsive}
+									ssr={true} // means to render carousel on server-side.
+									infinite={true}
+									autoPlay={this.props.deviceType !== "mobile" ? true : false}
+									autoPlaySpeed={2000}
+									keyBoardControl={true}
+									customTransition="all .5"
+									// transitionDuration={500}
+									containerClass="carousel-container"
+									removeArrowOnDeviceType={["tablet", "mobile"]}
+									deviceType={this.props.deviceType}
+									dotListClass="custom-dot-list-style"
+									itemClass="carousel-item-padding-40-px">
+										{orgComponents}
+									</Carousel>
+									{/* <div style ={{display: 'flex', flexDirection: 'row', padding: '1em', margin:'1em'}}> 
+										{orgComponents}
+									</div> */}
+								</Segment>
+                    { this.state.treeDownline &&<Header as='h2'>
+                    <Icon name='users'></Icon>
+                    {`My downline for ${this.state.orgsTrees[this.state.orgId].org_name}:`}
+                    </Header>}
+
                             </Grid.Column>
                             {/* <Grid.Column floated='right' width={6}>
                 <Header as='h3' style={{ fontSize: '2em' }}>
@@ -170,6 +230,8 @@ class UserPage extends React.Component {
                     </Button>
                 </Grid.Column> */}
                         </Grid.Row>
+                        <br />
+                        <br />
                         <Grid.Row>
                             <Grid.Column textAlign='center'>
                             {
@@ -178,7 +240,8 @@ class UserPage extends React.Component {
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
-
+                    <br />
+                    <br />
 
                     {this.adminButtons()}
 

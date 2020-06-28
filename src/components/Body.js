@@ -9,8 +9,6 @@ import OrgCard from './OrgComponents/OrgCard.js'
 import orgData from './OrgComponents/orgData.js'
 import LastDonationCard from './LastDonationCard.js'
 
-// import { Carousel } from 'react-responsive-carousel';
-// import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
@@ -28,6 +26,7 @@ import {
 	Label,
 	List,
 	Menu,
+	Popup,
 	Responsive,
 	Segment,
 	Sidebar,
@@ -231,13 +230,6 @@ getThreeOrgs(){
 					/>)
 			})
 
-			// const carouselOrganizations = this.orgComponents.map(org =>{
-			// 	<Carousel>
-			// 	<div>
-			// 		org
-			// 	</div>
-			// </Carousel>
-			// })
 				
 			const settings = {
 				dots: true,
@@ -284,6 +276,7 @@ getThreeOrgs(){
 								<Segment color='red'>
 									<Header as='h2' icon='globe' content='Donate to Organization' />
 									<Carousel 
+									centerMode={true}
 									swipeable={false}
 									draggable={false}
 									showDots={true}
@@ -294,7 +287,7 @@ getThreeOrgs(){
 									autoPlaySpeed={2000}
 									keyBoardControl={true}
 									customTransition="all .5"
-									transitionDuration={500}
+									// transitionDuration={500}
 									containerClass="carousel-container"
 									removeArrowOnDeviceType={["tablet", "mobile"]}
 									deviceType={this.props.deviceType}
@@ -307,12 +300,15 @@ getThreeOrgs(){
 									</div> */}
 								</Segment>
 							</Grid.Column>
-							<Grid.Column textAlign='center' width={6}>
-								<Header as='h3' style={{ fontSize: '1.2em' }}>
-									Create an account so you too can donate!
-								</Header>
-								<Icon size="huge" name='heart outline' />
+							<Grid.Column floated='center' textAlign='center'>
+								<Popup
+								inverted
+								trigger={<Icon name='heart' color='red' size='huge' circular />}
+								content='Create an account so you too can donate!'
+								position='right center'
+								/>
 							</Grid.Column>
+							
 						</Grid.Row>
 						{/* Showing last prize winners */}
 						<Grid.Row>
@@ -331,6 +327,7 @@ getThreeOrgs(){
 							<Segment color='purple'>
 									<Header as='h2' icon='time' content='Recent Donations' />
 									<Carousel 
+									// centerMode={true}
 									swipeable={false}
 									draggable={false}
 									showDots={true}
@@ -338,10 +335,10 @@ getThreeOrgs(){
 									ssr={true} // means to render carousel on server-side.
 									infinite={true}
 									autoPlay={this.props.deviceType !== "mobile" ? true : false}
-									autoPlaySpeed={3000}
+									autoPlaySpeed={2000}
 									keyBoardControl={true}
 									customTransition="all .5"
-									transitionDuration={500}
+									// transitionDuration={500}
 									containerClass="carousel-container"
 									removeArrowOnDeviceType={["tablet", "mobile"]}
 									deviceType={this.props.deviceType}
@@ -349,9 +346,6 @@ getThreeOrgs(){
 									itemClass="carousel-item-padding-40-px">
 										{donationInfo}
 									</Carousel>
-									{/* <div  style ={{display: 'flex'}}>
-									{donationInfo}
-									</div> */}
 									</Segment>
 							</Grid.Column>
 							<Grid.Column floated='right' width={6}>
@@ -422,7 +416,11 @@ getThreeOrgs(){
 					If you already have a user account, please login!
 					If you don't already have an account then create a user account.
 					</p>
-					 <Button as='a' size='large' onClick={() => window.scrollTo(0, 0)}>
+					 <Button as='a' size='large' onClick={() =>  window.scrollTo({
+            top: 0,
+            left: 0,
+            behavior: 'smooth'
+          })}>
 					Sign Up
 					</Button></div>}
 

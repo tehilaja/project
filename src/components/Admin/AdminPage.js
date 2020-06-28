@@ -31,7 +31,6 @@ class AdminPage extends React.Component {
   render() {
     return (
       <div textAlign='center'>
-        <Header data={{ loggedIn: this.state.loggedIn, program_admin: true, userName: this.state.userName }} />
         <br />
         <br />
         <br />

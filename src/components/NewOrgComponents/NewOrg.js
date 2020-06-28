@@ -75,6 +75,10 @@ class NewOrg extends React.Component {
 
     }
 
+    componentDidMount() {
+        window.scrollTo(0, 0);
+    }
+
     //the following function is to send an email that a new oragnization is awaiting approval
     sendEmail() {
         // TODO: get text to send, get list of mail
@@ -235,15 +239,13 @@ class NewOrg extends React.Component {
     render() {
         return (
             <div>
-                <Segment style={{ padding: '8em 0em' }} vertical>
+                <Segment style={{ padding: '1.5em 0em' }} vertical>
                     <Grid container stackable verticalAlign='middle'>
                         <br></br>
                         <Label as='a' color='teal' ribbon left>
                             Get Started!
                         </Label>
-                        <Header as='h3' style={{ fontSize: '2em' }}>
-                            Thank you for using us for your organization!
-                        </Header>
+                        <Header as='h2' icon='globe' content='Thank you for using us for your organization!' />
                         <Segment>
                             <p style={{ fontSize: '1.33em' }}>
                                 We will provide you with the design and software necessary to create an online platform for ongoing donations.

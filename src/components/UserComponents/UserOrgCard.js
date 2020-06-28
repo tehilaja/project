@@ -50,12 +50,8 @@ class OrgCard extends React.Component {
 
     //-----------return---------------------- 
     return (
-      <Card onClick={this.handleClick}>
-        {/* <Card onClick = {() => this.setState(prevState => {
-                return {
-                    routeOrgPage: !prevState.routeOrgPage}
-                  })}> */}
-        <Image src={this.state.imgUrl} wrapped ui={false} />
+      <Card onClick={this.handleClick} style ={{margin: '5em', border: '2px solid #DC143C', height: '400px', width:'300px'}}>
+        <Image src={this.state.imgUrl} wrapped ui={true} />
         <Card.Content>
           <Card.Header>{this.state.orgName}</Card.Header>
           <Card.Meta>

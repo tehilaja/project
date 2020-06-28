@@ -17,13 +17,9 @@ class OrgCard extends React.Component{
             name: ""
         }
 
-        this.handleClick = this.handleClick.bind(this) 
     }
 
-    handleClick(id)
-    {
-        alert("hi: " +`${id}`)
-    }
+
 //-------------render----------------
     render(){
       if (this.state.routeOrgPage === true){
