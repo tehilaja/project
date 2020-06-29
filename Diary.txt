@@ -376,3 +376,8 @@ adding real prizes on org page
 working on org card - fixing bug in sql query in server 
 and with retrieving the data at the user end
 working on design of homw page and org page
+-------
+the edit page now gets the intial data (from all the org tables - org, bank info, addresses), and updates it.
+(bug with the toggles)
+allowing updating for levles (in cache and in DB)
+it also allows to picks an image (and show it in small), uploads to s3, and saves the url in the db

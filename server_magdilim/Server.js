@@ -652,7 +652,7 @@ app.post('/get_user_params', function (req, res) {
 
 // -- fetching organizations from DB:
 app.get('/data', function (req, res, next) {
-  db.query('select org_id,img_url,org_name,min_donation from Organizations WHERE approved=1', function (error, results, fields) {
+  db.query('select * from Organizations WHERE approved=1', function (error, results, fields) {
     if (error) throw error;
     console.log("data org in body: \n " + JSON.stringify(results))
     res.send(JSON.stringify(results));

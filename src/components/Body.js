@@ -195,7 +195,7 @@ getThreeOrgs(){
 			const orgComponents = this.state.organizations.map(org =>{
 				return(
 					<div style ={{display: 'flex', flexDirection: 'row', padding: '0.5em', margin:'0.5em'}}>
-					<OrgCard key={org.org_id} imgUrl={org.img_url} name={org.org_name} id= {org.org_id} initialDonation= {org.min_donation} 
+					<OrgCard org={org}
 					/>
 					</div>)
 					// 	admin_name = {org.admin_name} field_of_activity = {org.field_of_activity} org_num = {org.org_num} description = {org.description}
@@ -253,12 +253,6 @@ getThreeOrgs(){
 				}
 			  };
 		
-
-			// ---orgComponents (card)---
-			// const orgComponents = this.state.organizations.map(org => {
-			// 		return (
-			// 	<OrgCard key={org.id} imgUrl={org.imgUrl} name={org.name} id= {org.id} initialDonation= {org.initialDonation}/>)
-			// })
 
 		return(
 			<div>

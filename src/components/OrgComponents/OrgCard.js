@@ -10,6 +10,7 @@ class OrgCard extends React.Component{
     constructor(props){
         super(props)
         this.state ={
+            org: this.props.org,
             routeOrgPage: false,
         }
 
@@ -35,21 +36,21 @@ class OrgCard extends React.Component{
               })}>
 
           <Card.Content>
-            <Image src={this.props.imgUrl} wrapped ui={true} />
+            <Image src={this.state.org.img_url} wrapped ui={true} />
 
           </Card.Content>
           <Card.Content extra>
-          <Card.Header>{this.props.name}</Card.Header>
+          <Card.Header>{this.state.org.org_name}</Card.Header>
             <Card.Meta>
-              <span className='date'>Monthy Donation: {this.props.initialDonation} $</span>
+              <span className='date'>Monthy Donation: {this.state.org.initialDonation} $</span>
             </Card.Meta>
             <Card.Description>
-              organization desciption
+            {this.state.org.description.substring(0, 70)}...
             </Card.Description>
-            <a>
+            {/* <a>
               <Icon name='gift' />
               last prize winner
-            </a>
+            </a> */}
             <br />
             <Feed.Like>
             <Icon name='like' /> 5 Monthly Donors
