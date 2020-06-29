@@ -1,6 +1,8 @@
-/*card for a specific org on homepage*/
+/*card for a specific org on homepage and search organizations*/
 import React from 'react';
 import ReactDOM from 'react-dom';
+
+import axios from "axios";
 
 import {Redirect} from "react-router-dom";
 import { Card, Feed, Icon, Image, Segment } from 'semantic-ui-react'
@@ -12,21 +14,26 @@ class OrgCard extends React.Component{
         this.state ={
             org: this.props.org,
             routeOrgPage: false,
+            numDoners: 0
         }
+        this.getNumDoners();
 
     }
 
+    //TODO: see why this isn't working
+    async getNumDoners(){
+      // alert("get Doners")
+      await (async () => {
+        const response = await axios.get(`/get-num-doners/${this.state.org.org_id}`);
+        this.setState({numDoners: response})
+      })();
+    }
 
-//-------------render----------------
     render(){
       if (this.state.routeOrgPage === true){
         window.location.assign(`/OrgPage/${this.state.org.org_id}`);
-        // return <Redirect to = {{
-        //   pathname: `/OrgPage/${this.props.id}`
-
-        // }} />
         } 
-    //-----------return---------------------- 
+
       return( 
         <Card style ={{margin: '1em', border: '2px solid #DC143C', height:'300px', width: '400px'}} 
           onClick = {() => this.setState(prevState => {
@@ -52,7 +59,7 @@ class OrgCard extends React.Component{
             </a> */}
             <br />
             <Feed.Like>
-            <Icon name='like' /> 5 Monthly Donors
+            <Icon name='like' /> {this.state.numDoners} Monthly Donors
           </Feed.Like>
           </Card.Content>
         </Card>

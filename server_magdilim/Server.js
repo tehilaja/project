@@ -148,20 +148,8 @@ userLoginService.isAuthenticated(function (message, isLoggedIn) {
 // -->  http://localhost:3000/donate
 
 
-// ~~~~~~~~~~ get org info ~~ (from: orgPage)
-// TODO: routering
 
 
-
-/* ~~~~ lastDonation 
-  14.05
-*/
-
-/* SELECT d.user_id, d.org_id, u.user_name ,d.d_title,d.d_description, d.is_anonim,d.d_date, d.referred_by, o.img_url FROM Donors_in_org d 
-INNER JOIN users u ON u.user_id = d.user_id 
-INNER JOIN organizations o ON o.org_id = d.org_id
- ORDER BY d_date DESC LIMIT 20
- */
 
 // TODO: make in prochedure?
 app.get('/lastDonation', (req, res, next) => {
@@ -223,7 +211,7 @@ app.get(`/orgPage/get_org_field_of_activity/:orgId`, (req, res, next) => {
     });
   }
   catch (err) {
-    console.log("erroe " + err.code);
+    console.log("error " + err.code);
     res.end("err", err.code);
   }
 
@@ -248,19 +236,21 @@ app.get('/orgPage/:orgId', (req, res, next) => {
         res.send("no data")
       else {
         console.log("res org info: \n" + JSON.stringify(result));
-        // console.log(result[0])
-        // console.log(result[0].min_donation)
-
-
-        // res.send(JSON.stringify(result));
         res.send(result[0]);
       }
     });
   }
   catch (err) {
-    console.log("erroe " + err.code);
+    console.log("error " + err.code);
     res.end("err", err.code);
   }
+});
+
+//------getting the number of doners for a specific organization ----
+app.get('/get-num-doners/:org_id', (req, res, next) => {
+  console.log('get-num-doners: ' + req.params.org_id);
+  const response = s3Util.getOrgTree(req.params.org_id).key.referred_doners;
+  res.send(response);
 });
 
 //--------------upload file-----------------
