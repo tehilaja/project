@@ -5,14 +5,13 @@ import OrgCard from './OrgCard.js'
 import axios from "axios";
 import { async } from "q";
 
-import Header from '../Header.js';
-import UserPageBody from '../UserComponents/UserPageBody.js';
-import Footer from '../Footer.js';
+import Carousel from 'react-multi-carousel';
+import 'react-multi-carousel/lib/styles.css';
 
 import ImageGallery from 'react-image-gallery';
 import "react-image-gallery/styles/css/image-gallery.css";
 
-import {Grid, Icon, Segment} from 'semantic-ui-react';
+import {Grid, Header, Icon, Segment} from 'semantic-ui-react';
 
 const s3Util = require('../../utilities/upload').methods;
 
@@ -27,14 +26,31 @@ class OrgSearch extends React.Component{
             routeMain: false,
             check_login_status: false,
             images: [],
+            orgs: []
     }
 
     this.getImages();
 }
   
-  // componentWillReceiveProps(nextProps){
-  //  nextProps= this.props
-  // }
+
+componentDidMount () {
+
+  // ~~~~~~~~~~ get (select *) fetching organizations from Server:
+  let self = this;
+      fetch('/data', {
+          method: 'GET'
+      }).then(function(response) {
+          if (response.status >= 400) {
+              throw new Error("Bad response from server");
+          }
+          return response.json();
+      }).then(function(data) {
+          self.setState({orgs: data});
+      }).catch(err => {
+      console.log('caught it!',err);
+  })
+
+}
   
   getImages() {
     s3Util.getFilesFromFolder('organizations', (res) => {
@@ -53,11 +69,62 @@ class OrgSearch extends React.Component{
   }
 
 
+  
   render() {
+    const responsive = {
+      superLargeDesktop: {
+        // the naming can be any, depends on you.
+        breakpoint: { max: 4000, min: 3000 },
+        items: 5
+      },
+      desktop: {
+        breakpoint: { max: 3000, min: 1024 },
+        items: 3
+      },
+      tablet: {
+        breakpoint: { max: 1024, min: 464 },
+        items: 2
+      },
+      mobile: {
+        breakpoint: { max: 464, min: 0 },
+        items: 1
+      }
+      };
+  
     
+    const orgComponents = this.state.orgs.map(org =>{
+      return(
+        <div style ={{display: 'flex', flexDirection: 'row', padding: '0.5em', margin:'0.5em'}}>
+        <OrgCard org={org}
+        />
+        </div>)
+    })
+
     return(
       <div>
                 <ImageGallery items={this.state.images} />
+                <Segment color='red'>
+									<Header as='h2' icon='globe' content='Donate to Organization' />
+									<Carousel 
+									swipeable={true}
+									draggable={true}
+									showDots={true}
+									responsive={responsive}
+									ssr={true} // means to render carousel on server-side.
+									infinite={true}
+									autoPlay={this.props.deviceType !== "mobile" ? true : false}
+									autoPlaySpeed={2000}
+									keyBoardControl={true}
+									// customTransition="all .5"
+									transitionDuration={500}
+									containerClass="carousel-container"
+									removeArrowOnDeviceType={["tablet", "mobile"]}
+									deviceType={this.props.deviceType}
+									dotListClass="custom-dot-list-style"
+									itemClass="carousel-item-padding-40-px">
+										{orgComponents}
+									</Carousel>
+								</Segment>
                 <Segment>
                 <Grid celled='internally' columns='equal' stackable>
                     <Grid.Row textAlign='center'>

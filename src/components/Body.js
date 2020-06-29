@@ -6,7 +6,6 @@ import axios from "axios";
 import { async } from "q";
 
 import OrgCard from './OrgComponents/OrgCard.js'
-import orgData from './OrgComponents/orgData.js'
 import LastDonationCard from './LastDonationCard.js'
 import WinnerCard from './Extra/WinnerCard.js'
 
@@ -198,10 +197,6 @@ getThreeOrgs(){
 					<OrgCard org={org}
 					/>
 					</div>)
-					// 	admin_name = {org.admin_name} field_of_activity = {org.field_of_activity} org_num = {org.org_num} description = {org.description}
-					// 	working = {org.working} volunteers = {org.volunteers} friends = {org.friends}
-					// />)
-				// -- $$$$$$$ ---
 			})
 
 			const winnerComponents = this.state.winners.map(winner =>{
@@ -212,10 +207,6 @@ getThreeOrgs(){
 					{/* <WinnerCard gift_pic="" gift_name="gift_name" org_id={1} level_num={2} gift_desription="description" winner="winner"
 					/> */}
 					</div>)
-					// 	admin_name = {org.admin_name} field_of_activity = {org.field_of_activity} org_num = {org.org_num} description = {org.description}
-					// 	working = {org.working} volunteers = {org.volunteers} friends = {org.friends}
-					// />)
-				// -- $$$$$$$ ---
 			})
 
 			const donationInfo = this.state.lastDonation.map(donation =>{

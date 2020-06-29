@@ -14,7 +14,7 @@ import OrgSpechCard from './OrgSpechCard.js'
 
 // donate
 import Donate from './Donate.js'
-import GiftCard from '../Extra/GiftCard.js'
+import GiftCard from '../Extra/GiftCard'
 
 import Donors from "./Donors.js"
 import FeedComponent from '../Extra/Feed.js'
@@ -42,7 +42,7 @@ class OrgBody extends React.Component {
         {
             loggedIn: this.props.data.loggedIn,
 			userName: this.props.data.userName,
-            org_id: this.props.data.orgDetails.org_id,
+            org_id: this.props.data.orgDetails.id,
             allGifts : [], //all gifts of the organization
             showGifts: [], //gifts at chosen level
             gotGiftsFlag: false,
@@ -78,7 +78,7 @@ class OrgBody extends React.Component {
         // select level
         this.selectLevel = this.selectLevel.bind(this)
         this.filterChooseLevel = this.filterChooseLevel.bind(this)
-
+        this.getGiftsToShow = this.getGiftsToShow.bind(this)
 
         // css
     }
@@ -115,6 +115,7 @@ class OrgBody extends React.Component {
 
 
     getGifts = () => {
+        // alert("get gifts")
         this.state.allGifts.length = 0;
         (async () => {
         //   const response = await axios.post(`fetch-feed-comments/${this.state.feed_type}/${this.state.feed_type_id}`,
@@ -226,6 +227,15 @@ class OrgBody extends React.Component {
              } 
          })
      }
+
+    getGiftsToShow(){
+     const giftComponents = this.state.showGifts.map(gift =>{
+        return(
+            <GiftCard  gifts = {gift}  />)
+    })
+
+    return giftComponents;
+}
     
      handleChange(event){
 		this.setState({
@@ -252,12 +262,8 @@ class OrgBody extends React.Component {
 //----------render------------------
     render() 
     {
-        // all gifts show
         
-        const giftComponents = this.state.showGifts.map(gift =>{
-            return(
-                <GiftCard  gifts = {gift}  />)
-        })
+
        
         // const levelOptions = [
         //     { key: 'all', value: 'all', text: 'all' },
@@ -440,7 +446,7 @@ class OrgBody extends React.Component {
                                 {/* show the gifts
                                     // TODO: filter objects
                                 */}
-	                              {giftComponents}
+	                              {this.getGiftsToShow()}
                             </Grid.Row>
                         </Grid>
                     

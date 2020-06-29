@@ -20,12 +20,11 @@ class OrgCard extends React.Component{
 //-------------render----------------
     render(){
       if (this.state.routeOrgPage === true){
-        return <Redirect to = {{
-          pathname: `/OrgPage/`+`${this.props.id}`
-          // -- $$$$$$$ ---
-            // state: {id: this.props.id}
+        window.location.assign(`/OrgPage/${this.state.org.org_id}`);
+        // return <Redirect to = {{
+        //   pathname: `/OrgPage/${this.props.id}`
 
-        }} />
+        // }} />
         } 
     //-----------return---------------------- 
       return( 
