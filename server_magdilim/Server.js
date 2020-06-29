@@ -496,7 +496,7 @@ app.post('/donationProcess', (req, res, next) => {
   }
 });
 
-//-------------------function that gets the comments of users for given feed_id------------------
+//-------------------function that gets the gifts for organization ------------------
 app.post('/orgPage/gifts/:org_id',
 function (req, res, next) {
   console.log('in org page gifts');
@@ -729,7 +729,7 @@ app.post('/fetch_org_data', (req, res) => {
 app.post('/OrgPage/fetch-feed-comments/:feed_type/:feed_type_id',
 // app.post('/fetch-feed-comments',
 function (req, res, next) {
-  console.log('in fetch feed comments');
+  console.log('in fetch feed comments: '+JSON.stringify(req.params));
     const sqlQuery = `SELECT * FROM Feed_comments WHERE feed_type="${req.params.feed_type}" and feed_type_id=${req.params.feed_type_id}`
     // const sqlQuery = `SELECT * FROM Feed_comments WHERE feed_type="org" and feed_type_id=2`
     console.log(sqlQuery)
@@ -938,6 +938,44 @@ app.post('/get-org-donations-to-display', (req, res) => {
       res.send("fail");
     }
     console.log(result)
+  });
+});
+
+// function for updating org information:
+
+//-----------------get all org data--------------
+app.post('/get-all-org-data', (req, res) => {
+  const sqlQuery = `SELECT * FROM Organizations LEFT JOIN bank_info ON organizations.org_id = bank_info.org_id LEFT join addresses ON organizations.org_id = addresses.org_id WHERE organizations.org_id=${req.body.org_id};`;
+    dbUtil.callDB(db, sqlQuery, (err, result) => {
+      if (err) {
+        console.log('error getting all data: '+JSON.stringify(err))
+        res.send('error')
+      } else {
+        result[0].levels = statusCache.getOrgLevels(req.body.org_id);
+        res.send(result[0]);
+      }
+    });
+});
+
+//---------------update org data----------------
+app.post('/update-org-data', (req, res) => {
+  const org = req.body.org;
+  const condition = `WHERE org_id=${org.org_id}`;
+  const sqlOrgsTableQuery = `UPDATE organizations SET org_name='${org.org_name}', description='${org.description}', img_url='${org.img_url}', min_donation=${org.min_donation}, one_time_donation=${org.one_time_donation}, field_of_acctivity='${org.field_of_acctivity}' ${condition}`;
+  const sqlBankInfoTableQuery = `UPDATE bank_info SET bank_num=${org.bank_num}, branch=${org.branch}, account_num=${org.account_num}, account_owner='${org.account_owner}' ${condition}`;
+  const sqlAddressesTableQuery = `UPDATE addresses SET country='${org.country}', state='${org.state}', city='${org.city}', street='${org.street}', building=${org.building}, apartment=${org.apartment}, suite=${org.suite}, zip=${org.zip} ${condition}`;
+  const sqlLevelsTableQueries = org.levels && org.levels.reduce((acc, level) => `${acc}UPDATE levels SET level_name='${level.level_name}', min_people=${level.min_people}, min_sum=${level.min_sum} ${condition} AND level_num=${level.level_num};`, '');
+
+  dbUtil.callDB(db, `${sqlOrgsTableQuery};${sqlBankInfoTableQuery};${sqlAddressesTableQuery};${sqlLevelsTableQueries}`, (err, result) => {
+    if (err) {
+      console.log('error updating org data: '+JSON.stringify(err));
+      res.send('fail');
+    } else {
+      if (org.levels) {
+        statusCache.updateLevelsInOrg(org.org_id, org.levels);
+      }
+      res.send('success');
+    }
   });
 });
 

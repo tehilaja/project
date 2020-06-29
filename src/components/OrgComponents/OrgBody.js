@@ -42,7 +42,7 @@ class OrgBody extends React.Component {
         {
             loggedIn: this.props.data.loggedIn,
 			userName: this.props.data.userName,
-            org_id: this.props.data.orgDetails.id,
+            org_id: this.props.data.id,
             allGifts : [], //all gifts of the organization
             showGifts: [], //gifts at chosen level
             gotGiftsFlag: false,
@@ -115,7 +115,6 @@ class OrgBody extends React.Component {
 
 
     getGifts = () => {
-        // alert("get gifts")
         this.state.allGifts.length = 0;
         (async () => {
         //   const response = await axios.post(`fetch-feed-comments/${this.state.feed_type}/${this.state.feed_type_id}`,

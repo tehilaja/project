@@ -231,10 +231,18 @@ const updateAnccestors = (node, org_id, newCollected, newReferred) => {
 }
 
 const updateLevelInOrg = (org_id, level) => {
-    const prevLevel = orgToLevels[org_id].find(x => level.level_num === x.level_num);
-    Object.assign(prevLevel, level);
-    updateLevelByOrgDonors(getOrgTree(org_id), org_id, orgToLevels[org_id]);
+    updateLevelsInOrg(org_id, [level]);
 }
+
+const updateLevelsInOrg = (org_id, levels) => {
+    levels.forEach(level => {
+        const prevLevel = orgToLevels[org_id].find(x => level.level_num === x.level_num);
+        Object.assign(prevLevel, level);        
+    });
+
+    updateLevelByOrgDoners(getOrgTree(org_id), org_id, getOrgLevels(org_id));
+}
+
 
 const updateLevelByOrgDonors = (root, org_id, levels) => {
     const level = getDonorLevel(root.key, orgToLevels[org_id]);
@@ -260,10 +268,11 @@ const getOrgTreeForUser = (userId, orgId) => usersToOrganizationTrees[userId][or
 // returns a dict mapping org id to the user's node of that org tree
 const getOrgsForUser = (userId) => usersToOrganizationTrees[userId];
 
-// maps the levels and returns the first level that equales the level num we got. if level doesn't exsist the level will be none
-const getOrgLevel = (org_id, level_num) => orgToLevels[org_id].find(x => level_num === x.level_num) || {level_name: 'none', level_num: level_num};
+// returns array of levels of org_id
+const getOrgLevels = (org_id) => orgToLevels[org_id];
 
-
+// maps the levels and returns the first level that equals the level num we got. if level doesn't exsist the level will be none
+const getOrgLevel = (org_id, level_num) => getOrgLevels(org_id).find(x => level_num === x.level_num) || {level_name: 'none', level_num: level_num};
 
 exports.getDonorsInOrg = getDonorsOfOrgAtLevel;
 exports.setCache = getDonorsFromDbAndSetCache;
@@ -272,7 +281,9 @@ exports.getOrgTreeForUser = getOrgTreeForUser;
 exports.getGiftsReceivers = getGiftsReceivers;
 exports.getOrgsForUser = getOrgsForUser;
 exports.getOrgLevel = getOrgLevel;
+exports.getOrgLevels = getOrgLevels;
 
 exports.addDonorToOrg = addDonorToOrg;
 exports.updateDonorInOrg = updateDonorInOrg;
 exports.updateLevelInOrg = updateLevelInOrg;
+exports.updateLevelsInOrg = updateLevelsInOrg;
