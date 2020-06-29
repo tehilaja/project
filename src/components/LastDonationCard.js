@@ -53,7 +53,7 @@ class LastDonationCard extends React.Component{
             // <Segment>
             <div style ={{marging: '0.8em' ,padding: '0.8em'}}>
                 {/* <Segment style ={{marging: '0.8em'}}> */}
-                <Card style ={{border: '2px solid #9400D3'}} >
+                <Card style ={{border: '2px solid #9400D3', height:'300px'}} >
                     <Card.Content>
                         <Image 
                         floated='right'
@@ -83,10 +83,10 @@ class LastDonationCard extends React.Component{
                                 basic
                                 name = 'go to organitation page'
                                 // disabled ={true}
-                                color='green'
+                                color='blue'
                                 labelPosition='right' 
                                 icon='right arrow'
-                                lableColor = 'green'
+                                lableColor = 'blue'
                                 content= {this.state.move}
                                 onClick = {() => this.setState(prevState => {
                                     return {

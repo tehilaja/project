@@ -370,3 +370,9 @@ updating feed every five seconds - to get othere users comments
 adding carousel to the components on home page
 having page scroll to the desired place on screen
 
+29/6/2020
+adding winners to home page
+adding real prizes on org page
+working on org card - fixing bug in sql query in server 
+and with retrieving the data at the user end
+working on design of homw page and org page

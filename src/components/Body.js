@@ -8,7 +8,7 @@ import { async } from "q";
 import OrgCard from './OrgComponents/OrgCard.js'
 import orgData from './OrgComponents/orgData.js'
 import LastDonationCard from './LastDonationCard.js'
-
+import WinnerCard from './Extra/WinnerCard.js'
 
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
@@ -38,37 +38,6 @@ import {
   } from 'semantic-ui-react'
 
 
-// class YourComponent extends React.Component {
-// 	constructor(props) {
-// 	  super(props);
-// 	  this.state = {
-// 		isFetchingData: false,
-// 		data: null
-// 	  };
-// 	}
-  
-// 	componentDidMount () {
-// 	  this.setState({ isFetchingData: true });
-// 	  apiCall().then((data) => {
-// 		this.setState({
-// 		  isFetchingData: true,
-// 		  data
-// 		});
-// 	  });
-// 	}
-  
-// 	render () {
-// 	  if (!this.state.data) {
-// 		return <p>No data</p>;
-// 	  }
-  
-// 	  if (!this.state.isLoading) {
-// 		return <p>Loading data</p>;
-// 	  }
-  
-// 	  // Render your component with data
-// 	}
-//   }
 class Body extends React.Component
 {
 //-----------constructor----------------------
@@ -81,6 +50,7 @@ class Body extends React.Component
 			loggedIn: this.props.data.loggedIn, 
 			userName: this.props.data.userName, 
 			organizations: [],
+			winners: [],
 			clickOrg: false,
 
 			// **
@@ -122,7 +92,7 @@ getThreeOrgs(){
 		})
 
 
-		// ~~~~~~~~~~ get (select *) 
+		// ~~~~~~~~~~ get (select *) fetching organizations from Server:
 		let self = this;
         fetch('/data', {
             method: 'GET'
@@ -137,10 +107,20 @@ getThreeOrgs(){
         console.log('caught it!',err);
 		})
 
-		// lastDonation
-		// this.getLastDonation()
-		
-		
+		//--fetching winners from DB:
+		fetch('/get-winners', {
+            method: 'GET'
+        }).then(function(response) {
+            if (response.status >= 400) {
+                throw new Error("Bad response from server");
+            }
+            return response.json();
+        }).then(function(data) {
+            self.setState({winners: data});
+        }).catch(err => {
+        console.log('caught it!',err);
+		})
+				
 	}
 
 	getLastDonation()
@@ -214,9 +194,23 @@ getThreeOrgs(){
 
 			const orgComponents = this.state.organizations.map(org =>{
 				return(
-					<div style ={{display: 'flex', flexDirection: 'row', padding: '0.5em', margin:'0.5em', border_color: 'coral'}}>
+					<div style ={{display: 'flex', flexDirection: 'row', padding: '0.5em', margin:'0.5em'}}>
 					<OrgCard key={org.org_id} imgUrl={org.img_url} name={org.org_name} id= {org.org_id} initialDonation= {org.min_donation} 
 					/>
+					</div>)
+					// 	admin_name = {org.admin_name} field_of_activity = {org.field_of_activity} org_num = {org.org_num} description = {org.description}
+					// 	working = {org.working} volunteers = {org.volunteers} friends = {org.friends}
+					// />)
+				// -- $$$$$$$ ---
+			})
+
+			const winnerComponents = this.state.winners.map(winner =>{
+				return(
+					<div style ={{display: 'flex', flexDirection: 'row', padding: '0.5em', margin:'0.5em', color:'#FF8C00'}}>
+					<WinnerCard gift_pic={winner.girft_pic} gift_name={winner.gift_name} org_id={winner.org_id} level_num={winner.level_num} gift_desription={winner.gift_description} winner={winner.winner}
+					/>
+					{/* <WinnerCard gift_pic="" gift_name="gift_name" org_id={1} level_num={2} gift_desription="description" winner="winner"
+					/> */}
 					</div>)
 					// 	admin_name = {org.admin_name} field_of_activity = {org.field_of_activity} org_num = {org.org_num} description = {org.description}
 					// 	working = {org.working} volunteers = {org.volunteers} friends = {org.friends}
@@ -276,9 +270,8 @@ getThreeOrgs(){
 								<Segment color='red'>
 									<Header as='h2' icon='globe' content='Donate to Organization' />
 									<Carousel 
-									centerMode={true}
-									swipeable={false}
-									draggable={false}
+									swipeable={true}
+									draggable={true}
 									showDots={true}
 									responsive={responsive}
 									ssr={true} // means to render carousel on server-side.
@@ -286,8 +279,8 @@ getThreeOrgs(){
 									autoPlay={this.props.deviceType !== "mobile" ? true : false}
 									autoPlaySpeed={2000}
 									keyBoardControl={true}
-									customTransition="all .5"
-									// transitionDuration={500}
+									// customTransition="all .5"
+									transitionDuration={500}
 									containerClass="carousel-container"
 									removeArrowOnDeviceType={["tablet", "mobile"]}
 									deviceType={this.props.deviceType}
@@ -295,16 +288,13 @@ getThreeOrgs(){
 									itemClass="carousel-item-padding-40-px">
 										{orgComponents}
 									</Carousel>
-									{/* <div style ={{display: 'flex', flexDirection: 'row', padding: '1em', margin:'1em'}}> 
-										{orgComponents}
-									</div> */}
 								</Segment>
 							</Grid.Column>
 							<Grid.Column floated='center' textAlign='center'>
 								<Popup
 								inverted
 								trigger={<Icon name='heart' color='red' size='huge' circular />}
-								content='Create an account so you too can donate!'
+								content='Click on an organization to donate!'
 								position='right center'
 								/>
 							</Grid.Column>
@@ -315,9 +305,27 @@ getThreeOrgs(){
 						<Grid.Column width={10}>
 						<Segment color='orange'>
 									<Header as='h2' icon='gift' content='Winners' />
-									<div  style ={{display: 'flex'}}>
-										{/* {donationInfo} */}
-									</div>
+									{/* <WinnerCard gift_pic="" gift_name="gift_name" org_id={1} level_num={2} gift_desription="description" winner="winner"
+					/> */}
+									<Carousel 
+									swipeable={true}
+									draggable={true}
+									showDots={true}
+									responsive={responsive}
+									ssr={true} // means to render carousel on server-side.
+									infinite={true}
+									autoPlay={this.props.deviceType !== "mobile" ? true : false}
+									autoPlaySpeed={2000}
+									keyBoardControl={true}
+									// customTransition="all .5"
+									transitionDuration={500}
+									containerClass="carousel-container"
+									removeArrowOnDeviceType={["tablet", "mobile"]}
+									deviceType={this.props.deviceType}
+									dotListClass="custom-dot-list-style"
+									itemClass="carousel-item-padding-40-px">
+										{winnerComponents}
+									</Carousel>
 							</Segment>
 						</Grid.Column>
 						</Grid.Row>
@@ -327,9 +335,8 @@ getThreeOrgs(){
 							<Segment color='purple'>
 									<Header as='h2' icon='time' content='Recent Donations' />
 									<Carousel 
-									// centerMode={true}
-									swipeable={false}
-									draggable={false}
+									swipeable={true}
+									draggable={true}
 									showDots={true}
 									responsive={responsive}
 									ssr={true} // means to render carousel on server-side.
@@ -337,8 +344,8 @@ getThreeOrgs(){
 									autoPlay={this.props.deviceType !== "mobile" ? true : false}
 									autoPlaySpeed={2000}
 									keyBoardControl={true}
-									customTransition="all .5"
-									// transitionDuration={500}
+									// customTransition="all .5"
+									transitionDuration={500}
 									containerClass="carousel-container"
 									removeArrowOnDeviceType={["tablet", "mobile"]}
 									deviceType={this.props.deviceType}

@@ -14,7 +14,7 @@ import OrgSpechCard from './OrgSpechCard.js'
 
 // donate
 import Donate from './Donate.js'
-import giftCard from './giftCard'
+import GiftCard from '../Extra/GiftCard.js'
 
 import Donors from "./Donors.js"
 import FeedComponent from '../Extra/Feed.js'
@@ -43,9 +43,9 @@ class OrgBody extends React.Component {
             loggedIn: this.props.data.loggedIn,
 			userName: this.props.data.userName,
             org_id: this.props.data.orgDetails.org_id,
-            Allgifts : [], // the information about gifts
-            giftShow: [],
-
+            allGifts : [], //all gifts of the organization
+            showGifts: [], //gifts at chosen level
+            gotGiftsFlag: false,
             showLogin: false,
             showUser: false,
 
@@ -56,8 +56,6 @@ class OrgBody extends React.Component {
             field_of_activity: this.props.data.org_field_of_activity,
            
             // initialDonation : this.props.orgDetails.min_donation,
-
-
 
             color: "F33333",
             DuserName: "",
@@ -73,8 +71,6 @@ class OrgBody extends React.Component {
         this.handleClick = this.handleClick.bind(this) 
         this.clickToDonate = this.clickToDonate.bind(this) 
         this.handleClickAcording = this.handleClickAcording.bind(this)
-
-        // this.findDuser = this.findDuser.bind(this)
         this.increment = this.increment.bind(this)
         this.decrement = this.decrement.bind(this)
         // get gifts
@@ -82,8 +78,6 @@ class OrgBody extends React.Component {
         // select level
         this.selectLevel = this.selectLevel.bind(this)
         this.filterChooseLevel = this.filterChooseLevel.bind(this)
-
-        this.listOfField = this.listOfField.bind(this)
 
 
         // css
@@ -100,89 +94,42 @@ class OrgBody extends React.Component {
         }
         
 
-    // filter an a choosen level
+    // filter a chosen level
     filterChooseLevel(filter){
         let obj = [];
         if (filter === 'all levels'){
-            this.setState({giftShow: this.state.Allgifts})
+            this.setState({giftShow: this.state.allGifts})
             // alert("all : "+ this.state.giftShow.length)
         }
         else
         {
-            this.state.Allgifts.map(element =>
+            this.state.allGifts.map(element =>
             {
                 if(element.l_name === filter)
-                    // this.state.giftShow.push(element)
                     obj.push(element)
-
             })
             this.setState({giftShow: obj})
-            // alert("gifts: " + JSON.stringify(this.state.giftShow))
         }
 
     }
 
 
-
-// get gifts list (call from commponentDidMount )
-// /orgPage/gifts/:org_id
-
-    getGifts()
-    {
-        axios.get('/orgPage/gifts/'+this.props.data.orgDetails.org_id).then(res => 
-        {
-            if (res.status >= 400) {
-                throw new Error("Bad response from server");}
-            // this.setState(Object.assign(this.state.donate_req,{referred_by: res.data.user_id}));
-            // alert("res: \n"+ JSON.stringify(res.data[0].l_name)); // how data came from server
-            // alert("res:\n" + res)
-                return res
-            }).then(respones=>
-                {
-                    this.setState({Allgifts: respones.data});
-                    this.setState({giftShow: respones.data}); 
- 
-                    // 
-
-            // alert("data \n " + JSON.stringify(res.data))
-            // if (this.state.Allgifts !== null){
-            //     // alert(this.state.Allgifts[0].l_name)
-            //     alert(" Allgifts: \n" , this.state.Allgifts)
-            // }
-                
-
-
-                // alert(this.Allgifts[0].l_name)
-  
-                    	
-        }).catch(error=> {
-            alert(error);
-        })
-    }
-
-
+    getGifts = () => {
+        this.state.allGifts.length = 0;
+        (async () => {
+        //   const response = await axios.post(`fetch-feed-comments/${this.state.feed_type}/${this.state.feed_type_id}`,
+          const response = await axios.post(`/orgPage/gifts/${this.props.data.orgDetails.org_id}`,
+          { org_id: this.state.org_id},
+            { headers: { 'Content-Type': 'application/json' } });
+            this.setState({allGifts: response.data})
+            this.setState({showGifts: this.state.allGifts})
+        })();
+      }
 
     componentDidMount()
-    {
-        // alert("org details: \n"+ JSON.stringify(this.props.data))
-        // alert("org_id \n" + this.props.data.orgDetails.org_id )
-        // fetch('/data', {
-        //     method: 'GET'
-        // }).then(function(response) {
-        //     if (response.status >= 400) {
-        //         throw new Error("Bad response from server");
-        //     }
-        //     return response.json();
-        // }).then(function(data) {
-        //     this.setState({Allgifts: data});
-        // }).catch(err => {
-        // console.log('caught it!',err);
-        // })
-    
+    {   
     
         this.getGifts()
-        // alert("first " + this.props.data.orgDetails.min_donation);
-        // alert(" hi "+ this.state.initialDonation)
 
     }
 
@@ -235,7 +182,6 @@ class OrgBody extends React.Component {
     // ---- add Donation
 	handleSubmit=(e)=>{
         e.preventDefault();
-        // alert("s", this.state.DuserName)
          /*add donation to dataBase */
         if (this.state.DuserName !== "") // TODO: if find in db (func findDuser)
         {
@@ -257,7 +203,6 @@ class OrgBody extends React.Component {
                         alert("you need to login...")
                     }
                     else if(response.data ==="added succesfully!"){
-                    // this.setState({loggedIn: false})
                         alert("the donation " + this.state.initialDonation+ "$ added succesfully ")
                      }
                     else if(response.data ==="fail2"){
@@ -269,23 +214,12 @@ class OrgBody extends React.Component {
                })();  
         }
         else
-            alert("please enter Referred detiles")
-        // this.set
-		
+            alert("please enter Referred detiles")		
 	}
-    //---------onSumbit---------------
-    // onSumbit()
-    // {
+ 
 
-    // } 
-
-
-   
-
-     //----------clickToDonate--------------------
      clickToDonate()
      {
-         // alert("clickToDonate")
          this.setState(prevState => {
              return {
                  confirmBtn: !prevState.confirmBtn
@@ -301,9 +235,6 @@ class OrgBody extends React.Component {
         // alert(this.state.DuserId)
     }
     
-    //## ------ css ------ ##
-
-  
     // ## 
     handleClickAcording = (e, titleProps) => {
         const { index } = titleProps
@@ -313,10 +244,6 @@ class OrgBody extends React.Component {
         this.setState({ activeIndex: newIndex })
       }
     
-    listOfField()
-    {
-
-    }
 
       // step (donation)
 
@@ -327,10 +254,9 @@ class OrgBody extends React.Component {
     {
         // all gifts show
         
-        const giftComponents = this.state.giftShow.map(gift =>{
+        const giftComponents = this.state.showGifts.map(gift =>{
             return(
-                <giftCard  gifts ={gift}  
-                />)
+                <GiftCard  gifts = {gift}  />)
         })
        
         // const levelOptions = [
@@ -430,9 +356,10 @@ class OrgBody extends React.Component {
                                 </Grid.Row>
                                 
                                 <Grid.Row>
-                                    <Grid.Column textAlign='center'>
+                                    {/* add link to organization homepage */}
+                                    {/* <Grid.Column textAlign='center'>
                                         <Button size='huge'>Check Them Out</Button>
-                                    </Grid.Column>
+                                    </Grid.Column> */}
                                 </Grid.Row>
                             </Grid>
                         </Segment>
@@ -444,7 +371,7 @@ class OrgBody extends React.Component {
             {
               menuItem: (
                 <Menu.Item key='messages'>
-                  Messages<Label>15</Label>
+                  Messages<Icon name='envelope' />
                 </Menu.Item>
               ),
               render: () => <Tab.Pane  attached={false} >
@@ -455,10 +382,6 @@ class OrgBody extends React.Component {
             // ~~~~~~~~~~~~~~ donate ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             {
                 menuItem: { key:'donate', icon: 'money bill alternate outline', content: 'Donate' },
-                // <Menu.Item key='comments'>
-                //     Messages<Label>15</Label>
-                //   </Menu.Item>
-                // ),
                 render: () => <Tab.Pane >
 
                     <div className = "donate" >
@@ -525,30 +448,6 @@ class OrgBody extends React.Component {
                 
               },
 
-               // ~~~~~~~~~~~~~~ comment ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-              {
-                menuItem: { key:'comment', icon: 'comment', content: 'comment' },                
-                render: () => <Tab.Pane   >
-                    <Header as='h2' icon='comment' content='Comment' />
-                    <Feed>
-                        <Feed.Event>
-                        <Feed.Content>
-                            <Feed.Summary>
-                            <Feed.User>Elliot Fu</Feed.User> added you as a friend
-                            <Feed.Date>1 Hour Ago</Feed.Date>
-                            </Feed.Summary>
-                            <Feed.Meta>
-                            <Feed.Like>
-                                <Icon name='like' />4 Likes
-                            </Feed.Like>
-                            </Feed.Meta>
-                        </Feed.Content>
-                        </Feed.Event>`
-                    </Feed>
-                </Tab.Pane>,
-              },
-
-
           ]
 
     //---------return------------------------------
@@ -573,8 +472,7 @@ class OrgBody extends React.Component {
                         </Grid.Row>
 
                         <Grid.Row>
-                            <Tab style={{ padding: '0.2em 1.5em' }} defaultActiveIndex={2} menu={{ color:'teal' ,vertical: true, inverted: true, attached: true, tabular: true, pointing: true}} panes={panes} />
-
+                            <Tab style={{ padding: '0.2em 1.5em' ,width:'1000px'}} defaultActiveIndex={2} menu={{ color:'teal' ,vertical: true, inverted: true, attached: true, tabular: true, pointing: true}} panes={panes} />
                         </Grid.Row>
                         
                     </Grid>

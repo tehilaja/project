@@ -11,10 +11,6 @@ class OrgCard extends React.Component{
         super(props)
         this.state ={
             routeOrgPage: false,
-            loginStatus: ""
-        }
-        this.user = {
-            name: ""
         }
 
     }
@@ -32,7 +28,7 @@ class OrgCard extends React.Component{
         } 
     //-----------return---------------------- 
       return( 
-        <Card style ={{margin: '1em', border: '2px solid #DC143C'}} 
+        <Card style ={{margin: '1em', border: '2px solid #DC143C', height:'300px', width: '400px'}} 
           onClick = {() => this.setState(prevState => {
             return {
                 routeOrgPage: !prevState.routeOrgPage}

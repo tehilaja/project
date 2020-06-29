@@ -59,6 +59,12 @@ INSERT INTO Gifts (gift_name, gift_description, gift_pic, org_id, level_num, g_d
 ("dfdfדיסק","פרחי מיאמי","",3,1,"2020-07-17", false),
 ("מכונת תפירה","חדשה במחיוחד","",1,2,"2020-09-23", false);
 
+-- inserting gifts with winners:
+SELECT * FROM magdilimdb.gifts;
+INSERT INTO Gifts (gift_name, gift_description, gift_pic, org_id, level_num, g_date, winner, raffle) VALUES
+("רכב 7 מקומות","כב מפואר עם 7 מקומותר", null, 1, 4, "2020-08-23", 'tehilaj97@gmail.com', true),
+("מצלמה","מצלמת קאנון איכותית","",2,2,"2020-08-17", 'avitalspector@gmail.com', true);
+
 -- inserting comments into the feed --
 select* from Feed_comments;
 INSERT INTO Feed_comments (feed_type, feed_type_id, user_id, date, comment_text, likes) VALUES

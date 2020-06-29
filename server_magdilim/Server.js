@@ -476,89 +476,52 @@ function checkDonateDetails(paramO) {
 app.post('/donationProcess', (req, res, next) => {
   try {
     console.log("in /donationProcess \n ")
-
-    // let qDonate = ` INSERT INTO Donors_in_org SET ?', ${JSON.stringify(req.body)}`
-    //  ${req.body.is_admin });`
-
-
     const qDonate = checkDonateDetails(req.body);// check details
     console.log("quert is: \n", qDonate, "\n");
 
     db.query(qDonate, (err, result, fields) => {
       if (!err) {
-        res.send("insert donation");//response
+        res.send("insert donation");
         console.log("succses! ");
       }
       else {
         res.end("db fail");
         console.log("fail db " + err.code);
       }
-
-      // console.log("result " + result);
     })
-    // console.log("in check \n")
-    // console.log("string obj \n "+ JSON.stringify(req.body));
   }
   catch (err) {
-    console.log("erroer " + err.code);
+    console.log("error " + err.code);
     res.end("err server ", err.code)
   }
 });
 
-// ---- orgPage/gifts (get)
-app.get('/orgPage/gifts/:org_id', (req, res, next) => {
-  try {
-    console.log(" in orgPage/gifts \n")
-    console.log("org_id: \n "+ req.params.org_id)
-    const qGifts =
-      `
-      SELECT 
-      l.level_name as l_name, l.min_people, l.min_sum,
-         g.gift_id, g.gift_name,
-         g.gift_description,g.gift_pic,
-         g.g_date, g.winer
-       FROM
-         Levels l
-      INNER JOIN gifts g ON l.level_num = g.level_num and l.org_id ="${req.params.org_id}";`
+//-------------------function that gets the comments of users for given feed_id------------------
+app.post('/orgPage/gifts/:org_id',
+function (req, res, next) {
+  console.log('in org page gifts');
+    const sqlQuery = `select * from Gifts WHERE org_id=${req.params.org_id} and winner IS NULL`
+    console.log(sqlQuery)
+    db.query(sqlQuery, (err, result, fields) => {
+      if (!err) {
+        // console.log('res: ' + JSON.stringify(result));
+        res.send(result);
+      } else {
+        console.log('error: ' + JSON.stringify(err));
+        res.send(null);
+      };
+    })
+  });
 
-
-    console.log("the query: \n" + qGifts)
-    db.query(qGifts, (error, results, fields) => {
-
-      if (error) throw error;
-      console.log("res: \n" + JSON.stringify(results));
-      console.log(results[0]);
-
-
-      // console.log(JSON.stringify(results.data));
-      // console.log(results.data[0].l_name)
-      if (results.length == 0)
-        res.send("no data")
-      else
-        res.send(results);
-
-    });
-
-  } catch (err) {
-    console.log("error: " + err.code)
-    res.send("server error: " + err.code)
-  }
-});
-
-
-/*
-SELECT 
-  l.l_name, l.min_people, l.min_sum,
-  g.gift_id, g.gift_name,
-  g.gift_description,g.gift_pic,
-  g.g_date, g.winer
-FROM
-    Leveled l
--- WHERE l.org_id = 1;
-INNER JOIN gifts g 
-  ON l.level_id = g.level_id and l.org_id = 1;
-  */
-
+// // ---- Gets the future gifts for specific organization page
+// app.get('/orgPage/gifts/:org_id', function (req, res, next) {
+//   q = `select * from Gifts WHERE org_id=${req.params.org_id} and winner IS NULL`;
+//     db.query(q, function (error, results, fields) {
+//       if (error) throw error;
+//           console.log("orgPage/gifts/:org_id \n " + JSON.stringify(results))
+//           res.send(JSON.stringify(results));
+//         });
+//  });
 
 
 // @ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -687,11 +650,20 @@ app.post('/get_user_params', function (req, res) {
 });
 
 
-// -- data 
+// -- fetching organizations from DB:
 app.get('/data', function (req, res, next) {
   db.query('select org_id,img_url,org_name,min_donation from Organizations WHERE approved=1', function (error, results, fields) {
     if (error) throw error;
-    console.log("data org in body: \n " + results)
+    console.log("data org in body: \n " + JSON.stringify(results))
+    res.send(JSON.stringify(results));
+  });
+});
+
+// -- fetching winners from DB:
+app.get('/get-winners', function (req, res, next) {
+  db.query('select * from Gifts WHERE winner IS NOT NULL', function (error, results, fields) {
+    if (error) throw error;
+    console.log("get-winners: \n " + JSON.stringify(results))
     res.send(JSON.stringify(results));
   });
 });
