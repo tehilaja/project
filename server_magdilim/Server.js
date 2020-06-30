@@ -427,7 +427,7 @@ app.post('/addOrg/firstStep', (req, res, next) => {
 //~~~~~~~~~~~~~~~~~~~~ donate process ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // check which details exsist and do a query
-function checkDonateDetails(paramO) {
+function checkDonateDetails(paramO,if_oneTime) {
   // user_id, org_id, monthly_donation, referred_by,d_title, d_description,is_anonim,status_id
   var q = ` INSERT INTO Donors_in_org (`
   var insertinfValue = `)VALUES(`
@@ -439,10 +439,12 @@ function checkDonateDetails(paramO) {
   insertinfValue += `"${paramO.user_id}",${paramO.org_id},${paramO.monthly_donation}`
 
   // --- check
-  if (paramO.referred_by !== '') {
-    q += `,referred_by`;
-    insertinfValue += `,"${paramO.referred_by}"`;
-  }
+  if(!if_oneTime)
+    if (paramO.referred_by !== '') {
+      q += `,referred_by`;
+      insertinfValue += `,"${paramO.referred_by}"`;
+    }
+
   if (paramO.d_title !== '') {
     q += `,d_title`;
     insertinfValue += `,"${paramO.d_title}"`;
@@ -461,12 +463,42 @@ function checkDonateDetails(paramO) {
 
   return query
 }
+// ~~~~~~~~~~~~ post:  /oneTimedonationProcess --> one time donate ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+app.post('/oneTimedonationProcess', (req, res, next) => {
+  try {
+    console.log("in /oneTimedonationProcess \n ")
+    // const q1Donate = checkDonateDetails(req.body,true);// check details
+    const q1Donate = `insert into one_time_donations(user_id,org_id,sum_donation,anonymous) value(,"${req.body.user_id}",${req.body.org_id},${req.body.monthly_donation},0);`
+    console.log("quert is: \n", q1Donate, "\n");
+
+    db.query(q1Donate, (err, result, fields) => {
+      if (!err) {
+        res.send("insert donation");
+        console.log("succses! ");
+      }
+      else {
+        res.end("db fail");
+        console.log("fail db " + err.code);
+      }
+    })
+  }
+  catch (err) {
+    console.log("error " + err.code);
+    res.end("err server ", err.code)
+  }
+});
+
 
 // ~~~~~~~~~~~~ post:  /donationProcess --> donate ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 app.post('/donationProcess', (req, res, next) => {
   try {
+    let qDonate;
     console.log("in /donationProcess \n ")
-    const qDonate = checkDonateDetails(req.body);// check details
+    if (req.body.onTimeCheck == true) // one time donaition
+      qDonate = `insert into one_time_donations(user_id,org_id,sum_donation,anonymous) value("${req.body.user_id}",${req.body.org_id},${req.body.monthly_donation},0);`
+
+    else
+      qDonate = checkDonateDetails(req.body,false);// check details
     console.log("quert is: \n", qDonate, "\n");
 
     db.query(qDonate, (err, result, fields) => {
