@@ -5,7 +5,6 @@ import axios from 'axios';
 import UserAvatar from 'react-avatar';
 import { render } from 'react-dom';
 
-const dateTimeUtil = require('../../utilities/date-time');
 const moment = require('moment');
 
 class CommentFeed extends React.Component{
@@ -25,15 +24,11 @@ class CommentFeed extends React.Component{
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.updateLikes = this.updateLikes.bind(this)
-    this.calculateDate =this.calculateDate.bind(this)
     this.getCommentForCommentId = this.getCommentForCommentId.bind(this)
     this.getFeedCommentsPeriodically = this.getFeedCommentsPeriodically.bind(this)
   }
 
-//TODO take care of ends ad beginnings of new months:
-calculateDate(date){
-  return dateTimeUtil.getHowLongAgoString(date);
-}
+
 
 getFeedComments = () => {
   this.state.comments.length = 0;
