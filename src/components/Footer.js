@@ -26,10 +26,16 @@ const date = new Date();
 class Footer extends React.Component {
 	constructor(){
 		super()
-		this.state = {person1:"Tehila", person2:"Avital"}
+		this.state = {
+			contactUs: false
+		}
 	}
 
+
 	render(){
+		if(this.state.contact === true){
+				window.location.assign('/ContactUs');
+        }
 		return(
 			// 
 			<Segment inverted vertical style={{ padding: '5em 0em' }}>
@@ -39,7 +45,10 @@ class Footer extends React.Component {
 				  <Grid.Column width={3}>
 					<Header inverted as='h4' content='About' />
 					<List link inverted>
-					  <List.Item as='a'>Contact Us</List.Item>
+					  <List.Item as='a' onClick ={() => this.setState(prevState => {
+				  return {
+						contact: !prevState.contact
+					}})}>Contact Us</List.Item>
 					  <List.Item as='a'>Religious Ceremonies</List.Item>
 					  <List.Item as='a'>Building Plans</List.Item>
 					</List>
