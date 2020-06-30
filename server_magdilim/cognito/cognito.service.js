@@ -4,32 +4,6 @@ const AWS = require("aws-sdk/global");
 const awsservice = require("aws-sdk/lib/service");
 const CognitoIdentity = require("aws-sdk/lib/service");
 
-
-/**
- * Created by Vladimir Budilov
- */
-
-// export interface CognitoCallback {
-//     cognitoCallback(message: string, result: any): void;
-
-//     // handleMFAStep?(challengeName: string, challengeParameters: ChallengeParameters, callback: (confirmationCode: string) => any): void;
-// }
-
-// export interface LoggedInCallback {
-//     isLoggedIn(message: string, loggedIn: boolean): void;
-// }
-
-// export interface ChallengeParameters {
-//     CODE_DELIVERY_DELIVERY_MEDIUM: string;
-
-//     CODE_DELIVERY_DESTINATION: string;
-// }
-
-// export interface Callback {
-//     callback(): void;
-
-//     callbackWithParam(result: any): void;
-// }
  const _REGION = 'us-east-1';
  const _IDENTITY_POOL_ID = 'us-east-1:f555c51e-02d5-4ec2-b01d-21c1a5d384dd';
  const _USER_POOL_ID = 'us-east-1_59QU60Ow5';

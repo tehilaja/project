@@ -1,4 +1,5 @@
-function signInButton(username, password) {alert(username+":"+password)
+function signInButton(username, password) {
+    // alert(username+":"+password)
     
 	var authenticationData = {
         Username : username,

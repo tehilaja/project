@@ -24,7 +24,7 @@ const getLevels = (db, callback) => {
         db.query(sqlQuery, (err, result, fields) => {
             if (err) throw err;
             console.log("levels:\n" + JSON.stringify(result));
-            orgToLevels = groupBy(result, 'org_id');
+            orgToLevels = groupBy(result, 'org_id'); //dict containing key: org_id, value: levels
             Object.keys(orgToLevels).forEach(org_id => {
                 orgToLevels[org_id].sort((x, y) => y.level_num - x.level_num);
                 console.log(`levels of org ${org_id}:\n` + JSON.stringify(orgToLevels[org_id]));
@@ -264,6 +264,7 @@ const groupBy = (array, key) => array.reduce((acc, x) => Object.assign({}, acc, 
 
 const getOrgTree = (orgId) => organizationsTrees[orgId];
 
+//returns the downline for the user in the given organization:
 const getOrgTreeForUser = (userId, orgId) => usersToOrganizationTrees[userId][orgId];
 
 // returns a dict mapping org id to the user's node of that org tree

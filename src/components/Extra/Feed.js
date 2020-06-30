@@ -5,6 +5,8 @@ import axios from 'axios';
 import UserAvatar from 'react-avatar';
 import { render } from 'react-dom';
 
+const dateTimeUtil = require('../../utilities/date-time');
+const moment = require('moment');
 
 class CommentFeed extends React.Component{
   constructor(props){
@@ -30,15 +32,7 @@ class CommentFeed extends React.Component{
 
 //TODO take care of ends ad beginnings of new months:
 calculateDate(date){
-  var now = new Date;
-
-if (date.getDate() == now.getDate() && date.getMonth() == now.getMonth() && date.getYear() == now.getYear())
-  return "Today";
-else if (date.getDate() == now.getDate()-1 && date.getMonth() == now.getMonth() && date.getYear() == now.getYear())
-  return "Yesterday";
-else if ((date.getDate() > now.getDate()-7 && date.getMonth() == now.getMonth() && date.getYear() == now.getYear()))
-  return "Less than a week";
-return 'other';
+  return dateTimeUtil.getHowLongAgoString(date);
 }
 
 getFeedComments = () => {
@@ -118,7 +112,7 @@ computeFeedComments = () => {
       <Feed.Summary>
       <Feed.User>{`${comment.user_id} `}</Feed.User> 
       {` commented`}
-      <Feed.Date>{comment.date}</Feed.Date>
+      <Feed.Date>{moment(comment.date).fromNow()}</Feed.Date>
       </Feed.Summary>
       <Feed.Extra text>
         {comment.comment_text}
