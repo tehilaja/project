@@ -772,8 +772,6 @@ export default class Donate extends Component {
             </Modal.Actions>
         </Modal> */}
         {/* ~~~ @ check ~~~ */}
-       
-      "chaecked? "  {this.state.oneTimeChecked}
     </div>
     )
   }
