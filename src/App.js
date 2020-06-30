@@ -18,6 +18,8 @@ import OrgSearch from './components/OrgComponents/OrgSearch.js'
 import Prizes from './components/Prizes.js'
 import AdminPage from './components/Admin/AdminPage.js'
 
+import ContactUs from './components/Extra/ContactUs.js'
+
 //to know which page is open and make the navbar active
 class ActivePage {
     static Home = 1;
@@ -129,6 +131,10 @@ class App extends React.Component {
                 case `/orgpage/${spliting[2]}`:
                     {
                     return [ 0, <OrgPage data={this.state} id={spliting[2]} />];
+                    }
+                case "/contactus":
+                    {
+                    return [ 0, <ContactUs data={this.state} />];
                     }
                 //The following case to get to Admin page will be guarded:
                 case "/adminpage":
