@@ -234,6 +234,15 @@ const updateLevelInOrg = (org_id, level) => {
     updateLevelsInOrg(org_id, [level]);
 }
 
+const updateLevelByOrgDonors = (root, org_id, levels) => {
+    const level = getDonorLevel(root.key, orgToLevels[org_id]);
+    root.key.level = level && level.level_num || 0;
+
+    if (root.children && root.children.length) {
+        root.children.forEach(child => updateLevelByOrgDonors(child, org_id, levels));
+    }
+}
+
 const updateLevelsInOrg = (org_id, levels) => {
     levels.forEach(level => {
         const prevLevel = orgToLevels[org_id].find(x => level.level_num === x.level_num);
@@ -244,14 +253,6 @@ const updateLevelsInOrg = (org_id, levels) => {
 }
 
 
-const updateLevelByOrgDonors = (root, org_id, levels) => {
-    const level = getDonorLevel(root.key, orgToLevels[org_id]);
-    root.key.level = level && level.level_num || 0;
-
-    if (root.children && root.children.length) {
-        root.children.forEach(child => updateLevelByOrgDonors(child, org_id, levels));
-    }
-}
 
 
 // example:
@@ -287,3 +288,4 @@ exports.addDonorToOrg = addDonorToOrg;
 exports.updateDonorInOrg = updateDonorInOrg;
 exports.updateLevelInOrg = updateLevelInOrg;
 exports.updateLevelsInOrg = updateLevelsInOrg;
+// exports.updateLevelByOrgDoners = updateLevelByOrgDoners;

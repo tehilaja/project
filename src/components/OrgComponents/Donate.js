@@ -46,7 +46,7 @@ export default class Donate extends Component {
             massageErrRequireFIeld: {},
             // the request to donation for server
             donate_req: {"user_id": null, "org_id":this.props.data.org_id, "monthly_donation": this.props.data.initialDonation,
-            "referred_by": '',"d_title": '',"d_description": '',"anonymous" : false },
+            "referred_by": '',"d_title": '',"d_description": '',"anonymous" : false,"onTimeCheck":false },
             
             findDuser: true,
             // next level
@@ -54,6 +54,7 @@ export default class Donate extends Component {
             //////
             pass2step: false,
             ableDonate:false,
+            onTimeChecked :false
 
             // (user_id, org_id, monthly_donation, referred_by,d_title, d_description,anonymous,status_id
             // TODO: 
@@ -70,7 +71,10 @@ export default class Donate extends Component {
 
         this.handleChangeTitle = this.handleChangeTitle.bind(this);
         this.handleChangeDescription = this.handleChangeDescription.bind(this);
+        this.checkBoxhandleClick = this.checkBoxhandleClick.bind(this);
 
+
+        
 
         // next butten
         this.nextButton = this.nextButton.bind(this);
@@ -109,18 +113,31 @@ export default class Donate extends Component {
     donationProcess(){
         // TODO: massage that donate sucsess
         
-        // this.setState({ donate_req.org_id: 5});
-        // this.setState(Object.assign(this.state.donate_req,{org_id:'5'}));
+       // TODO: one time donation logic
+    //    if(this.state.onTimeChecked){
+    //        alert("here")
+    //         axios.post('/oneTimedonationProcess', this.state.donate_req
+    //             ).then(res => 
+    //             {
+    //                 alert("res is: " + res.data)
+    //                 this.setState({divActiveDonation:true,divActiveMore: false, divActivePayment: false, coreStep: 1, nextAble: false});
+    //             }).catch(error=> {
+    //                 alert("error oneTimedonationProcess" +  error);
+    //             })
+    //    }
 
         // req 
-        axios.post('/donationProcess', this.state.donate_req
-        ).then(res => 
-        {
-            alert("res is: " + res.data)
-            this.setState({divActiveDonation:true,divActiveMore: false, divActivePayment: false, coreStep: 1, nextAble: false});
-        }).catch(error=> {
-            alert("error donationProcess" +  error);
-        })
+        // else{
+            axios.post('/donationProcess', this.state.donate_req
+            ).then(res => 
+            {
+                alert("res is: " + res.data)
+                this.setState({divActiveDonation:true,divActiveMore: false, divActivePayment: false, coreStep: 1, nextAble: false});
+            }).catch(error=> {
+                alert("error donationProcess" +  error);
+            })
+        // }
+        
     }
 
     //~~~~~~~~~~ disableNextBtn  ~~~~~~``
@@ -244,56 +261,62 @@ export default class Donate extends Component {
             // ~~ start step 1~~~
             if( this.state.coreStep === 1) 
             {
-                        // TODO: מיותר? מתי נעשת הבדיקה
-                // if(this.state.donate_req.monthly_donation !== '') // sume field is not empty 
-                // {
-                    // ~~ statr dThrow 
-                    if(this.state.dThrough !== '')  // dTrow -> need check if user exist in system (give a id)
-                    {
-                        // TODO:    check the email syntax    
-                        if(this.state.donate_req.referred_by === '') //-> check if do a request before
+                if(!this.state.oneTimeChecked){
+
+                            // TODO: מיותר? מתי נעשת הבדיקה
+                    // if(this.state.donate_req.monthly_donation !== '') // sume field is not empty 
+                    // {
+                        // ~~ statr dThrow 
+                        if(this.state.dThrough !== '')  // dTrow -> need check if user exist in system (give a id)
                         {
-                            this.setState({ableDonate: true});
-                            axios.get('/donate/findDThrouhUser/'+this.state.dThrough
-                            ).then(res => 
+                            // TODO:    check the email syntax    
+                            if(this.state.donate_req.referred_by === '') //-> check if do a request before
                             {
-                                if (res.status >= 400) {
-                                    throw new Error("Bad response from server");}
-                                else if (res === "not found" || res.data.user_id === undefined) // the data is not null
-                                    {
-                                        alert ("there are no user in system!")
-                                        this.setState({dThrough: '' ,ableDonate: false});
-                
-                                        // , nextAble:false});
-                                        // TODO: alert message in UI
-                                    }
-                                else{ // give a id of the donate through
-                                    this.setState(Object.assign(this.state.donate_req,{referred_by: res.data.user_id}));
-                                    this.setState({ableDonate: false}); // donate able 
-                                    this.setState({nextAble: false});
-                                    
-                                }	
-                            }).catch(error=> {
-                                alert(error);
-                            })
-                        }
-                        // check if finish a req
-                        if (this.state.donate_req.referred_by !== ''){
-                            this.setState({ableDonate: false});
-                            this.switchStep();
+                                this.setState({ableDonate: true});
+                                axios.get('/donate/findDThrouhUser/'+this.state.dThrough
+                                ).then(res => 
+                                {
+                                    if (res.status >= 400) {
+                                        throw new Error("Bad response from server");}
+                                    else if (res === "not found" || res.data.user_id === undefined) // the data is not null
+                                        {
+                                            alert ("there are no user in system!")
+                                            this.setState({dThrough: '' ,ableDonate: false});
+                    
+                                            // , nextAble:false});
+                                            // TODO: alert message in UI
+                                        }
+                                    else{ // give a id of the donate through
+                                        this.setState(Object.assign(this.state.donate_req,{referred_by: res.data.user_id}));
+                                        this.setState({ableDonate: false}); // donate able 
+                                        this.setState({nextAble: false});
+                                        
+                                    }	
+                                }).catch(error=> {
+                                    alert(error);
+                                })
+                            }
+                            // check if finish a req
+                            if (this.state.donate_req.referred_by !== ''){
+                                this.setState({ableDonate: false});
+                                this.switchStep();
 
+                            }
+                            alert("findDuser: " + this.state.findDuser + " finishDonate " + this.state.finishDonate)
                         }
-                        alert("findDuser: " + this.state.findDuser + " finishDonate " + this.state.finishDonate)
-                    }
-                    // TODO (alert)
-                    else{ // the mail is ok
-                        this.switchStep(); // switch step
-                    }
-                
+                        // TODO (alert)
+                        else{ // the mail is ok
+                            this.switchStep(); // switch step
+                        }
+                    
 
-                // -> // DO: delete the option of a empty sum
-                if (this.state.donate_req.referred_by !== '')
+                    // -> // DO: delete the option of a empty sum
+                    if (this.state.donate_req.referred_by !== '')
+                        this.switchStep();
+                }
+                else{
                     this.switchStep();
+                }
             } // ~~end step 1~~~
             else   // step 2 or 3                
                 this.switchStep(); // switch step
@@ -368,8 +391,11 @@ export default class Donate extends Component {
                 }}
             />)
     }
-  
 
+    checkBoxhandleClick(){
+        this.setState(Object.assign(this.state.donate_req,{onTimeCheck:true}));
+
+    }
 
  // ~~~~~~~~~~ render ~~~~~~~~~~~~~~~~~~~~~```
   render() 
@@ -521,7 +547,26 @@ export default class Donate extends Component {
                     </Grid.Row> 
                     {/* ADD ? */}
                     {/* <label > Donation amount (per month):</label> */}
-  
+
+                    {/* one time donation */}
+                    <Grid.Row>
+                        <div style={{paddingLeft:"10em"}}>
+                            <Checkbox toggle
+                                checked={this.state.donate_req.onTimeCheck}
+                                label='one time donation'
+                                onClick={() => this.setState(prevState => {
+                                    let donate_req = Object.assign({}, prevState.donate_req);  // creating copy of state variable jasper
+                                    if (donate_req.onTimeCheck == true)
+                                        donate_req.onTimeCheck = false; 
+                                    else
+                                        donate_req.onTimeCheck = true; 
+                                                        // update the name property, assign a new value                 
+                                        return { donate_req }; 
+                                
+                                })}   
+                            />
+                        </div>
+                    </Grid.Row>
                     <Grid.Row>  
                         <label style ={{paddingLeft: '5em' , color: '#20B2AA'}}>
                             _________________________________________________________</label>
@@ -727,7 +772,6 @@ export default class Donate extends Component {
             </Modal.Actions>
         </Modal> */}
         {/* ~~~ @ check ~~~ */}
-       
     </div>
     )
   }
