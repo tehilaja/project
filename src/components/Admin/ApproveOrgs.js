@@ -87,7 +87,7 @@ class ApproveOrgs extends React.Component {
         </Table.Cell>
         <Table.Cell>{org.org_name}</Table.Cell>
         <Table.Cell>{org.admin_name}</Table.Cell>
-        <Table.Cell>{org.field_of_acctivity}</Table.Cell>
+        <Table.Cell>{org.field_of_activity}</Table.Cell>
         <Table.Cell>{org.description}</Table.Cell>
         <Table.Cell>{org.org_admin_id}</Table.Cell>
         <Table.Cell>{org.pc_num}</Table.Cell>

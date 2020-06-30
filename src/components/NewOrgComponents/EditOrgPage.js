@@ -151,7 +151,7 @@ class EditOrgPage extends React.Component {
                     label="User status is based on the sum of money brought to the organiztion in his downline" />
                 <br></br>
                 <br></br>
-                <Label>Default: User status is based only on the number of Doners in his Downline</Label>
+                <Label>Default: User status is based only on the number of Donors in his Downline</Label>
                 <br /><br /><br />
             </div>
         );
@@ -265,9 +265,9 @@ class EditOrgPage extends React.Component {
                                                 <Form.TextArea
                                                     rows={2}
                                                     label='Field of Activity:'
-                                                    placeholder={this.state.org.field_of_acctivity}
-                                                    value={this.state.org.field_of_acctivity}
-                                                    name='field_of_acctivity'
+                                                    placeholder={this.state.org.field_of_activity}
+                                                    value={this.state.org.field_of_activity}
+                                                    name='field_of_activity'
                                                     onChange={this.handleChange.bind(this)} />
                                             </Form.Field>
                                             <Form.Field>

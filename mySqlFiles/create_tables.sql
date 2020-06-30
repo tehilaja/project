@@ -3,7 +3,7 @@
  -- ~~~~ DROP
 DROP TABLE bank_info;
 DROP TABLE addresses;
-DROP TABLE doners_in_org;
+DROP TABLE donors_in_org;
 DROP TABLE fields_of_activity;
 DROP TABLE gifts;
 -- DROP TABLE gifts_levels;
@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS Organizations (
  
   -- make another table to do a search box --
  
-  field_of_acctivity varchar(200)
+  field_of_activity varchar(200)
 );
 
 -- Levels --

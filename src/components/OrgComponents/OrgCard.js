@@ -14,18 +14,18 @@ class OrgCard extends React.Component{
         this.state ={
             org: this.props.org,
             routeOrgPage: false,
-            numDoners: 0
+            numDonors: 0
         }
-        this.getNumDoners();
+        this.getNumDonors();
 
     }
 
     //TODO: see why this isn't working
-    async getNumDoners(){
-      // alert("get Doners")
+    async getNumDonors(){
+      // alert("get Donors")
       await (async () => {
-        const response = await axios.get(`/get-num-doners/${this.state.org.org_id}`);
-        this.setState({numDoners: response})
+        const response = await axios.get(`/get-num-donors/${this.state.org.org_id}`);
+        this.setState({numDonors: response.data.num_doners})
       })();
     }
 
@@ -59,7 +59,7 @@ class OrgCard extends React.Component{
             </a> */}
             <br />
             <Feed.Like>
-            <Icon name='like' /> {this.state.numDoners} Monthly Donors
+            <Icon name='like' /> {this.state.numDonors} Monthly Donors
           </Feed.Like>
           </Card.Content>
         </Card>

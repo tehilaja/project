@@ -240,7 +240,7 @@ const updateLevelsInOrg = (org_id, levels) => {
         Object.assign(prevLevel, level);        
     });
 
-    updateLevelByOrgDoners(getOrgTree(org_id), org_id, getOrgLevels(org_id));
+    updateLevelByOrgDonors(getOrgTree(org_id), org_id, getOrgLevels(org_id));
 }
 
 

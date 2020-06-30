@@ -58,6 +58,7 @@ console.log("connected")
 
 //  ~~~~~~~~~~~~~~~~~~~~~~ DB ~~~~~~~~~~~~~~~~~~~
 const db = mysql.createConnection({
+  multipleStatements: true, //allow putting multiple statements in one query
   host: 'localhost',
   user: 'root',
   password: '12345678',
@@ -246,11 +247,12 @@ app.get('/orgPage/:orgId', (req, res, next) => {
   }
 });
 
-//------getting the number of doners for a specific organization ----
-app.get('/get-num-doners/:org_id', (req, res, next) => {
-  console.log('get-num-doners: ' + req.params.org_id);
-  const response = s3Util.getOrgTree(req.params.org_id).key.referred_doners;
-  res.send(response);
+//------getting the number of donors for a specific organization ----
+app.get('/get-num-donors/:org_id', (req, res, next) => {
+  console.log('get-num-donors: ' + req.params.org_id);
+  const response = statusCache.getOrgTree(req.params.org_id).key.referred_donors;
+  console.log("get-num-doners:"+JSON.stringify(response))
+  res.send({num_doners: response});
 });
 
 //--------------upload file-----------------
@@ -951,7 +953,7 @@ app.post('/get-all-org-data', (req, res) => {
 app.post('/update-org-data', (req, res) => {
   const org = req.body.org;
   const condition = `WHERE org_id=${org.org_id}`;
-  const sqlOrgsTableQuery = `UPDATE organizations SET org_name='${org.org_name}', description='${org.description}', img_url='${org.img_url}', min_donation=${org.min_donation}, one_time_donation=${org.one_time_donation}, field_of_acctivity='${org.field_of_acctivity}' ${condition}`;
+  const sqlOrgsTableQuery = `UPDATE organizations SET org_name='${org.org_name}', description='${org.description}', img_url='${org.img_url}', min_donation=${org.min_donation}, one_time_donation=${org.one_time_donation}, field_of_activity='${org.field_of_activity}' ${condition}`;
   const sqlBankInfoTableQuery = `UPDATE bank_info SET bank_num=${org.bank_num}, branch=${org.branch}, account_num=${org.account_num}, account_owner='${org.account_owner}' ${condition}`;
   const sqlAddressesTableQuery = `UPDATE addresses SET country='${org.country}', state='${org.state}', city='${org.city}', street='${org.street}', building=${org.building}, apartment=${org.apartment}, suite=${org.suite}, zip=${org.zip} ${condition}`;
   const sqlLevelsTableQueries = org.levels && org.levels.reduce((acc, level) => `${acc}UPDATE levels SET level_name='${level.level_name}', min_people=${level.min_people}, min_sum=${level.min_sum} ${condition} AND level_num=${level.level_num};`, '');
@@ -959,6 +961,7 @@ app.post('/update-org-data', (req, res) => {
   dbUtil.callDB(db, `${sqlOrgsTableQuery};${sqlBankInfoTableQuery};${sqlAddressesTableQuery};${sqlLevelsTableQueries}`, (err, result) => {
     if (err) {
       console.log('error updating org data: '+JSON.stringify(err));
+      console.log(`${sqlOrgsTableQuery};${sqlBankInfoTableQuery};${sqlAddressesTableQuery};${sqlLevelsTableQueries}`)
       res.send('fail');
     } else {
       if (org.levels) {
