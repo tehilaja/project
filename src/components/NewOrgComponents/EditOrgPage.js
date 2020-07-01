@@ -27,6 +27,7 @@ class EditOrgPage extends React.Component {
             selectedImage: null,
             image_url: null,
 
+            website_link: null,
             routeMain: false,
             showAddPrize: false,
         }
@@ -461,6 +462,22 @@ class EditOrgPage extends React.Component {
                                                 }} label="Allow One-time Donations" name="one_time_donation" />
                                             
                                             <br />
+                                            <Divider
+                                                as='h4'
+                                                className='header'
+                                                horizontal
+                                                style={{ margin: '3em 0em', textTransform: 'uppercase' }}
+                                            >
+                                                <a href='#'>
+                                                    Link to Organization Website
+                                                </a>
+                                                </Divider>
+                                                <Form.Input
+                                                label='link to website - optional'
+                                                iconPosition='left'
+                                                placeholder="website"
+                                                name="website_link"
+                                                onChange={this.handleChange.bind(this)}></Form.Input>
                                             <Button content='Submit' primary />
                                         </Form>
                                         {/* </Grid> */}

@@ -18,6 +18,7 @@ import GiftCard from '../Extra/GiftCard'
 
 import Donors from "./Donors.js"
 import FeedComponent from '../Extra/Feed.js'
+import { Link } from 'react-router-dom';
 
 
 const levelOptions = [
@@ -362,9 +363,13 @@ class OrgBody extends React.Component {
                                 
                                 <Grid.Row>
                                     {/* add link to organization homepage */}
-                                    {/* <Grid.Column textAlign='center'>
-                                        <Button size='huge'>Check Them Out</Button>
-                                    </Grid.Column> */}
+                                    <Grid.Column textAlign='center'>
+                                    {this.props.data.orgDetails.website_link&&
+                                    <Button size='huge' onClick={(e) => {
+                                    e.preventDefault();
+                                    window.location.href=`${this.props.data.orgDetails.website_link}`;
+                                    }}>Visit Our Website</Button>}
+                                    </Grid.Column>
                                 </Grid.Row>
                             </Grid>
                         </Segment>

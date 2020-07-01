@@ -431,12 +431,11 @@ export default class Donate extends Component {
                 link
                 // onClick={this.handleClick}
                 // onClick={() => this.setState({showLogin: true, showUser: false, showBackButton: true}
-                title='select Amount'
-                description='Choose your amount'
+                title='Select Amount'
+                description='Choose amount to donate'
             />
             <Step
                 id = 'step2'
-                // active={active === 'more datails'}
                 active = {this.state.divActiveMore}
                 completed = {this.state.divActivePayment}
                 disabled = {this.state.divActivePayment}
@@ -449,7 +448,6 @@ export default class Donate extends Component {
 
             <Step
                 id = 'step3' 
-                // active={active === 'payment'}
                 active = {this.state.divActivePayment}
                 disabled = {!this.state.divActivePayment}
                 icon='credit card'
@@ -467,7 +465,7 @@ export default class Donate extends Component {
         {!this.state.loggedIn
         &&
           <div>
-                you need to loggedIn!
+                Please Log In to begin donation process.
           </div>  
         }
         {this.state.coreStep === 1 && 

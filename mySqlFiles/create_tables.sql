@@ -63,6 +63,8 @@ CREATE TABLE IF NOT EXISTS Organizations (
   working int(11),
   num_volunteers int(11),
   num_friends int(11),
+  website_link varchar(250),
+
  
   -- make another table to do a search box --
  
