@@ -6,6 +6,7 @@ import axios from "axios";
 import AddPrizes from './AddPrizes.js';
 
 import { Button, Input, Divider, Form, Grid, Icon, Image, Label, Radio, Segment, } from 'semantic-ui-react';
+import { escapeAllStringsInObject } from '../../utilities/string';
 
 const uploadUtil = require('../../utilities/upload').methods;
 const emailService = require('../../utilities/email');
@@ -37,6 +38,8 @@ class EditOrgPage extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
 
         this.fetchOrgData();
+        document.addEventListener('prizeAdded', () => this.setState({showAddPrize: false}));
+
     }
 
     onSelectFile(event) {
@@ -66,7 +69,7 @@ class EditOrgPage extends React.Component {
                 }
             }
             this.setState({org: this.state.org});
-            const response = await axios.post('/update-org-data', {org: this.state.org});
+            const response = await axios.post('/update-org-data', escapeAllStringsInObject({org: this.state.org}));
 
             if (response.data === 'fail') {
                 alert('Unknown error occured while updating organization. Please try again later.');
@@ -147,7 +150,7 @@ class EditOrgPage extends React.Component {
                     <a href='#'><Icon size='big' name='users' />User Status</a>
                 </Divider>
 
-                <Radio toggle checked={!this.state.org.levels[0].min_sum} name="status_type"
+                <Radio toggle checked={this.state.org.levels[0].min_sum} name="status_type"
                     onChange={() => this.setState({statusTypeChanged: !this.state.statusTypeChanged})} 
                     label="User status is based on the sum of money brought to the organiztion in his downline" />
                 <br></br>
@@ -514,7 +517,7 @@ class EditOrgPage extends React.Component {
                                     Add Prizes
                                     <Icon name='right arrow' />
                             </Button>
-                            {this.state.showAddPrize && <AddPrizes />}
+                            {this.state.showAddPrize && <AddPrizes levels={this.state.org.levels} org_id={this.state.orgId}/>}
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>

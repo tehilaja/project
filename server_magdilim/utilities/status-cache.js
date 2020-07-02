@@ -118,7 +118,7 @@ const getDonorLevel = (donor, levels) => {
         return !!((!level.min_people || level.min_people <= donor.referred_donors) && (!level.min_sum || level.min_sum <= donor.collected)); // !! in order to turn an object into a boolean value
     }
 
-    return levels.find(isDonorAtLevel); // returns the first level meeting the lambda. (Levels are sorted from higher to lower.)
+    return levels && levels.find(isDonorAtLevel) || null; // returns the first level meeting the lambda. (Levels are sorted from higher to lower.)
 }
 
 //get today's gifts from db, grouped by orgs
@@ -245,8 +245,15 @@ const updateLevelByOrgDonors = (root, org_id, levels) => {
 
 const updateLevelsInOrg = (org_id, levels) => {
     levels.forEach(level => {
-        const prevLevel = orgToLevels[org_id].find(x => level.level_num === x.level_num);
-        Object.assign(prevLevel, level);        
+        const prevLevels = orgToLevels[org_id];
+
+        if (prevLevels) {
+            const prevLevel = prevLevels.find(x => level.level_num === x.level_num);
+            Object.assign(prevLevel, level);
+        } else {
+            orgToLevels[org_id] = levels;
+        }
+                
     });
 
     updateLevelByOrgDonors(getOrgTree(org_id), org_id, getOrgLevels(org_id));

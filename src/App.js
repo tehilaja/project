@@ -136,18 +136,18 @@ class App extends React.Component {
                     {
                     return [ 0, <ContactUs data={this.state} />];
                     }
-                //The following case to get to Admin page will be guarded:
+                case "/neworgpage":
+                    return [0, <NewOrgPage data={this.state} />];
+                case "/orgsearch":
+                    return [ActivePage.Organizations, <OrgSearch data={this.state} activePage={ActivePage.Organizations}/>];
+                case "/prizes":
+                    return [ActivePage.Prizes, <Prizes data={this.state} activePage={ActivePage.Prizes}/>];   
+                //The following cases will be guarded:
                 case "/adminpage":
                     return [ActivePage.AdminPage, this.guardRoute('program_admin', (<AdminPage data={this.state} />), '/')];
-                case "/neworgpage":
-                return [0, <NewOrgPage data={this.state} />];
                 case `/editorgpage/${spliting[2]}`:
                     return [0, this.guardRoute('org_admin', (<EditOrgPage data={this.state} id={spliting[2]} />), '/')];
-                case "/orgsearch":
-                return [ActivePage.Organizations, <OrgSearch data={this.state} activePage={ActivePage.Organizations}/>];
-                case "/prizes":
-                return [ActivePage.Prizes, <Prizes data={this.state} activePage={ActivePage.Prizes}/>];
-                default:
+               default:
                     break;
             }
     }
