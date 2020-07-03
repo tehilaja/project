@@ -521,14 +521,23 @@ app.post('/donationProcess', (req, res, next) => {
 });
 
 //-------------------function that gets the gifts for organization ------------------
-app.post('/orgPage/gifts/:org_id',
+app.get('/orgPage/gifts/:org_id',
 function (req, res, next) {
-  console.log('in org page gifts');
-    const sqlQuery = `select * from Gifts WHERE org_id=${req.params.org_id} and winner IS NULL`
-    console.log(sqlQuery)
-    db.query(sqlQuery, (err, result, fields) => {
+
+   const qGifts =	
+  `SELECT 	
+   l.level_name as l_name, l.min_people, l.min_sum,	     
+   g.gift_id, g.gift_name,	     
+   g.gift_description,g.gift_pic,	       
+   g.g_date, g.winner
+  from Levels l
+  INNER JOIN gifts g ON l.level_num = g.level_num and l.org_id =${req.params.org_id} and g.winner is null; `
+  console.log('in org page gifts \n');
+    // const sqlQuery = `select * from Gifts WHERE org_id=${req.params.org_id} and winner IS NULL`
+    console.log(qGifts)
+    db.query(qGifts, (err, result, fields) => {
       if (!err) {
-        // console.log('res: ' + JSON.stringify(result));
+        console.log('res:\n ' + JSON.stringify(result));
         res.send(result);
       } else {
         console.log('error: ' + JSON.stringify(err));
@@ -536,6 +545,22 @@ function (req, res, next) {
       };
     })
   });
+
+  app.get('/orgPage/getLevels/:org_id',
+  function (req, res, next) {
+    console.log('in get level \n');
+      const sqlQuery = `select * from levels WHERE org_id=${req.params.org_id}`
+      console.log(sqlQuery)
+      db.query(sqlQuery, (err, result, fields) => {
+        if (!err) {
+          console.log('res level: \n ' + JSON.stringify(result));
+          res.send(result);
+        } else {
+          console.log('error: ' + JSON.stringify(err));
+          res.send(null);
+        };
+      })
+    });
 
 // // ---- Gets the future gifts for specific organization page
 // app.get('/orgPage/gifts/:org_id', function (req, res, next) {

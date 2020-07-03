@@ -16,17 +16,12 @@ import OrgSpechCard from './OrgSpechCard.js'
 import Donate from './Donate.js'
 import GiftCard from '../Extra/GiftCard'
 
-import Donors from "./Donors.js"
 import FeedComponent from '../Extra/Feed.js'
 import { Link } from 'react-router-dom';
 
 
 const levelOptions = [
-    { key: 'all levels',value: 'all levels', text: 'all levels' },
-    { key: 'all Donars',value: 'all Donars', text: 'all Donars' },
-    { key: 'silver',value: 'silver', text: 'silver' },
-    { key: 'gold',value: 'gold', text: 'gold' },
-    { key: 'platinum',value: 'platinum', text: 'platinum' },
+    { key: 'all levels',value: 'all levels', text: 'all levels' }
   ];
 
 
@@ -79,7 +74,8 @@ class OrgBody extends React.Component {
         // select level
         this.selectLevel = this.selectLevel.bind(this)
         this.filterChooseLevel = this.filterChooseLevel.bind(this)
-        this.getGiftsToShow = this.getGiftsToShow.bind(this)
+        // this.getGiftsToShow = this.getGiftsToShow.bind(this)
+
 
         // css
     }
@@ -99,17 +95,17 @@ class OrgBody extends React.Component {
     filterChooseLevel(filter){
         let obj = [];
         if (filter === 'all levels'){
-            this.setState({giftShow: this.state.allGifts})
+            this.setState({showGifts: this.state.allGifts})
             // alert("all : "+ this.state.giftShow.length)
         }
         else
         {
-            this.state.allGifts.map(element =>
-            {
+            this.state.allGifts.map(element =>{
                 if(element.l_name === filter)
                     obj.push(element)
             })
-            this.setState({giftShow: obj})
+            this.setState({showGifts: obj})
+            // alert("gifts: \n" + JSON.stringify(this.state.showGifts))
         }
 
     }
@@ -118,19 +114,54 @@ class OrgBody extends React.Component {
     getGifts = () => {
         this.state.allGifts.length = 0;
         (async () => {
-        //   const response = await axios.post(`fetch-feed-comments/${this.state.feed_type}/${this.state.feed_type_id}`,
-          const response = await axios.post(`/orgPage/gifts/${this.props.data.orgDetails.org_id}`,
-          { org_id: this.state.org_id},
+          const response = await axios.get(`/orgPage/gifts/${this.props.data.orgDetails.org_id}`,
+            { org_id: this.state.org_id},
             { headers: { 'Content-Type': 'application/json' } });
+            alert("gift:\n "+ JSON.stringify(response.data))
             this.setState({allGifts: response.data})
             this.setState({showGifts: this.state.allGifts})
+            // insert filter option
+            // { key: 'all levels',value: 'all levels', text: 'all levels' }
+            // response.data.forEach(function(gift){
+            //     let giftobj ={};
+            //     giftobj["key"]=gift.l_name;
+            //     giftobj["value"]=gift.l_name;
+            //     giftobj["text"]=gift.l_name;
+            //     levelOptions.push(giftobj);
+            // })
+            
+            // { key: 'all levels',value: 'all levels', text: 'all levels' }
+           
         })();
       }
 
     componentDidMount()
     {   
-    
-        this.getGifts()
+        
+        this.getGifts();
+        axios.get('/orgPage/getLevels/'+this.state.org_id
+		).then(res => 
+		{
+			if (res.status >= 400) {
+				throw new Error("Bad response from server");}
+			else if (res === "no data") // the data is not null
+				alert ("no data!")
+			else{
+				
+                alert("levels: \n"+JSON.stringify(res.data))
+                res.data.forEach(function(level){
+                    let giftobj ={};
+                    giftobj["key"]=level.level_name;
+                    giftobj["value"]=level.level_name;
+                    giftobj["text"]=level.level_name;
+                    levelOptions.push(giftobj);
+                })
+			}	
+		})
+		.catch(error=> {
+			alert(error);
+		})
+      
 
     }
 
@@ -228,14 +259,14 @@ class OrgBody extends React.Component {
          })
      }
 
-    getGiftsToShow(){
-     const giftComponents = this.state.showGifts.map(gift =>{
-        return(
-            <GiftCard  gifts = {gift}  />)
-    })
+    // getGiftsToShow(){
+    //  const giftComponents = this.state.showGifts.map(gift =>{
+    //     return(
+    //         <GiftCard  gifts = {gift}  />)
+    // })
 
-    return giftComponents;
-}
+//     return giftComponents;
+// }
     
      handleChange(event){
 		this.setState({
@@ -262,15 +293,12 @@ class OrgBody extends React.Component {
 //----------render------------------
     render() 
     {
-        
-
-       
-        // const levelOptions = [
-        //     { key: 'all', value: 'all', text: 'all' },
-        //     { key: 'silver', value: 'silver', text: 'silver' },
-        //     { key: 'gold', value: 'gold', text: 'gold' },
-        //     { key: 'platinium', value: 'platinium', text: 'platinium' }
-        //   ]
+        const giftComponents = this.state.showGifts.map(gift =>{
+            return(
+                <GiftCard  gifts ={gift}  
+                />)
+        })
+    
         const { valueLevel } = this.state // level
       
         const styles = 
@@ -450,7 +478,8 @@ class OrgBody extends React.Component {
                                 {/* show the gifts
                                     // TODO: filter objects
                                 */}
-	                              {this.getGiftsToShow()}
+                                {giftComponents}
+	                              {/* {this.getGiftsToShow()} */}
                             </Grid.Row>
                         </Grid>
                     
