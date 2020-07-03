@@ -377,111 +377,27 @@ app.post('/sendEmail', (req, res) => {
 });
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~ addOrg ~~~~~~~~~~~~~~~~~~~~
-
-function checkAddOrgDetails(paramO) {
-  // org_id, org_name ,one_time_donation , min_donation ,approved,org_num ,  branch ,account_num, bank_num, account_owner
-  // , admin_name ,description ,field_of_activity, img_url ,founding_year, working ,volunteers, friends ,city_name,country_name ,building ,street, p_code
-  var q = ` INSERT INTO organizations (`
-  var insertinfValue = `)VALUES(`
-
-  // neccesery 
-  //TODO: account_owner - take from cognito?
-  q += `org_id,org_name,min_donation,one_time_donation,approved,org_num,branch,account_num,bank_num,account_owner`;
-  insertinfValue += `${paramO.org_id},${paramO.org_name},${paramO.min_donation},${paramO.one_time_donation},0,
-    ${paramO.branch},${paramO.account_num},${paramO.bank_num},${paramO.account_owner},${paramO.org_num}`
-
-  // --- check
-  if (paramO.img_url != '') {
-    q += `,img_url`;
-    insertinfValue += `,${paramO.img_url}`;
-  }
-  if (paramO.founding_year != '') {
-    q += `,founding_year`;
-    insertinfValue += `,${paramO.founding_year}`;
-  }
-  if (paramO.working != '') {
-    q += `,working`;
-    insertinfValue += `,${paramO.working}`;
-  }
-  if (paramO.volunteers != '') {
-    q += `,volunteers`;
-    insertinfValue += `,${paramO.volunteers}`;
-  }
-  if (paramO.friends != '') {
-    q += `,friends`;
-    insertinfValue += `,${paramO.friends}`;
-  }
-  // if(paramO.admin_name!=''){
-  //   q += `,admin_name`;
-  //   insertinfValue += `,${paramO.admin_name}`;
-  // }
-  if (paramO.admin_name != '') {
-    q += `,admin_name`;
-    insertinfValue += `,${paramO.admin_name}`;
-  }
-  if (paramO.description != '') {
-    q += `,description`;
-    insertinfValue += `,${inQutationMarks(paramO.description)}`;
-  }
-  // TODO!! field_of_activity
-  // if(paramO.field_of_activity!=''){
-  //   q += `,field_of_activity`;
-  //   insertinfValue += `,${inQutationMarks(paramO.field_of_activity}"`;
-
-  // nessecery
-
-  insertinfValue += `);`
-  const query = q + insertinfValue;
-  console.log("param (in fun) \n" + query);
-
-  return query
-}
-
-
-// ~~~~~~~ addOrg ~~~~~~~
 app.post('/addOrg', (req, res, next) => {
 
-  console.log("the org:")
-  // need to check user login ?
-  try {
-    console.log("in /addOrg \n ")
-
-    const qAddOrg = checkAddOrgDetails(req.body);// check details
-    console.log("quert is: \n", qAddOrg, "\n");
-
-    db.query(qAddOrg, (err, result, fields) => {
-      if (!err) {
-        res.send("insert org");//response
-        console.log("succses! ");
-      }
-      else {
-        res.end("db fail");
-        console.log("fail db " + err.code);
-      }
-
-      // console.log("result " + result);
-    })
-    // console.log("in check \n")
-    // console.log("string obj \n "+ JSON.stringify(req.body));
-  }
-  catch (err) {
-    console.log("error " + err.code);
-    res.end("err server ", err.code)
-  }
-
-
+  const numberOrNull = (num) => num || null;
+  const org = req.body.org;
+  const sqlOrgsTableQuery = `INSERT INTO organizations (org_name, description, img_url, min_donation, one_time_donation, field_of_activity, approved, org_admin_id, admin_name) VALUES (${inQutationMarks(org.org_name)}, ${inQutationMarks(org.description)}, ${inQutationMarks(org.img_url)}, ${numberOrNull(org.min_donation)}, ${numberOrNull(org.one_time_donation)}, ${inQutationMarks(org.field_of_activity)}, 0, ${inQutationMarks(org.org_admin_id)}, ${inQutationMarks(org.admin_name)})`;
+  const sqlAddressesTableQuery = `INSERT INTO addresses (org_id, country, state, city, street, building, apartment, suite, zip ) VALUES (LAST_INSERT_ID(), ${inQutationMarks(org.country)}, ${inQutationMarks(org.state)}, ${inQutationMarks(org.city)}, ${inQutationMarks(org.street)}, ${numberOrNull(org.building)}, ${numberOrNull(org.apartment)}, ${numberOrNull(org.suite)}, ${numberOrNull(org.zip)})`;
+  
+  const query = `${sqlOrgsTableQuery};${sqlAddressesTableQuery};`;
+  
+  dbUtil.callDB(db, query, (err, result) => {
+    if (err) {
+      console.log('error adding org: ' + JSON.stringify(err));
+      console.log(query);
+      res.send('fail');
+    } else {
+      res.send('success');
+    }
+  });
 });
 
-app.post('/addOrg/firstStep', (req, res, next) => {
 
-  const qFirstAdd = `INSERT INTO Donors_in_org (org_id,org_name,min_donation,one_time_donation,approved)
-    VALUES(${req.body.org_id},${req.body.org_name},${req.body.min_donation},${req.body.one_time_donation},0,
-    );`
-  // ,org_num,branch,account_num,bank_num,account_owner
-  // ${paramO.branch},${paramO.account_num},${paramO.bank_num},${paramO.account_owner},${paramO.org_num}
-
-
-});
 //~~~~~~~~~~~~~~~~~~~~ donate process ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // check which details exsist and do a query

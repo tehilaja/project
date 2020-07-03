@@ -250,10 +250,13 @@ getThreeOrgs(){
 				<Segment style={{ padding: '5em 0em', width: '100%' }} vertical >
 					<Grid container  verticalAlign='middle'>
 						<Grid.Row>
-							<Grid.Column width={10}>
+						<Grid.Column width={12}>
 								{/*displaying organizations on home page:*/}
 								<Segment color='red'>
-									<Header as='h2' icon='globe' content='Donate to Organization' />
+									<Header as='h2' icon='globe' content='Donate to an Organization' />
+									<div style ={{marginLeft:'15'}}>
+										<br/>
+									</div >
 									<Carousel 
 									swipeable={true}
 									draggable={true}
