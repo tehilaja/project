@@ -14,7 +14,9 @@ import OrgSpechCard from './OrgSpechCard.js'
 
 // donate
 import Donate from './Donate.js'
-import GiftCard from '../Extra/GiftCard'
+import GiftCard from './giftCard'
+
+// import GiftCard from '../Extra/GiftCard'
 
 import FeedComponent from '../Extra/Feed.js'
 import { Link } from 'react-router-dom';
@@ -23,6 +25,7 @@ import { Link } from 'react-router-dom';
 const levelOptions = [
     { key: 'all levels',value: 'all levels', text: 'all levels' }
   ];
+const TAB_PICSEL = '2000px'
 
 
 
@@ -117,7 +120,7 @@ class OrgBody extends React.Component {
           const response = await axios.get(`/orgPage/gifts/${this.props.data.orgDetails.org_id}`,
             { org_id: this.state.org_id},
             { headers: { 'Content-Type': 'application/json' } });
-            alert("gift:\n "+ JSON.stringify(response.data))
+            // alert("gift:\n "+ JSON.stringify(response.data))
             this.setState({allGifts: response.data})
             this.setState({showGifts: this.state.allGifts})
             // insert filter option
@@ -148,7 +151,7 @@ class OrgBody extends React.Component {
 				alert ("no data!")
 			else{
 				
-                alert("levels: \n"+JSON.stringify(res.data))
+                // alert("levels: \n"+JSON.stringify(res.data))
                 res.data.forEach(function(level){
                     let giftobj ={};
                     giftobj["key"]=level.level_name;
@@ -511,7 +514,7 @@ class OrgBody extends React.Component {
                         </Grid.Row>
 
                         <Grid.Row>
-                            <Tab style={{ padding: '0.2em 1.5em' ,width:'1000px'}} defaultActiveIndex={2} menu={{ color:'teal' ,vertical: true, inverted: true, attached: true, tabular: true, pointing: true}} panes={panes} />
+                            <Tab style={{ padding: '0.2em 1.5em' ,width:TAB_PICSEL}} defaultActiveIndex={3} menu={{ color:'teal' ,vertical: true, inverted: true, attached: true, tabular: true, pointing: true}} panes={panes} />
                         </Grid.Row>
                         
                     </Grid>
@@ -520,7 +523,6 @@ class OrgBody extends React.Component {
 
                 <Header>
                     <Image  floated='right'  size='large' src={this.props.data.orgDetails.img_url} style={{ padding: '3em 3em' }} />
-
                 </Header>
             
                 {/* // menu bar side */}

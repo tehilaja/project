@@ -3,7 +3,7 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Card, Icon, Image,Segment ,Label,Grid} from 'semantic-ui-react'
+import { Card, Icon, Image,Segment ,Label,Grid,Statistic} from 'semantic-ui-react'
 
 class giftCard extends React.Component{
     constructor(props){
@@ -23,8 +23,19 @@ class giftCard extends React.Component{
         return(
             // <Segment>
             <div>
-                <Segment>
-                <Card>
+            <Card style ={{border: '2px solid #DC143C', height:'300px'}} >
+            <Label color = 'blue' attached='top'>{this.props.gifts.l_name}</Label>
+
+            
+                <Card.Content header={this.props.gifts.gift_name} />
+                <Card.Content description={this.props.gifts.gift_description} />
+                <Card.Content extra>
+                <Icon name='user' />4 Friends
+                </Card.Content>
+            </Card>
+       
+
+                {/* <Card>
                     <Label color = 'blue' attached='top'>{this.props.gifts.l_name}</Label>
                     <Image src='https://react.semantic-ui.com/images/avatar/large/daniel.jpg' wrapped ui={false} />
                     <Card.Content>
@@ -39,6 +50,13 @@ class giftCard extends React.Component{
                             {this.props.gifts.gift_description}
                         </Card.Description>
                         </Card.Content>
+                        <Statistic>
+                            <Statistic.Value>
+                                <Image src='https://react.semantic-ui.com/images/avatar/small/joe.jpg' inline circular />
+                                42
+                            </Statistic.Value>
+                            <Statistic.Label>Team Members</Statistic.Label>
+                            </Statistic>
                         <Card.Content extra>
                              <br></br>
                             <Icon name =  'user' />
@@ -54,9 +72,8 @@ class giftCard extends React.Component{
 
                             <br></br>
                     </Card.Content>
-                </Card>
+                </Card> */}
                 <br></br>
-                </Segment>
             </div>
             // </Segment>
 

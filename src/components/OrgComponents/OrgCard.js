@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom';
 import axios from "axios";
 
 import {Redirect} from "react-router-dom";
-import { Card, Feed, Icon, Image, Segment } from 'semantic-ui-react'
+import { Card, Feed, Icon, Image, Segment,Statistic } from 'semantic-ui-react'
 
 
 class OrgCard extends React.Component{
@@ -35,16 +35,38 @@ class OrgCard extends React.Component{
         } 
 
       return( 
-        <Card style ={{margin: '1em', border: '2px solid #DC143C', height:'300px', width: '400px'}} 
+        // {{border: '2px solid #9400D3', height:'300px'}}
+        <Card style ={{border: '2px solid #DC143C', height:'300px'}} 
           onClick = {() => this.setState(prevState => {
             return {
                 routeOrgPage: !prevState.routeOrgPage}
               })}>
 
+
+          <Card.Content>
+            <Image 
+            floated='right'
+            size='tiny'
+            src={this.state.org.img_url}
+            />
+            <Card.Header>
+              
+	            <Statistic size='tiny' floated='left'>
+                  <Statistic.Value>
+                    <Icon name='handshake outline' />{this.state.numDonors}
+                    </Statistic.Value>
+                    <Statistic.Label>Supporters</Statistic.Label>
+                </Statistic>
+                {/* <Icon name = 'user'/>
+                {this.state.name} */}
+                </Card.Header>
+        </Card.Content>
+
+{/* 
           <Card.Content>
             <Image src={this.state.org.img_url} wrapped ui={true} />
 
-          </Card.Content>
+          </Card.Content> */}
           <Card.Content extra>
           <Card.Header>{this.state.org.org_name}</Card.Header>
             <Card.Meta>
@@ -58,9 +80,9 @@ class OrgCard extends React.Component{
               last prize winner
             </a> */}
             <br />
-            <Feed.Like>
+            {/* <Feed.Like>
             <Icon name='like' /> {this.state.numDonors} Monthly Donors
-          </Feed.Like>
+          </Feed.Like> */}
           </Card.Content>
         </Card>
 
