@@ -7,6 +7,8 @@ import ReactDOM from 'react-dom';
 import { Card, Icon, Image,Segment ,Label,Grid,Feed,Button} from 'semantic-ui-react'
 import {Redirect} from "react-router-dom";
 
+const moment = require('moment');
+
 
 class LastDonationCard extends React.Component{
     constructor(props){
@@ -65,9 +67,9 @@ class LastDonationCard extends React.Component{
                             {this.state.name}
                             </Card.Header>
                         <Card.Meta>
-                            {this.state.date}
+                        {moment(this.state.date).fromNow()}
                             <br/>
-                            {this.state.time}
+                            {/* {this.state.time} */}
                             {/* {this.props.ldonation.d_date.splite("T")} */}
                         </Card.Meta>
                         <Card.Description>
