@@ -88,14 +88,14 @@ class UserLoginService {
         let cognitoUser = new CognitoUser(userData);
 
         cognitoUser.forgotPassword({
-            onSuccess: function () {
-
+            onSuccess: function (data) {
+                callback(null, data);
             },
             onFailure: function (err) {
-                callback.cognitoCallback(err.message, null);
+                callback(err.message, null);
             },
-            inputVerificationCode() {
-                callback.cognitoCallback(null, null);
+            inputVerificationCode(data) {
+                callback(null, null);
             }
         });
     }
@@ -110,10 +110,10 @@ class UserLoginService {
 
         cognitoUser.confirmPassword(verificationCode, password, {
             onSuccess: function () {
-                callback.cognitoCallback(null, null);
+                callback(null, null);
             },
             onFailure: function (err) {
-                callback.cognitoCallback(err.message, null);
+                callback(err.message, null);
             }
         });
     }
@@ -145,6 +145,25 @@ class UserLoginService {
             console.log("UserLoginService: can't retrieve the current user");
             callback("Can't retrieve the CurrentUser", false);
         }
+    }
+    changePassword(username, oldPassword, newPassword, callback) {
+        let cognitoUser = this.cognitoUtil.getCurrentUser();
+
+        cognitoUser.getSession(function (err, session) {
+            if (err) {
+                console.log("ChangePassword: Couldn't retrieve the user");
+                callback(err.message, null);
+            }
+            else {
+                cognitoUser.changePassword(oldPassword, newPassword, (err, success) => {
+                    if (err) {
+                        callback(err.message, success);
+                    } else {
+                        callback(null, success);
+                    }
+                });
+            }
+        });
     }
 }
 

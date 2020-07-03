@@ -29,6 +29,7 @@ const reactor = require("./utilities/custom-event").data.reactor;
 const statusCache = require('./utilities/status-cache');
 const paymentsUtil = require('./utilities/payments');
 const dbUtil = require('./utilities/db');
+const inQutationMarks = require('./utilities/string').inQutationMarks;
 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -114,8 +115,7 @@ const job = schedule.scheduleJob(rule, function () {
             null,
             'Congratualtions! You won a prize through Magdilim!',
             `We are happy to tell you you won a prize from ${gift.org_name}.\n\nThe prize you won: ${gift.gift_name}.\nDescription:${gift.gift_description}\n\nWe are very gratefull to you for your donations which help keep our important organizations going.\n\nYours, the Magdilim team`,
-            [{ path: gift.gift_pic, filename: gift.gift_pic.substr(gift.gift_pic.lastIndexOf('_') + 1) }]
-            );
+             gift.gift_pic && [{ path: gift.gift_pic, filename: gift.gift_pic.substr(gift.gift_pic.lastIndexOf('_') + 1) }]            );
         });
         
       })
@@ -193,7 +193,7 @@ app.get(`/orgPage/get_org_field_of_activity/:orgId`, (req, res, next) => {
       `select f.field_name
       from Org_field_of_activity o
         inner join Fields_of_activity f ON o.field_id = f.field_id
-      where o.org_id ="${req.params.orgId}";`
+      where o.org_id =${inQutationMarks(req.params.orgId)};`
 
     console.log("query: \n" + q_org_field_name);
     db.query(q_org_field_name, (err, result, fields) => {
@@ -229,7 +229,7 @@ app.get('/orgPage/:orgId', (req, res, next) => {
     console.log("in /orgPage")
     console.log("id: " + req.params.orgId)
 
-    const qO = `select * from Organizations WHERE org_id="${req.params.orgId}"`;
+    const qO = `select * from Organizations WHERE org_id=${req.params.orgId}`;
     console.log("query: " + qO);
     db.query(qO, (err, result, fields) => {
       if (err) throw err;
@@ -249,7 +249,6 @@ app.get('/orgPage/:orgId', (req, res, next) => {
 
 //------getting the number of donors for a specific organization ----
 app.get('/get-num-donors/:org_id', (req, res, next) => {
-  console.log('get-num-donors: ' + req.params.org_id);
   const response = statusCache.getOrgTree(req.params.org_id).key.referred_donors;
   console.log("get-num-doners:"+JSON.stringify(response))
   res.send({num_doners: response});
@@ -276,7 +275,7 @@ app.get('/get-files-of-folder/:folder', (req, res, next) => {
 app.get('/donate/findDThrouhUser/:user_mail', (req, res, next) => {
   try {
     console.log("in donate/findDThrouhUser/:user_mail")
-    const qDUser = `select user_id from donors_in_org where user_id ="${req.params.user_mail}"`;
+    const qDUser = `select user_id from donors_in_org where user_id =${inQutationMarks(req.params.user_mail)}`;
     console.log("query: \n" + qDUser + "\n");
     db.query(qDUser, (err, result, fields) => {
       if (err) throw err;
@@ -365,12 +364,12 @@ function checkAddOrgDetails(paramO) {
   }
   if (paramO.description != '') {
     q += `,description`;
-    insertinfValue += `,"${paramO.description}"`;
+    insertinfValue += `,${inQutationMarks(paramO.description)}`;
   }
   // TODO!! field_of_activity
   // if(paramO.field_of_activity!=''){
   //   q += `,field_of_activity`;
-  //   insertinfValue += `,"${paramO.field_of_activity}"`;
+  //   insertinfValue += `,${inQutationMarks(paramO.field_of_activity}"`;
 
   // nessecery
 
@@ -438,22 +437,22 @@ function checkDonateDetails(paramO,if_oneTime) {
   // TODO: check if the neccesery value input? -> before?
 
   q += `user_id,org_id,monthly_donation`;
-  insertinfValue += `"${paramO.user_id}",${paramO.org_id},${paramO.monthly_donation}`
+  insertinfValue += `${inQutationMarks(paramO.user_id)},${paramO.org_id},${paramO.monthly_donation}`
 
   // --- check
   if(!if_oneTime)
     if (paramO.referred_by !== '') {
       q += `,referred_by`;
-      insertinfValue += `,"${paramO.referred_by}"`;
+      insertinfValue += `,${inQutationMarks(paramO.referred_by)}`;
     }
 
   if (paramO.d_title !== '') {
     q += `,d_title`;
-    insertinfValue += `,"${paramO.d_title}"`;
+    insertinfValue += `,${inQutationMarks(paramO.d_title)}`;
   }
   if (paramO.d_description != '') {
     q += `,d_description`;
-    insertinfValue += `,"${paramO.d_description}"`;
+    insertinfValue += `,${inQutationMarks(paramO.d_description)}`;
   }
   // nessecery
 
@@ -470,7 +469,7 @@ app.post('/oneTimedonationProcess', (req, res, next) => {
   try {
     console.log("in /oneTimedonationProcess \n ")
     // const q1Donate = checkDonateDetails(req.body,true);// check details
-    const q1Donate = `insert into one_time_donations(user_id,org_id,sum_donation,anonymous) value(,"${req.body.user_id}",${req.body.org_id},${req.body.monthly_donation},0);`
+    const q1Donate = `insert into one_time_donations(user_id,org_id,sum_donation,anonymous) value(,${inQutationMarks(req.body.user_id)},${req.body.org_id},${req.body.monthly_donation},0);`
     console.log("quert is: \n", q1Donate, "\n");
 
     db.query(q1Donate, (err, result, fields) => {
@@ -497,7 +496,7 @@ app.post('/donationProcess', (req, res, next) => {
     let qDonate;
     console.log("in /donationProcess \n ")
     if (req.body.onTimeCheck == true) // one time donaition
-      qDonate = `insert into one_time_donations(user_id,org_id,sum_donation,anonymous) value("${req.body.user_id}",${req.body.org_id},${req.body.monthly_donation},0);`
+      qDonate = `insert into one_time_donations(user_id,org_id,sum_donation,anonymous) value(${inQutationMarks(req.body.user_id)},${req.body.org_id},${req.body.monthly_donation},0);`
 
     else
       qDonate = checkDonateDetails(req.body,false);// check details
@@ -578,20 +577,11 @@ function (req, res, next) {
 
 //------------is org admin--------------
 app.get('/EditOrgPage/:userId/is-org-admin/:orgId', function (req, res, next) {
-  const sqlQuery = `SELECT org_admin_id FROM Organizations WHERE org_id='${req.params.orgId}' AND approved=1`;
+  const sqlQuery = `SELECT org_admin_id FROM Organizations WHERE org_id=${inQutationMarks(req.params.orgId)} AND approved=1`;
   db.query(sqlQuery, function (error, results, fields) {
     if (error) throw error;
     res.send(!!results && !!results.length);
   });
-});
-
-app.get('/EditOrgPage/:userId/is-program-admin', function (req, res, next) {
-  res.send(req.params.userId === 'tehilaj97@gmail.com');
-});
-
-//for admin page
-app.get('/:userId/is-program-admin', function (req, res, next) {
-  res.send(req.params.userId === 'tehilaj97@gmail.com');
 });
 
 
@@ -648,6 +638,65 @@ app.post('/confirm_registerd_user', function (req, res) {
 });
 
 
+//-----------------change password-------------
+app.post('/change-password', (req, res) => {
+  console.log("start change password....");
+
+  try {
+    userLoginService.changePassword(req.body.user_name, req.body.old_password, req.body.new_password, (err, result) => {
+      if (err) {
+        console.log('error changing password:\n'+err);
+        res.send(err);
+      } else {
+        res.send('success');
+      }
+    });    
+  } catch (error) {
+    console.log("error changing passworddd: " + JSON.stringify(error));
+    res.send('Unknown error changing password. Please try again later.'); 
+  }
+});
+
+//-----------------forgot password-------------
+app.post('/forgot-password', (req, res) => {
+  console.log("start forgot password....");
+
+  try {
+    userLoginService.forgotPassword(req.body.user_name, (err, result) => {
+      if (err) {
+        console.log('error forgot password:\n'+err);
+        res.send(err);
+      } else {
+        res.send('success');
+      }
+    });    
+  } catch (error) {
+    console.log("error forgot passworddd: " + JSON.stringify(error));
+    res.send('Unknown error in forgot password flow. Please try again later.'); 
+  }
+});
+
+
+//-----------------confirm forgot password-------------
+app.post('/confirm-forgot-password', (req, res) => {
+  console.log("start confirm forgot password....");
+
+  try {
+    userLoginService.confirmNewPassword(req.body.user_name, req.body.verification_code, req.body.password, (err, result) => {
+      if (err) {
+        console.log('error confirm forgot password:\n'+err);
+        res.send(err);
+      } else {
+        res.send('success');
+      }
+    });    
+  } catch (error) {
+    console.log("error confirm forgot passworddd: " + JSON.stringify(error));
+    res.send('Unknown error confirming forgot password flow. Please try again later.'); 
+  }
+});
+
+
 //-------login --------
 app.post('/login', (req, res) => {
   try {
@@ -693,6 +742,8 @@ app.post('/get_user_params', function (req, res) {
   }
   reactor.registerEvent('got_user_params');
   reactor.addEventListener('got_user_params', function () {
+    const email = params.find(x => x.Name === 'email').Value;
+    params.push({Name: 'program_admin', Value: email === 'tehilaj97@gmail.com'});
     res.send(params);
   });
 
@@ -779,7 +830,7 @@ app.post('/OrgPage/fetch-feed-comments/:feed_type/:feed_type_id',
 // app.post('/fetch-feed-comments',
 function (req, res, next) {
   console.log('in fetch feed comments: '+JSON.stringify(req.params));
-    const sqlQuery = `SELECT * FROM Feed_comments WHERE feed_type="${req.params.feed_type}" and feed_type_id=${req.params.feed_type_id}`
+    const sqlQuery = `SELECT * FROM Feed_comments WHERE feed_type=${inQutationMarks(req.params.feed_type)} and feed_type_id=${req.params.feed_type_id}`
     // const sqlQuery = `SELECT * FROM Feed_comments WHERE feed_type="org" and feed_type_id=2`
     console.log(sqlQuery)
     db.query(sqlQuery, (err, result, fields) => {
@@ -797,7 +848,7 @@ function (req, res, next) {
 app.post('/add-comment', (req, res, next) => {
 
   const qAddComment = `INSERT INTO Feed_comments (feed_type, feed_type_id, user_id, date, comment_text, likes) VALUES
-  ("${req.body.feed_type}",${req.body.feed_type_id}, "${req.body.user_id}", "${req.body.date}", "${req.body.comment_text}", ${req.body.likes});` 
+  (${inQutationMarks(req.body.feed_type)},${req.body.feed_type_id}, ${inQutationMarks(req.body.user_id)}, ${inQutationMarks(req.body.date)}, ${inQutationMarks(req.body.comment_text)}, ${req.body.likes});` 
   console.log('in add-comment in server. query: '+ qAddComment)
 try{
   db.query(qAddComment, (err, result, fields) => {
@@ -842,7 +893,7 @@ catch (err) {
 //---findDuser ---
 app.post('/findDuser', (req, res) => {
   console.log(req.body.userD)
-  let query = `SELECT * FROM Users WHERE user_name="${req.body.userD}"`
+  let query = `SELECT * FROM Users WHERE user_name=${inQutationMarks(req.body.userD)}`
   console.log("req body", req.body)
   console.log(query)
   db.query(query, (err, result, fields) => {
@@ -860,8 +911,8 @@ app.post('/findDuser', (req, res) => {
 //------------org admin of------------------
 app.get('/:userId/org-admin-of',
   function (req, res, next) {
-    //const sqlQuery = `SELECT * FROM organizations WHERE org_admin_id = '${req.params.userId}'`;
-    const sqlQuery = `SELECT * FROM organizations WHERE org_admin_id='${req.params.userId}' AND approved=1`;
+    //const sqlQuery = `SELECT * FROM organizations WHERE org_admin_id = ${inQutationMarks(req.params.userId}'`;
+    const sqlQuery = `SELECT * FROM organizations WHERE org_admin_id=${inQutationMarks(req.params.userId)} AND approved=1`;
     console.log(sqlQuery);
 
     db.query(sqlQuery, (err, result, fields) => {
@@ -956,9 +1007,9 @@ app.post('/pay-orgs', (req, res) => {
 //-------------------org donations to display---------------
 app.post('/get-org-donations-to-display', (req, res) => {
   const [beginningOfCurrent, beginningOfPrev] = paymentsUtil.beginningOfCurrAndPrevMonth();
-  const condition = `WHERE org_id=${req.body.org_id} AND d_date < "${beginningOfCurrent}"`;
+  const condition = `WHERE org_id=${req.body.org_id} AND d_date < ${inQutationMarks(beginningOfCurrent)}`;
   const sqlDioTable = `SELECT user_id, referred_by, monthly_donation as sum_donation, d_date, d_title, d_description, "Monthly" as monthly_oneTime FROM donors_in_org ${condition} AND status_id=1`;
-  const sqlOneTimeTable = `SELECT user_id, referred_by, sum_donation, d_date, '' as d_title, '' as d_description, "One Time" as monthly_oneTime FROM one_time_donations ${condition} AND d_date >= "${beginningOfPrev}"`;
+  const sqlOneTimeTable = `SELECT user_id, referred_by, sum_donation, d_date, '' as d_title, '' as d_description, "One Time" as monthly_oneTime FROM one_time_donations ${condition} AND d_date >= ${inQutationMarks(beginningOfPrev)}`;
   const sqlQuery = `${sqlDioTable} UNION  ${sqlOneTimeTable}`;
   console.log(sqlQuery);
 
@@ -1000,7 +1051,8 @@ app.post('/get-all-org-data', (req, res) => {
         console.log('error getting all data: '+JSON.stringify(err))
         res.send('error')
       } else {
-        result[0].levels = statusCache.getOrgLevels(req.body.org_id);
+        result[0].org_id = req.body.org_id;
+        result[0].levels = statusCache.getOrgLevels(req.body.org_id) || [{level_num: 4, min_people: null, min_sum: null},{level_num: 3, min_people: null, min_sum: null},{level_num: 2, min_people: null, min_sum: null},{level_num: 1, min_people: null, min_sum: null}];
         res.send(result[0]);
       }
     });
@@ -1010,15 +1062,17 @@ app.post('/get-all-org-data', (req, res) => {
 app.post('/update-org-data', (req, res) => {
   const org = req.body.org;
   const condition = `WHERE org_id=${org.org_id}`;
-  const sqlOrgsTableQuery = `UPDATE organizations SET org_name='${org.org_name}', description='${org.description}', img_url='${org.img_url}', min_donation=${org.min_donation}, one_time_donation=${org.one_time_donation}, field_of_activity='${org.field_of_activity}' ${condition}`;
-  const sqlBankInfoTableQuery = `UPDATE bank_info SET bank_num=${org.bank_num}, branch=${org.branch}, account_num=${org.account_num}, account_owner='${org.account_owner}' ${condition}`;
-  const sqlAddressesTableQuery = `UPDATE addresses SET country='${org.country}', state='${org.state}', city='${org.city}', street='${org.street}', building=${org.building}, apartment=${org.apartment}, suite=${org.suite}, zip=${org.zip} ${condition}`;
-  const sqlLevelsTableQueries = org.levels && org.levels.reduce((acc, level) => `${acc}UPDATE levels SET level_name='${level.level_name}', min_people=${level.min_people}, min_sum=${level.min_sum} ${condition} AND level_num=${level.level_num};`, '');
-
-  dbUtil.callDB(db, `${sqlOrgsTableQuery};${sqlBankInfoTableQuery};${sqlAddressesTableQuery};${sqlLevelsTableQueries}`, (err, result) => {
+  const sqlOrgsTableQuery = `UPDATE organizations SET org_name=${inQutationMarks(org.org_name)}, description=${inQutationMarks(org.description)}, img_url=${inQutationMarks(org.img_url)}, min_donation=${org.min_donation}, one_time_donation=${org.one_time_donation}, field_of_activity=${inQutationMarks(org.field_of_activity)} ${condition}`;
+  const sqlBankInfoTableQuery = `DELETE FROM bank_info ${condition};INSERT INTO bank_info (org_id, bank_num, branch, account_num, account_owner) VALUES (${org.org_id}, ${org.bank_num}, ${org.branch}, ${org.account_num}, ${inQutationMarks(org.account_owner)})`;
+  const sqlAddressesTableQuery = `DELETE FROM addresses ${condition};INSERT INTO addresses (org_id, country, state, city, street, building, apartment, suite, zip ) VALUES (${org.org_id}, ${inQutationMarks(org.country)}, ${inQutationMarks(org.state)}, ${inQutationMarks(org.city)}, ${inQutationMarks(org.street)}, ${org.building}, ${org.apartment}, ${org.suite}, ${org.zip})`;
+  const sqlLevelsTableQueries = org.levels && org.levels.reduce((acc, level) => `${acc}DELETE FROM levels ${condition} AND level_num=${level.level_num}; INSERT INTO levels (org_id, level_num, level_name, min_people, min_sum) VALUES (${org.org_id}, ${level.level_num}, ${inQutationMarks(level.level_name)}, ${level.min_people}, ${level.min_sum});`, '');
+  
+  const query = `${sqlBankInfoTableQuery};${sqlOrgsTableQuery};${sqlAddressesTableQuery};${sqlLevelsTableQueries}`;
+  
+  dbUtil.callDB(db, query, (err, result) => {
     if (err) {
-      console.log('error updating org data: '+JSON.stringify(err));
-      console.log(`${sqlOrgsTableQuery};${sqlBankInfoTableQuery};${sqlAddressesTableQuery};${sqlLevelsTableQueries}`)
+      console.log('error updating org data: ' + JSON.stringify(err));
+      console.log(query);
       res.send('fail');
     } else {
       if (org.levels) {
@@ -1028,6 +1082,21 @@ app.post('/update-org-data', (req, res) => {
     }
   });
 });
+
+
+//------------------add prize------------------
+app.post('/add-prize', (req, res) => {
+  const gift = req.body.gift;
+  const sqlQuery = `INSERT INTO gifts (gift_name, gift_description, gift_pic, org_id, level_num, g_date, raffle) VALUES (${inQutationMarks(gift.gift_name)}, ${inQutationMarks(gift.gift_description)}, ${inQutationMarks(gift.gift_pic)}, ${gift.org_id}, ${gift.level_num}, ${inQutationMarks(gift.g_date)}, ${gift.raffle})`;
+  dbUtil.callDB(db, sqlQuery, (err, result) => {
+    if (!err) {
+      res.send('success');
+    } else {
+      console.log('\n\nerror adding prize:'+JSON.stringify(err));
+      res.send('fail');
+    }
+  });
+})
 
 
 //port for server

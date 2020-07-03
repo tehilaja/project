@@ -41,24 +41,16 @@ class App extends React.Component {
         this.renderPageBody = this.renderPageBody.bind(this);
     }
 
-    async get_is_program_admin() {
-        await (async () => {
-            const response = await axios.get(`${this.state.email}/is-program-admin`);
-            this.setState({ program_admin: response.data });
-        })();
-    }
-
     async get_is_org_admin(orgId) {
         await (async () => {
             const url = `${this.state.email}/is-org-admin/${orgId}`;
-            alert(url);
             const response = await axios.get(url);
             this.setState({ org_admin: response.data });
         })();
     }
 
     async run_necessary_guard_checks() {
-        await this.get_is_program_admin();
+        // await this.get_is_program_admin();
         
         const path = window.location.pathname.split('/');
         switch (path[1].toLowerCase()) {
@@ -93,6 +85,7 @@ class App extends React.Component {
                 const email = params.find(x => x.Name === 'email').Value;
                 //phone is not required
                 const phone = params.find(x => x.Name === 'phone_number') && params.find(x => x.Name === 'phone_number').Value;
+                const program_admin = params.find(x => x.Name === 'program_admin').Value;
 
                 this.setState({
                     loggedIn: true,
@@ -102,6 +95,7 @@ class App extends React.Component {
                     email: email,
                     phone: phone,
                     check_login_status: true,
+                    program_admin: program_admin,
                 });
 
                 await this.run_necessary_guard_checks();
@@ -126,7 +120,7 @@ class App extends React.Component {
                     }
                 case "/userpage":
                     {
-                    return [ActivePage.MyProfile, <UserPage data={this.state}/>];
+                        return [ActivePage.MyProfile, this.guardRoute('loggedIn', (<UserPage data={this.state}/>), '/')];
                     }
                 case `/orgpage/${spliting[2]}`:
                     {

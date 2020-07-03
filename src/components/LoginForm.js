@@ -1,20 +1,25 @@
 import React from 'react';
 import axios from "axios";
 import { Button, Dimmer, Divider, Form, Grid, Loader, Segment } from 'semantic-ui-react'
-import { Redirect } from "react-router-dom";
+import UserRegistrationForm from './UserRegistrationForm.js';
+import ForgotPasswordForm from './ForgotPasswordForm.js';
 
-import UserRegistrationForm from './UserRegistrationForm.js'
+class Status {
+    static Regular = 1;
+    static Loading = 2;
+    static ShowUserRegister = 3;
+    static ShowForgotPassword = 4;
+}
+
 class LoginForm extends React.Component {
     constructor(props) {
         super(props)
-        this.state =
-            { 
+        this.state = { 
                 userName: "",
                 pswd: "",
                 isAdmin: false,
                 loggedIn: false,
-                showUserRegister: false,
-                loading: false
+                status: Status.Regular,
             }
         this.handleChange = this.handleChange.bind(this)
     }
@@ -44,7 +49,7 @@ class LoginForm extends React.Component {
             return;
         }
         //login user to server
-        this.setState({loading: true});
+        this.setState({status: Status.Loading});
         (async () => {
             const response = await axios.post(
                 '/login',
@@ -60,19 +65,21 @@ class LoginForm extends React.Component {
                 // this.props.record(this.state.userName)
             } else {
                 alert(response.data);
-                this.setState({loading: false});
+                this.setState({status: Status.Regular});
             }
         })();
     }
 
-    render() {
+    loadingRender() {
         return (
-            <div>
-            {this.state.loading && <Dimmer active inverted>
-                        <Loader size='massive' />
-                    </Dimmer>}
-            {!this.state.loading && <div>
-            {!this.state.showUserRegister && <Segment placeholder>
+            <Dimmer active inverted>
+                <Loader size='massive' />
+            </Dimmer>);
+    }
+
+    regularRender() {
+        return (
+            <Segment placeholder>
                 <Grid columns={2} relaxed='very' stackable>
                     <Grid.Column>
                         <Form onSubmit={this.handleSubmit.bind(this)}>
@@ -98,19 +105,49 @@ class LoginForm extends React.Component {
                     </Grid.Column>
 
                     <Grid.Column verticalAlign='middle'>
-                        <Button content='Sign up' icon='signup' size='big' onClick={() => this.setState(prevState => {
-						return {
-								showUserRegister: !prevState.showUserRegister
-							}})}/>
+                        <Grid columns={2} relaxed='very' stackable>
+                            <Grid.Column verticalAlign='middle'>
+                                <Button content='Sign Up' icon='signup' size='big' onClick={() => this.setState({ status: Status.ShowUserRegister })} />
+
+                            </Grid.Column>
+                            <Grid.Column verticalAlign='middle'>
+                                <Button content='Forgot Password' icon='signup' size='big' onClick={() => this.setState({ status: Status.ShowForgotPassword })} />
+                            </Grid.Column>
+                            <Divider vertical>Or</Divider><Divider vertical>Or</Divider>
+                        </Grid>
+                        {/* <Button content='Sign Up' icon='signup' size='big' onClick={() => this.setState({ status: Status.ShowUserRegister })} /> */}
                     </Grid.Column>
+
+                    {/* <Grid.Column verticalAlign='middle'>
+                        <Button content='Forgot Password' icon='signup' size='big' onClick={() => this.setState({status: Status.ShowForgotPassword})} />
+                    </Grid.Column> */}
                 </Grid>
 
-                <Divider vertical>Or</Divider>
-            </Segment>}
-            {this.state.showUserRegister && <UserRegistrationForm />}
-            </div>}
+                <Divider vertical>Or</Divider><Divider vertical>Or</Divider>
+            </Segment>
+        );
+    }
+
+    showUserRegisterRender() {
+        return (<UserRegistrationForm />);
+    }
+
+    showForgotPasswordRender() {
+        return (<ForgotPasswordForm/>);
+    }
+
+    render() {
+        return (
+            <div>
+                {
+                    this.state.status === Status.Loading && this.loadingRender() ||
+                    this.state.status === Status.Regular && this.regularRender() ||
+                    this.state.status === Status.ShowUserRegister && this.showUserRegisterRender() ||
+                    this.state.status === Status.ShowForgotPassword && this.showForgotPasswordRender() ||
+                    null
+                }
             </div>
-        )
+        );
     }
 }
 

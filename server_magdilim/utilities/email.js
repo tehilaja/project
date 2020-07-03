@@ -27,8 +27,8 @@ const sendEmail = (mailTo, cc, bcc, subject, body, attachments, callback) => {
     };
 
     transporter.sendMail(mailOptions, function (error, info) {
-        callback(error, info);        
-    });
+        if (callback) callback(error, info);
+        });
 }
 
 exports.methods = {
