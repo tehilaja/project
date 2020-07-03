@@ -22,15 +22,18 @@ class giftCard extends React.Component{
     render(){
         return(
             // <Segment>
-            <div>
-            <Card style ={{border: '2px solid #DC143C', height:'300px'}} >
-            <Label color = 'blue' attached='top'>{this.props.gifts.l_name}</Label>
+            <div style ={{marging: '0.8em' ,padding: '0.8em'}}>
+            <Card style ={{ height:'500', mergin:'1em'}} >
+            {/* border: '2px solid #DC143C' */}
+                <Label color = 'blue' attached='top'>{this.props.gifts.l_name}</Label>
+                <Image src='https://react.semantic-ui.com/images/avatar/large/daniel.jpg' wrapped ui={true} />
 
-            
                 <Card.Content header={this.props.gifts.gift_name} />
-                <Card.Content description={this.props.gifts.gift_description} />
+                {/* <Card.Content description={this.props.gifts.gift_description} /> */}
                 <Card.Content extra>
-                <Icon name='user' />4 Friends
+                    description: {this.props.gifts.gift_description}
+                    <br/>
+                    <Icon name='user' />4 Friends
                 </Card.Content>
             </Card>
        

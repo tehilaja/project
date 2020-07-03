@@ -80,6 +80,18 @@ INSERT INTO Feed_comments (feed_type, feed_type_id, user_id, date, comment_text,
 ('org', 3, 'rachelletikva@gmail.com', "2020-08-23", "they are life changing:) ", 2),
 ('org', 1, 'Avital05484@gmail.com', "2020-08-23", "common! get your friends!", 2)
 
+-- ~~~~~~~~~~~ fields_of_activity ~~~~~~~~~~``
+ -- select * from fields_of_activity
+ 
+INSERT INTO fields_of_activity(field_id,field_name) VALUES
+(1,"הצלת חיים"),(2,"השאלת ציוד"),(3,"בריאות -כללי"),(4,"טיפול באסונות"),(5,"עולם התורה"),(6,"מימון"),(7,"אמנים"),(8,"עזרה לנזקקים"),(9,"חלוקת מזון");
+
+-- select * from org_field_of_activity
+INSERT INTO org_field_of_activity(field_id,org_id) values(1,1),(3,1),(4,1),(2,2),(3,2),(1,2),(2,3),(3,3);
+
+
+
+
 -- ~~~~~~~~~~~~~~~~ gifts & level ~~~~~~~~~~~~~~~~~~~
  
  -- ~~~ whith a  gifts_levels table

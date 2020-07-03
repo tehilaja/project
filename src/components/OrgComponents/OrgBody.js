@@ -514,7 +514,7 @@ class OrgBody extends React.Component {
                         </Grid.Row>
 
                         <Grid.Row>
-                            <Tab style={{ padding: '0.2em 1.5em' ,width:TAB_PICSEL}} defaultActiveIndex={3} menu={{ color:'teal' ,vertical: true, inverted: true, attached: true, tabular: true, pointing: true}} panes={panes} />
+                            <Tab style={{ padding: '0.2em 1.5em' ,width:TAB_PICSEL}} defaultActiveIndex={2} menu={{ color:'teal' ,vertical: true, inverted: true, attached: true, tabular: true, pointing: true}} panes={panes} />
                         </Grid.Row>
                         
                     </Grid>

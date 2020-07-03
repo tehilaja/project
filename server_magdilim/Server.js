@@ -182,6 +182,63 @@ app.get('/lastDonation', (req, res, next) => {
 });
 
 // ~~~ 30.05 ~~
+app.get('/get_field_of_activity', (req, res, next) => {
+  try {
+    // TODO : try the db multi connection problem
+    // conectDb();
+    console.log("in //get_field_of_activity")
+    const q_field_name = 
+      `select field_name from fields_of_activity`
+    console.log("query: \n" + q_field_name);
+    db.query(q_field_name, (err, result, fields) => {
+      if (err) throw err;
+      if (result.length == 0)
+        res.send("no data")
+      else {
+        console.log("res:\n " + JSON.stringify(result));
+        // console.log(result[0])
+        // console.log(result[0].min_donation)
+
+
+        // res.send(JSON.stringify(result));
+        res.send(result);
+      }
+    });
+  }
+  catch (err) {
+    console.log("error " + err.code);
+    res.end("err", err.code);
+  }
+
+});
+app.get('/org_field_of_activity', (req, res, next) => {
+  try {
+    // TODO : try the db multi connection problem
+    // conectDb();
+    console.log("in //org_field_of_activity")
+    const q_field_name = 
+      `select distinct f.field_name, o.org_id from fields_of_activity f
+      inner join  org_field_of_activity o on o.field_id = f.field_id`
+    console.log("query: \n" + q_field_name);
+    db.query(q_field_name, (err, result, fields) => {
+      if (err) throw err;
+      if (result.length == 0)
+        res.send("no data")
+      else {
+        console.log("res:\n " + JSON.stringify(result));
+        res.send(result);
+      }
+    });
+  }
+  catch (err) {
+    console.log("error " + err.code);
+    res.end("err", err.code);
+  }
+
+});
+
+
+
 app.get(`/orgPage/get_org_field_of_activity/:orgId`, (req, res, next) => {
   try {
     // TODO : try the db multi connection problem

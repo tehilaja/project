@@ -11,9 +11,13 @@ import 'react-multi-carousel/lib/styles.css';
 import ImageGallery from 'react-image-gallery';
 import "react-image-gallery/styles/css/image-gallery.css";
 
-import {Grid, Header, Icon, Segment} from 'semantic-ui-react';
+import {Grid, Header, Icon, Segment,Search,Dropdown} from 'semantic-ui-react';
 
 const s3Util = require('../../utilities/upload').methods;
+
+const orgOptions = [
+  { key: 'all organizaition',value: 'all organizaition', text: 'all organizaition' }
+];
 
 
 class OrgSearch extends React.Component{
@@ -26,29 +30,116 @@ class OrgSearch extends React.Component{
             routeMain: false,
             check_login_status: false,
             images: [],
-            orgs: []
+            orgs: [],
+            filterOrg:[],
+            org_fieldOfActivity: [],
+            fieldOfActivity: [] // the info of last donation
+
     }
 
     this.getImages();
+    this.filterChooseOrg = this.filterChooseOrg.bind(this);
+    this.selectLevel = this.selectLevel.bind(this);
+
+    
 }
   
 
-componentDidMount () {
+componentDidMount () 
+{
 
   // ~~~~~~~~~~ get (select *) fetching organizations from Server:
-  let self = this;
-      fetch('/data', {
-          method: 'GET'
-      }).then(function(response) {
-          if (response.status >= 400) {
-              throw new Error("Bad response from server");
+
+  this.state.orgs.length = 0;
+  (async () => {
+    const response = await axios.get(`/data`);
+      // alert("gift:\n "+ JSON.stringify(response.data))
+      this.setState({orgs: response.data})
+      this.setState({filterOrg: this.state.orgs})
+      
+     
+  })();
+
+
+  //  ---- org_field_of_activity
+  axios.get('/org_field_of_activity').then(res => 
+		{
+			if (res.status >= 400) {
+				throw new Error("Bad response from server");}
+				return res
+			}).then(respones=>
+				{
+					// alert("lastDonation \n" + JSON.stringify(respones.data))
+					if(respones.data==="no data") //TODO: if no last donation///
+            alert(respones.data)
+          else{ 
+            // alert("fields: \n"+ JSON.stringify(respones.data))
+            this.setState({org_fieldOfActivity: respones.data});
           }
-          return response.json();
-      }).then(function(data) {
-          self.setState({orgs: data});
-      }).catch(err => {
-      console.log('caught it!',err);
-  })
+		}).catch(error=> {
+			alert(error);
+    })
+    
+  //--get_field_of_activity
+  axios.get('/get_field_of_activity').then(res => 
+		{
+			if (res.status >= 400) {
+				throw new Error("Bad response from server");}
+				return res
+			}).then(respones=>
+				{
+					// alert("lastDonation \n" + JSON.stringify(respones.data))
+					if(respones.data==="no data") //TODO: if no last donation///
+            alert(respones.data)
+          else{ 
+            this.setState({fieldOfActivity: respones.data});
+            // alert(" donaition: \n" + JSON.stringify(respones.data))
+            respones.data.forEach(function(field){
+              let giftobj ={};
+              giftobj["key"]=field.field_name;
+              giftobj["value"]=field.field_name;
+              giftobj["text"]=field.field_name;
+              orgOptions.push(giftobj);
+            })
+          }
+		}).catch(error=> {
+			// alert(error);
+		})
+
+}
+selectLevel (e, { value }) {
+  this.setState({ selectedOptionLevel: value })
+  this.filterChooseOrg(value)
+
+}
+
+  // filter a chosen level
+  filterChooseOrg(filter){
+    // let listOrg = []
+    let obj = [];
+    if (filter == 'all organizaition'){
+      this.setState({filterOrg: this.state.orgs})
+        // alert("all : "+ this.state.giftShow.length)
+    }
+    else
+    {
+      // TODO - the field and org
+      let indexOrg;
+      this.state.org_fieldOfActivity.forEach(orgf=>{ // find the org of this fields
+        if(orgf.field_name === filter){
+          indexOrg = this.state.orgs.findIndex(x => x.org_id === orgf.org_id);
+          obj.push(this.state.orgs[indexOrg])
+        }
+      
+          // indexOrg = this.state.orgs.org_id === org.org_id
+      })
+      // this.state.orgs.map(element =>{
+      //       if(element.org_id === filter)
+      //           obj.push(element)
+      //   })
+        this.setState({filterOrg: obj})
+        // alert("gifts: \n" + JSON.stringify(this.state.showGifts))
+    }
 
 }
   
@@ -71,6 +162,9 @@ componentDidMount () {
 
   
   render() {
+
+    const { valueLevel } = this.state // level
+
     const responsive = {
       superLargeDesktop: {
         // the naming can be any, depends on you.
@@ -92,7 +186,7 @@ componentDidMount () {
       };
   
     
-    const orgComponents = this.state.orgs.map(org =>{
+    const orgComponents = this.state.filterOrg.map(org =>{
       return(
         <div style ={{display: 'flex', flexDirection: 'row', padding: '0.5em', margin:'0.5em'}}>
         <OrgCard org={org}
@@ -102,7 +196,38 @@ componentDidMount () {
 
     return(
       <div>
-                <ImageGallery items={this.state.images} />
+        {/* <div>
+        <Search
+            // loading={isLoading}
+            // onResultSelect={this.handleResultSelect}
+            // onSearchChange={_.debounce(this.handleSearchChange, 500, {
+            //   leading: true,
+            // })}
+            // results={results}
+            // value={value}
+            // resultRenderer={resultRenderer}
+            // {...this.props}
+          />
+        </div> */}
+        <div style = {{marginLeft:'20em', marginTop: '3em'}}>
+        <Dropdown
+          // fluid
+          selectio
+          // selectOnNavigation 
+          onChange={this.selectLevel}
+          options={orgOptions}
+          placeholder='Choose an option'
+          selection
+          value={valueLevel}
+      />
+        </div>
+        <div style ={{display: 'flex', flexDirection: 'row', padding: '1em', margin:'1em'}}> 
+          {orgComponents}
+        </div>
+
+
+
+{/*                 
                 <Segment color='red'>
 									<Header as='h2' icon='globe' content='Donate to Organization' />
 									<Carousel 
@@ -124,7 +249,9 @@ componentDidMount () {
 									itemClass="carousel-item-padding-40-px">
 										{orgComponents}
 									</Carousel>
-								</Segment>
+								</Segment> */}
+                <br/>
+                <br/>
                 <Segment>
                 <Grid celled='internally' columns='equal' stackable>
                     <Grid.Row textAlign='center'>
