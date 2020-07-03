@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Card, Icon, Image,Segment ,Label,Grid} from 'semantic-ui-react'
 
+const moment = require('moment');
+
 class GiftCard extends React.Component{
     constructor(props){
         super(props)
@@ -26,7 +28,6 @@ class GiftCard extends React.Component{
                         <Card.Header>
                         {`Level entered into raffle: ${this.state.gift.level_num}`}
                         </Card.Header>
-                        <Card.Meta>1</Card.Meta>
                         <Card.Description>
                             {this.props.gifts.gift_description}
                         </Card.Description>
@@ -43,8 +44,7 @@ class GiftCard extends React.Component{
 
                             <br></br>
                             <Icon name = 'time'/>
-                            Raffle will take place on: {this.state.gift.g_date}
-
+                            {`Raffle will take place ${moment(this.state.gift.g_date).fromNow()}`}
                             <br></br>
                     </Card.Content>
                 </Card>
