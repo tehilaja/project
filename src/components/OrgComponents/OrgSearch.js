@@ -11,7 +11,7 @@ import 'react-multi-carousel/lib/styles.css';
 import ImageGallery from 'react-image-gallery';
 import "react-image-gallery/styles/css/image-gallery.css";
 
-import {Grid, Header, Icon, Segment,Search,Dropdown} from 'semantic-ui-react';
+import {Grid, Header, Icon, Segment,Search,Dropdown, Label} from 'semantic-ui-react';
 
 const s3Util = require('../../utilities/upload').methods;
 
@@ -209,8 +209,14 @@ selectLevel (e, { value }) {
             // {...this.props}
           />
         </div> */}
-        <div style = {{marginLeft:'20em', marginTop: '3em'}}>
-        <Dropdown
+        <div style = {{marginLeft:'20em', marginTop: '4em', marginBottom: '2em'}}>
+        <div style ={{marginLeft:'15'}}>
+          <Header style ={{marginLeft:'5em'}} as='h2' content='Organizaitions' />
+          <br/>
+          <lable>Click on a link to become a supporter and reach out to your family and friends.</lable>
+        </div >
+        <br/>
+        <Dropdown style ={{marginTop:'2em'}}
           // fluid
           selectio
           // selectOnNavigation 
