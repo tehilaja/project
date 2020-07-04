@@ -104,7 +104,7 @@ class ApproveOrgs extends React.Component {
           Approve
           </Table.HeaderCell>
           <Table.HeaderCell>
-            <Icon color='red' name='x' size='small' />
+            <Icon color='olive' name='x' size='small' />
           Disapprove
           </Table.HeaderCell>
           <Table.HeaderCell>Organization Name</Table.HeaderCell>

@@ -193,15 +193,13 @@ getThreeOrgs(){
 
 			const orgComponents = this.state.organizations.map(org =>{
 				return(
-					<div style ={{display: 'flex', flexDirection: 'row', padding: '0.5em', margin:'0.5em'}}>
-					<OrgCard org={org}
-					/>
-					</div>)
+					<OrgCard org={org}/>
+					)
 			})
 
 			const winnerComponents = this.state.winners.map(winner =>{
 				return(
-					<div style ={{display: 'flex', flexDirection: 'row', padding: '0.5em', margin:'0.5em', color:'#FF8C00'}}>
+					<div style ={{display: 'flex', flexDirection: 'row', padding: '0.5em', margin:'0.5em', color:'olive'}}>
 					<WinnerCard gift_pic={winner.girft_pic} gift_name={winner.gift_name} org_id={winner.org_id} level_num={winner.level_num} gift_desription={winner.gift_description} winner={winner.winner}
 					/>
 					{/* <WinnerCard gift_pic="" gift_name="gift_name" org_id={1} level_num={2} gift_desription="description" winner="winner"
@@ -246,17 +244,15 @@ getThreeOrgs(){
 		
 
 		return(
-			<div>
-				<Segment style={{ padding: '5em 0em', width: '100%' }} vertical >
-					<Grid container  verticalAlign='middle'>
-						<Grid.Row>
-						<Grid.Column width={12}>
-								{/*displaying organizations on home page:*/}
-								<Segment color='red'>
-									<Header as='h2' icon='globe' content='Donate to an Organization' />
-									<div style ={{marginLeft:'15'}}>
-										<br/>
-									</div >
+			<Segment>
+				<Segment style={{ padding: '5em 0em', width: '100%', background:'#F5F5F5', textAlign:'center'}} vertical textAlign>
+					<Grid container verticalAlign='middle'>
+						<Grid.Row >
+							<Grid.Column>
+							{/*displaying organizations on home page:*/}
+							<Segment color='olive' textAlign='center'>
+							{/* <Grid.Column> */}
+									<Header color='olive' as='h2' icon='globe' content='Donate to an Organization' />
 									<Carousel 
 									swipeable={true}
 									draggable={true}
@@ -275,24 +271,40 @@ getThreeOrgs(){
 									dotListClass="custom-dot-list-style"
 									itemClass="carousel-item-padding-40-px">
 										{orgComponents}
-									</Carousel>
-								</Segment>
-							</Grid.Column>
-							<Grid.Column floated='center' textAlign='center'>
+									</Carousel>	
+							{/* </Grid.Column> */}
+							{/* <Grid.Column floated='center' textAlign='center'>
 								<Popup
 								inverted
 								trigger={<Icon name='heart' color='red' size='huge' circular />}
 								content='Click on an organization to donate!'
 								position='right center'
-								/>
-							</Grid.Column>
-							
+								/> 
+							</Grid.Column>*/}
+
+{/* **************************************** */}
+							{/* <Grid.Column floated='right'>
+							<Label as='a' color='olive' ribbon='right'>
+						Add Your Organization Now!
+						</Label>
+							<Image bordered rounded size='large' src='https://i.insider.com/5ab2a71c5851aebb008b46da?' />
+										{this.state.loggedIn && <Button primary size='huge' onClick ={() => this.setState(prevState => {
+								return {
+										routerCreateOrgPage: !prevState.routerCreateOrgPage
+									}})}>
+								Get Started
+								<Icon name='right arrow' />
+							</Button>}
+							{!this.state.loggedIn && <Label>Login or Sign Up to build your own platform!</Label>}
+						</Grid.Column> */}
+						</Segment>
+						</Grid.Column>
 						</Grid.Row>
 						{/* Showing last prize winners */}
 						<Grid.Row>
-						<Grid.Column width={10}>
-						<Segment color='orange'>
-									<Header as='h2' icon='gift' content='Winners' />
+						<Grid.Column>
+						<Segment color='olive'>
+									<Header color='olive' as='h2' icon='gift' content='Recent Winners' />
 									{/* <WinnerCard gift_pic="" gift_name="gift_name" org_id={1} level_num={2} gift_desription="description" winner="winner"
 					/> */}
 									<Carousel 
@@ -319,9 +331,9 @@ getThreeOrgs(){
 						</Grid.Row>
 						{/*~~~~~~~~~~~  last donation */}
 						<Grid.Row>
-							<Grid.Column width={10}>
-							<Segment color='purple'>
-									<Header as='h2' icon='time' content='Recent Donations' />
+							<Grid.Column>
+							<Segment color='olive'>
+									<Header color='olive' as='h2' icon='time' content='Recent Donations' />
 									<Carousel 
 									swipeable={true}
 									draggable={true}
@@ -343,26 +355,11 @@ getThreeOrgs(){
 									</Carousel>
 									</Segment>
 							</Grid.Column>
-							<Grid.Column floated='right' width={6}>
-							
-							<Label as='a' color='red' tag>
-						Create Your Own Platform!
-						</Label>
-							<Image bordered rounded size='large' src='https://i.insider.com/5ab2a71c5851aebb008b46da?width=3100&format=jpeg&auto=webp' />
-							{this.state.loggedIn && <Button primary size='huge' onClick ={() => this.setState(prevState => {
-								return {
-										routerCreateOrgPage: !prevState.routerCreateOrgPage
-									}})}>
-								Get Started
-								<Icon name='right arrow' />
-							</Button>}
-							{!this.state.loggedIn && <Label>Login or Sign Up to build your own platform!</Label>}
-						</Grid.Column>
 						</Grid.Row >
 					</Grid>
 				</Segment>
 					
-				<Segment style={{ padding: '0em' }} vertical color='pink'>
+				<Segment style={{ padding: '0em' }} vertical color='olive'>
 					<Grid celled='internally' columns='equal' stackable>
 						<Grid.Row textAlign='center'>
 						<Grid.Column style={{ paddingBottom: '5em', paddingTop: '5em' }}>
@@ -392,7 +389,7 @@ getThreeOrgs(){
 					horizontal
 					style={{ margin: '3em 0em', textTransform: 'uppercase' }}
 					>
-					<a href='#'>
+					<a href='#' style={{ color:'#9ACD32'}}>
 					<Icon size='big' name='globe' />
 						Create a Platform
 					</a>
@@ -432,7 +429,7 @@ getThreeOrgs(){
 					{!this.state.loggedIn && <p style={{ fontSize: '1.33em' }}>
 					Please Login or Sign Up to send a request to build a platform.
 					</p>}
-					{this.state.loggedIn && <Button as='a' size='large'
+					{this.state.loggedIn && <Button as='a' size='large' color='olive'
 					onClick ={() => this.setState(prevState => {
 						return {
 								routerCreateOrgPage: !prevState.routerCreateOrgPage
@@ -441,11 +438,8 @@ getThreeOrgs(){
 					Get Approved To Create Platform
 					</Button>}
 				</Container>
-			</Segment>
-			<div>
-			</div>
-			
-		</div>
+			</Segment>	
+		</Segment>	
 		)
 	}
 

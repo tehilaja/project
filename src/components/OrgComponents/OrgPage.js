@@ -93,7 +93,7 @@ class OrgPage extends React.Component{
 	render() {
 		if (this.state.orgDetails == null || this.state.org_field_of_activity == null)
 			return(
-			<Segment>
+			<Segment style={{ padding: '5em 0em', width: '100%', background:'#F5F5F5', textAlign:'center'}}>
 				<Dimmer active  inverted>
 				<Loader size='massive'>Loading</Loader>
 				</Dimmer>

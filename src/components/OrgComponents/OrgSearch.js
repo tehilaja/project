@@ -16,7 +16,7 @@ import {Grid, Header, Icon, Segment,Search,Dropdown, Label} from 'semantic-ui-re
 const s3Util = require('../../utilities/upload').methods;
 
 const orgOptions = [
-  { key: 'all organizaition',value: 'all organizaition', text: 'all organizaition' }
+  { key: 'all organization',value: 'all organization', text: 'all organization' }
 ];
 
 
@@ -117,7 +117,7 @@ selectLevel (e, { value }) {
   filterChooseOrg(filter){
     // let listOrg = []
     let obj = [];
-    if (filter == 'all organizaition'){
+    if (filter == 'all organization'){
       this.setState({filterOrg: this.state.orgs})
         // alert("all : "+ this.state.giftShow.length)
     }
@@ -195,26 +195,15 @@ selectLevel (e, { value }) {
     })
 
     return(
-      <div>
-        {/* <div>
-        <Search
-            // loading={isLoading}
-            // onResultSelect={this.handleResultSelect}
-            // onSearchChange={_.debounce(this.handleSearchChange, 500, {
-            //   leading: true,
-            // })}
-            // results={results}
-            // value={value}
-            // resultRenderer={resultRenderer}
-            // {...this.props}
-          />
-        </div> */}
-        <div style = {{marginLeft:'20em', marginTop: '4em', marginBottom: '2em'}}>
-        <div style ={{marginLeft:'15'}}>
-          <Header style ={{marginLeft:'5em'}} as='h2' content='Organizaitions' />
+      <Segment style={{ padding: '5em 0em', width: '100%', background:'#F5F5F5', textAlign:'center'}}>
+        <ImageGallery items={this.state.images} />
+        <Segment textAlign='center'>
+        <Label labelPosition='left' as='a' color='olive' ribbon left>
+            Search Through Magdilim Organizations!
+          </Label>
+          <Header  as='h2' content='Organizations' />
           <br/>
-          <lable>Click on a link to become a supporter and reach out to your family and friends.</lable>
-        </div >
+          <lable>Search Through our Organization</lable>
         <br/>
         <Dropdown style ={{marginTop:'2em'}}
           // fluid
@@ -226,39 +215,13 @@ selectLevel (e, { value }) {
           selection
           value={valueLevel}
       />
-        </div>
+        <Header>Click on an Organization</Header>
         <div style ={{display: 'flex', flexDirection: 'row', padding: '1em', margin:'1em'}}> 
-          {orgComponents}
+        {orgComponents}
         </div>
-
-
-
-{/*                 
-                <Segment color='red'>
-									<Header as='h2' icon='globe' content='Donate to Organization' />
-									<Carousel 
-									swipeable={true}
-									draggable={true}
-									showDots={true}
-									responsive={responsive}
-									ssr={true} // means to render carousel on server-side.
-									infinite={true}
-									autoPlay={this.props.deviceType !== "mobile" ? true : false}
-									autoPlaySpeed={2000}
-									keyBoardControl={true}
-									// customTransition="all .5"
-									transitionDuration={500}
-									containerClass="carousel-container"
-									removeArrowOnDeviceType={["tablet", "mobile"]}
-									deviceType={this.props.deviceType}
-									dotListClass="custom-dot-list-style"
-									itemClass="carousel-item-padding-40-px">
-										{orgComponents}
-									</Carousel>
-								</Segment> */}
                 <br/>
                 <br/>
-                <Segment>
+                <Segment textAlign='left'>
                 <Grid celled='internally' columns='equal' stackable>
                     <Grid.Row textAlign='center'>
                     <Grid.Column style={{ paddingBottom: '5em', paddingTop: '5em' }}>
@@ -280,7 +243,8 @@ selectLevel (e, { value }) {
                     </Grid.Row>
                 </Grid>
                 </Segment>
-      </div>
+                </Segment>
+                </Segment>
     )
   } 
 }

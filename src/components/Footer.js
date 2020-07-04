@@ -43,23 +43,22 @@ class Footer extends React.Component {
 			  <Grid divided inverted stackable>
 				<Grid.Row>
 				  <Grid.Column width={3}>
-					<Header inverted as='h4' content='About' />
+					<Header inverted as='h4' content='About'>
+					<Icon size='massive' name='comment'></Icon>
+					</Header>
 					<List link inverted>
 					  <List.Item as='a' onClick ={() => this.setState(prevState => {
 				  return {
 						contact: !prevState.contact
 					}})}>Contact Us</List.Item>
-					  <List.Item as='a'>Religious Ceremonies</List.Item>
-					  <List.Item as='a'>Building Plans</List.Item>
 					</List>
 				  </Grid.Column>
 				  <Grid.Column width={3}>
 					<Header inverted as='h4' content='Services' />
 					<List link inverted>
-					<List.Item as='a'>Frequent Q{'&'}A</List.Item>
-					  <List.Item as='a'>How To Create Platform</List.Item>
-					  <List.Item as='a'>How To Create Account</List.Item>
-					  <List.Item as='a'>Get prizes</List.Item>
+					<List.Item as='a'>Create an Account</List.Item>
+					<List.Item as='a'>Create a Platform</List.Item>
+					<List.Item as='a'>Win Prizes</List.Item>
 					</List>
 				  </Grid.Column>
 				  <Grid.Column width={7}>

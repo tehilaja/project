@@ -23,7 +23,7 @@ class WinnerCard extends React.Component{
         } 
     //-----------return---------------------- 
       return( 
-        <Card style ={{margin: '1em', height:'300px', border: '2px solid #FF8C00'}} 
+        <Card style ={{margin: '1em', height:'300px', border: '2px solid #F5F5F5'}} 
           onClick = {() => this.setState(prevState => {
             return {
                 congratulate: !prevState.congratulate}

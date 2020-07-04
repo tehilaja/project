@@ -182,12 +182,12 @@ class UserPage extends React.Component {
         //-----------return------------------------------
         return (
             <div>
-                <Segment style={{ padding: '8em 0em' }} vertical>
+                <Segment style={{ padding: '5em 0em', width: '100%', background:'#F5F5F5'}} vertical>
                     <Grid container stackable verticalAlign='middle'>
                         <UserAvatar size={100} name={this.state.userName} />
                         <Grid.Row>
                             <Grid.Column width={15} padding={5}>
-                    <Segment color='red'>
+                    <Segment color='olive'>
 									<Header as='h2' icon='globe' content='Your Donations:' width='500px' />
 									<Carousel 
 									centerMode={true}
@@ -219,16 +219,6 @@ class UserPage extends React.Component {
                     </Header>}
 
                             </Grid.Column>
-                            {/* <Grid.Column floated='right' width={6}>
-                <Header as='h3' style={{ fontSize: '2em' }}>
-                    Create an online platform for ongoing donations
-                    </Header>
-                    <Image bordered rounded size='large' src='https://i.insider.com/5ab2a71c5851aebb008b46da?width=3100&format=jpeg&auto=webp' />
-                    <Button primary size='huge'>
-                        Get Started
-                        <Icon name='right arrow' />
-                    </Button>
-                </Grid.Column> */}
                         </Grid.Row>
                         <br />
                         <br />
@@ -242,9 +232,13 @@ class UserPage extends React.Component {
                     </Grid>
                     <br />
                     <br />
-
+                <Segment style={{ padding: '5em 0em', width: '100%', background:'#F5F5F5'}} textAlign='center' vertical>
+                    <Header as='h3' style={{ fontSize: '2em' }}>
+                        <Icon name='edit'/>
+                                    Your Organizations: Edit Here
+                    </Header>
                     {this.adminButtons()}
-
+                </Segment>
                 </Segment>
 
                 <Segment style={{ padding: '0em' }} vertical>
@@ -267,41 +261,12 @@ class UserPage extends React.Component {
                         </Grid.Row>
                     </Grid>
                 </Segment>
-                <Segment style={{ padding: '8em 0em' }} vertical>
+                <Segment style={{ padding: '8em 0em' , background:'#F5F5F5' }} vertical>
                     <Container text>
-                        <Header as='h3' style={{ fontSize: '2em' }}>
+                        <Header as='h3' style={{ fontSize: '2em'}}>
                             <Icon name='building' />
                             Build. Create. Inspire others.
                 </Header>
-                        {/* <p style={{ fontSize: '1.33em' }}>
-                            Instead of focusing on content creation and hard work, we have learned how to master the
-                            art of doing nothing by providing massive amounts of whitespace and generic content that
-                            can seem massive, monolithic and worth your attention.
-                </p>
-                        <Button as='a' size='large'>
-                            Read More
-                </Button>
-
-                        <Divider
-                            as='h4'
-                            className='header'
-                            horizontal
-                            style={{ margin: '3em 0em', textTransform: 'uppercase' }}
-                        >
-                            <a href='#'>Case Studies</a>
-                        </Divider>
-
-                        <Header as='h3' style={{ fontSize: '2em' }}>
-                            Did We Tell You About Our?
-                </Header>
-                        <p style={{ fontSize: '1.33em' }}>
-                            Yes I know you probably disregarded the earlier boasts as non-sequitur filler content, but
-                            it's really true. It took years of gene splicing and combinatory DNA research, but our
-                            bananas can really dance.
-                </p>
-                        <Button as='a' size='large'>
-                            I'm Still Quite Interested
-                </Button> */}
                     </Container>
                 </Segment>
             </div>
@@ -317,7 +282,7 @@ class UserPage extends React.Component {
         const onClickFunc = (org) => window.location.assign(`EditOrgPage/${org.org_id}`);
 
         return this.state.adminOfOrgs
-            .map(org => <Button onClick={() => onClickFunc(org)}>
+            .map(org => <Button color="olive" onClick={() => onClickFunc(org)}>
                  <Icon name='edit' />
                 edit {org.org_name} page</Button>);
     }

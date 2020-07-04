@@ -50,7 +50,7 @@ class OrgCard extends React.Component {
 
     //-----------return---------------------- 
     return (
-      <Card onClick={this.handleClick} style ={{margin: '5em', border: '2px solid #DC143C', height: '400px', width:'300px'}}>
+      <Card onClick={this.handleClick} style ={{margin: '5em', border: '2px solid #F5F5F5', height: '400px', width:'300px'}}>
         <Image src={this.state.imgUrl} wrapped ui={true} />
         <Card.Content>
           <Card.Header>{this.state.orgName}</Card.Header>
@@ -62,17 +62,17 @@ class OrgCard extends React.Component {
           </Card.Description>
         </Card.Content>
         <Card.Content extra floating='right'>
-          <Label as='a' color='orange'>
+          <Label as='a' color='olive'  tag floating>
           <Icon name='user' />
-                My Status: {this.state.myStatus} <br />
+                Status: {this.state.myStatus} <br />
           </Label>
-          <Label as='a' color='red' tag floating>
+          <Label as='a' color='olive'>
             <Icon name='users' />
                 People I Referred: {this.state.reffered} <br />
           </Label>
-          <Label as='a' color='teal'>
+          <Label as='a' color='grey'>
             <Icon name='dollar' />
-                Total Amount Collected: {this.state.collected}
+                {`Total: $${this.state.collected}`}
           </Label>
           <br />
           Click to view Downline

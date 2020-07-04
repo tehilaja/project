@@ -107,7 +107,7 @@ const HomepageHeading = ({ mobile }) => (
 		marginTop: '3em',
 		marginBottom:'8em'
 	}}>
-	<Step icon='user' title='Join' />
+	<Step color='olive' icon='user' title='Join'  />
 	<Step icon='money bill alternate outline' title='Donate' />
 	<Step icon='users' title='Reffer'/>
 	<Step icon='building' title='Build'/>
@@ -259,6 +259,7 @@ render() {
 		  {this.state.showLogin && <LoginForm record={this.handlerClick} data={{userName:this.state.userName, loggedIn:this.state.loggedIn}}/>}
         	{this.state.showUser && <UserRegistrationForm record={this.handlerClick} data={{userName:this.state.userName, loggedIn:this.state.loggedIn}}/>}
 		  <HomepageHeading />
+		  <Image style={{ zIndex: 0 }} fluid src='https://magdilim-organization-images.s3.amazonaws.com/organizations/1_dda2a240-be47-11ea-98f0-f1c63882d7a7_Presentation1.jpg'/>
 		</Segment> 
 	  </Visibility>
 

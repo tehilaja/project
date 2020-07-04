@@ -508,7 +508,7 @@ export default class Donate extends Component {
                                 color: 'teal',
                                 labelPosition: 'left',
                                 icon: 'eraser',
-                                content: 'restar to min sum',
+                                content: 'reset',
                                 widths: '2em',
                                 onClick: () => 
                                     { 

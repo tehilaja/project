@@ -319,7 +319,7 @@ class OrgBody extends React.Component {
         const panes = [
             {
             // ~~~~~~~~~~~~~~ about ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-              menuItem: { key:'about', icon: 'users', content: 'about as' },
+              menuItem: { key:'about', icon: 'users', content: 'About Us' },
               render: () => 
               <Tab.Pane > 
                    <div style={{paddingLeft: '2em'}}>
@@ -498,12 +498,12 @@ class OrgBody extends React.Component {
         return(
             <div className = "orgBody_css">
                     
-                <Segment style={{ }} vertical>
+                <Segment style={{ padding: '5em 0em', width: '100%', background:'#F5F5F5', textAlign:'center'}} vertical>
                     <Grid >
                     {/* <Grid style = {{margin: '2em, 0.7em'}}> */}
 
                         <Grid.Row>
-                            <header style ={{backgroundColor: '#008080' ,backgroundImage : this.props.data.orgDetails.img_url ,width:'100%',height: '100%' ,padding: '2em ,2em', margin: ''}}>
+                            <header style ={{backgroundColor: '#008080' ,backgroundImage : this.props.data.orgDetails.img_url ,width:'100%',height: '105%' ,padding: '5em ,5em', textAlign:'center'}}>
                             {/* background-color: green;0.3; */}
                                 <img  src={this.props.data.orgDetails.img_url} style = {{display: 'block',marginLeft: 'auto',marginRight: 'auto',width: '28%'}}/>
                                 
