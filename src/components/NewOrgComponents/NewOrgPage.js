@@ -1,39 +1,33 @@
 import React from 'react';
-import {Redirect} from "react-router-dom";
-
-
+import { v1 as uuid } from 'uuid';
 import axios from "axios";
-import { async } from "q";
+import {Button,Divider,Form,Grid,Header,Icon,Label,Segment,} from 'semantic-ui-react';
+import { escapeAllStringsInObject } from '../../utilities/string';
 
-import Header from '../Header.js';
-import NewOrg from './NewOrg.js';
-import Footer from '../Footer.js';
-import AddPrizes from './AddPrizes.js';
-
-import {Button, Grid,Icon, Image, Label, Segment} from 'semantic-ui-react';
 const emailService = require('../../utilities/email');
 
+class NewOrgPage extends React.Component {
 
-class NewOrgPage extends React.Component{
-	constructor(props) {
-		super(props)	
-		this.state = {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            org: {
+                org_admin_id: '',
+                admin_name: this.props.data.userName,
+            },
             loggedIn: this.props.data.loggedIn,
-			userName: this.props.data.userName,
-			program_admin: this.props.data.program_admin,
-			routeMain: false,
-			allowAddPrize: false,
-			showAddPrize: false,
-			orgAproved: false
-		}
-		this.handlerClick = this.handlerClick.bind(this);
+        };
 
-	}
-	
-	//TODO: Add new organization to DB with approved being false
-	// }
+        this.handleChange = this.handleChange.bind(this)
+        this.sendEmail = this.sendEmail.bind(this);
+    }
 
-	//the following function is to send an email that a new oragnization is awaiting approval
+    componentDidMount() {
+        window.scrollTo(0, 0);
+    }
+
+    //the following function is to send an email that a new oragnization is awaiting approval
     sendEmail() {
         // TODO: get text to send, get list of mail
         emailService.sendEmail(
@@ -44,35 +38,200 @@ class NewOrgPage extends React.Component{
             'A new organization is awaiting your approval',
             'organization name: '+ this.state.orgName +
             '\norganizaion description: ' + this.state.description +
-            '\nname of user asking to create platform: ' + this.state.userName,
+            '\nusername asking to create organization: ' + this.state.userName,
             null,
         )
     }
     
+    validation() {
+        if (!this.state.org.org_name) {
+            alert('Please fill in name of organization');
+            return false;
+        }
+        if (!this.state.org.admin_name) {
+            alert('Please fill in admin name');
+            return false;
+        }
+        if (!this.state.org.description) {
+            alert('Please fill in field of activity');
+            return false;
+        }
+        if (!this.state.org.org_name) {
+            alert('Please fill in description');
+            return false;
+        }
 
-	handlerClick(allowAddPrize) {
-        this.setState({
-			allowAddPrize: true
-		});
-		this.props.record(allowAddPrize)
-	}
+        return true;
+    }
+    
+    // ~~~~~~~ add new org to DB
 
-	// function 
+    addOrg() {
+        (async () => {
+            const response = await axios.post(
+                '/addOrg', {org: escapeAllStringsInObject(this.state.org)}
+            );
+            if (response.data === 'success') {
+                this.sendEmail();
+                alert('Thank you for joining Magdilim. We will look into your organization and email you as soon as we approve it.');
+                window.location.assign('/');
+            } else {
+                alert('Unknown problem creating organization. Please try again later');
+            }
+        })();
+    }
 
-	render() {
-		return(
-			<div>
-				<Grid container stackable verticalAlign='middle'>
-				<Grid.Row>
-					<Grid.Column width={8}>
-					<NewOrg record={this.handlerClick} data = {this.state}/>
-					</Grid.Column>
-					<Grid.Column floated='right' width={6}>
-					</Grid.Column>
-				</Grid.Row>
-				</Grid>
-			</div>
-		)
-	}	
+    handleSubmit = (e) => {
+        e.preventDefault();
+
+        if (this.validation()) {
+            this.addOrg();
+        }
+    }
+
+    handleChange(event) {
+        const { name, value, type } = event.target;
+        this.state.org[name] = value;
+        this.setState({ org: this.state.org});
+    }
+
+    renderInputs() {
+        return (
+            <div>
+                <Divider
+                    as='h4'
+                    className='header'
+                    horizontal
+                    style={{ margin: '3em 0em', textTransform: 'uppercase' }}
+                >
+                    <a href='#' style={{ color:'#9ACD32'}}><Icon size='big' name='edit' />Enter the Details Bellow:</a>
+                </Divider>
+                <Form.Field>
+                    <Form.Input
+                        label='Name of Organization:'
+                        value={this.state.org.org_name}
+                        iconPosition='left'
+                        placeholder={this.state.org.orgName}
+                        name="org_name"
+                        onChange={this.handleChange.bind(this)}
+                    />
+                </Form.Field>
+                <Form.Field>
+                    <Form.Input
+                        label='Email of Organization Admin:'
+                        icon='user'
+                        iconPosition='left'
+                        placeholder={this.state.org.admin_name}
+                        value={this.state.org.admin_name}
+                        name="admin_name"
+                        onChange={this.handleChange.bind(this)}
+                    />
+                </Form.Field>
+                <Form.Field>
+                    <Form.TextArea
+                        rows={2}
+                        label='Field of Activity:'
+                        placeholder={this.state.org.field_of_activity}
+                        value={this.state.org.field_of_activity}
+                        name='field_of_activity'
+                        onChange={this.handleChange.bind(this)} />
+                </Form.Field>
+                <Form.Field>
+                    <Form.TextArea
+                        label='Description:'
+                        value={this.state.org.description}
+                        placeholder={this.state.org.description}
+                        name='description'
+                        onChange={this.handleChange.bind(this)} />
+                </Form.Field>                
+                <Divider
+                    as='h4'
+                    className='header'
+                    horizontal
+                    style={{ margin: '3em 0em', textTransform: 'uppercase' }}
+                ><a href='#' style={{ color:'#9ACD32'}}>
+                        <Icon size='big' name='map marker alternate' />
+                            Mailing Address
+                        </a>
+                </Divider>
+                <Form.Input
+                    label='Country:'
+                    placeholder={this.state.org.country}
+                    value={this.state.org.country}
+                    name="country"
+                    onChange={this.handleChange.bind(this)}
+                />
+                <Form.Input
+                    label='City:'
+                    placeholder={this.state.org.city}
+                    value={this.state.org.city}
+                    name="city"
+                    onChange={this.handleChange.bind(this)}
+                />
+                <Form.Input
+                    label='Street:'
+                    placeholder={this.state.org.street}
+                    value={this.state.org.street}
+                    name="street"
+                    onChange={this.handleChange.bind(this)}
+                />
+                <Form.Input
+                    label='Building:'
+                    placeholder={this.state.org.building}
+                    value={this.state.org.building}
+                    name="building"
+                    onChange={this.handleChange.bind(this)}
+                />
+                <Form.Input
+                    label='Postal Code:'
+                    placeholder={this.state.org.pc_num}
+                    value={this.state.org.pc_num}
+                    name="pc_num"
+                    onChange={this.handleChange.bind(this)}
+                />
+            </div>
+        )
+    }
+
+
+    render() {
+        return (
+            <div>
+                <Segment style={{ padding: '1.5em 0em' }} vertical textAlign='center'>
+                    <Grid container>
+                        <br></br>
+                        <Header as='h2' icon='globe' content='Thank you for using us for your organization!' />
+                        <Segment textAlign='left'>
+						<Label as='a' color='olive' ribbon left>
+                            Get Started!
+                        </Label>
+                            <p style={{ fontSize: '1.33em' }}>
+                                We will provide you with the design and software necessary to create an online platform for ongoing donations.
+                                All we left for you to do, is focus on content that will be appealing and attract your ongoing donors.
+                            </p>
+                            <Label>Once you send in the following details, we will be in touch with you about creating your personal platform.</Label>
+                        </Segment>
+                        <br></br>
+                        <br></br>
+						<Segment textAlign='left'>
+                        <Form onSubmit={this.handleSubmit.bind(this)} success>
+                            {this.renderInputs()}
+                         <br /><br />
+                         <Label>An email will be sent to you once your organization gets approved.</Label>
+                         <br />
+                        <Header as='h3' style={{ fontSize: '2em' }}>
+                        <Icon size='big' name='handshake' />
+                            Thank you. We will be in touch shortly.
+                        </Header>
+                            <br />
+                            <Button content='Submit' primary />
+                        </Form>
+						</Segment>
+                    </Grid>
+                </Segment>
+            </div>
+        )
+    }
 }
+
 export default NewOrgPage;
