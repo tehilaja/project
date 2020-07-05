@@ -64,7 +64,7 @@ INSERT INTO Gifts (gift_name, gift_description, gift_pic, org_id, level_num, g_d
 -- inserting gifts with winners:
 SELECT * FROM magdilimdb.gifts;
 INSERT INTO Gifts (gift_name, gift_description, gift_pic, org_id, level_num, g_date, winner, raffle) VALUES
-("רכב 7 מקומות","כב מפואר עם 7 מקומותר", null, 1, 4, "2020-08-23", 'tehilaj97@gmail.com', true),
+("רכב 7 מקומות","כב מפואר עם 7 מקומותר", "https://magdilim-organization-images.s3.amazonaws.com/prizes/1_c3584880-be52-11ea-b9f1-a1543b6468b8_giftOrg1Level4.jpg", 1, 4, "2020-08-23", 'tehilaj97@gmail.com', true),
 ("מצלמה","מצלמת קאנון איכותית","",2,2,"2020-08-17", 'avitalspector@gmail.com', true);
 
 -- inserting comments into the feed --

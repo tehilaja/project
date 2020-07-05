@@ -110,7 +110,13 @@ const HomepageHeading = ({ mobile }) => (
 	<Step color='olive' icon='user' title='Join'  />
 	<Step icon='money bill alternate outline' title='Donate' />
 	<Step icon='users' title='Reffer'/>
-	<Step icon='building' title='Build'/>
+	<Step icon='building' title='Build' 
+	// onClick={ () => window.scrollTo({
+    //         top: 1050,
+    //         left: 0,
+    //         behavior: 'smooth'
+    //       })}
+		  />
 	<Step active icon='gift' title='Win!'/>
 	</Step.Group>
 </Container>

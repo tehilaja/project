@@ -3,7 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import {Redirect} from "react-router-dom";
-import { Card, Feed,Header, Icon, Image, Segment } from 'semantic-ui-react'
+import { Card, Feed,Header, Icon, Image, Segment, Label } from 'semantic-ui-react'
 
 
 class WinnerCard extends React.Component{
@@ -30,13 +30,16 @@ class WinnerCard extends React.Component{
               })}>
 
           <Card.Content>
+            <Label color='olive' attached='top'>{`Congrats to ${this.props.winner}!`}</Label>
             <Image src={this.props.gift_pic} wrapped ui={true} />
           </Card.Content>
           <Card.Content extra>
           <Card.Header>{this.props.gift_name}</Card.Header>
           <Card.Header>{`Gift from ${this.props.org_id}`}</Card.Header>
             <Card.Meta>
-              {`Level of donors enered in raffle: ${this.props.level_num} `}
+              <Label color='olive'>
+              {`Level in Raffle: ${this.props.level_num} `}
+              </Label>
             </Card.Meta>
             <Card.Description>
             {this.props.gift_description}

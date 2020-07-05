@@ -50,7 +50,7 @@ class OrgCard extends React.Component {
 
     //-----------return---------------------- 
     return (
-      <Card onClick={this.handleClick} style ={{margin: '5em', border: '2px solid #F5F5F5', height: '400px', width:'300px'}}>
+      <Card onClick={this.handleClick} style ={{margin: '5em', border: '2px solid #F5F5F5', height: '300px', width:'400px'}}>
         <Image src={this.state.imgUrl} wrapped ui={true} />
         <Card.Content>
           <Card.Header>{this.state.orgName}</Card.Header>

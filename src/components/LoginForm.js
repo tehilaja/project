@@ -82,6 +82,8 @@ class LoginForm extends React.Component {
             <Segment placeholder>
                 <Grid columns={2} relaxed='very' stackable>
                     <Grid.Column>
+                        
+                    <Segment textAlign='left'>
                         <Form onSubmit={this.handleSubmit.bind(this)}>
                             <Form.Input
                                 icon='user'
@@ -99,31 +101,25 @@ class LoginForm extends React.Component {
                                 name="pswd"
                                 onChange={this.handleChange.bind(this)}
                             />
-
+                            <Button content='Forgot Password' size='small' onClick={() => this.setState({ status: Status.ShowForgotPassword })} />
+                            <br></br>
                             <Button content='Login' primary />
                         </Form>
+                        </Segment>
                     </Grid.Column>
 
                     <Grid.Column verticalAlign='middle'>
-                        <Grid columns={2} relaxed='very' stackable>
+                        <Segment>
+                        <Grid relaxed='very' stackable>
                             <Grid.Column verticalAlign='middle'>
                                 <Button content='Sign Up' icon='signup' size='big' onClick={() => this.setState({ status: Status.ShowUserRegister })} />
-
                             </Grid.Column>
-                            <Grid.Column verticalAlign='middle'>
-                                <Button content='Forgot Password' icon='signup' size='big' onClick={() => this.setState({ status: Status.ShowForgotPassword })} />
-                            </Grid.Column>
-                            <Divider vertical>Or</Divider><Divider vertical>Or</Divider>
                         </Grid>
-                        {/* <Button content='Sign Up' icon='signup' size='big' onClick={() => this.setState({ status: Status.ShowUserRegister })} /> */}
+                        </Segment>
                     </Grid.Column>
-
-                    {/* <Grid.Column verticalAlign='middle'>
-                        <Button content='Forgot Password' icon='signup' size='big' onClick={() => this.setState({status: Status.ShowForgotPassword})} />
-                    </Grid.Column> */}
                 </Grid>
 
-                <Divider vertical>Or</Divider><Divider vertical>Or</Divider>
+                <Divider vertical>Or</Divider>
             </Segment>
         );
     }

@@ -41,9 +41,9 @@ class NewOrgPage extends React.Component {
             null,
             null,
             'A new organization is awaiting your approval',
-            'organization name: '+ this.state.orgName +
-            '\norganizaion description: ' + this.state.description +
-            '\nusername asking to create organization: ' + this.state.userName,
+            'organization name: '+ this.state.org.org_name +
+            '\norganizaion description: ' + this.state.org.description +
+            '\nusername asking to create organization: ' + this.state.org.admin_name,
             null,
         )
     }

@@ -109,7 +109,7 @@ class UserPage extends React.Component {
      getMyDownLine(orgId) {
         const orgTree = this.state.orgsTrees && this.state.orgsTrees[orgId];
         window.scrollTo({
-            top: 1250,
+            top: 1300,
             left: 0,
             behavior: 'smooth'
           });
