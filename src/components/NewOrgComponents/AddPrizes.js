@@ -7,15 +7,10 @@ import { v1 as uuid } from 'uuid';
 import axios from "axios";
 import { async } from "q";
 
-import Header from '../Header.js';
-import NewOrg from './NewOrg.js';
-import Footer from '../Footer.js';
 
 import {DatePicker, getDate} from './DatePicker.js'
 import { Button, Divider, Form, Segment } from 'semantic-ui-react';
-import SemanticDatepicker from 'react-semantic-ui-datepickers';
 
-import ImageUploader from 'react-images-upload';
 import { escapeAllStringsInObject } from '../../utilities/string';
 
 const emailService = require('../../utilities/email');
