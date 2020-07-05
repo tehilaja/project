@@ -222,7 +222,7 @@ app.get('/org_field_of_activity', (req, res, next) => {
     console.log("query: \n" + q_field_name);
     db.query(q_field_name, (err, result, fields) => {
       if (err) throw err;
-      if (result.length == 0)
+      if (result.length === 0)
         res.send("no data")
       else {
         console.log("res:\n " + JSON.stringify(result));
@@ -377,6 +377,68 @@ app.post('/sendEmail', (req, res) => {
 });
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~ addOrg ~~~~~~~~~~~~~~~~~~~~
+
+// function checkAddOrgDetails(paramO) {
+//   // org_id, org_name ,one_time_donation , min_donation ,approved,org_num ,  branch ,account_num, bank_num, account_owner
+//   // , admin_name ,description ,field_of_activity, img_url ,founding_year, working ,volunteers, friends ,city_name,country_name ,building ,street, p_code
+//   var q = ` INSERT INTO organizations (`
+//   var insertinfValue = `)VALUES(`
+
+//   // neccesery 
+//   //TODO: account_owner - take from cognito?
+//   q += `org_id,org_name,min_donation,one_time_donation,approved,org_num,branch,account_num,bank_num,account_owner`;
+//   insertinfValue += `${paramO.org_id},${paramO.org_name},${paramO.min_donation},${paramO.one_time_donation},0,
+//     ${paramO.branch},${paramO.account_num},${paramO.bank_num},${paramO.account_owner},${paramO.org_num}`
+
+//   // --- check
+//   if (paramO.img_url != '') {
+//     q += `,img_url`;
+//     insertinfValue += `,${paramO.img_url}`;
+//   }
+//   if (paramO.founding_year != '') {
+//     q += `,founding_year`;
+//     insertinfValue += `,${paramO.founding_year}`;
+//   }
+//   if (paramO.working != '') {
+//     q += `,working`;
+//     insertinfValue += `,${paramO.working}`;
+//   }
+//   if (paramO.volunteers != '') {
+//     q += `,volunteers`;
+//     insertinfValue += `,${paramO.volunteers}`;
+//   }
+//   if (paramO.friends != '') {
+//     q += `,friends`;
+//     insertinfValue += `,${paramO.friends}`;
+//   }
+//   // if(paramO.admin_name!=''){
+//   //   q += `,admin_name`;
+//   //   insertinfValue += `,${paramO.admin_name}`;
+//   // }
+//   if (paramO.admin_name != '') {
+//     q += `,admin_name`;
+//     insertinfValue += `,${paramO.admin_name}`;
+//   }
+//   if (paramO.description != '') {
+//     q += `,description`;
+//     insertinfValue += `,${inQutationMarks(paramO.description)}`;
+//   }
+//   // TODO!! field_of_activity
+//   // if(paramO.field_of_activity!=''){
+//   //   q += `,field_of_activity`;
+//   //   insertinfValue += `,${inQutationMarks(paramO.field_of_activity}"`;
+
+//   // nessecery
+
+//   insertinfValue += `);`
+//   const query = q + insertinfValue;
+//   console.log("param (in fun) \n" + query);
+
+//   return query
+// }
+
+
+// ~~~~~~~ addOrg ~~~~~~~
 app.post('/addOrg', (req, res, next) => {
 
   const numberOrNull = (num) => num || null;
@@ -397,6 +459,47 @@ app.post('/addOrg', (req, res, next) => {
 });
 
 
+//   console.log("the org:")
+//   // need to check user login ?
+//   try {
+//     console.log("in /addOrg \n ")
+
+//     const qAddOrg = checkAddOrgDetails(req.body);// check details
+//     console.log("quert is: \n", qAddOrg, "\n");
+
+//     db.query(qAddOrg, (err, result, fields) => {
+//       if (!err) {
+//         res.send("insert org");//response
+//         console.log("succses! ");
+//       }
+//       else {
+//         res.end("db fail");
+//         console.log("fail db " + err.code);
+//       }
+
+//       // console.log("result " + result);
+//     })
+//     // console.log("in check \n")
+//     // console.log("string obj \n "+ JSON.stringify(req.body));
+//   }
+//   catch (err) {
+//     console.log("error " + err.code);
+//     res.end("err server ", err.code)
+//   }
+
+
+// });
+
+// app.post('/addOrg/firstStep', (req, res, next) => {
+
+//   const qFirstAdd = `INSERT INTO Donors_in_org (org_id,org_name,min_donation,one_time_donation,approved)
+//     VALUES(${req.body.org_id},${req.body.org_name},${req.body.min_donation},${req.body.one_time_donation},0,
+//     );`
+//   // ,org_num,branch,account_num,bank_num,account_owner
+//   // ${paramO.branch},${paramO.account_num},${paramO.bank_num},${paramO.account_owner},${paramO.org_num}
+
+
+// });
 //~~~~~~~~~~~~~~~~~~~~ donate process ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // check which details exsist and do a query
@@ -521,6 +624,21 @@ function (req, res, next) {
   function (req, res, next) {
     console.log('in get level \n');
       const sqlQuery = `select * from levels WHERE org_id=${req.params.org_id}`
+      console.log(sqlQuery)
+      db.query(sqlQuery, (err, result, fields) => {
+        if (!err) {
+          console.log('res level: \n ' + JSON.stringify(result));
+          res.send(result);
+        } else {
+          console.log('error: ' + JSON.stringify(err));
+          res.send(null);
+        };
+      })
+    });
+    // ------------------
+  app.get('/getLevels',function (req, res, next) {
+    console.log('in get level \n');
+      const sqlQuery = `select distinct level_name from levels`
       console.log(sqlQuery)
       db.query(sqlQuery, (err, result, fields) => {
         if (!err) {
@@ -1004,6 +1122,7 @@ app.post('/get-org-donations-to-display', (req, res) => {
   console.log(JSON.stringify(req.body.org_ids));
   const condition = `WHERE org_id IN (${org_ids})`;
   let query = `DELETE FROM Organizations ${condition}; DELETE FROM addresses ${condition}; DELETE FROM bank_info ${condition};`;  console.log(query);
+  console.log(query);  
   db.query(query, (err, result, fields) => {
     if (!err) {
       res.send('success');
@@ -1057,6 +1176,37 @@ app.post('/update-org-data', (req, res) => {
   });
 });
 
+app.get('/get_gift_and_levels',(req,res)=>{
+  const qGift = `select 
+    g.gift_name,g.gift_pic,g.gift_description,g.gift_name, o.org_name,o.org_id, o.img_url, l.level_name
+    from organizations o 
+    left join levels l on l.org_id = o.org_id
+    left join gifts g on g.level_num = l.level_num;`
+    dbUtil.callDB(db, qGift, (err, result) => {
+      if (err) {
+        console.log('error updating org data: ' + JSON.stringify(err));
+        console.log(qGift);
+        res.send('fail');
+      } else {
+        res.send(result);
+      }
+    });
+});
+
+// ------------------
+app.get('/list_of_org',(req,res)=>{
+  const qorg = 'select org_id,org_name,img_url from organizations'
+  dbUtil.callDB(db, qorg, (err, result) => {
+    if (err) {
+      console.log('error updating org data: ' + JSON.stringify(err));
+      console.log(qorg);
+      res.send('fail');
+    } else {
+      console.log("org \n"+ JSON.stringify(res.data))
+      res.send(result);
+    }
+  });
+});
 
 //------------------add prize------------------
 app.post('/add-prize', (req, res) => {

@@ -131,8 +131,12 @@ export default class Donate extends Component {
             axios.post('/donationProcess', this.state.donate_req
             ).then(res => 
             {
-                alert("res is: " + res.data)
+                // alert("res is: " + res.data)
+                // finish donaition - iniselize all 
                 this.setState({divActiveDonation:true,divActiveMore: false, divActivePayment: false, coreStep: 1, nextAble: false});
+                this.setState(Object.assign(this.state.donate_req,{monthly_donation: this.props.data.initialDonation,dThrough:''}));
+
+
             }).catch(error=> {
                 alert("error donationProcess" +  error);
             })
@@ -302,7 +306,8 @@ export default class Donate extends Component {
                                 this.switchStep();
 
                             }
-                            alert("findDuser: " + this.state.findDuser + " finishDonate " + this.state.finishDonate)
+                            // TODO !!
+                            // alert("findDuser: " + this.state.findDuser + " finishDonate " + this.state.finishDonate)
                         }
                         // TODO (alert)
                         else{ // the mail is ok
@@ -492,7 +497,7 @@ export default class Donate extends Component {
                                     inverted circular 
                                     style = {styleBotton} 
                                     key={sums} 
-                                    data-letter={sums} o
+                                    data-letter={sums}
                                     onClick={this.handleClickBtn}>
                                     {sums}
                                 </Button>
