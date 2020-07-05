@@ -77,8 +77,8 @@ class AddPrizes extends React.Component {
             ['tehilaj97@gmail.com'],
             null,
             null,
-            'Email send from Magdilim!!!!!!!',
-            'What do you think about this body????????',
+            'A New Gift sent from Magdilim!!!!!!!',
+            'Check out the following gift!!!!!!',
             this.state.attachments,
             (error, info) => {
                 if (error) {

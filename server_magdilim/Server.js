@@ -381,8 +381,7 @@ app.post('/addOrg', (req, res, next) => {
 
   const numberOrNull = (num) => num || null;
   const org = req.body.org;
-  const sqlOrgsTableQuery = `INSERT INTO organizations (org_name, description, img_url, min_donation, one_time_donation, field_of_activity, approved, org_admin_id, admin_name) VALUES (${inQutationMarks(org.org_name)}, ${inQutationMarks(org.description)}, ${inQutationMarks(org.img_url)}, ${numberOrNull(org.min_donation)}, ${numberOrNull(org.one_time_donation)}, ${inQutationMarks(org.field_of_activity)}, 0, ${inQutationMarks(org.org_admin_id)}, ${inQutationMarks(org.admin_name)})`;
-  const sqlAddressesTableQuery = `INSERT INTO addresses (org_id, country, state, city, street, building, apartment, suite, zip ) VALUES (LAST_INSERT_ID(), ${inQutationMarks(org.country)}, ${inQutationMarks(org.state)}, ${inQutationMarks(org.city)}, ${inQutationMarks(org.street)}, ${numberOrNull(org.building)}, ${numberOrNull(org.apartment)}, ${numberOrNull(org.suite)}, ${numberOrNull(org.zip)})`;
+  const sqlOrgsTableQuery = `INSERT INTO organizations (org_name, description, img_url, website, min_donation, one_time_donation, field_of_activity, approved, org_admin_id, admin_name) VALUES (${inQutationMarks(org.org_name)}, ${inQutationMarks(org.description)}, ${inQutationMarks(org.img_url)}, ${inQutationMarks(org.website)}, ${numberOrNull(org.min_donation)}, ${numberOrNull(org.one_time_donation)}, ${inQutationMarks(org.field_of_activity)}, 0, ${inQutationMarks(org.org_admin_id)}, ${inQutationMarks(org.admin_name)})`;  const sqlAddressesTableQuery = `INSERT INTO addresses (org_id, country, state, city, street, building, apartment, suite, zip ) VALUES (LAST_INSERT_ID(), ${inQutationMarks(org.country)}, ${inQutationMarks(org.state)}, ${inQutationMarks(org.city)}, ${inQutationMarks(org.street)}, ${numberOrNull(org.building)}, ${numberOrNull(org.apartment)}, ${numberOrNull(org.suite)}, ${numberOrNull(org.zip)})`;
   
   const query = `${sqlOrgsTableQuery};${sqlAddressesTableQuery};`;
   
@@ -924,6 +923,7 @@ app.post('/approve-orgs', (req, res) => {
   console.log(query);
   db.query(query, (err, result, fields) => {
     if (!err) {
+      req.body.org_ids.forEach(org_id => statusCache.addOrg(org_id));
       res.send('success');
     }
     else {
@@ -1000,8 +1000,10 @@ app.post('/get-org-donations-to-display', (req, res) => {
  //---------------------disapprove orgs-------------------
  app.post('/disapprove-orgs', (req, res) => {
   console.log(JSON.stringify(req.body.org_ids));
-  let query = `DELETE FROM Organizations WHERE org_id IN (${req.body.org_ids})`;
-  console.log(query);
+  const org_ids = req.body.org_ids;
+  console.log(JSON.stringify(req.body.org_ids));
+  const condition = `WHERE org_id IN (${org_ids})`;
+  let query = `DELETE FROM Organizations ${condition}; DELETE FROM addresses ${condition}; DELETE FROM bank_info ${condition};`;  console.log(query);
   db.query(query, (err, result, fields) => {
     if (!err) {
       res.send('success');
@@ -1035,8 +1037,7 @@ app.post('/get-all-org-data', (req, res) => {
 app.post('/update-org-data', (req, res) => {
   const org = req.body.org;
   const condition = `WHERE org_id=${org.org_id}`;
-  const sqlOrgsTableQuery = `UPDATE organizations SET org_name=${inQutationMarks(org.org_name)}, description=${inQutationMarks(org.description)}, img_url=${inQutationMarks(org.img_url)}, min_donation=${org.min_donation}, one_time_donation=${org.one_time_donation}, field_of_activity=${inQutationMarks(org.field_of_activity)} ${condition}`;
-  const sqlBankInfoTableQuery = `DELETE FROM bank_info ${condition};INSERT INTO bank_info (org_id, bank_num, branch, account_num, account_owner) VALUES (${org.org_id}, ${org.bank_num}, ${org.branch}, ${org.account_num}, ${inQutationMarks(org.account_owner)})`;
+  const sqlOrgsTableQuery = `UPDATE organizations SET org_name=${inQutationMarks(org.org_name)}, description=${inQutationMarks(org.description)}, img_url=${inQutationMarks(org.img_url)}, website=${inQutationMarks(org.img_url)}, min_donation=${org.min_donation}, one_time_donation=${org.one_time_donation}, field_of_activity=${inQutationMarks(org.field_of_activity)} ${condition}`;  const sqlBankInfoTableQuery = `DELETE FROM bank_info ${condition};INSERT INTO bank_info (org_id, bank_num, branch, account_num, account_owner) VALUES (${org.org_id}, ${org.bank_num}, ${org.branch}, ${org.account_num}, ${inQutationMarks(org.account_owner)})`;
   const sqlAddressesTableQuery = `DELETE FROM addresses ${condition};INSERT INTO addresses (org_id, country, state, city, street, building, apartment, suite, zip ) VALUES (${org.org_id}, ${inQutationMarks(org.country)}, ${inQutationMarks(org.state)}, ${inQutationMarks(org.city)}, ${inQutationMarks(org.street)}, ${org.building}, ${org.apartment}, ${org.suite}, ${org.zip})`;
   const sqlLevelsTableQueries = org.levels && org.levels.reduce((acc, level) => `${acc}DELETE FROM levels ${condition} AND level_num=${level.level_num}; INSERT INTO levels (org_id, level_num, level_name, min_people, min_sum) VALUES (${org.org_id}, ${level.level_num}, ${inQutationMarks(level.level_name)}, ${level.min_people}, ${level.min_sum});`, '');
   

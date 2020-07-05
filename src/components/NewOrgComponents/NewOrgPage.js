@@ -13,12 +13,17 @@ class NewOrgPage extends React.Component {
 
         this.state = {
             org: {
-                org_admin_id: '',
-                admin_name: this.props.data.userName,
+                org_admin_id: this.props.data.userName,
+                admin_name: `${this.props.data.first_name} ${this.props.data.last_name}`,
             },
             loggedIn: this.props.data.loggedIn,
-        };
-
+            
+            program_admin: this.props.data.program_admin,
+            routeMain: false,
+            allowAddPrize: false,
+            showAddPrize: false,
+            orgAproved: false
+        }
         this.handleChange = this.handleChange.bind(this)
         this.sendEmail = this.sendEmail.bind(this);
     }
@@ -118,12 +123,32 @@ class NewOrgPage extends React.Component {
                 </Form.Field>
                 <Form.Field>
                     <Form.Input
-                        label='Email of Organization Admin:'
+                        label='Name of Admin:'
                         icon='user'
                         iconPosition='left'
                         placeholder={this.state.org.admin_name}
                         value={this.state.org.admin_name}
                         name="admin_name"
+                        disabled
+                    />
+                     <Form.Input
+                        label='Email of Admin:'
+                        icon='envelope'
+                        iconPosition='left'
+                        placeholder={this.state.org.org_admin_id}
+                        value={this.state.org.org_admin_id}
+                        name="org_admin_id"
+                        disabled
+                    />
+                </Form.Field>
+                <Form.Field>
+                    <Form.Input
+                        label='Website:'
+                        icon='user'
+                        iconPosition='left'
+                        placeholder={this.state.org.website}
+                        value={this.state.org.website}
+                        name="website"
                         onChange={this.handleChange.bind(this)}
                     />
                 </Form.Field>

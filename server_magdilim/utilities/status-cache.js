@@ -123,8 +123,8 @@ const getDonorLevel = (donor, levels) => {
 
 //get today's gifts from db, grouped by orgs
 const getGifts = (db, callback) => {
-    const currentDate = new Date();
-    const sqlQuery = `SELECT * FROM gifts`;
+    const currentDate = new Date().toISOString().substr(0, 10);
+    const sqlQuery = `SELECT * FROM gifts WHERE g_date LIKE '${currentDate}'`;
 
     //const sqlQuery = `SELECT * FROM gifts WHERE g_date = ${currentDate.getFullYear()}-${currentDate.getMonth()}-${currentDate.getDate()}`;
     console.log(sqlQuery);
@@ -136,6 +136,21 @@ const getGifts = (db, callback) => {
         const gifts = groupBy(result, 'org_id');
         if (callback) callback(gifts);
     });
+}
+
+const addOrg = (org_id, levels) => {
+     // declare root which will be the root of the org tree
+     const orgTree = {
+        key: {
+            collected: 0,
+            referred_donors: 0,
+        },
+        children: [],
+    };
+    organizationsTrees[org_id] = orgTree;
+    if (levels) {
+        updateLevelsInOrg(org_id, levels);
+    }
 }
 
 
@@ -292,6 +307,7 @@ exports.getOrgsForUser = getOrgsForUser;
 exports.getOrgLevel = getOrgLevel;
 exports.getOrgLevels = getOrgLevels;
 
+exports.addOrg = addOrg;
 exports.addDonorToOrg = addDonorToOrg;
 exports.updateDonorInOrg = updateDonorInOrg;
 exports.updateLevelInOrg = updateLevelInOrg;
