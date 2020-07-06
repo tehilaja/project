@@ -381,3 +381,50 @@ the edit page now gets the intial data (from all the org tables - org, bank info
 (bug with the toggles)
 allowing updating for levles (in cache and in DB)
 it also allows to picks an image (and show it in small), uploads to s3, and saves the url in the db
+
+30/6/2020
+error when submitting request for new organization - server crashing.
+sql query to get number of users donating to specific organization.
+installing moment to deal with displaying state and using their fromNow() function.
+writing about our cache for the project document
+figuring out how to work with ec2 and create the docker containers inside it for launching
+
+1/7/2020
+fixing bug that caused server to crash over night
+dealing with issues in AddPrize
+fixing updating organization - having the already stored info and updating it correctly
+using all the different tables involved (bank, address, levels)
+dealing with string issues - string containing ' or "
+or inserting null into not madatory fields as null and not as "null"
+
+2/7/2020
+continue with fixing updating organization - having the already stored info and updating it correctly
+using all the different tables involved (bank, address, levels)
+trying to use client_id for paypal instead of sandbox
+adding change password option
+spending more time on document
+adding guard route to user profile page
+
+3/7/2020
+edit org page and add prize changes work!!!!!!!!!!!!
+alerting to user and removing button so not to have user add the same prize twice
+more time on forgot password
+dealing with bug with the menu item desplaying the admin option
+cannot understand why its working the way it is,
+but i did create a work around it that works - instead of having it be a separate request, i added it as a parameter to the get_params request, so thats dealt with.
+Server crashed again over night - dealing with that bug
+more on PayPal....
+more on newOrg
+
+4/7/2020
+when added a new organization the admin was saves as null -
+fixing error with state that came from merging new org and new org body
+spent hoursssss on the graphincs design of the project....
+
+5/7/2020
+more on PayPal
+fixing more bugs based on merge with newOrg and newOrgBody
+more on UI 
+more time on document
+
+
