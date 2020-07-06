@@ -374,10 +374,10 @@ class OrgBody extends React.Component {
                                 <Grid.Row>
                                     {/* add link to organization homepage */}
                                     <Grid.Column textAlign='center'>
-                                    {this.props.data.orgDetails.website_link&&
+                                    {this.props.data.orgDetails.website&&
                                     <Button size='huge' onClick={(e) => {
                                     e.preventDefault();
-                                    window.location.href=`${this.props.data.orgDetails.website_link}`;
+                                    window.location.href=`${this.props.data.orgDetails.website}`;
                                     }}>Visit Our Website</Button>}
                                     </Grid.Column>
                                 </Grid.Row>

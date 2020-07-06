@@ -28,7 +28,7 @@ class EditOrgPage extends React.Component {
             selectedImage: null,
             image_url: null,
 
-            website_link: null,
+            website: null,
             routeMain: false,
             showAddPrize: false,
         }
@@ -462,7 +462,7 @@ class EditOrgPage extends React.Component {
                                                 label='link to website - optional'
                                                 iconPosition='left'
                                                 placeholder="website"
-                                                name="website_link"
+                                                name="website"
                                                 onChange={this.handleChange.bind(this)}></Form.Input>
                                             <Button content='Submit' primary />
                                         </Form>
