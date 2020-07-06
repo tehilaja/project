@@ -78,7 +78,7 @@ class OrgBody extends React.Component {
         this.selectLevel = this.selectLevel.bind(this)
         this.filterChooseLevel = this.filterChooseLevel.bind(this)
         // this.getGiftsToShow = this.getGiftsToShow.bind(this)
-
+        this.checkIfGifts = this.checkIfGifts.bind(this)
 
         // css
     }
@@ -273,16 +273,25 @@ class OrgBody extends React.Component {
     
         this.setState({ activeIndex: newIndex })
       }
+
+    checkIfGifts(){
+        if(!this.state.showGifts.length){
+                return (<Label>No gifts yet for this organization</Label>);
+            }else{
+                return (this.state.showGifts.map(gift =>{
+                    return(
+                        <GiftCard  gifts ={gift}  
+                        />)
+                }));
+            }
+    }
     
 
 //----------render------------------
     render() 
     {
-        const giftComponents = this.state.showGifts.map(gift =>{
-            return(
-                <GiftCard  gifts ={gift}  
-                />)
-        })
+        const giftComponents = this.checkIfGifts();
+    
     
         const { valueLevel } = this.state // level
       

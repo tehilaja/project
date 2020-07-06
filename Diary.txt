@@ -427,4 +427,10 @@ fixing more bugs based on merge with newOrg and newOrgBody
 more on UI 
 more time on document
 
+6/7/2020
+working on launching 
+more on PayPal
+finding bugs and fixing them:
+button to website not desplayed - not same name of field in client and in server
+client crashing when there's no gifts for org
 
