@@ -262,7 +262,7 @@ export default class Donate extends Component {
                     // {
                     // ~~ statr dThrow 
                     if (this.state.dThrough !== '')  // dTrow -> need check if user exist in system (give a id)
-                    {
+                    {;  
                         // TODO:    check the email syntax    
                         if (this.state.donate_req.referred_by === '') //-> check if do a request before
                         {

@@ -75,8 +75,8 @@ class NewOrgPage extends React.Component {
         this.setState({ selectedOptionLevel: value })
 
         // ---
-        alert("f: "+JSON.stringify(value) + "n "+ (JSON.stringify(value).split("/")[0]));
-        this.setState(Object.assign(this.state.org,{field_of_activity:JSON.stringify(value).split("/")[0]}));
+        alert("f: "+JSON.stringify(value) + "n "+ (JSON.stringify(value).split("/")[0])+ "ח "+ value);
+        this.setState(Object.assign(this.state.org,{field_of_activity:value}));
 
         // this.state.org['field_of_activity'] = JSON.stringify(value).split('\\')[1]
         // this.setState({ org: this.state.org});
@@ -215,7 +215,7 @@ class NewOrgPage extends React.Component {
                     {/* ------------------------------------------------------- */}
                     {/* label='Field of Activity:' */}
 
-                    {/* <Dropdown
+                    <Dropdown
                         fluid
                         // multiple
                         onChange={this.selectLevel}
@@ -227,16 +227,16 @@ class NewOrgPage extends React.Component {
                         selection
                         // searchQuery={searchQuery}
                         value={value}
-                    /> */}
+                    />
                     
 
-                    <Form.TextArea
+                    {/* <Form.TextArea
                         rows={2}
                         label='Field of Activity:'
                         placeholder={this.state.org.field_of_activity}
                         value={this.state.org.field_of_activity}
                         name='field_of_activity'
-                        onChange={this.handleChange.bind(this)} />
+                        onChange={this.handleChange.bind(this)} /> */}
                 </Form.Field>
                 <Form.Field>
                     <Form.TextArea
