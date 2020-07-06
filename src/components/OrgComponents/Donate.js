@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
-import { Step, Segment, Image , Button, Grid,Form,Checkbox, Icon, Input, Label,Accordion, Message, Modal} from 'semantic-ui-react'
+import { Step, Segment, Image, Button, Grid, Form, Checkbox, Icon, Input, Label, Accordion, Message, Modal } from 'semantic-ui-react'
 import axios from "axios";
 
 
 ////#08.05
 import { PayPalButton } from "react-paypal-button-v2";
+import { escapeAllStringsInObject } from '../../utilities/string';
 
 
 // const Isemail = require('isemail');
@@ -12,16 +13,15 @@ import { PayPalButton } from "react-paypal-button-v2";
 //  try to git
 
 export default class Donate extends Component {
-    constructor(props)
-    {
+    constructor(props) {
         super(props)
         this.state = {
             loggedIn: this.props.data.loggedIn,
             userName: this.props.data.userName,
             // stef functionalety
-            coreStep : 1, // the corrent step
+            coreStep: 1, // the corrent step
             dicCompleteDonation: false,
-            divActiveDonation : true,
+            divActiveDonation: true,
             divActiveMore: false,
             divActivePayment: false,
             // activeStep:  'select Amount',
@@ -29,14 +29,14 @@ export default class Donate extends Component {
             prevAble: true,
 
             // step
-            
+
             active: 'select Amount',
             completed: '',
             disabled1: '',
             disabled2: '',
             //
             sumDonate: this.props.data.initialDonation,
-            sumBtn: [10,20,30,40,50,100,200], // TODO : acordind min donation
+            sumBtn: [10, 20, 30, 40, 50, 100, 200], // TODO : acordind min donation
             dThrough: '', // email of came throw
             showMessageReq: false,
             // dThroughId: '',
@@ -45,20 +45,22 @@ export default class Donate extends Component {
             // set json to state
             massageErrRequireFIeld: {},
             // the request to donation for server
-            donate_req: {"user_id": null, "org_id":this.props.data.org_id, "monthly_donation": this.props.data.initialDonation,
-            "referred_by": '',"d_title": '',"d_description": '',"anonymous" : false,"onTimeCheck":false },
-            
+            donate_req: {
+                "user_id": null, "org_id": this.props.data.org_id, "monthly_donation": this.props.data.initialDonation,
+                "referred_by": '', "d_title": '', "d_description": '', "anonymous": false, "oneTimeCheck": false
+            },
+
             findDuser: true,
             // next level
             finishDonate: false,
             //////
             pass2step: false,
-            ableDonate:false,
-            onTimeChecked :false
+            ableDonate: false,
+            oneTimeChecked: false
 
             // (user_id, org_id, monthly_donation, referred_by,d_title, d_description,anonymous,status_id
             // TODO: 
-      
+
         }
         this.handleClick = this.handleClick.bind(this);
 
@@ -74,14 +76,14 @@ export default class Donate extends Component {
         this.checkBoxhandleClick = this.checkBoxhandleClick.bind(this);
 
 
-        
+
 
         // next butten
         this.nextButton = this.nextButton.bind(this);
         this.prevButton = this.prevButton.bind(this);
         this.disableNextBtn = this.disableNextBtn.bind(this);
 
-    
+
         // ~~~~~~~~
         this.donationProcess = this.donationProcess.bind(this);
 
@@ -91,62 +93,56 @@ export default class Donate extends Component {
         // step
         this.switchStep = this.switchStep.bind(this);
 
-    
+
 
     }
     //before all
-    componentDidMount(){
-        if(this.state.loggedIn){
-            this.setState(Object.assign(this.state.donate_req,{user_id:this.props.data.userName}));
+    componentDidMount() {
+        if (this.state.loggedIn) {
+            this.setState(Object.assign(this.state.donate_req, { user_id: this.props.data.userName }));
         }
 
     }
 
     //~~~~~~~~~~~~~~~~~~ function ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
-    donateDisabel()
-    {
-        if(this.state.dThrough !== '' && this.state.donate_req.referred_by === '')
-            this.setState({ableDonate: true});
+    donateDisabel() {
+        if (this.state.dThrough !== '' && this.state.donate_req.referred_by === '')
+            this.setState({ ableDonate: true });
     }
     //~~~~~~~~~~~~~~~~~~~`
 
-    donationProcess(){
+    donationProcess() {
         // TODO: massage that donate sucsess
-        
-       // TODO: one time donation logic
-    //    if(this.state.onTimeChecked){
-    //        alert("here")
-    //         axios.post('/oneTimedonationProcess', this.state.donate_req
-    //             ).then(res => 
-    //             {
-    //                 alert("res is: " + res.data)
-    //                 this.setState({divActiveDonation:true,divActiveMore: false, divActivePayment: false, coreStep: 1, nextAble: false});
-    //             }).catch(error=> {
-    //                 alert("error oneTimedonationProcess" +  error);
-    //             })
-    //    }
+
+        // TODO: one time donation logic
+        //    if(this.state.oneTimeChecked){
+        //        alert("here")
+        //         axios.post('/oneTimedonationProcess', this.state.donate_req
+        //             ).then(res => 
+        //             {
+        //                 alert("res is: " + res.data)
+        //                 this.setState({divActiveDonation:true,divActiveMore: false, divActivePayment: false, coreStep: 1, nextAble: false});
+        //             }).catch(error=> {
+        //                 alert("error oneTimedonationProcess" +  error);
+        //             })
+        //    }
 
         // req 
         // else{
-            axios.post('/donationProcess', this.state.donate_req
-            ).then(res => 
-            {
-                // alert("res is: " + res.data)
-                // finish donaition - iniselize all 
-                this.setState({divActiveDonation:true,divActiveMore: false, divActivePayment: false, coreStep: 1, nextAble: false});
-                this.setState(Object.assign(this.state.donate_req,{monthly_donation: this.props.data.initialDonation,dThrough:''}));
-
-
-            }).catch(error=> {
-                alert("error donationProcess" +  error);
-            })
+        axios.post('/donationProcess', this.state.donate_req
+        ).then(res => {
+            alert("res is: " + res.data)
+            this.setState({ divActiveDonation: true, divActiveMore: false, divActivePayment: false, coreStep: 1, nextAble: false });
+        }).catch(error => {
+            alert("error donationProcess" + error);
+        })
         // }
-        
+
     }
 
     //~~~~~~~~~~ disableNextBtn  ~~~~~~``
-    disableNextBtn(e){
-        if(this.state.finishDonate || !this.state.loggedIn)
+    disableNextBtn(e) {
+        if (this.state.finishDonate || !this.state.loggedIn)
             return true;
         else
             return false;
@@ -154,36 +150,34 @@ export default class Donate extends Component {
 
 
 
-//   onClick(event: SyntheticEvent, data: object)
+    //   onClick(event: SyntheticEvent, data: object)
 
-    handleClick = (e, { title }) =>
-    {
+    handleClick = (e, { title }) => {
         // TODO:
         this.setState({ active: title })
 
 
-// ? TODO : show the prev state        
-        switch(title) {
+        // ? TODO : show the prev state        
+        switch (title) {
             case 'select Amount':
-                this.setState({coreStep: 1});
+                this.setState({ coreStep: 1 });
                 break
             case 'more datails':
-                this.setState({coreStep: 2});
+                this.setState({ coreStep: 2 });
                 break
             case 'payment':
-                this.setState({coreStep: 3});
+                this.setState({ coreStep: 3 });
                 break
             default:
-                this.setState({coreStep: 1});
-          }
+                this.setState({ coreStep: 1 });
+        }
 
-        
+
     }
     //~~~~~~~~~swich step ~~~ 
-    switchStep()
-    {
-    
-        switch(this.state.coreStep) {
+    switchStep() {
+
+        switch (this.state.coreStep) {
             case 1:
                 // alert("dThrough" + this.state.dThrough)
                 // && this.state.donate_req.referred_by === '' )) // the mail doas not checkin
@@ -193,35 +187,35 @@ export default class Donate extends Component {
                 //     this.setState({massageErrRequireFIeld:true});
                 //     alert("not 1")
                 // }
-                             
+
                 // else{
-                    this.setState({divActiveDonation: false, divActiveMore: true, dicCompleteDonation:true, coreStep: 2});
-                    // activeStep:'more datails'
-                   
+                this.setState({ divActiveDonation: false, divActiveMore: true, dicCompleteDonation: true, coreStep: 2 });
+                // activeStep:'more datails'
+
                 // }
                 break;
             case 2:
-                this.setState({divActiveMore: false, divActivePayment: true, coreStep: 3, nextAble: true});
+                this.setState({ divActiveMore: false, divActivePayment: true, coreStep: 3, nextAble: true });
                 // activeStep:'payment'
                 break;
             case 3:
-                this.setState({divActivePayment: false, nextAble: true});
+                this.setState({ divActivePayment: false, nextAble: true });
                 break;
             default:
                 // this.setState({ activeStep:' select Amount', coreStep: 1 })
-                this.setState({ coreStep:1})
-          }
+                this.setState({ coreStep: 1 })
+        }
     }
 
     // ~~~~~~~~~~~~ click on btn sum ~~~~~ 
     handleClickBtn(e) {
         // if(!(this.state.dThrough !== '' & this.state.donate_req.referred_by ==='')) // mail not empty ant not valid
-        this.setState({nextAble: false})
-        this.setState(Object.assign(this.state.donate_req,{monthly_donation:e.target.dataset.letter}));
-      }
+        this.setState({ nextAble: false })
+        this.setState(Object.assign(this.state.donate_req, { monthly_donation: e.target.dataset.letter }));
+    }
     // TODO:
-        // set completes - to steps
-    
+    // set completes - to steps
+
 
     //~~~~~~~~handleChange   
     // TODO
@@ -230,406 +224,419 @@ export default class Donate extends Component {
 
     //~~~~~~~~~~~~ change sum ~~~~~~~~~~~~~~
     handleChange(e) {
-        if(e.target.value === '')
-            this.setState({nextAble: true});
+        if (e.target.value === '')
+            this.setState({ nextAble: true });
         else
-            this.setState({nextAble: false});
-        this.setState(Object.assign(this.state.donate_req,{monthly_donation: e.target.value}));
+            this.setState({ nextAble: false });
+        this.setState(Object.assign(this.state.donate_req, { monthly_donation: e.target.value }));
     }
 
     //~~~~~~~~~~~~~~~~ change mail (dThrow ~~~~~~~~~)
-    handleChangeMail(e) 
-    {
-        this.setState(Object.assign(this.state.donate_req,{referred_by: ''}));
-        this.setState({dThrough: e.target.value});
-        this.setState({nextAble: false}); // able next btn
+    handleChangeMail(e) {
+        this.setState(Object.assign(this.state.donate_req, { referred_by: '' }));
+        this.setState({ dThrough: e.target.value });
+        this.setState({ nextAble: false }); // able next btn
 
     }
     //d_title
-    handleChangeTitle(e){
-        this.setState(Object.assign(this.state.donate_req,{d_title: e.target.value}));
+    handleChangeTitle(e) {
+        this.setState(Object.assign(this.state.donate_req, { d_title: e.target.value }));
 
     }
     //d_description
-    handleChangeDescription(e){
-        this.setState(Object.assign(this.state.donate_req,{d_description: e.target.value}));
+    handleChangeDescription(e) {
+        this.setState(Object.assign(this.state.donate_req, { d_description: e.target.value }));
 
     }
 
     //~~~~~~~~~~~~~~~~~~~~~ donate proggress ~~~~~~~~~~~~
     // nextButton -> functionalety of donate proggress
-    nextButton(e)
-    {
-        if(this.state.loggedIn)
-        {
+    nextButton(e) {
+        if (this.state.loggedIn) {
             // ~~ start step 1~~~
-            if( this.state.coreStep === 1) 
-            {
-                if(!this.state.oneTimeChecked){
+            if (this.state.coreStep === 1) {
+                if (!this.state.oneTimeChecked) {
 
-                            // TODO: מיותר? מתי נעשת הבדיקה
+                    // TODO: מיותר? מתי נעשת הבדיקה
                     // if(this.state.donate_req.monthly_donation !== '') // sume field is not empty 
                     // {
-                        // ~~ statr dThrow 
-                        if(this.state.dThrough !== '')  // dTrow -> need check if user exist in system (give a id)
+                    // ~~ statr dThrow 
+                    if (this.state.dThrough !== '')  // dTrow -> need check if user exist in system (give a id)
+                    {
+                        // TODO:    check the email syntax    
+                        if (this.state.donate_req.referred_by === '') //-> check if do a request before
                         {
-                            // TODO:    check the email syntax    
-                            if(this.state.donate_req.referred_by === '') //-> check if do a request before
-                            {
-                                this.setState({ableDonate: true});
-                                axios.get('/donate/findDThrouhUser/'+this.state.dThrough
-                                ).then(res => 
+                            this.setState({ ableDonate: true });
+                            axios.get('/donate/findDThrouhUser/' + this.state.dThrough
+                            ).then(res => {
+                                if (res.status >= 400) {
+                                    throw new Error("Bad response from server");
+                                }
+                                else if (res === "not found" || res.data.user_id === undefined) // the data is not null
                                 {
-                                    if (res.status >= 400) {
-                                        throw new Error("Bad response from server");}
-                                    else if (res === "not found" || res.data.user_id === undefined) // the data is not null
-                                        {
-                                            alert ("there are no user in system!")
-                                            this.setState({dThrough: '' ,ableDonate: false});
-                    
-                                            // , nextAble:false});
-                                            // TODO: alert message in UI
-                                        }
-                                    else{ // give a id of the donate through
-                                        this.setState(Object.assign(this.state.donate_req,{referred_by: res.data.user_id}));
-                                        this.setState({ableDonate: false}); // donate able 
-                                        this.setState({nextAble: false});
-                                        
-                                    }	
-                                }).catch(error=> {
-                                    alert(error);
-                                })
-                            }
-                            // check if finish a req
-                            if (this.state.donate_req.referred_by !== ''){
-                                this.setState({ableDonate: false});
-                                this.switchStep();
+                                    alert("there are no user in system!")
+                                    this.setState({ dThrough: '', ableDonate: false });
 
-                            }
-                            // TODO !!
-                            // alert("findDuser: " + this.state.findDuser + " finishDonate " + this.state.finishDonate)
+                                    // , nextAble:false});
+                                    // TODO: alert message in UI
+                                }
+                                else { // give a id of the donate through
+                                    this.setState(Object.assign(this.state.donate_req, { referred_by: res.data.user_id }));
+                                    this.setState({ ableDonate: false }); // donate able 
+                                    this.setState({ nextAble: false });
+
+                                }
+                            }).catch(error => {
+                                alert(error);
+                            })
                         }
-                        // TODO (alert)
-                        else{ // the mail is ok
-                            this.switchStep(); // switch step
+                        // check if finish a req
+                        if (this.state.donate_req.referred_by !== '') {
+                            this.setState({ ableDonate: false });
+                            this.switchStep();
+
                         }
-                    
+                        alert("findDuser: " + this.state.findDuser + " finishDonate " + this.state.finishDonate)
+                    }
+                    // TODO (alert)
+                    else { // the mail is ok
+                        this.switchStep(); // switch step
+                    }
+
 
                     // -> // DO: delete the option of a empty sum
                     if (this.state.donate_req.referred_by !== '')
                         this.switchStep();
                 }
-                else{
+                else {
                     this.switchStep();
                 }
             } // ~~end step 1~~~
             else   // step 2 or 3                
                 this.switchStep(); // switch step
         }
-        else{
+        else {
             alert("you must loggin to donate")
         }
     }
 
-        prevButton(e){
-            switch(this.state.coreStep) {
-                case 1:
-                        // this.setState({prevAble: true});
-                        // activeStep:'more datails'   
-                    // }
-                    break;
-                case 2:
-                    this.setState({divActiveDonation: false,divActiveMore: false, divActivePayment: false, coreStep: 1,prevAble: false});
-                    // activeStep:'payment'
-                    break;
-                case 3:
-                    this.setState({divActiveDonation: false,divActiveMore: true,divActivePayment: false,coreStep:2,nextAble:false});
-                    break;
-                default:
-                    // this.setState({ activeStep:' select Amount', coreStep: 1 })
-                    this.setState({ coreStep:1})
-            }
+    prevButton(e) {
+        switch (this.state.coreStep) {
+            case 1:
+                // this.setState({prevAble: true});
+                // activeStep:'more datails'   
+                // }
+                break;
+            case 2:
+                this.setState({ divActiveDonation: false, divActiveMore: false, divActivePayment: false, coreStep: 1, prevAble: false });
+                // activeStep:'payment'
+                break;
+            case 3:
+                this.setState({ divActiveDonation: false, divActiveMore: true, divActivePayment: false, coreStep: 2, nextAble: false });
+                break;
+            default:
+                // this.setState({ activeStep:' select Amount', coreStep: 1 })
+                this.setState({ coreStep: 1 })
         }
-    
-    
+    }
 
-    // # 08.05 -> paypel
-    createPayPalSubscriptionButton(vault) {
-
+    async addMonthlyDonation() {
+        const response = await axios.post('/add-doner-in-org', {dio: escapeAllStringsInObject(this.state.donate_req)});
+        if (response.data === 'success') {
+            alert("Subscription completed. Thank you!");
+            window.location.assign('/');
+        } else {
+            alert('Error updating system. Please contact Magdilim admin');
+        }
+    }
+    
+    //PayPal button for monthly donations:
+    createPayPalSubscriptionButton() {
         return (
             <PayPalButton
-                options={{ vault: true }}
-                createSubscription={(data, actions) => {
-                    return actions.subscription.create({ plan_id: 'P-XXXXXXXXXXXXXXXXXXXXXXXX' });
-                }}
+                amount={this.state.donate_req.monthly_donation}
+                options={{ vault: true,'clientId': 'sb' }}
+                shippingPreference='NO_SHIPPING'
                 onApprove={(data, actions) => {
-                    // Capture the funds from the transaction 
-                    return actions.subscription.get().then(function (details) {
-                        // Show a success message to your buyer 
-                        alert("Subscription completed");
-                        // OPTIONAL: Call your server to save the subscription 
-                        return fetch("/paypal-subscription-complete",
-                            { method: "post", body: JSON.stringify({ orderID: data.orderID, subscriptionID: data.subscriptionID }) });
-                    });
+                    this.addMonthlyDonation();
+
+                    // Capture the funds from the transaction
+                    return actions && actions.subscriptions && actions.subscriptions({
+                        "billing_cycle": {
+                              "frequency": {
+                                "interval_unit": "MONTH",
+                                "interval_count": 1
+                              },
+                              "tenure_type": "REGULAR",
+                              "sequence": 2,
+                              "total_cycles": 0 // 0 total cycles means no end date
+                            }
+                    });                    
                 }}
+                onCancel={(data) => {}}
             />
-        )
+        );
+    }
+
+    async addOneTimeDonation() {
+        const response = await axios.post('/add-one-time-donation', { donation: escapeAllStringsInObject(this.state.donate_req) });
+        if (response.data === 'success') {
+            alert('Donation successfully made. Thank you!');
+            window.location.assign('/');
+        } else {
+            alert('Donation made, but not registered to our systems due to an error. Please contact Magdilim admin. Thank you');
+        }
     }
 
     //PayPal button function:
     createPayPalButton() {
-
         return (
             <PayPalButton
-                amount={this.state.sumDonate.toString()}
-                // shippingPreference="NO_SHIPPING" // default is "GET_FROM_FILE"
+                //options={{'client-id': 'AcxA_YjIODLDVnahn3WCnAUtXDhg_FTaUIFQJ_AtLWtWaOVf5rLAMoE1bttZI3CnIg8eloLovMjAP1R-'}}
+                amount={this.state.donate_req.monthly_donation}
+                shippingPreference='NO_SHIPPING'
                 onSuccess={(details, data) => {
-                    alert("Transaction completed by " + details.payer.name.given_name);
-
-                    // OPTIONAL: Call your server to save the transaction
-                    return fetch("/paypal-transaction-complete", {
-                        method: "post",
-                        body: JSON.stringify({
-                            orderID: data.orderID
-                        })
-                    });
+                    this.addOneTimeDonation();
                 }}
-            />)
+                onCancel={(data) => {}}
+            />);
     }
 
-    checkBoxhandleClick(){
-        this.setState(Object.assign(this.state.donate_req,{onTimeCheck:true}));
+    checkBoxhandleClick() {
+        this.setState(Object.assign(this.state.donate_req, { oneTimeCheck: true }));
 
     }
 
- // ~~~~~~~~~~ render ~~~~~~~~~~~~~~~~~~~~~```
-  render() 
-  {
-   
-    const styleBotton = 
-    {
-        margin: '1em',
-        backgroundColor:'#20B2AA',
-        textAlign: 'center',
-        // text-decoration: none;
-        display: 'inline-block',
-        fontSize: '16px',
-        padding: '32px 32px',
-        border: '0.1em solid black' 
-    }
-    const backgroundColor = '#20B2AA';
+    // ~~~~~~~~~~ render ~~~~~~~~~~~~~~~~~~~~~```
+    render() {
 
-    return (
-      <div>
-        <Step.Group widths={3} stackable='tablet' ordered = {true} fluid >
-            
-            <Step
-                id = 'step1'
-                // divActiveDonation
-                
-                active = {this.state.divActiveDonation}
-                completed = {this.state.dicCompleteDonation}
-                disabled = {this.state.dicCompleteDonation}
+        const styleBotton =
+        {
+            margin: '1em',
+            backgroundColor: '#20B2AA',
+            textAlign: 'center',
+            // text-decoration: none;
+            display: 'inline-block',
+            fontSize: '16px',
+            padding: '32px 32px',
+            border: '0.1em solid black'
+        }
+        const backgroundColor = '#20B2AA';
 
-                // children 
-                icon='dollar'
-                link
-                // onClick={this.handleClick}
-                // onClick={() => this.setState({showLogin: true, showUser: false, showBackButton: true}
-                title='Select Amount'
-                description='Choose amount to donate'
-            />
-            <Step
-                id = 'step2'
-                active = {this.state.divActiveMore}
-                completed = {this.state.divActivePayment}
-                disabled = {this.state.divActivePayment}
-                icon='edit outline'
-                link
-                // onClick={this.handleClick}
-                title='dedication'
-                description='Add a dedication'
-            />
+        return (
+            <div>
+                <Step.Group widths={3} stackable='tablet' ordered={true} fluid >
 
-            <Step
-                id = 'step3' 
-                active = {this.state.divActivePayment}
-                disabled = {!this.state.divActivePayment}
-                icon='credit card'
-                link
-                // onClick={this.handleClick}
-                title='payment'
-                // description='an additional information'
-     
-            />
-        </Step.Group>
-        {/*       
+                    <Step
+                        id='step1'
+                        // divActiveDonation
+
+                        active={this.state.divActiveDonation}
+                        completed={this.state.dicCompleteDonation}
+                        disabled={this.state.dicCompleteDonation}
+
+                        // children 
+                        icon='dollar'
+                        link
+                        // onClick={this.handleClick}
+                        // onClick={() => this.setState({showLogin: true, showUser: false, showBackButton: true}
+                        title='select Amount'
+                        description='Choose your amount'
+                    />
+                    <Step
+                        id='step2'
+                        // active={active === 'more datails'}
+                        active={this.state.divActiveMore}
+                        completed={this.state.divActivePayment}
+                        disabled={this.state.divActivePayment}
+                        icon='edit outline'
+                        link
+                        // onClick={this.handleClick}
+                        title='dedication'
+                        description='Add a dedication'
+                    />
+
+                    <Step
+                        id='step3'
+                        // active={active === 'payment'}
+                        active={this.state.divActivePayment}
+                        disabled={!this.state.divActivePayment}
+                        icon='credit card'
+                        link
+                        // onClick={this.handleClick}
+                        title='payment'
+                    // description='an additional information'
+
+                    />
+                </Step.Group>
+                {/*       
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         if not login
         {/* divActiveDonation */}
-        {!this.state.loggedIn
-        &&
-          <div>
-                Please Log In to begin donation process.
-          </div>  
-        }
-        {this.state.coreStep === 1 && 
-        // {this.state.divActiveDonation && 
-            <Segment >
-                <Grid>
-                    <Grid.Row> 
-                        <h4 style = {{marginLeft: '2em'}} >My Donation (
+                {!this.state.loggedIn
+                    &&
+                    <div>
+                        you need to loggedIn!
+          </div>
+                }
+                {this.state.coreStep === 1 &&
+                    // {this.state.divActiveDonation && 
+                    <Segment >
+                        <Grid>
+                            <Grid.Row>
+                                <h4 style={{ marginLeft: '2em' }} >My Donation (
                             <Icon name='dollar' />USD)</h4>
-                    </Grid.Row>
-                    <Grid.Row style ={{ paddingLeft: '4em'}}>
-                        <Label style = {{backgroundColor: '#e6f2ff', fontSize: '14px'}}> 
-                            <Icon name='hand point right' /> Select or enter an amount
+                            </Grid.Row>
+                            <Grid.Row style={{ paddingLeft: '4em' }}>
+                                <Label style={{ backgroundColor: '#e6f2ff', fontSize: '14px' }}>
+                                    <Icon name='hand point right' /> Select or enter an amount
                         </Label>
-                    </Grid.Row>
+                            </Grid.Row>
 
-                    <Grid.Row>
+                            <Grid.Row>
 
-                        {/* <h3 style = {{textAlign: 'center'}}>select amount:</h3> */}
-                        <div style = {{marginLeft :'5em'}}>
-                            {/* ~~ the sum buttons */}
-                            {this.state.sumBtn.map(sums =>
-                                <Button 
-                                    inverted circular 
-                                    style = {styleBotton} 
-                                    key={sums} 
-                                    data-letter={sums}
-                                    onClick={this.handleClickBtn}>
-                                    {sums}
-                                </Button>
-                            )}
-                        </div>
-                    </Grid.Row>
-                    <Grid.Row style ={{paddingLeft: '10em'}}>
-                        <div style ={{padding: '0.2em'}}>
-                           
-                            {/* ~~ amount */}
-                            <Input required
-                                action={{
-                                color: 'teal',
-                                labelPosition: 'left',
-                                icon: 'eraser',
-                                content: 'reset',
-                                widths: '2em',
-                                onClick: () => 
-                                    { 
-                                        // TODO: message that not empty- end fill the minimum sum
+                                {/* <h3 style = {{textAlign: 'center'}}>select amount:</h3> */}
+                                <div style={{ marginLeft: '5em' }}>
+                                    {/* ~~ the sum buttons */}
+                                    {this.state.sumBtn.map(sums =>
+                                        <Button
+                                            inverted circular
+                                            style={styleBotton}
+                                            key={sums}
+                                            data-letter={sums} o
+                                            onClick={this.handleClickBtn}>
+                                            {sums}
+                                        </Button>
+                                    )}
+                                </div>
+                            </Grid.Row>
+                            <Grid.Row style={{ paddingLeft: '10em' }}>
+                                <div style={{ padding: '0.2em' }}>
 
-                                        // this.setState(Object.assign(this.state.donate_req,{monthly_donation: ''}));
-                                        // this.setState({nextAble: true});
+                                    {/* ~~ amount */}
+                                    <Input required
+                                        action={{
+                                            color: 'teal',
+                                            labelPosition: 'left',
+                                            icon: 'eraser',
+                                            content: 'restart to min sum',
+                                            widths: '2em',
+                                            onClick: () => {
+                                                // TODO: message that not empty- end fill the minimum sum
 
-                                        this.setState(Object.assign(this.state.donate_req,{monthly_donation: this.props.data.initialDonation}));
+                                                // this.setState(Object.assign(this.state.donate_req,{monthly_donation: ''}));
+                                                // this.setState({nextAble: true});
 
-                                        // alert("state: " + this.state.donate_req.monthly_donation)
+                                                this.setState(Object.assign(this.state.donate_req, { monthly_donation: this.props.data.initialDonation }));
 
+                                                // alert("state: " + this.state.donate_req.monthly_donation)
+
+                                            }
+                                            // {this.setState({ sumDonate: ''})}
+                                        }}
+                                        actionPosition='left'
+                                        label={{ tag: true, content: 'your donation' }}
+                                        labelPosition='right'
+                                        placeholder="sum of monthly donation"
+                                        defaultValue={this.state.donate_req.monthly_donation}
+                                        value={this.state.donate_req.monthly_donation}
+                                        onChange={this.handleChange}
+
+                                    />
+                                    {this.state.donate_req.monthly_donation === '' &&
+                                        <Message
+                                            error
+                                            header='Action Forbidden'
+                                            content='You must enter a sum of donation.'
+                                        />
                                     }
-                                // {this.setState({ sumDonate: ''})}
-                                }}
-                                actionPosition='left'
-                                label={{ tag: true, content: 'your donation' }}
-                                labelPosition='right'
-                                placeholder= "sum of monthly donation"
-                                defaultValue={this.state.donate_req.monthly_donation}
-                                value={this.state.donate_req.monthly_donation}
-                                onChange={this.handleChange}
+                                </div>
 
-                            />
-                            {this.state.donate_req.monthly_donation === '' &&
-                            <Message
-                                error
-                                header='Action Forbidden'
-                                content='You must enter a sum of donation.'
-                                />
-                            }
-                        </div>
-                        
-                    </Grid.Row> 
-                    {/* ADD ? */}
-                    {/* <label > Donation amount (per month):</label> */}
+                            </Grid.Row>
+                            {/* ADD ? */}
+                            {/* <label > Donation amount (per month):</label> */}
 
-                    {/* one time donation */}
-                    <Grid.Row>
-                        <div style={{paddingLeft:"10em"}}>
-                            <Checkbox toggle
-                                checked={this.state.donate_req.onTimeCheck}
-                                label='one time donation'
-                                onClick={() => this.setState(prevState => {
-                                    let donate_req = Object.assign({}, prevState.donate_req);  // creating copy of state variable jasper
-                                    if (donate_req.onTimeCheck == true)
-                                        donate_req.onTimeCheck = false; 
-                                    else
-                                        donate_req.onTimeCheck = true; 
-                                                        // update the name property, assign a new value                 
-                                        return { donate_req }; 
-                                
-                                })}   
-                            />
-                        </div>
-                    </Grid.Row>
-                    <Grid.Row>  
-                        <label style ={{paddingLeft: '5em' , color: '#20B2AA'}}>
-                            _________________________________________________________</label>
-                    </Grid.Row>  
-                </Grid>
-                        
-                {/*  ~~~~~~ Donate through ~~~~~~~~~~~~*/}
-                <Label style = {{backgroundColor: '#e6f2ff', fontSize: '14px',higth:'30px', marginTop: '3em'}}> 
-                            <Icon name='hand point right' /> 
+                            {/* one time donation */}
+                            <Grid.Row>
+                                <div style={{ paddingLeft: "10em" }}>
+                                    <Checkbox toggle
+                                        checked={this.state.donate_req.oneTimeCheck}
+                                        label='one time donation'
+                                        onClick={() => {
+                                            this.state.donate_req.oneTimeCheck = !this.state.donate_req.oneTimeCheck;
+                                            this.setState({donate_req: this.state.donate_req});
+                                        } 
+                                        // this.setState(prevState => {
+                                        //     let donate_req = Object.assign({}, prevState.donate_req);  // creating copy of state variable jasper
+                                        //     donate_req.oneTimeCheck = !donate_req.oneTimeCheck;
+                                        //     // update the name property, assign a new value                 
+                                        //     return { donate_req };
+
+                                        // })
+                                    }
+                                    />
+                                </div>
+                            </Grid.Row>
+                            <Grid.Row>
+                                <label style={{ paddingLeft: '5em', color: '#20B2AA' }}>
+                                    _________________________________________________________</label>
+                            </Grid.Row>
+                        </Grid>
+
+                        {/*  ~~~~~~ Donate through ~~~~~~~~~~~~*/}
+                        <Label style={{ backgroundColor: '#e6f2ff', fontSize: '14px', higth: '30px', marginTop: '3em' }}>
+                            <Icon name='hand point right' />
                                 were you reffered by someone?    Please enter his e-mail and upgrade his status! :)
                 </Label>
-                {/* ~~ form */}
-                <Form style = {{paddingTop: '1.5em' , paddingLeft: '1.5em', marginLeft: '8em'}}>
-                    {/* <Form.Input
+                        {/* ~~ form */}
+                        <Form style={{ paddingTop: '1.5em', paddingLeft: '1.5em', marginLeft: '8em' }}>
+                            {/* <Form.Input
                         width={4}
-						label= 'Donate through:'
-						icon='user outline'
-						iconPosition='left'
-						placeholder='Donate through userName'
-						name="dThrough"
-						// onChange={this.handleChange.bind(this)}
-					/> */}
-                    <br/>
+                        label= 'Donate through:'
+                        icon='user outline'
+                        iconPosition='left'
+                        placeholder='Donate through userName'
+                        name="dThrough"
+                        // onChange={this.handleChange.bind(this)}
+                    /> */}
+                            <br />
 
-                    <Form.Input
-                            icon='mail'
-                            iconPosition='left'
-                            name = "dThrough"
-                            id='dedicationEmail'
-                            placeholder='mail'
-                            width ={6}
-                            // control={Input}
-                            // label= 'Donate through: (mail)'
-                            placeholder='joe@schmoe.com'
-                            value = {this.state.dThrough}
-                            onChange = {this.handleChangeMail}
+                            <Form.Input
+                                icon='mail'
+                                iconPosition='left'
+                                name="dThrough"
+                                id='dedicationEmail'
+                                placeholder='mail'
+                                width={6}
+                                // control={Input}
+                                // label= 'Donate through: (mail)'
+                                placeholder='joe@schmoe.com'
+                                value={this.state.dThrough}
+                                onChange={this.handleChangeMail}
                             // error={{
                             //     content: 'Please enter a valid email address',
                             //     pointing: 'below',
                             // }}
-                    />
-                    {/* // TODO */}
-                    {/* ~~ check if email is valid */}
-                    {/* { this.state.dThrough && 
+                            />
+                            {/* // TODO */}
+                            {/* ~~ check if email is valid */}
+                            {/* { this.state.dThrough && 
                         <div>{Isemail.validate(this.state.dThrough) &&
                         <div>valid</div> }
                         </div>
                     } */}
-                        
-                        {/* <Form.Field
+
+                            {/* <Form.Field
                             label = 'Last Name'
                             width={4}
                             input = ''
                             placeholder='Sum donation'
                         /> */}
-                        {/* Add a dedication */}
-                        
-                        <br/>
-                        <br/>
-                        {/* <Button 
+                            {/* Add a dedication */}
+
+                            <br />
+                            <br />
+                            {/* <Button 
                         width ={6}
                         style = {{
                             backgroundColor: backgroundColor,
@@ -642,116 +649,95 @@ export default class Donate extends Component {
                         type='submit'>Submit</Button> */}
 
 
-                    </Form>
-                    {/* <Grid.Row>
+                        </Form>
+                        {/* <Grid.Row>
                         sum of donation: {this.state.sumDonate}
                     </Grid.Row> */}
-            
-            
-            </Segment>
-        }
-        {/* ~~~ step 2 - more details */}
-        {/*  // TODO: check if thesync find duser (by mail) found */}
-        {this.state.coreStep === 2 && 
-            <div>
-                <Label tag style = {{backgroundColor: '#e6f2ff', fontSize: '12px' ,marginTop:'2em', marginBottom:'2em'}}> 
+
+
+                    </Segment>
+                }
+                {/* ~~~ step 2 - more details */}
+                {/*  // TODO: check if thesync find duser (by mail) found */}
+                {this.state.coreStep === 2 &&
+                    <div>
+                        <Label tag style={{ backgroundColor: '#e6f2ff', fontSize: '12px', marginTop: '2em', marginBottom: '2em' }}>
                             {/* <Icon name='heart'   */}
                             Add a Dedication (optional)
                 </Label>
-                 <Form>
-                        {/* /// TODO ! toggel to show their namw */}
-                    <Form.Input
-                        width={4}
-                        label= 'In Honor of:'
-                        icon='heart'
-                        iconPosition='left'
-                        placeholder='name'
-                        name="dedicatedTo"
-                        onChange={this.handleChangeTitle.bind(this)}
-                    />
-                    <Form.TextArea 
-                        width={12}
-                        label= 'Write a Dedication:'
-                        rows={3} 
-                        placeholder='Text'
-                        name="more"
-                        onChange={this.handleChangeDescription.bind(this)}
+                        <Form>
+                            {/* /// TODO ! toggel to show their namw */}
+                            <Form.Input
+                                width={4}
+                                label='In Honor of:'
+                                icon='heart'
+                                iconPosition='left'
+                                placeholder='name'
+                                name="dedicatedTo"
+                                onChange={this.handleChangeTitle.bind(this)}
+                            />
+                            <Form.TextArea
+                                width={12}
+                                label='Write a Dedication:'
+                                rows={3}
+                                placeholder='Text'
+                                name="more"
+                                onChange={this.handleChangeDescription.bind(this)}
 
-                    />
-                </Form>
-                
-                <br></br>
+                            />
+                        </Form>
 
-            </div>
-        }
-        {this.state.coreStep === 3 &&
-            <div>
-                 <h1>Connection to PayPal:</h1>
-                        <Icon name='money bill alternate outline' />
-                        {this.createPayPalButton()}
-                 <br></br>
-                {/* DONATE */}
-                <Button 
-                    style = {{padding: '10em'}}
-                    onClick = {this.donationProcess }
-                    // referred_by
-                    // disabled ={ !this.state.finishDonate }
-                    disabled ={this.state.ableDonate}
-                >DONATE</Button>
+                        <br></br>
 
-                <br></br>
-            </div>
-        }
-
-
-        {/* <Button as='a' inverted={!fixed} onClick={() => this.setState({showLogin: true, showUser: false, showBackButton: true})}> */}
-
-
-        {/* {this.state.showLogin && <LoginForm record={this.handlerClick}/>}
-                    {this.state.showUser && <UserRegistrationForm />}
-                    {!this.state.showLogin && !this.state.showUser &&
+                    </div>
+                }
+                {this.state.coreStep === 3 &&
                     <div>
-                    <But */}
+                        <h1>Connect to PayPal:</h1>
+                        {this.state.donate_req.oneTimeCheck && this.createPayPalButton() || this.createPayPalSubscriptionButton()}
+                        <br></br>
+                    </div>
+                }
 
-        <div style ={{alignSelf: 'center'}}>
-        <Button.Group style = {{marginTop:'2em'}} >
-            <Button
-                name = 'btnPrev'
-                // disabled = {this.disableButtons}
-                disabled ={false}
-                // active={active === 'select Amount'}
+                <div style={{ alignSelf: 'center' }}>
+                    <Button.Group style={{ marginTop: '2em' }} >
+                        <Button
+                            name='btnPrev'
+                            // disabled = {this.disableButtons}
+                            disabled={false}
+                            // active={active === 'select Amount'}
 
-                color='blue'
-                labelPosition='left' 
-                icon='left arrow'
-                content='prev'
-                onClick = {this.prevButton}
-            />
-            <Button
-                disabled ={this.state.nextAble}
-                name = 'btnNext'
-                color='blue'
-                labelPosition='right' 
-                icon='right arrow'
-                content='Next'
-                onClick = {this.nextButton}
+                            color='blue'
+                            labelPosition='left'
+                            icon='left arrow'
+                            content='prev'
+                            onClick={this.prevButton}
+                        />
+                        <Button
+                            disabled={this.state.nextAble}
+                            name='btnNext'
+                            color='blue'
+                            labelPosition='right'
+                            icon='right arrow'
+                            content='Next'
+                            onClick={this.nextButton}
 
 
-                // label={{ basic: true, color: 'blue', pointing: 'right', icon:'right arrow' }}
-                //  content: '2,048' }}
-            />
+                        // label={{ basic: true, color: 'blue', pointing: 'right', icon:'right arrow' }}
+                        //  content: '2,048' }}
+                        />
 
-        </Button.Group>
-        </div>
-        {/*  nassage of incoret value */}
-        {/* { this.state.showMessageReq && <Modal
+                    </Button.Group>
+                </div>
+                {/*  nassage of incoret value */}
+                {/* { this.state.showMessageReq && <Modal
             trigger={this.nextButton}
             header='Reminder!'
             content='Call Benjamin regarding the reports.'
             actions={['Snooze', { key: 'done', content: 'Done', positive: true }]}
         />} */}
 
-        {/* <Modal
+                {/* <Modal
             open={open}
             closeOnEscape={closeOnEscape}
             closeOnDimmerClick={closeOnDimmerClick}
@@ -774,9 +760,9 @@ export default class Donate extends Component {
                 />
             </Modal.Actions>
         </Modal> */}
-        {/* ~~~ @ check ~~~ */}
-    </div>
-    )
-  }
+                {/* ~~~ @ check ~~~ */}
+            </div>
+        )
+    }
 }
 

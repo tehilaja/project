@@ -30,7 +30,7 @@ const statusCache = require('./utilities/status-cache');
 const paymentsUtil = require('./utilities/payments');
 const dbUtil = require('./utilities/db');
 const inQutationMarks = require('./utilities/string').inQutationMarks;
-
+const sqlDateString = require('./utilities/string').sqlDateString;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 const express = require('express');
@@ -458,140 +458,35 @@ app.post('/addOrg', (req, res, next) => {
   });
 });
 
-
-//   console.log("the org:")
-//   // need to check user login ?
-//   try {
-//     console.log("in /addOrg \n ")
-
-//     const qAddOrg = checkAddOrgDetails(req.body);// check details
-//     console.log("quert is: \n", qAddOrg, "\n");
-
-//     db.query(qAddOrg, (err, result, fields) => {
-//       if (!err) {
-//         res.send("insert org");//response
-//         console.log("succses! ");
-//       }
-//       else {
-//         res.end("db fail");
-//         console.log("fail db " + err.code);
-//       }
-
-//       // console.log("result " + result);
-//     })
-//     // console.log("in check \n")
-//     // console.log("string obj \n "+ JSON.stringify(req.body));
-//   }
-//   catch (err) {
-//     console.log("error " + err.code);
-//     res.end("err server ", err.code)
-//   }
-
-
-// });
-
-// app.post('/addOrg/firstStep', (req, res, next) => {
-
-//   const qFirstAdd = `INSERT INTO Donors_in_org (org_id,org_name,min_donation,one_time_donation,approved)
-//     VALUES(${req.body.org_id},${req.body.org_name},${req.body.min_donation},${req.body.one_time_donation},0,
-//     );`
-//   // ,org_num,branch,account_num,bank_num,account_owner
-//   // ${paramO.branch},${paramO.account_num},${paramO.bank_num},${paramO.account_owner},${paramO.org_num}
-
-
-// });
-//~~~~~~~~~~~~~~~~~~~~ donate process ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-// check which details exsist and do a query
-function checkDonateDetails(paramO,if_oneTime) {
-  // user_id, org_id, monthly_donation, referred_by,d_title, d_description,is_anonim,status_id
-  var q = ` INSERT INTO Donors_in_org (`
-  var insertinfValue = `)VALUES(`
-
-  // neccesery
-  // TODO: check if the neccesery value input? -> before?
-
-  q += `user_id,org_id,monthly_donation`;
-  insertinfValue += `${inQutationMarks(paramO.user_id)},${paramO.org_id},${paramO.monthly_donation}`
-
-  // --- check
-  if(!if_oneTime)
-    if (paramO.referred_by !== '') {
-      q += `,referred_by`;
-      insertinfValue += `,${inQutationMarks(paramO.referred_by)}`;
+//---------------------- add doner in org - monthly donation -----------------------
+app.post('/add-doner-in-org', (req, res, next) => {
+  const dio = req.body.dio;
+  const sqlQuery = `INSERT INTO Donors_in_org (org_id, user_id, referred_by, monthly_donation, d_date, d_title, d_description) VALUES(${dio.org_id},${inQutationMarks(dio.user_id)},${inQutationMarks(dio.referred_by)},${dio.monthly_donation},${inQutationMarks(sqlDateString())},${inQutationMarks(dio.d_title)},${inQutationMarks(dio.d_description)});`
+  dbUtil.callDB(db, sqlQuery, (err, result) => {
+    if (!err) {
+      statusCache.addDonorToOrg(dio.user_id, dio.org_id, dio.monthly_donation, dio.referred_by);
+      res.send('success');
+    } else {
+      console.log('error adding doner in org:\n'+console.log(err));
+      console.log(sqlQuery);
+      res.send('fail');
     }
-
-  if (paramO.d_title !== '') {
-    q += `,d_title`;
-    insertinfValue += `,${inQutationMarks(paramO.d_title)}`;
-  }
-  if (paramO.d_description != '') {
-    q += `,d_description`;
-    insertinfValue += `,${inQutationMarks(paramO.d_description)}`;
-  }
-  // nessecery
-
-  q += `,anonymous,status_id`;
-  insertinfValue += `,${paramO.anonymous},1);`
-
-  const query = q + insertinfValue;
-  console.log("param (in fun) \n" + query);
-
-  return query
-}
-// ~~~~~~~~~~~~ post:  /oneTimedonationProcess --> one time donate ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-app.post('/oneTimedonationProcess', (req, res, next) => {
-  try {
-    console.log("in /oneTimedonationProcess \n ")
-    // const q1Donate = checkDonateDetails(req.body,true);// check details
-    const q1Donate = `insert into one_time_donations(user_id,org_id,sum_donation,anonymous) value(,${inQutationMarks(req.body.user_id)},${req.body.org_id},${req.body.monthly_donation},0);`
-    console.log("quert is: \n", q1Donate, "\n");
-
-    db.query(q1Donate, (err, result, fields) => {
-      if (!err) {
-        res.send("insert donation");
-        console.log("succses! ");
-      }
-      else {
-        res.end("db fail");
-        console.log("fail db " + err.code);
-      }
-    })
-  }
-  catch (err) {
-    console.log("error " + err.code);
-    res.end("err server ", err.code)
-  }
+  })
 });
 
 
-// ~~~~~~~~~~~~ post:  /donationProcess --> donate ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-app.post('/donationProcess', (req, res, next) => {
-  try {
-    let qDonate;
-    console.log("in /donationProcess \n ")
-    if (req.body.onTimeCheck == true) // one time donaition
-      qDonate = `insert into one_time_donations(user_id,org_id,sum_donation,anonymous) value(${inQutationMarks(req.body.user_id)},${req.body.org_id},${req.body.monthly_donation},0);`
-
-    else
-      qDonate = checkDonateDetails(req.body,false);// check details
-    console.log("quert is: \n", qDonate, "\n");
-
-    db.query(qDonate, (err, result, fields) => {
-      if (!err) {
-        res.send("insert donation");
-        console.log("succses! ");
-      }
-      else {
-        res.end("db fail");
-        console.log("fail db " + err.code);
-      }
-    })
-  }
-  catch (err) {
-    console.log("error " + err.code);
-    res.end("err server ", err.code)
-  }
+//-----------------------add one time donation to db-------------------------
+app.post('/add-one-time-donation', (req, res, next) => {
+  const donation = req.body.donation;
+  const sqlQuery = `INSERT INTO one_time_donations(user_id,org_id,referred_by,sum_donation,anonymous, d_date) VALUES (${inQutationMarks(donation.user_id)},${donation.org_id},${inQutationMarks(donation.referred_by)},${donation.monthly_donation},0, ${inQutationMarks(sqlDateString())});`
+  dbUtil.callDB(db, sqlQuery, (err, result) => {
+    if (!err) {
+      res.send('success');
+    } else {
+      console.log('error adding one time donation:\n' + JSON.stringify(err));
+      console.log(sqlQuery)
+    }
+  });
 });
 
 //-------------------function that gets the gifts for organization ------------------
@@ -832,7 +727,7 @@ app.post('/get_user_params', function (req, res) {
   }
   reactor.registerEvent('got_user_params');
   reactor.addEventListener('got_user_params', function () {
-    const email = params.find(x => x.Name === 'email').Value;
+    const email = params.find(x => x.Name === 'email') && params.find(x => x.Name === 'email').Value;
     params.push({Name: 'program_admin', Value: email === 'tehilaj97@gmail.com'});
     res.send(params);
   });

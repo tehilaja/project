@@ -72,7 +72,7 @@ class ForgotPasswordForm extends React.Component {
             console.log("resp", response)
 
             if (response.data === 'success') {
-                alert('Password reseted successfully');
+                alert('Password reset successfully');
                 window.location.assign('/');
             } else {
                 alert(response.data);

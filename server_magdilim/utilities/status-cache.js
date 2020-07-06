@@ -1,6 +1,21 @@
+const dbUtil = require('./db');
+
 let organizationsTrees = {}; // organizationsTrees[org_id] returns the full org tree
 let usersToOrganizationTrees = {}; // usersToOrganizationTrees[user_id][org_id] returns the org tree for that user
 let orgToLevels = undefined; // 
+
+const addOrgsWithNoDonors = (db, callback) => {console.log('in add orgs with no donors')
+    const sqlQuery = `SELECT org_id FROM organizations WHERE org_id NOT IN (SELECT org_id FROM donors_in_org);`;
+    dbUtil.callDB(db, sqlQuery, (err, result) => {
+        if (!err) {
+            result.forEach(org_id => addOrg(org_id));
+            console.log('\n\n\n\norgs:\n'+Object.keys(organizationsTrees));
+            if (callback) callback();
+        } else {
+            console.log("error adding orgs with no donors:" + JSON.stringify(err))
+        }
+    })
+}
 
 const getDonorsFromDbAndSetCache = (db, callback) => {
     const sqlQuery = `SELECT * FROM donors_in_org WHERE status_id=1`;
@@ -10,6 +25,7 @@ const getDonorsFromDbAndSetCache = (db, callback) => {
             console.log("donors in org:\n" + JSON.stringify(result));
             getLevels(db, () => {
                 setCache(result);
+                addOrgsWithNoDonors(db);
                 if (callback) callback();
             });
         });
@@ -235,7 +251,7 @@ const updateDonorInOrg = (donor_id, org_id, old_monthly_donation, new_monthly_do
 const updateAnccestors = (node, org_id, newCollected, newReferred) => {
     let pointer = node;
 
-    while (pointer.parent) {
+    while (pointer.parent && pointer.parent.id) {
         console.log(`\n\nparent: ${pointer.parent.id}\n\n`);
         pointer = `org_${org_id}` === pointer.parent.id && getOrgTree(org_id) || getOrgTreeForUser(pointer.parent.id, org_id);
         pointer.key.collected += newCollected;

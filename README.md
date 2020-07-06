@@ -11,7 +11,7 @@ To run project locally:
 ## Run Server:
 
 in one command line go into Server_magdilim: using:
-### cd server_magdilim
+### `cd server_magdilim`
 then to run:
 ### `node Server.js`
 to run server.
