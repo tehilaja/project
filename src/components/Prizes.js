@@ -71,7 +71,7 @@ class Prizes extends React.Component{
         this.setState({filterGift: res.data})
 
         // -----
-        const imgs = res.map(gift => {
+        const imgs = res.data.map(gift => {
           const image = {};
           alert("url \n"+ JSON.stringify(res.gift_pic))
           

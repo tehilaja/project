@@ -267,7 +267,9 @@ export default class Donate extends Component {
                         if (this.state.donate_req.referred_by === '') //-> check if do a request before
                         {
                             this.setState({ ableDonate: true });
-                            axios.get('/donate/findDThrouhUser/' + this.state.dThrough
+    
+                            axios.post('/donate/findDThrouhUser',{org_id: this.state.org_id, userMail: this.state.dThrough},
+                            { headers: { 'Content-Type': 'application/json' } }
                             ).then(res => {
                                 if (res.status >= 400) {
                                     throw new Error("Bad response from server");

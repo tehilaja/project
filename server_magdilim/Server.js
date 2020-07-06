@@ -329,10 +329,13 @@ app.get('/get-files-of-folder/:folder', (req, res, next) => {
 
 
 // -- /donate/findDThrouhUser
-app.get('/donate/findDThrouhUser/:user_mail', (req, res, next) => {
+app.post('/donate/findDThrouhUser', (req, res) => {
   try {
+    console.log("req: "+ req.body.userMail + " "+ req.body.org_id)
+    // console.log("req: "+ req.params.userMail + " "+ req.params.org_id)
     console.log("in donate/findDThrouhUser/:user_mail")
-    const qDUser = `select user_id from donors_in_org where user_id =${inQutationMarks(req.params.user_mail)}`;
+    const qDUser = `select user_id from donors_in_org where user_id ="${req.body.userMail}" and org_id =${req.body.org_id}`;
+    // select user_id from donors_in_org where user_id ="tehilaj97@gmail.com" and org_id = 1;
     console.log("query: \n" + qDUser + "\n");
     db.query(qDUser, (err, result, fields) => {
       if (err) throw err;
