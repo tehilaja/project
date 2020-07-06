@@ -73,15 +73,7 @@ class NewOrgPage extends React.Component {
 
     selectLevel (e, { value }) {
         this.setState({ selectedOptionLevel: value })
-
-        // ---
-        alert("f: "+JSON.stringify(value) + "n "+ (JSON.stringify(value).split("/")[0])+ "ח "+ value);
         this.setState(Object.assign(this.state.org,{field_of_activity:value}));
-
-        // this.state.org['field_of_activity'] = JSON.stringify(value).split('\\')[1]
-        // this.setState({ org: this.state.org});
-
-        // this.filterChooseOrg(value)
       }
 
     //the following function is to send an email that a new oragnization is awaiting approval
@@ -214,7 +206,7 @@ class NewOrgPage extends React.Component {
                 <Form.Field>
                     {/* ------------------------------------------------------- */}
                     {/* label='Field of Activity:' */}
-
+                    <label >Field of Activity:</label>
                     <Dropdown
                         fluid
                         // multiple
@@ -228,15 +220,6 @@ class NewOrgPage extends React.Component {
                         // searchQuery={searchQuery}
                         value={value}
                     />
-                    
-
-                    {/* <Form.TextArea
-                        rows={2}
-                        label='Field of Activity:'
-                        placeholder={this.state.org.field_of_activity}
-                        value={this.state.org.field_of_activity}
-                        name='field_of_activity'
-                        onChange={this.handleChange.bind(this)} /> */}
                 </Form.Field>
                 <Form.Field>
                     <Form.TextArea
