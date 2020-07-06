@@ -1,11 +1,19 @@
 import React from 'react';
 import { v1 as uuid } from 'uuid';
 import axios from "axios";
-import {Button,Divider,Form,Grid,Header,Icon,Label,Segment,} from 'semantic-ui-react';
+import {Button,Divider,Form,Grid,Header,Icon,Label,Segment,Dropdown} from 'semantic-ui-react';
 import { escapeAllStringsInObject } from '../../utilities/string';
 
 const emailService = require('../../utilities/email');
 
+// -----------------------------------
+
+const addressDefinitions = ["a","b","c"];
+
+const fieldOptions = [
+    // { key: 'all organization',text: 'all organization', value: 'all organization' }
+];
+    
 class NewOrgPage extends React.Component {
 
     constructor(props) {
@@ -15,6 +23,7 @@ class NewOrgPage extends React.Component {
             org: {
                 org_admin_id: this.props.data.userName,
                 admin_name: `${this.props.data.first_name} ${this.props.data.last_name}`,
+                field_of_activity: null
             },
             loggedIn: this.props.data.loggedIn,
             
@@ -22,15 +31,60 @@ class NewOrgPage extends React.Component {
             routeMain: false,
             allowAddPrize: false,
             showAddPrize: false,
-            orgAproved: false
+            orgAproved: false,
+            searchQuery: '',
+            
         }
         this.handleChange = this.handleChange.bind(this)
         this.sendEmail = this.sendEmail.bind(this);
+        this.selectLevel = this.selectLevel.bind(this);
     }
+    // -----------------------
+  
+
 
     componentDidMount() {
         window.scrollTo(0, 0);
+
+        //--get_field_of_activity
+        axios.get('/get_field_of_activity').then(res => 
+        {
+            if (res.status >= 400) {
+                throw new Error("Bad response from server");}
+                return res
+            }).then(respones=>
+                {
+                    // alert("lastDonation \n" + JSON.stringify(respones.data))
+                if(respones.data==="no data") //TODO: if no last donation///
+                    alert(respones.data)
+                else{ 
+                    this.setState({fieldOfActivity: respones.data});
+                    // alert(" donaition: \n" + JSON.stringify(respones.data))
+                    respones.data.forEach(function(field){
+                    let fieldtobj ={};
+                    fieldtobj["key"]=field.field_name;
+                    fieldtobj["value"]=field.field_name;
+                    fieldtobj["text"]=field.field_name;
+                    fieldOptions.push(fieldtobj);
+                })
+        }
+        }).catch(error=> {
+            // alert(error);
+        })
     }
+
+    selectLevel (e, { value }) {
+        this.setState({ selectedOptionLevel: value })
+
+        // ---
+        alert("f: "+JSON.stringify(value) + "n "+ (JSON.stringify(value).split("/")[0]));
+        this.setState(Object.assign(this.state.org,{field_of_activity:JSON.stringify(value).split("/")[0]}));
+
+        // this.state.org['field_of_activity'] = JSON.stringify(value).split('\\')[1]
+        // this.setState({ org: this.state.org});
+
+        // this.filterChooseOrg(value)
+      }
 
     //the following function is to send an email that a new oragnization is awaiting approval
     sendEmail() {
@@ -57,11 +111,11 @@ class NewOrgPage extends React.Component {
             alert('Please fill in admin name');
             return false;
         }
-        if (!this.state.org.description) {
+        if (!this.state.org.field_of_activity) {
             alert('Please fill in field of activity');
             return false;
         }
-        if (!this.state.org.org_name) {
+        if (!this.state.org.description) {
             alert('Please fill in description');
             return false;
         }
@@ -101,6 +155,10 @@ class NewOrgPage extends React.Component {
     }
 
     renderInputs() {
+        const { searchQuery, value } = this.state
+        const { valueLevel } = this.state // level
+
+
         return (
             <div>
                 <Divider
@@ -111,6 +169,9 @@ class NewOrgPage extends React.Component {
                 >
                     <a href='#' style={{ color:'#9ACD32'}}><Icon size='big' name='edit' />Enter the Details Bellow:</a>
                 </Divider>
+                <div>
+                searchQuery:  {this.state.searchQuery}
+                </div>
                 <Form.Field>
                     <Form.Input
                         label='Name of Organization:'
@@ -153,6 +214,24 @@ class NewOrgPage extends React.Component {
                     />
                 </Form.Field>
                 <Form.Field>
+                    {/* ------------------------------------------------------- */}
+                    {/* label='Field of Activity:' */}
+
+                    {/* <Dropdown
+                        fluid
+                        // multiple
+                        onChange={this.selectLevel}
+                        // onChange={this.handleChange.bind(this)}
+                        // onSearchChange={this.handleSearchChange}
+                        options={fieldOptions}
+                        placeholder={this.state.org.field_of_activity}
+                        // search
+                        selection
+                        // searchQuery={searchQuery}
+                        value={value}
+                    /> */}
+                    
+
                     <Form.TextArea
                         rows={2}
                         label='Field of Activity:'
