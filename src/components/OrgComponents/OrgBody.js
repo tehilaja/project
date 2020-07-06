@@ -224,10 +224,6 @@ class OrgBody extends React.Component {
 		 		const response = await axios.post(
 					 '/donation',
          			{ 
-                        // todo- level(update +1), 
-						// user_id:this.state.user_id, org_id:this.props.data.id, monthly_donation:this.state.initialDonation,  // ---- req
-                        // level:1, referred_by:this.state.DuserName
-                        // this.props.data.orgDetails.min_donation
                         org_id:this.props.data.orgDetails.org_id, monthly_donation:this.state.initialDonation,  // ---- req
                         level:1, referred_by:this.state.DuserName
                     },
@@ -262,24 +258,14 @@ class OrgBody extends React.Component {
          })
      }
 
-    // getGiftsToShow(){
-    //  const giftComponents = this.state.showGifts.map(gift =>{
-    //     return(
-    //         <GiftCard  gifts = {gift}  />)
-    // })
-
-//     return giftComponents;
-// }
     
      handleChange(event){
 		this.setState({
 			[event.target.name]: event.target.value
         })
-        // this.findDuser() // find the throw donate
-        // alert(this.state.DuserId)
     }
     
-    // ## 
+
     handleClickAcording = (e, titleProps) => {
         const { index } = titleProps
         const { activeIndex } = this.state
@@ -289,10 +275,6 @@ class OrgBody extends React.Component {
       }
     
 
-      // step (donation)
-
-    //   handleClick = (e, { title }) => this.setState({ active: title })
-	
 //----------render------------------
     render() 
     {
@@ -311,9 +293,6 @@ class OrgBody extends React.Component {
         }
         const nameDonateThrough = this.state.firstName
         const { activeIndex } = this.state
-
-        // for step (donation)
-        // const { active } = this.state
 
         //------  menu bar
         const panes = [
@@ -477,12 +456,7 @@ class OrgBody extends React.Component {
                             </Grid.Row>
 
                             <Grid.Row>  
-
-                                {/* show the gifts
-                                    // TODO: filter objects
-                                */}
                                 {giftComponents}
-	                              {/* {this.getGiftsToShow()} */}
                             </Grid.Row>
                         </Grid>
                     

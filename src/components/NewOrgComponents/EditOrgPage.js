@@ -110,7 +110,6 @@ class EditOrgPage extends React.Component {
         this.props.record(flagDone)
     }
 
-    //TODO: get the information (orgId for the correct organization to Edit)
     fetchOrgData() {
         (async () => {
             const response = await axios.post(`/get-all-org-data`, { org_id: this.state.orgId });
@@ -226,10 +225,8 @@ class EditOrgPage extends React.Component {
                                             <p style={{ fontSize: '1.33em' }}>
                                                 we have kept your initial information. We invite you to Edit the information bellow:
                                         </p>
-                                        {/* </Segment> */}
                                         <br></br>
                                         <br></br>
-                                        {/* <Grid relaxed='very' stackable centered> */}
                                         <Form onSubmit={this.handleSubmit} success>
                                             <Divider
                                                 as='h4'
@@ -252,9 +249,7 @@ class EditOrgPage extends React.Component {
                                                     onChange={this.handleChange.bind(this)}
                                                 />
                                             </Form.Field>
-                                            {/* <br /><br /> */}
                                             <Form.Field>
-                                                {/* <Form.label>name of Admin:</Form.label> */}
                                                 <Form.Input
                                                     label='Name of Admin:'
                                                     icon='user'
@@ -421,8 +416,6 @@ class EditOrgPage extends React.Component {
                                                  this.state.org.img_url && this.getFilePreview(this.state.org.img_url)}
                                                 <br /><br /><Label>If uploading a few images, the last one uploaded will be displayed</Label><br />
                                             </Segment>
-                                            {/* // TODO : STYLE height */}
-                                            {/* set minimum donation per month */}
                                             <div>
                                                 <Divider
                                                     as='h4'
@@ -436,20 +429,9 @@ class EditOrgPage extends React.Component {
                                 </a>
                                                 </Divider>
 
-                                                {/* <label > $ </label> */}
-                                                {/* <Input 
-                                    name="minDonation">{this.state.minDonation}
-                                     
-                                </Input> */}
-                                                {/* 
-                                <button onClick={this.decrement.bind(this)}>-</button>
-                                <button onClick={this.increment.bind(this)}>+</button> */}
-                                                {/* // TODO: checke why failed */}
-
 
                                                 <Input labelPosition='right' type='text' placeholder={this.state.org.min_donation}
                                                     name="min_donation"
-                                                    // defaultValue={this.state.minDonation}
                                                     value={this.state.org.min_donation}
                                                     onChange={this.handleChange.bind(this)}
                                                 >

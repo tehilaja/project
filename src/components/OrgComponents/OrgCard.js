@@ -20,9 +20,7 @@ class OrgCard extends React.Component{
 
     }
 
-    //TODO: see why this isn't working
     async getNumDonors(){
-      // alert("get Donors")
       await (async () => {
         const response = await axios.get(`/get-num-donors/${this.state.org.org_id}`);
         this.setState({numDonors: response.data.num_doners})

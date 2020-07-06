@@ -26,36 +26,26 @@ class OrgPage extends React.Component{
 
 			id: this.props.id,
 
-			// $$$$$$$$$
 
 			routeMain: false,
 		}
 		this.get_field_of_activity = this.get_field_of_activity.bind(this);
 	}	
 
-	//TODO: fetch orgData from DB
 
 
 
 	componentDidMount() 
 	{
-		// 	Route path: /users/:userId/books/:bookId
-		// Request URL: http://localhost:3000/users/34/books/8989
-		// req.params: { "userId": "34", "bookId": "8989" }
 		
 		axios.get('/orgPage/'+this.state.id
-			// ,{orgId: this.state.id,},
-			// { header: { 'Content-Type': 'application/json' }}
 		).then(res => 
 		{
 			if (res.status >= 400) {
 				throw new Error("Bad response from server");}
 			else if (res === "no data") // the data is not null
 				alert ("no data!")
-			else{
-				// alert("re: "+ res.data.org_name);
-				// for(let i=0; i<10 ; i--); // await
-				
+			else{				
 				this.setState({ orgDetails: res.data});
 			}	
 		})

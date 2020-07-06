@@ -61,7 +61,7 @@ handleSubmit(){
     comment_text: this.state.commentText, 
     likes: 0
 }
-//TODO: add to DB
+
 axios.post('/add-comment', this.state.newComment
     ).then(res => 
     {

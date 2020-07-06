@@ -4,9 +4,6 @@ import { Button, Checkbox, Icon, Table, Input, TableRow } from 'semantic-ui-reac
 import axios from "axios";
 import { render } from 'react-dom';
 
-//TODO: map over all organizations in DB
-//make row positive on toggle
-
 class PayOrgs extends React.Component {
 
   constructor(props) {

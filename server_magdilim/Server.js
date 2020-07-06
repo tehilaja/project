@@ -376,67 +376,6 @@ app.post('/sendEmail', (req, res) => {
 
 });
 
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~ addOrg ~~~~~~~~~~~~~~~~~~~~
-
-// function checkAddOrgDetails(paramO) {
-//   // org_id, org_name ,one_time_donation , min_donation ,approved,org_num ,  branch ,account_num, bank_num, account_owner
-//   // , admin_name ,description ,field_of_activity, img_url ,founding_year, working ,volunteers, friends ,city_name,country_name ,building ,street, p_code
-//   var q = ` INSERT INTO organizations (`
-//   var insertinfValue = `)VALUES(`
-
-//   // neccesery 
-//   //TODO: account_owner - take from cognito?
-//   q += `org_id,org_name,min_donation,one_time_donation,approved,org_num,branch,account_num,bank_num,account_owner`;
-//   insertinfValue += `${paramO.org_id},${paramO.org_name},${paramO.min_donation},${paramO.one_time_donation},0,
-//     ${paramO.branch},${paramO.account_num},${paramO.bank_num},${paramO.account_owner},${paramO.org_num}`
-
-//   // --- check
-//   if (paramO.img_url != '') {
-//     q += `,img_url`;
-//     insertinfValue += `,${paramO.img_url}`;
-//   }
-//   if (paramO.founding_year != '') {
-//     q += `,founding_year`;
-//     insertinfValue += `,${paramO.founding_year}`;
-//   }
-//   if (paramO.working != '') {
-//     q += `,working`;
-//     insertinfValue += `,${paramO.working}`;
-//   }
-//   if (paramO.volunteers != '') {
-//     q += `,volunteers`;
-//     insertinfValue += `,${paramO.volunteers}`;
-//   }
-//   if (paramO.friends != '') {
-//     q += `,friends`;
-//     insertinfValue += `,${paramO.friends}`;
-//   }
-//   // if(paramO.admin_name!=''){
-//   //   q += `,admin_name`;
-//   //   insertinfValue += `,${paramO.admin_name}`;
-//   // }
-//   if (paramO.admin_name != '') {
-//     q += `,admin_name`;
-//     insertinfValue += `,${paramO.admin_name}`;
-//   }
-//   if (paramO.description != '') {
-//     q += `,description`;
-//     insertinfValue += `,${inQutationMarks(paramO.description)}`;
-//   }
-//   // TODO!! field_of_activity
-//   // if(paramO.field_of_activity!=''){
-//   //   q += `,field_of_activity`;
-//   //   insertinfValue += `,${inQutationMarks(paramO.field_of_activity}"`;
-
-//   // nessecery
-
-//   insertinfValue += `);`
-//   const query = q + insertinfValue;
-//   console.log("param (in fun) \n" + query);
-
-//   return query
-// }
-
 
 // ~~~~~~~ addOrg ~~~~~~~
 app.post('/addOrg', (req, res, next) => {

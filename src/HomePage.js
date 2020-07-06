@@ -185,7 +185,6 @@ getThreeOrgs(){
 
 
 			//redirecting to create organization page
-			//TODO: make sure the user is signed in! take care of other option!
 			if(this.state.routerCreateOrgPage === true){
 				return <Redirect to = {{
 					pathname: '/NewOrgPage',

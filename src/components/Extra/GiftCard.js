@@ -14,7 +14,6 @@ class GiftCard extends React.Component{
       
     render(){
         return(
-            // <Segment>
             <div>
                 <Segment>
                 <Card>
@@ -51,12 +50,10 @@ class GiftCard extends React.Component{
                 <br></br>
                 </Segment>
             </div>
-            // </Segment>
 
         )
     }
 
-// declerate function
 }
 
 export default GiftCard;

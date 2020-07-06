@@ -10,7 +10,6 @@ INSERT INTO country (country_ID, country_name) VALUE(1,"Israel"), (2,"Usa");
 
 -- Users
 
--- TODO: address??
 INSERT INTO Users (user_name, first_name, last_name, pswd, email, address_id,num_phone) VALUES
 	("Avital","Avital", "b", "123456", "avital@gmail.com",1, 050123456 ), 
 	("Tehila","Tehila","j", "1234", "tehila@gmail.com",2,054123456),

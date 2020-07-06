@@ -34,10 +34,7 @@ function conectDb()
 
   router.get('/', (req, res)=> 
     {
-        try{
-            // TODO : try the db multi connection problem
-            // conectDb();
-            
+        try{            
             res.send({"value": "first router - Donte!"})
         }
         catch(err){

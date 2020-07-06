@@ -71,7 +71,7 @@ class AddPrizes extends React.Component {
     }
 
     sendEmail() {
-        // TODO: get text to send, get list of mail
+        // TODO: get list of emails
         emailService.sendEmail(
             //'rachelletikva@gmail.com'
             ['tehilaj97@gmail.com'],
@@ -94,7 +94,6 @@ class AddPrizes extends React.Component {
         (async () => {
             const fileNamePrefix = `${this.state.prize.org_id}_${uuid()}`;
             const attachment = this.state.attachments[0];
-            //TODO: save url to db in callback
             await uploadFileUtil.uploadDataUrlFile(attachment.path, attachment.filename, fileUrl => callback(fileUrl), fileNamePrefix, 'prizes');
         })();
     }

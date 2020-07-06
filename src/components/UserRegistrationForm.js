@@ -77,9 +77,7 @@ class UserRegistrationForm extends React.Component {
         (async () => {
             const response = await axios.post(
                 '/add_user',
-                { //todo- send real data
-                    // -- * change
-                    user: user,
+                {   user: user,
                     user_name: this.state.userName, first_name: this.state.first_name, last_name: this.state.last_name, pswd: this.state.pswd, email: this.state.email, phone: this.state.phone,// ---- req
                     is_admin: false
                 },

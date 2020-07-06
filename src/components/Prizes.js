@@ -129,7 +129,7 @@ class Prizes extends React.Component{
       filterChooseOrg(filter){
         // let listOrg = []
         let obj = [];
-        if (filter === '"all organizaition"'){
+        if (filter === '"all organization"'){
           this.setState({filterGift: this.state.allgiftLevels})
             // alert("all : "+ this.state.giftShow.length)
         }
@@ -141,16 +141,9 @@ class Prizes extends React.Component{
             if(orgf.field_name === filter){
               indexOrg = this.state.orgs.findIndex(x => x.org_id === orgf.org_id);
               obj.push(this.state.orgs[indexOrg])
-            }
-          
-              // indexOrg = this.state.orgs.org_id === org.org_id
+            }        
           })
-          // this.state.orgs.map(element =>{
-          //       if(element.org_id === filter)
-          //           obj.push(element)
-          //   })
             this.setState({filterOrg: obj})
-            // alert("gifts: \n" + JSON.stringify(this.state.showGifts))
         }
     
     }
@@ -177,24 +170,19 @@ class Prizes extends React.Component{
     }
     return(
       <div>
-        {/* <Grid container stackable verticalAlign='middle' style ={{marginTop:'2em', marginLeft:'5em'}}> */}
-          {/* <Grid.Row style ={{marginleft:'5em'}} > */}
           <div style ={{marginTop:'2em', marginLeft:'10em'}} >
             <div></div>
-            {/* <lable icon='gift' content='Prizes' style ={{fontSize: '20px'}}/> */}
             <Icon size ='huge' name = 'gift'></Icon>
             <label style ={{fontSize: '40px'}} >  Prizes</label>
-          {/* </Grid.Row>
-           <Grid.Row> */}
            <br/><br/>
               <div style ={{marginLeft:'5em'}}>
               <Button 
                   inverted circular 
-                  // content = "all orgaanizaition"
-                  key="all orgaanizaition"
-                  // data-letter="all orgaanizaition"
+                  // content = "all organization"
+                  key="all organization"
+                  // data-letter="all organization"
                   style = {styleBottonOrg} 
-                  onClick={this.handleClickBtnallOrg}>all organizaition
+                  onClick={this.handleClickBtnallOrg}>all organization
                   {/*  floated='right'  size='tiny'  style={{ padding: '3em 3em' }}  */}
                   </Button>
               {this.state.orgs.map(org=>

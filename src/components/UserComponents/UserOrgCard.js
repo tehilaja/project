@@ -1,5 +1,4 @@
 /*card for a Organizations in User page*/
-// TODO: change the state to have the information of specific user for organization
 import React from 'react';
 import ReactDOM from 'react-dom';
 

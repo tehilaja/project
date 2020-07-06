@@ -54,12 +54,10 @@ class NewOrgPage extends React.Component {
                 return res
             }).then(respones=>
                 {
-                    // alert("lastDonation \n" + JSON.stringify(respones.data))
                 if(respones.data==="no data") //TODO: if no last donation///
                     alert(respones.data)
                 else{ 
                     this.setState({fieldOfActivity: respones.data});
-                    // alert(" donaition: \n" + JSON.stringify(respones.data))
                     respones.data.forEach(function(field){
                     let fieldtobj ={};
                     fieldtobj["key"]=field.field_name;
