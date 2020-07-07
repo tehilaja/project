@@ -275,11 +275,9 @@ export default class Donate extends Component {
                             this.switchStep();
 
                         }
-                        alert("findDuser: " + this.state.findDuser + " finishDonate " + this.state.finishDonate)
                     }
-                    // TODO (alert)
-                    else { // the mail is ok
-                        this.switchStep(); // switch step
+                    else { 
+                        this.switchStep(); 
                     }
 
 

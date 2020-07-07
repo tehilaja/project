@@ -87,6 +87,30 @@ INSERT INTO Feed_comments (feed_type, feed_type_id, user_id, date, comment_text,
 ('org', 3, 'rachelletikva@gmail.com', "2020-03-23", "they are life changing:) ", 2),
 ('org', 1, 'Avital05484@gmail.com', "2020-03-23", "common! get your friends!", 2);
 
+-- bank info
+INSERT INTO bank_info (org_id, branch, account_num, bank_num, account_owner) VALUES
+(1, 698, 383838, 12, 'איחוד הצלה ישראל'),
+(2, 444, 656555, 10, "הרב חנניה צ'ולק"),
+(3, 545, 324344, 12, "יד שרה");
+
+-- one time donations
+select * from one_time_donations;
+INSERT INTO one_time_donations (user_id, org_id, referred_by, sum_donation, d_date, anonymous) VALUES
+('tehilaj97@gmail.com', 1, null, 200, '2020-05-23', false),
+('tehilaj97@gmail.com', 1, null, 500, '2020-04-23', false),
+('tehilaj97@gmail.com', 1, null, 200, '2020-06-23', false),
+('rachelletikva@gmail.com', 1, 'tehilaj97@gmail.com', 200, '2020-05-23', false),
+('rachelletikva@gmail.com', 1, 'tehilaj97@gmail.com', 200, '2020-04-23', false),
+('rachelletikva@gmail.com', 1, 'tehilaj97@gmail.com', 200, '2020-06-23', false),
+(null, 1, null, 2000, '2020-05-20', true),
+('tehilaj97@gmail.com', 2, null, 200, '2020-05-23', false),
+('tehilaj97@gmail.com', 2, null, 500, '2020-04-23', false),
+('tehilaj97@gmail.com', 2, null, 200, '2020-06-23', false),
+(null, 2, null, 2200, '2020-05-23', true),
+('rachelletikva@gmail.com', 2, null, 200, '2020-04-23', false),
+('rachelletikva@gmail.com', 2, 'tehilaj97@gmail.com', 200, '2020-06-23', false),
+(null, 2, null, 2000, '2020-05-20', true);
+
 -- ~~~~~~~~~~~ fields_of_activity ~~~~~~~~~~``
  -- select * from fields_of_activity
  

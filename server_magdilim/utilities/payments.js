@@ -2,7 +2,7 @@ const statusCache = require('./status-cache');
 const dbUtil = require('./db');
 
 const getOrgsToPay = (db, callback) => {
-    const orgs = statusCache.getOrgsTrees();
+    const orgs = statusCache.getOrgsToPayTrees();
     const orgsToPay = {};
     let gotOneTimeFlag = false;
     let gotOwedFlag = false;
