@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Icon } from 'semantic-ui-react'
+import { Button, Icon, Segment } from 'semantic-ui-react'
 
 import ApproveOrgs from './ApproveOrgs.js'
 import PayOrgs from './PayOrgs.js'
@@ -30,7 +30,7 @@ class AdminPage extends React.Component {
 
   render() {
     return (
-      <div textAlign='center'>
+      <Segment style={{ padding: '5em 0em', width: '100%', background:'#F5F5F5'}} textAlign='center'>
         <br />
         <br />
         <br />
@@ -58,7 +58,7 @@ class AdminPage extends React.Component {
         <br />
         <br />
         {this.getComponentByStatus()}
-      </div>)
+      </Segment>)
   }
 
   getComponentByStatus() {

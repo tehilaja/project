@@ -8,7 +8,7 @@ INSERT INTO Organizations(org_name, org_admin_id, description, img_url, min_dona
 "https://www.ami.org.il/media/1047/logo.png",10, 1, true, 580079978, "הרב חנניה צ'ולק", 1985, 911,123456,8434, "עזרה רפואית"),
 ("יד שרה","tehilaj97@gmail.com","להשאיל ציוד ומכשור רפואי ללא תמורה לתקנו ולתחזקו. לעודד, להפעיל, להדריך ולהכשיר מתנדבים וארגוני מתנדבים למתן מענה לצרכים קהילתיים. להעניק שירותי בית וקהילה מגוונים לחולים ונזקקים.להלוות כסף ללא ריבית לנצרכים, לעמותות המסייעות לנצרכים ולכל גוף ציבורי המסייע לנצרכים בכל אופן שהוא. להעניק לנצרכים מעוטי יכולת כסף ו/או מכשירים לריפוי וסיוע. לאחוז ולנקוט בכל האמצעים הנדרשים או שידרשו לצורך מימוש המטרות הנ ל וכן כל פעולה אחרת שתראה לועד העמותה ואשר מגמתה הינה עזרה לזולת",
 "https://yad-sarah.net/wp-content/uploads/2019/04/logoys.png",15, 20, true, 580030104,"משה אורי כהן",1983, 55,900,123456,"ציוד רפואי");
-INSERT INTO Organizations(org_name, org_admin_id, description, img_url, min_donation, one_time_donation, approved, pc_num, admin_name, founding_year, working, num_volunteers, num_friends, field_of_activity, website_link) VALUES
+INSERT INTO Organizations(org_name, org_admin_id, description, img_url, min_donation, one_time_donation, approved, pc_num, admin_name, founding_year, working, num_volunteers, num_friends, field_of_activity, website) VALUES
 ("Hakshiva","tehilaj97@gmail.com", "Mentoring and coaching for Teens at Risk and their families.",
 "https://upload.wikimedia.org/wikipedia/commons/b/bc/UHNewLogo.svg",12, 30, true, 580465979, "אליהו פולק", 2006,388,231,5400, "נוער", "https://hakshiva.org/");
 -- addresses
@@ -70,15 +70,15 @@ INSERT INTO Gifts (gift_name, gift_description, gift_pic, org_id, level_num, g_d
 -- inserting comments into the feed --
 select* from Feed_comments;
 INSERT INTO Feed_comments (feed_type, feed_type_id, user_id, date, comment_text, likes) VALUES
-('org', 2, 'tehilaj97@gmail.com', "2020-08-23", 'I love this organization', 3),
-('org', 2, 'rachelletikva@gmail.com', "2020-08-23", "I know, they're the best", 2),
-('org', 2, 'tehilaj97@gmail.com', "2020-08-23", 'oh! you like them too???', 3),
-('org', 2, 'rachelletikva@gmail.com', "2020-08-23", "they are life changing:) ", 2),
-('org', 1, 'tehilaj97@gmail.com', "2020-08-23", 'I love this organization', 3),
-('org', 1, 'rachelletikva@gmail.com', "2020-08-23", "I know, they're the best", 2),
-('org', 3, 'tehilaj97@gmail.com', "2020-08-23", 'oh! you like them too???', 3),
-('org', 3, 'rachelletikva@gmail.com', "2020-08-23", "they are life changing:) ", 2),
-('org', 1, 'Avital05484@gmail.com', "2020-08-23", "common! get your friends!", 2)
+('org', 2, 'tehilaj97@gmail.com', "2020-03-23", 'I love this organization', 3),
+('org', 2, 'rachelletikva@gmail.com', "2020-03-23", "I know, they're the best", 2),
+('org', 2, 'tehilaj97@gmail.com', "2020-03-23", 'oh! you like them too???', 3),
+('org', 2, 'rachelletikva@gmail.com', "2020-03-23", "they are life changing:) ", 2),
+('org', 1, 'tehilaj97@gmail.com', "2020-03-23", 'I love this organization', 3),
+('org', 1, 'rachelletikva@gmail.com', "2020-03-23", "I know, they're the best", 2),
+('org', 3, 'tehilaj97@gmail.com', "2020-03-23", 'oh! you like them too???', 3),
+('org', 3, 'rachelletikva@gmail.com', "2020-03-23", "they are life changing:) ", 2),
+('org', 1, 'Avital05484@gmail.com', "2020-03-23", "common! get your friends!", 2)
 
 -- ~~~~~~~~~~~ fields_of_activity ~~~~~~~~~~``
  -- select * from fields_of_activity
