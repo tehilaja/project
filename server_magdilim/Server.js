@@ -311,6 +311,24 @@ app.get('/get-num-donors/:org_id', (req, res, next) => {
   res.send({num_doners: response});
 });
 
+//-----------------get donors of org who donate monthly------------------------
+app.post('/get-donors-of-org', (req, res, next) => {
+  try {
+    const sqlQuery = `SELECT user_id FROM donors_in_org WHERE org_id=${req.body.org_id};`;
+    dbUtil.callDB(db, sqlQuery, (err, result) => {
+      if (!err) {
+        res.send(result);
+      } else {
+        console.log('error getting donors in org: '+JSON.stringify(err));
+        res.send(err.message);
+      }
+    })
+  } catch(err) {
+      console.log('error getting donors in org: '+JSON.stringify(err));
+      res.send(err.message);
+  }
+});
+
 //--------------upload file-----------------
 app.post('/upload-file', (req, res, next) => {
   const response = s3Util.uploadFile(req.body.file.data, req.body.type, req.body.key);
@@ -404,8 +422,8 @@ app.post('/addOrg', (req, res, next) => {
 //---------------------- add doner in org - monthly donation -----------------------
 app.post('/add-doner-in-org', (req, res, next) => {
   const dio = req.body.dio;
-  const sqlQuery = `INSERT INTO Donors_in_org (org_id, user_id, referred_by, monthly_donation, d_date, d_title, d_description) VALUES(${dio.org_id},${inQutationMarks(dio.user_id)},${inQutationMarks(dio.referred_by)},${dio.monthly_donation},${inQutationMarks(sqlDateString())},${inQutationMarks(dio.d_title)},${inQutationMarks(dio.d_description)});`
-  dbUtil.callDB(db, sqlQuery, (err, result) => {
+  const sqlQuery = `INSERT INTO Donors_in_org (org_id, user_id, referred_by, monthly_donation, d_date, d_title, d_description, status_id) VALUES(${dio.org_id},${inQutationMarks(dio.user_id)},${dio.referred_by},${dio.monthly_donation},${inQutationMarks(sqlDateString())},${inQutationMarks(dio.d_title)},${inQutationMarks(dio.d_description)},1);`
+    dbUtil.callDB(db, sqlQuery, (err, result) => {
     if (!err) {
       statusCache.addDonorToOrg(dio.user_id, dio.org_id, dio.monthly_donation, dio.referred_by);
       res.send('success');
@@ -996,7 +1014,7 @@ app.post('/get-all-org-data', (req, res) => {
 app.post('/update-org-data', (req, res) => {
   const org = req.body.org;
   const condition = `WHERE org_id=${org.org_id}`;
-  const sqlOrgsTableQuery = `UPDATE organizations SET org_name=${inQutationMarks(org.org_name)}, description=${inQutationMarks(org.description)}, img_url=${inQutationMarks(org.img_url)}, website=${inQutationMarks(org.img_url)}, min_donation=${org.min_donation}, one_time_donation=${org.one_time_donation}, field_of_activity=${inQutationMarks(org.field_of_activity)} ${condition}`;  const sqlBankInfoTableQuery = `DELETE FROM bank_info ${condition};INSERT INTO bank_info (org_id, bank_num, branch, account_num, account_owner) VALUES (${org.org_id}, ${org.bank_num}, ${org.branch}, ${org.account_num}, ${inQutationMarks(org.account_owner)})`;
+  const sqlOrgsTableQuery = `UPDATE organizations SET org_name=${inQutationMarks(org.org_name)}, description=${inQutationMarks(org.description)}, img_url=${inQutationMarks(org.img_url)}, website=${inQutationMarks(org.website)}, min_donation=${org.min_donation}, one_time_donation=${org.one_time_donation}, field_of_activity=${inQutationMarks(org.field_of_activity)} ${condition}`;  const sqlBankInfoTableQuery = `DELETE FROM bank_info ${condition};INSERT INTO bank_info (org_id, bank_num, branch, account_num, account_owner) VALUES (${org.org_id}, ${org.bank_num}, ${org.branch}, ${org.account_num}, ${inQutationMarks(org.account_owner)})`;
   const sqlAddressesTableQuery = `DELETE FROM addresses ${condition};INSERT INTO addresses (org_id, country, state, city, street, building, apartment, suite, zip ) VALUES (${org.org_id}, ${inQutationMarks(org.country)}, ${inQutationMarks(org.state)}, ${inQutationMarks(org.city)}, ${inQutationMarks(org.street)}, ${org.building}, ${org.apartment}, ${org.suite}, ${org.zip})`;
   const sqlLevelsTableQueries = org.levels && org.levels.reduce((acc, level) => `${acc}DELETE FROM levels ${condition} AND level_num=${level.level_num}; INSERT INTO levels (org_id, level_num, level_name, min_people, min_sum) VALUES (${org.org_id}, ${level.level_num}, ${inQutationMarks(level.level_name)}, ${level.min_people}, ${level.min_sum});`, '');
   

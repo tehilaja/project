@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Step, Segment, Image, Button, Grid, Form, Checkbox, Icon, Input, Label, Accordion, Message, Modal } from 'semantic-ui-react'
+import { Step, Segment, Image, Button, Grid, Form, Checkbox, Icon, Input, Label, Accordion, Message, Modal, Dropdown } from 'semantic-ui-react'
 import axios from "axios";
 
 
@@ -49,6 +49,8 @@ export default class Donate extends Component {
                 "user_id": null, "org_id": this.props.data.org_id, "monthly_donation": this.props.data.initialDonation,
                 "referred_by": '', "d_title": '', "d_description": '', "anonymous": false, "oneTimeCheck": false
             },
+            potential_referres: [],
+            allowMonthlyDonation: undefined,
 
             findDuser: true,
             // next level
@@ -83,19 +85,25 @@ export default class Donate extends Component {
         this.prevButton = this.prevButton.bind(this);
         this.disableNextBtn = this.disableNextBtn.bind(this);
 
-
-        // ~~~~~~~~
-        this.donationProcess = this.donationProcess.bind(this);
-
         this.donateDisabel = this.donateDisabel.bind(this);
 
 
         // step
         this.switchStep = this.switchStep.bind(this);
 
-
-
+        this.getPotentialReferres();
     }
+
+    async getPotentialReferres() {
+        const response = await axios.post('/get-donors-of-org', { org_id: this.state.donate_req.org_id });
+
+        if (response.data && Array.isArray(response.data)) {
+            this.setState({ potential_referres: response.data.map(referrer => referrer.user_id) });
+            this.setState({allowMonthlyDonation: !this.state.potential_referres.find(r => r === this.state.donate_req.user_id)});
+    }
+    }
+
+
     //before all
     componentDidMount() {
         if (this.state.loggedIn) {
@@ -108,36 +116,6 @@ export default class Donate extends Component {
     donateDisabel() {
         if (this.state.dThrough !== '' && this.state.donate_req.referred_by === '')
             this.setState({ ableDonate: true });
-    }
-    //~~~~~~~~~~~~~~~~~~~`
-
-    donationProcess() {
-        // TODO: massage that donate sucsess
-
-        // TODO: one time donation logic
-        //    if(this.state.oneTimeChecked){
-        //        alert("here")
-        //         axios.post('/oneTimedonationProcess', this.state.donate_req
-        //             ).then(res => 
-        //             {
-        //                 alert("res is: " + res.data)
-        //                 this.setState({divActiveDonation:true,divActiveMore: false, divActivePayment: false, coreStep: 1, nextAble: false});
-        //             }).catch(error=> {
-        //                 alert("error oneTimedonationProcess" +  error);
-        //             })
-        //    }
-
-        // req 
-        // else{
-        axios.post('/donationProcess', this.state.donate_req
-        ).then(res => {
-            alert("res is: " + res.data)
-            this.setState({ divActiveDonation: true, divActiveMore: false, divActivePayment: false, coreStep: 1, nextAble: false });
-        }).catch(error => {
-            alert("error donationProcess" + error);
-        })
-        // }
-
     }
 
     //~~~~~~~~~~ disableNextBtn  ~~~~~~``
@@ -231,10 +209,10 @@ export default class Donate extends Component {
         this.setState(Object.assign(this.state.donate_req, { monthly_donation: e.target.value }));
     }
 
-    //~~~~~~~~~~~~~~~~ change mail (dThrow ~~~~~~~~~)
-    handleChangeMail(e) {
-        this.setState(Object.assign(this.state.donate_req, { referred_by: '' }));
-        this.setState({ dThrough: e.target.value });
+    //~~~~~~~~~~~~~~~~ change mail (dThrough ~~~~~~~~~)
+    handleChangeMail(referrer) {
+        this.setState(Object.assign(this.state.donate_req, { referred_by: referrer }));
+        this.setState({ dThrough: true });
         this.setState({ nextAble: false }); // able next btn
 
     }
@@ -260,15 +238,14 @@ export default class Donate extends Component {
                     // TODO: מיותר? מתי נעשת הבדיקה
                     // if(this.state.donate_req.monthly_donation !== '') // sume field is not empty 
                     // {
-                    // ~~ statr dThrow 
-                    if (this.state.dThrough !== '')  // dTrow -> need check if user exist in system (give a id)
-                    {;  
-                        // TODO:    check the email syntax    
-                        if (this.state.donate_req.referred_by === '') //-> check if do a request before
+                    // ~~ statr dThrough 
+                    if (this.state.dThrough !== '')  
+                    {  
+                        if (this.state.donate_req.referred_by === '') 
                         {
                             this.setState({ ableDonate: true });
     
-                            axios.post('/donate/findDThrouhUser',{org_id: this.state.org_id, userMail: this.state.dThrough},
+                            axios.post('/donate/findDThrouhUser', { org_id: this.state.org_id, userMail: this.state.dThrough },
                             { headers: { 'Content-Type': 'application/json' } }
                             ).then(res => {
                                 if (res.status >= 400) {
@@ -343,7 +320,7 @@ export default class Donate extends Component {
     }
 
     async addMonthlyDonation() {
-        const response = await axios.post('/add-doner-in-org', {dio: escapeAllStringsInObject(this.state.donate_req)});
+        const response = await axios.post('/add-doner-in-org', { dio: escapeAllStringsInObject(this.state.donate_req) });
         if (response.data === 'success') {
             alert("Subscription completed. Thank you!");
             window.location.assign('/');
@@ -357,7 +334,7 @@ export default class Donate extends Component {
         return (
             <PayPalButton
                 amount={this.state.donate_req.monthly_donation}
-                options={{ vault: true,'clientId': 'sb' }}
+                options={{ vault: true, 'clientId': 'sb' }}
                 shippingPreference='NO_SHIPPING'
                 onApprove={(data, actions) => {
                     this.addMonthlyDonation();
@@ -375,7 +352,7 @@ export default class Donate extends Component {
                             }
                     });                    
                 }}
-                onCancel={(data) => {}}
+                onCancel={(data) => { }}
             />
         );
     }
@@ -400,7 +377,7 @@ export default class Donate extends Component {
                 onSuccess={(details, data) => {
                     this.addOneTimeDonation();
                 }}
-                onCancel={(data) => {}}
+                onCancel={(data) => { }}
             />);
     }
 
@@ -411,7 +388,6 @@ export default class Donate extends Component {
 
     // ~~~~~~~~~~ render ~~~~~~~~~~~~~~~~~~~~~```
     render() {
-
         const styleBotton =
         {
             margin: '1em',
@@ -427,6 +403,10 @@ export default class Donate extends Component {
 
         return (
             <div>
+            <button onClick={this.addMonthlyDonation.bind(this)}>dfdf</button>
+
+
+
                 <Step.Group widths={3} stackable='tablet' ordered={true} fluid >
 
                     <Step
@@ -562,11 +542,12 @@ export default class Donate extends Component {
                             <Grid.Row>
                                 <div style={{ paddingLeft: "10em" }}>
                                     <Checkbox toggle
-                                        checked={this.state.donate_req.oneTimeCheck}
+                                        checked={!this.state.allowMonthlyDonation || this.state.donate_req.oneTimeCheck}
+                                        disabled={!this.state.allowMonthlyDonation}
                                         label='one time donation'
                                         onClick={() => {
                                             this.state.donate_req.oneTimeCheck = !this.state.donate_req.oneTimeCheck;
-                                            this.setState({donate_req: this.state.donate_req});
+                                            this.setState({ donate_req: this.state.donate_req });
                                         } 
                                         // this.setState(prevState => {
                                         //     let donate_req = Object.assign({}, prevState.donate_req);  // creating copy of state variable jasper
@@ -586,10 +567,25 @@ export default class Donate extends Component {
                         </Grid>
 
                         {/*  ~~~~~~ Donate through ~~~~~~~~~~~~*/}
+                        {
+                            this.state.potential_referres && this.state.potential_referres.length &&
+                            <div>
                         <Label style={{ backgroundColor: '#e6f2ff', fontSize: '14px', higth: '30px', marginTop: '3em' }}>
                             <Icon name='hand point right' />
                                 were you reffered by someone?    Please enter his e-mail and upgrade his status! :)
                 </Label>
+                            <br /> <br/>
+                            <Dropdown text={this.state.donate_req.referred_by} placeholder='Referred By'>
+                                <Dropdown.Menu>
+                                    {
+                                        this.state.potential_referres
+                                            .map(referrer => <Dropdown.Item icon='mail' value={referrer} text={referrer} onClick={() =>this.handleChangeMail(referrer)} />)
+                                    }
+                                </Dropdown.Menu>
+                            </Dropdown>
+                        </div> || null
+                        }
+
                         {/* ~~ form */}
                         <Form style={{ paddingTop: '1.5em', paddingLeft: '1.5em', marginLeft: '8em' }}>
                             {/* <Form.Input
@@ -602,31 +598,6 @@ export default class Donate extends Component {
                         // onChange={this.handleChange.bind(this)}
                     /> */}
                             <br />
-
-                            <Form.Input
-                                icon='mail'
-                                iconPosition='left'
-                                name="dThrough"
-                                id='dedicationEmail'
-                                placeholder='mail'
-                                width={6}
-                                // control={Input}
-                                // label= 'Donate through: (mail)'
-                                placeholder='joe@schmoe.com'
-                                value={this.state.dThrough}
-                                onChange={this.handleChangeMail}
-                            // error={{
-                            //     content: 'Please enter a valid email address',
-                            //     pointing: 'below',
-                            // }}
-                            />
-                            {/* // TODO */}
-                            {/* ~~ check if email is valid */}
-                            {/* { this.state.dThrough && 
-                        <div>{Isemail.validate(this.state.dThrough) &&
-                        <div>valid</div> }
-                        </div>
-                    } */}
 
                             {/* <Form.Field
                             label = 'Last Name'

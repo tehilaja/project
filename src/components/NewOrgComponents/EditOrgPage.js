@@ -463,6 +463,7 @@ class EditOrgPage extends React.Component {
                                                 iconPosition='left'
                                                 placeholder="website"
                                                 name="website"
+                                                value={this.state.org.website}
                                                 onChange={this.handleChange.bind(this)}></Form.Input>
                                             <Button content='Submit' primary />
                                         </Form>

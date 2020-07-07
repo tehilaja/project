@@ -5,10 +5,10 @@ let usersToOrganizationTrees = {}; // usersToOrganizationTrees[user_id][org_id] 
 let orgToLevels = undefined; // 
 
 const addOrgsWithNoDonors = (db, callback) => {console.log('in add orgs with no donors')
-    const sqlQuery = `SELECT org_id FROM organizations WHERE org_id NOT IN (SELECT org_id FROM donors_in_org);`;
+    const sqlQuery = `SELECT org_id FROM organizations WHERE org_id NOT IN (SELECT org_id FROM donors_in_org WHERE status_id = 1);`;
     dbUtil.callDB(db, sqlQuery, (err, result) => {
         if (!err) {
-            result.forEach(org_id => addOrg(org_id));
+            result.forEach(org => addOrg(org.org_id))
             console.log('\n\n\n\norgs:\n'+Object.keys(organizationsTrees));
             if (callback) callback();
         } else {
@@ -286,7 +286,7 @@ const updateLevelsInOrg = (org_id, levels) => {
         }
                 
     });
-
+console.log('org id before updating levels:'+org_id)
     updateLevelByOrgDonors(getOrgTree(org_id), org_id, getOrgLevels(org_id));
 }
 
