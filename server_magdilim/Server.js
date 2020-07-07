@@ -422,7 +422,7 @@ app.post('/addOrg', (req, res, next) => {
 //---------------------- add doner in org - monthly donation -----------------------
 app.post('/add-doner-in-org', (req, res, next) => {
   const dio = req.body.dio;
-  const sqlQuery = `INSERT INTO Donors_in_org (org_id, user_id, referred_by, monthly_donation, d_date, d_title, d_description, status_id) VALUES(${dio.org_id},${inQutationMarks(dio.user_id)},${dio.referred_by},${dio.monthly_donation},${inQutationMarks(sqlDateString())},${inQutationMarks(dio.d_title)},${inQutationMarks(dio.d_description)},1);`
+  const sqlQuery = `INSERT INTO Donors_in_org (org_id, user_id, referred_by, monthly_donation, d_date, d_title, d_description, status_id) VALUES(${dio.org_id},${inQutationMarks(dio.user_id)},${inQutationMarks(dio.referred_by)},${dio.monthly_donation},${inQutationMarks(sqlDateString())},${inQutationMarks(dio.d_title)},${inQutationMarks(dio.d_description)},1);`
     dbUtil.callDB(db, sqlQuery, (err, result) => {
     if (!err) {
       statusCache.addDonorToOrg(dio.user_id, dio.org_id, dio.monthly_donation, dio.referred_by);

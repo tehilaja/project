@@ -17,6 +17,16 @@ const addOrgsWithNoDonors = (db, callback) => {console.log('in add orgs with no 
     })
 }
 
+const getOrgsToPayTrees = () => {
+    const result = {};
+
+    Object.keys(organizationsTrees)
+        .filter(org_id => getOrgTree(org_id) && getOrgTree(org_id).key && getOrgTree(org_id).key && getOrgTree(org_id).key.collected)
+        .forEach(org_id => result[org_id] = organizationsTrees[org_id]);
+
+    return result;
+}
+
 const getDonorsFromDbAndSetCache = (db, callback) => {
     const sqlQuery = `SELECT * FROM donors_in_org WHERE status_id=1`;
     try{
@@ -323,6 +333,7 @@ exports.getOrgsForUser = getOrgsForUser;
 exports.getOrgLevel = getOrgLevel;
 exports.getOrgLevels = getOrgLevels;
 
+exports.getOrgsToPayTrees = getOrgsToPayTrees;
 exports.addOrg = addOrg;
 exports.addDonorToOrg = addDonorToOrg;
 exports.updateDonorInOrg = updateDonorInOrg;
