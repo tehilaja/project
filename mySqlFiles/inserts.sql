@@ -1,13 +1,13 @@
 Use magdilimdb;
 
  -- organization
-INSERT INTO Organizations(org_name, org_admin_id, description, img_url, min_donation, one_time_donation, approved, pc_num, admin_name, founding_year, working, num_volunteers, num_friends, field_of_activity) VALUES
+INSERT INTO Organizations(org_name, org_admin_id, description, img_url, min_donation, one_time_donation, approved, pc_num, admin_name, founding_year, working, num_volunteers, num_friends, field_of_activity,website) VALUES
 ("איחוד הצלה ישראל","tehilaj97@gmail.com", "ן (אירועים רבי נפגעים), חולים ונפגעים. רכישת ציוד רפואי בסיסי ומתקדם לצורך פעילות המתנדבים. רכישת רכבי חירום והצלה, כגון אמבולנסים ואופנועים, ומימון הוצאות אחזקת רכבי החירום. הכשרת אזרחים לפעילות בקהילה לסיוע ומניעה של תאונות דרכים, פגיעות ומחלות",
-"https://upload.wikimedia.org/wikipedia/commons/b/bc/UHNewLogo.svg",12, 30, true, 580465979, "אליהו פולק", 2006,388,231,5400, "הצלת נפשות"),
+"https://upload.wikimedia.org/wikipedia/commons/b/bc/UHNewLogo.svg",12, 30, true, 580465979, "אליהו פולק", 2006,388,231,5400, "הצלת נפשות","https://1221.org.il/"),
 ("עזר מציון","tehilaj97@gmail.com", "וסעודית. סיוע, שיקום ושירותים לנכי בריאות הנפש. סיוע לניצולי שואה. סיוע לחולי סרטן. הפעלת מגוון שרותים לאוכלוסיית הגמלאים והקשישים ודאגה לזכויותיהם. סיוע, ייעוץ, טיפול ושיקום לבעלי צרכים מיוחדים בכל סוגי הנכויות לרבות נכויות חושיות כגון לקויות שמיעה, לקויות דיבור ולקויות ראיה. הפעלת מסגרות חינוכיות וטיפוליות. הפעלת שירותי רווחה. סיוע לנפגעי טרור להקים קרן גמילות חסדים. לעזור לחולים נזקקים בריפוי ועזרה רפואית",
-"https://www.ami.org.il/media/1047/logo.png",10, 1, true, 580079978, "הרב חנניה צ'ולק", 1985, 911,123456,8434, "עזרה רפואית"),
+"https://www.ami.org.il/media/1047/logo.png",10, 1, true, 580079978, "הרב חנניה צ'ולק", 1985, 911,123456,8434, "עזרה רפואית","https://www.ami.org.il/"),
 ("יד שרה","tehilaj97@gmail.com","להשאיל ציוד ומכשור רפואי ללא תמורה לתקנו ולתחזקו. לעודד, להפעיל, להדריך ולהכשיר מתנדבים וארגוני מתנדבים למתן מענה לצרכים קהילתיים. להעניק שירותי בית וקהילה מגוונים לחולים ונזקקים.להלוות כסף ללא ריבית לנצרכים, לעמותות המסייעות לנצרכים ולכל גוף ציבורי המסייע לנצרכים בכל אופן שהוא. להעניק לנצרכים מעוטי יכולת כסף ו/או מכשירים לריפוי וסיוע. לאחוז ולנקוט בכל האמצעים הנדרשים או שידרשו לצורך מימוש המטרות הנ ל וכן כל פעולה אחרת שתראה לועד העמותה ואשר מגמתה הינה עזרה לזולת",
-"https://yad-sarah.net/wp-content/uploads/2019/04/logoys.png",15, 20, true, 580030104,"משה אורי כהן",1983, 55,900,123456,"ציוד רפואי");
+"https://yad-sarah.net/wp-content/uploads/2019/04/logoys.png",15, 20, true, 580030104,"משה אורי כהן",1983, 55,900,123456,"ציוד רפואי","https://yad-sarah.net/");
 INSERT INTO Organizations(org_name, org_admin_id, description, img_url, min_donation, one_time_donation, approved, pc_num, admin_name, founding_year, working, num_volunteers, num_friends, field_of_activity, website) VALUES
 ("Hakshiva","tehilaj97@gmail.com", "Mentoring and coaching for Teens at Risk and their families.",
 "https://upload.wikimedia.org/wikipedia/commons/b/bc/UHNewLogo.svg",12, 30, true, 580465979, "אליהו פולק", 2006,388,231,5400, "נוער", "https://hakshiva.org/");
@@ -53,18 +53,25 @@ INSERT INTO Levels (org_id, level_num, level_name, min_people, min_sum) VALUES
 -- gifts
 select* from Gifts;
 INSERT INTO Gifts (gift_name, gift_description, gift_pic, org_id, level_num, g_date, raffle) VALUES
-("רכב 7 מקומות","כב מפואר עם 7 מקומותר", null, 1, 4, "2020-08-23", true),
-("מצלמה","מצלמת קאנון איכותית","",2,2,"2020-08-17", true),
-("דיסק","פרחי מיאמי","",3,1,"2020-07-17", false),
-("רכב 7 kjhkhומות","כב מפואר עם 7 מקומותר", null, 1, 1, "2020-08-23", true),
-("מצdfdfלמה","מצלמת קאנון איכותית","",2,1,"2020-08-17", true),
-("dfdfדיסק","פרחי מיאמי","",3,1,"2020-07-17", false),
-("מכונת תפירה","חדשה במחיוחד","",1,2,"2020-09-23", false);
+("רכב 7 מקומות"," רכב מפואר בעל 7 מקומות של חברת הונדה BR-V","https://magdilim-organization-images.s3.amazonaws.com/prizes/1_c3584880-be52-11ea-b9f1-a1543b6468b8_giftOrg1Level4.jpg"
+,1,4,"2020-08-23",true),
+("מחשב נייד","מחשב נייד של חברת דל","https://magdilim-organization-images.s3.amazonaws.com/prizes/5_8866dbf0-c015-11ea-a92d-d58a6f3c9a4b_laptop_hichud.jpeg",1,1,"2020-11-14",true),
+
+("מצלמה","מצלמה איכותית ביותר של חברת קאנון","https://magdilim-organization-images.s3.amazonaws.com/prizes/2_7a43a270-be52-11ea-a06b-4107b5c84cbb_WIN A CANON CAMERA!.jpg"
+,2,1,"2020-10-03",false),
+("עיצוב הבית","חבילה הכוללת הום סטיילינג מהטובים בארץ בשווי של 30000 שח","https://magdilim-organization-images.s3.amazonaws.com/prizes/5_99e5ec90-c015-11ea-a92d-d58a6f3c9a4b_homeDesign_hezer.jpeg",2,3,"2020-09-04",true),
+("דירה","דירה בת 5 חגרים בפרוייקט היוקרה מגדלי הנוף","https://magdilim-organization-images.s3.amazonaws.com/prizes/5_5deb9d70-c015-11ea-a92d-d58a6f3c9a4b_aparteement_hezer.jpeg",2,4,"2020-09-01",true),
+
+("חדר ילדים","חדר ילדים שיממש לכל אמא את החלום שתמיד רצתה","https://magdilim-organization-images.s3.amazonaws.com/prizes/5_71aa16c0-c015-11ea-a92d-d58a6f3c9a4b_childrenRoom_yadShara.jpeg",3,3,"2020-08-14",true),
+("חופשה חלומית","חופשה חלומית לבחירה מתוך 3 יעדים שווים במיוחד","https://magdilim-organization-images.s3.amazonaws.com/prizes/3_9c2f0e50-bfca-11ea-9b4f-b7223a148dce_vacation.jpg",3,2,"2020-09-18",true),
+
+("מטבח","מטבח יוקרתי ממיטב המעצבים לבחירה",
+"https://magdilim-organization-images.s3.amazonaws.com/prizes/5_53771cb0-c016-11ea-b1b6-ff6ac677a095_kitchen_hakshiva.jpeg",4,3,"2020-12-27",true);
 
 -- inserting gifts with winners:
 SELECT * FROM magdilimdb.gifts;
 INSERT INTO Gifts (gift_name, gift_description, gift_pic, org_id, level_num, g_date, winner, raffle) VALUES
-("רכב 7 מקומות","כב מפואר עם 7 מקומותר", "https://magdilim-organization-images.s3.amazonaws.com/prizes/1_c3584880-be52-11ea-b9f1-a1543b6468b8_giftOrg1Level4.jpg", 1, 4, "2020-08-23", 'tehilaj97@gmail.com', true),
+("דירה מפוארת","דירה בת 5 חגרים בפרוייקט היוקרה מגדלי הנוף", "https://magdilim-organization-images.s3.amazonaws.com/prizes/5_5deb9d70-c015-11ea-a92d-d58a6f3c9a4b_aparteement_hezer.jpeg", 1, 4, "2020-08-23", 'tehilaj97@gmail.com', true),
 ("מצלמה","מצלמת קאנון איכותית","",2,2,"2020-08-17", 'avitalspector@gmail.com', true);
 
 -- inserting comments into the feed --

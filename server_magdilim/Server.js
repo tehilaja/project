@@ -329,10 +329,13 @@ app.get('/get-files-of-folder/:folder', (req, res, next) => {
 
 
 // -- /donate/findDThrouhUser
-app.get('/donate/findDThrouhUser/:user_mail', (req, res, next) => {
+app.post('/donate/findDThrouhUser', (req, res) => {
   try {
+    console.log("req: "+ req.body.userMail + " "+ req.body.org_id)
+    // console.log("req: "+ req.params.userMail + " "+ req.params.org_id)
     console.log("in donate/findDThrouhUser/:user_mail")
-    const qDUser = `select user_id from donors_in_org where user_id =${inQutationMarks(req.params.user_mail)}`;
+    const qDUser = `select user_id from donors_in_org where user_id ="${req.body.userMail}" and org_id =${req.body.org_id}`;
+    // select user_id from donors_in_org where user_id ="tehilaj97@gmail.com" and org_id = 1;
     console.log("query: \n" + qDUser + "\n");
     db.query(qDUser, (err, result, fields) => {
       if (err) throw err;
@@ -382,6 +385,7 @@ app.post('/addOrg', (req, res, next) => {
 
   const numberOrNull = (num) => num || null;
   const org = req.body.org;
+
   const sqlOrgsTableQuery = `INSERT INTO organizations (org_name, description, img_url, website, min_donation, one_time_donation, field_of_activity, approved, org_admin_id, admin_name) VALUES (${inQutationMarks(org.org_name)}, ${inQutationMarks(org.description)}, ${inQutationMarks(org.img_url)}, ${inQutationMarks(org.website)}, ${numberOrNull(org.min_donation)}, ${numberOrNull(org.one_time_donation)}, ${inQutationMarks(org.field_of_activity)}, 0, ${inQutationMarks(org.org_admin_id)}, ${inQutationMarks(org.admin_name)})`;  const sqlAddressesTableQuery = `INSERT INTO addresses (org_id, country, state, city, street, building, apartment, suite, zip ) VALUES (LAST_INSERT_ID(), ${inQutationMarks(org.country)}, ${inQutationMarks(org.state)}, ${inQutationMarks(org.city)}, ${inQutationMarks(org.street)}, ${numberOrNull(org.building)}, ${numberOrNull(org.apartment)}, ${numberOrNull(org.suite)}, ${numberOrNull(org.zip)})`;
   
   const query = `${sqlOrgsTableQuery};${sqlAddressesTableQuery};`;
@@ -668,6 +672,8 @@ app.post('/get_user_params', function (req, res) {
   reactor.addEventListener('got_user_params', function () {
     const email = params.find(x => x.Name === 'email') && params.find(x => x.Name === 'email').Value;
     params.push({Name: 'program_admin', Value: email === 'tehilaj97@gmail.com'});
+    params.push({Name: 'program_admin', Value: email === 'avital05484@gmail.com'});
+
     res.send(params);
   });
 
