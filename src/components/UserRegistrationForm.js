@@ -1,14 +1,11 @@
-/*
-TO DO:
-change user name to be the begining of email or the cell number!!
-*/
-
 import React from 'react';
 import ReactDOM from 'react-dom';
 import axios from "axios";
 import { async } from "q";
 
 import { Button, Divider, Form, Grid, Segment } from 'semantic-ui-react';
+
+const userRestirationService = require('../cognito/user-registration.service').data.userRegistrationService;
 
 class Status {
     static PreRegistration = 1;
@@ -73,49 +70,24 @@ class UserRegistrationForm extends React.Component {
             phone: this.state.phone,
             password: this.state.pswd,
         };
-        /*add user to dataBase, login with new user*/
-        (async () => {
-            const response = await axios.post(
-                '/add_user',
-                {   user: user,
-                    user_name: this.state.userName, first_name: this.state.first_name, last_name: this.state.last_name, pswd: this.state.pswd, email: this.state.email, phone: this.state.phone,// ---- req
-                    is_admin: false
-                },
-                { header: { 'Content-Type': 'application/json' } }
-            )
-            console.log("after registration");
 
-            if (response.data === "registered") {
-                this.setState({status: Status.PreConfirmation});
+        userRestirationService.register(user, (err, result) => {
+            if (err) {
+                alert(err);
             } else {
-                alert(response.data);
-                console.log(response.data);             
+              this.setState({status: Status.PreConfirmation});
             }
-            console.log("response: "+JSON.stringify(response))
-        }
-        )();
+          });
     }
 
     confirmUser() {
-        (async () => {
-            const response = await axios.post(
-                '/confirm_registerd_user',
-                {
-                    user_name: this.state.email,
-                    confirmation_code: this.state.confirmation_code,
-                },
-                { header: { 'Content-Type': 'application/json' } }
-            )
-            if (response.data === "confirmed") {
-                this.setState({status: Status.PostConfirmation})
+        userRestirationService.confirmRegistration(this.state.email, this.state.confirmation_code, (err, result) => {
+            if (err) {
+                alert(err);
             } else {
-                console.log(response.data);
-                alert(response.data);
+                this.setState({ status: Status.PostConfirmation })
             }
-            console.log("after confirmation")
-            console.log("response: "+JSON.stringify(response));
-        }
-        )();
+        });
     }
 
     render() {

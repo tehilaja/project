@@ -2,8 +2,10 @@ import React from 'react';
 import axios from "axios";
 import { Button, Dimmer, Divider, Form, Grid, Loader, Segment } from 'semantic-ui-react'
 import { Redirect } from "react-router-dom";
-
 import UserRegistrationForm from './UserRegistrationForm.js'
+
+const userLoginService = require('../cognito/user-login.service').data.userLoginService;
+
 class ChangePasswordForm extends React.Component {
     constructor(props) {
         super(props)
@@ -31,39 +33,45 @@ class ChangePasswordForm extends React.Component {
         })
     }
 
-    handleSubmit(e) {
-        e.preventDefault();
-
+    validation() {
         if (!this.state.old_pswd) {
             alert("Please fill in old password field");
-            return;
+            return false;
         }
         if (!this.state.new_pswd) {
             alert("Please fill in new password field");
-            return;
+            return false;
         }
         if (!this.state.confirm_new_pswd) {
             alert("Please fill in confirm new password field");
-            return;
+            return false;
         }
         if (this.state.confirm_new_pswd !== this.state.new_pswd) {
             alert("New password field and confirm new password field must be identical");
+            return false;
+        }
+    }
+
+    changePassword() {
+        console.log("start change password....");
+        userLoginService.changePassword(this.state.userName, this.state.old_pswd, this.state.new_pswd, (err, result) => {
+            if (err) {
+                alert(err);
+            } else {
+                alert('Password changed successfully');
+                document.dispatchEvent(new Event('passwordChanged'));
+            }
+        });    
+    }
+
+    handleSubmit(e) {
+        e.preventDefault();
+
+        if(!this.validation()) {
             return;
         }
         
-        (async () => {
-            const response = await axios.post(
-                '/change-password',
-                { user_name: this.state.userName, old_password: this.state.old_pswd, new_password: this.state.new_pswd },
-            );
-
-            if (response.data === 'success') {
-                alert('Password changed successfully');
-                document.dispatchEvent(new Event('passwordChanged'));
-            } else {
-                alert(response.data);
-            }
-        })();
+        this.changePassword();
     }
 
     render() {
@@ -81,6 +89,7 @@ class ChangePasswordForm extends React.Component {
                                 icon='lock'
                                 iconPosition='left'
                                 label='Old Password'
+                                placeholder='Old Password'
                                 type='password'
                                 name="old_pswd"
                                 onChange={this.handleChange.bind(this)}
@@ -89,6 +98,7 @@ class ChangePasswordForm extends React.Component {
                                 icon='lock'
                                 iconPosition='left'
                                 label='New Password'
+                                placeholder='New Password'
                                 type='password'
                                 name="new_pswd"
                                 onChange={this.handleChange.bind(this)}
@@ -97,6 +107,7 @@ class ChangePasswordForm extends React.Component {
                                 icon='lock'
                                 iconPosition='left'
                                 label='Confirm New Password'
+                                placeholder='Confirm New Password'
                                 type='password'
                                 name="confirm_new_pswd"
                                 onChange={this.handleChange.bind(this)}

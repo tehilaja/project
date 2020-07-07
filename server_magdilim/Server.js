@@ -1,29 +1,29 @@
-//import { signInButton, registerButton } from '../project-master/src/Clients/cognito_client';
-const cognitoClient = require('./cognito_client');
+// //import { signInButton, registerButton } from '../project-master/src/Clients/cognito_client';
+// const cognitoClient = require('./cognito_client');
 
-//  --- CHANGES
-// const cognitoClient = require('../project/cognito_client');
+// //  --- CHANGES
+// // const cognitoClient = require('../project/cognito_client');
 
-// const cognitoServiceFile = require('./src/cognito/cognito.service');
-// const userRegistrationFile = require('./src/cognito/user-registration.service');
-// const userLoginFile = require('./src/cognito/user-login.service');
-
-
-// ~~~~~~~~~~~ cognito ~~~~~~~~~~~~
-const cognitoServiceFile = require('./cognito/cognito.service');
-const userRegistrationFile = require('./cognito/user-registration.service');
-const userLoginFile = require('./cognito/user-login.service');
-const userParametersFile = require('./cognito/user-parameters.service');
-const awsServiceFile = require('./cognito/aws.service');
+// // const cognitoServiceFile = require('./src/cognito/cognito.service');
+// // const userRegistrationFile = require('./src/cognito/user-registration.service');
+// // const userLoginFile = require('./src/cognito/user-login.service');
 
 
+// // ~~~~~~~~~~~ cognito ~~~~~~~~~~~~
+// const cognitoServiceFile = require('./cognito/cognito.service');
+// const userRegistrationFile = require('./cognito/user-registration.service');
+// const userLoginFile = require('./cognito/user-login.service');
+// const userParametersFile = require('./cognito/user-parameters.service');
+// const awsServiceFile = require('./cognito/aws.service');
 
-const cognitoUtil = cognitoServiceFile.data.cognitoUtil;
-const userRestirationService = userRegistrationFile.data.userRegistrationService;
-const userLoginService = userLoginFile.data.userLoginService;
 
-const userParametersService = userParametersFile.data.userParametersService;
-const awsUtil = awsServiceFile.data.awsUtil;
+
+// const cognitoUtil = cognitoServiceFile.data.cognitoUtil;
+// const userRestirationService = userRegistrationFile.data.userRegistrationService;
+// const userLoginService = userLoginFile.data.userLoginService;
+
+// const userParametersService = userParametersFile.data.userParametersService;
+// const awsUtil = awsServiceFile.data.awsUtil;
 const s3Util = require('./utilities/s3-utilities.js').methods;
 const reactor = require("./utilities/custom-event").data.reactor;
 const statusCache = require('./utilities/status-cache');
@@ -124,31 +124,6 @@ const job = schedule.scheduleJob(rule, function () {
     });
   });
 });
-
-
-// ~~~~~~~~~~ userLoginService ~~~~~~~
-userLoginService.isAuthenticated(function (message, isLoggedIn) {
-  console.log("AppComponent: the user is authenticated: " + isLoggedIn);
-  cognitoUtil.getIdToken({
-    callback() {
-
-    },
-    callbackWithParam(token) {
-      // Include the passed-in callback here as well so that it's executed downstream
-      console.log("AppComponent: calling initAwsService in callback")
-      awsUtil.initAwsService(null, isLoggedIn, token);
-    }
-  });
-})
-
-// ~~~~~~~~~~~~~~~ routering ~~~~~~~~~~~~
-// TODO: correct to /donate only!!!
-
-// app.use('/orgPage',OrgPage);   
-
-// -->  http://localhost:3000/donate
-
-
 
 
 
@@ -535,172 +510,6 @@ app.get('/EditOrgPage/:userId/is-org-admin/:orgId', function (req, res, next) {
 
 
 
-//-~~~~~~~~~~~~~~~~~~ code ~~~~~~~~~~~~~~~~~~
-
-app.post('/add_user', function (req, res) {
-  console.log("start signup....");
-  try {
-    const response = userRestirationService.register(req.body.user, (err, result) => {
-      if (err) {
-        console.log('register error: ' + err);
-        res.send(err);
-      } else {
-        res.send("registered");
-      }
-    });
-  } catch (error) {
-    console.log("error: " + JSON.stringify(error));
-    res.send('Unknown error registering user. Please try again later.');
-  }
-});
-
-
-// @ check server connection
-// app.get('/checkServer',function(req,res){
-//   console.log("checkServer !!! ....");
-//   try {
-//     res.send("yes");
-//   } catch (error) {
-//     console.log("error: "+JSON.stringify(error));  
-//     res.send("no")
-//   }
-
-// });
-
-
-
-//-----confirm registerd user ------
-app.post('/confirm_registerd_user', function (req, res) {
-  console.log("start confirmation....");
-  try {
-    const response = userRestirationService.confirmRegistration(req.body.user_name, req.body.confirmation_code, (err, result) => {
-      if (err) {
-        res.send(err);
-      } else {
-        res.send("confirmed");
-      }
-    });    
-  } catch (error) {
-    console.log("error: " + JSON.stringify(error));
-    res.send('Unknown error confirming user. Please try again later.'); 
-  }
-});
-
-
-//-----------------change password-------------
-app.post('/change-password', (req, res) => {
-  console.log("start change password....");
-
-  try {
-    userLoginService.changePassword(req.body.user_name, req.body.old_password, req.body.new_password, (err, result) => {
-      if (err) {
-        console.log('error changing password:\n'+err);
-        res.send(err);
-      } else {
-        res.send('success');
-      }
-    });    
-  } catch (error) {
-    console.log("error changing passworddd: " + JSON.stringify(error));
-    res.send('Unknown error changing password. Please try again later.'); 
-  }
-});
-
-//-----------------forgot password-------------
-app.post('/forgot-password', (req, res) => {
-  console.log("start forgot password....");
-
-  try {
-    userLoginService.forgotPassword(req.body.user_name, (err, result) => {
-      if (err) {
-        console.log('error forgot password:\n'+err);
-        res.send(err);
-      } else {
-        res.send('success');
-      }
-    });    
-  } catch (error) {
-    console.log("error forgot passworddd: " + JSON.stringify(error));
-    res.send('Unknown error in forgot password flow. Please try again later.'); 
-  }
-});
-
-
-//-----------------confirm forgot password-------------
-app.post('/confirm-forgot-password', (req, res) => {
-  console.log("start confirm forgot password....");
-
-  try {
-    userLoginService.confirmNewPassword(req.body.user_name, req.body.verification_code, req.body.password, (err, result) => {
-      if (err) {
-        console.log('error confirm forgot password:\n'+err);
-        res.send(err);
-      } else {
-        res.send('success');
-      }
-    });    
-  } catch (error) {
-    console.log("error confirm forgot passworddd: " + JSON.stringify(error));
-    res.send('Unknown error confirming forgot password flow. Please try again later.'); 
-  }
-});
-
-
-//-------login --------
-app.post('/login', (req, res) => {
-  try {
-    const response = userLoginService.authenticate(req.body.userName, req.body.pswd, (err, session) => {
-      if (err) {
-        console.log('login error: ' + err);
-        res.send(err);
-      } else {
-        res.send("loggedIn");
-      }
-    });
-    // console.log("in server log in success")
-
-  } catch (error) {
-    console.log("error: " + JSON.stringify(error));
-    res.send('Unknown error logging in. Please try again later.');
-  }
-})
-
-//------------logout----------
-app.post('/logout', function (req, res) {
-  userLoginService.logout();
-  res.send("logged out");
-});
-
-
-
-
-//---------------get current user--------------
-app.post('/get_current_user', function (req, res) {
-  console.log("get current user: " + JSON.stringify(cognitoUtil.getCurrentUser()))
-  res.send(cognitoUtil.getCurrentUser())
-});
-
-
-//---------------get user params--------------
-app.post('/get_user_params', function (req, res) {
-  console.log("start server get user params");
-  let params = [];
-  const err = userParametersService.getParameters(params);
-  if (err) {
-    res.send(err);
-  }
-  reactor.registerEvent('got_user_params');
-  reactor.addEventListener('got_user_params', function () {
-    const email = params.find(x => x.Name === 'email') && params.find(x => x.Name === 'email').Value;
-    params.push({Name: 'program_admin', Value: email === 'tehilaj97@gmail.com'});
-    params.push({Name: 'program_admin', Value: email === 'avital05484@gmail.com'});
-
-    res.send(params);
-  });
-
-});
-
-
 // -- fetching organizations from DB:
 app.get('/data', function (req, res, next) {
   db.query('select * from Organizations WHERE approved=1', function (error, results, fields) {
@@ -783,7 +592,7 @@ function (req, res, next) {
   console.log('in fetch feed comments: '+JSON.stringify(req.params));
     const sqlQuery = `SELECT * FROM Feed_comments WHERE feed_type=${inQutationMarks(req.params.feed_type)} and feed_type_id=${req.params.feed_type_id}`
     // const sqlQuery = `SELECT * FROM Feed_comments WHERE feed_type="org" and feed_type_id=2`
-    console.log(sqlQuery)
+    // console.log(sqlQuery)
     db.query(sqlQuery, (err, result, fields) => {
       if (!err) {
         // console.log('res: ' + JSON.stringify(result));

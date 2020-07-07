@@ -4,6 +4,8 @@ import { Button, Dimmer, Divider, Form, Grid, Loader, Segment } from 'semantic-u
 import UserRegistrationForm from './UserRegistrationForm.js';
 import ForgotPasswordForm from './ForgotPasswordForm.js';
 
+const userLoginService = require('../cognito/user-login.service').data.userLoginService;
+
 class Status {
     static Regular = 1;
     static Loading = 2;
@@ -34,40 +36,42 @@ class LoginForm extends React.Component {
         })
     }
 
-    handleSubmit(e) {
-        e.preventDefault()
+    validation() {
         if (this.state.userName == "" && this.state.pswd != "") {
             alert("Username Cannot be empty!");
-            return;
+            return false;
         }
         if (this.state.pswd == "" && this.state.userName != "") {
             alert("please fill in password field");
-            return;
+            return false;
         }
         if (this.state.pswd == "" && this.state.userName == "") {
             alert("Username and password Cannot be empty!");
-            return;
+            return false;
         }
-        //login user to server
-        this.setState({status: Status.Loading});
-        (async () => {
-            const response = await axios.post(
-                '/login',
-                { userName: this.state.userName, pswd: this.state.pswd, isAdmin: this.state.isAdmin, loggedIn: false },
-                { headers: { 'Content-Type': 'application/json' } }
-            )
-            console.log("resp", response)
+        return true;
+    }
 
-            if (response.data === "loggedIn") {
-                // alert("Hello: "+this.state.userName)
+    login() {
+        userLoginService.authenticate(this.state.userName, this.state.pswd, (err, session) => {
+            if (err) {
+                alert(err);
+                this.setState({ status: Status.Regular });
+            } else {
                 this.setState({ loggedIn: true });
                 window.location.assign('/UserPage');;
-                // this.props.record(this.state.userName)
-            } else {
-                alert(response.data);
-                this.setState({status: Status.Regular});
             }
-        })();
+        });
+    }
+
+    handleSubmit(e) {
+        e.preventDefault();
+
+        if (!this.validation()) {
+            return;
+        }
+        
+        this.login();
     }
 
     loadingRender() {

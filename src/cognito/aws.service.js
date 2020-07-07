@@ -1,4 +1,3 @@
-
 const cognitoServiceFile = require("./cognito.service");
 const AWS = require("aws-sdk/global");
 

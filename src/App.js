@@ -20,6 +20,8 @@ import AdminPage from './components/Admin/AdminPage.js'
 
 import ContactUs from './components/Extra/ContactUs.js'
 
+const userParametersService = require('./cognito/user-parameters.service').data.userParametersService;
+
 //to know which page is open and make the navbar active
 class ActivePage {
     static Home = 1;
@@ -31,12 +33,20 @@ class ActivePage {
 
 class App extends React.Component {
     //-------constructor------------
-    constructor() {
-        super()
-        this.state = {}
+    constructor(props) {
+        super(props);
+        this.state = {
+            check_login_status: false,
+            loggedIn: null,
+            userName: null,
+            first_name: null,
+            last_name: null,
+            email: null,
+            phone: null,
+            program_admin: null,
+        };
         this.org = {};
         this.activePage = 0;
-        this.get_user_params();
         this.guardRoute = this.guardRoute.bind(this);
         this.renderPageBody = this.renderPageBody.bind(this);
     }
@@ -50,8 +60,6 @@ class App extends React.Component {
     }
 
     async run_necessary_guard_checks() {
-        // await this.get_is_program_admin();
-        
         const path = window.location.pathname.split('/');
         switch (path[1].toLowerCase()) {
             case 'editorgpage':
@@ -61,25 +69,10 @@ class App extends React.Component {
                 break;
         }
     }
-    
-    async get_user_params() {
-        await (async () => {
-            const response = await axios.post(
-                '/get_user_params',
-                { headers: { 'Content-Type': 'application/json' } }
-            );
 
-            const params = response.data;
-            if (response.data === 'null') {
-                this.setState({
-                    loggedIn: false,
-                    userName: "",
-                    check_login_status: true,
-                    program_admin: false,
-                    org_admin: false,
-                })
-            }
-            if (Array.isArray(params) && params.length) {
+    get_user_params() {
+        const getParamsCallback = (err, params) => {
+            if (params && Array.isArray(params) && params.length) {
                 const fname = params.find(x => x.Name === 'name').Value;
                 const lname = params.find(x => x.Name === 'family_name').Value;
                 const email = params.find(x => x.Name === 'email').Value;
@@ -98,56 +91,58 @@ class App extends React.Component {
                     program_admin: program_admin,
                 });
 
-                await this.run_necessary_guard_checks();
-            } else {
+                this.run_necessary_guard_checks();
+
+            } else {                
                 this.setState({
-                    loggedIn: false,
-                    userName: "",
                     check_login_status: true,
+                    loggedIn: false,
+                    userName: '',
                     program_admin: false,
                     org_admin: false,
-                })
+                });
             }
-        })();
+        }
+        userParametersService.getParameters(getParamsCallback.bind(this));
     }
 
-    renderPageBody(path){
+    renderPageBody(path) {
         const spliting = path.split("/")
-            switch (path.toLowerCase()) {
-                case "/":
-                    {
-                    return [ActivePage.Home, <HomePage data={this.state}/>];
-                    }
-                case "/userpage":
-                    {
-                        return [ActivePage.MyProfile, this.guardRoute('loggedIn', (<UserPage data={this.state}/>), '/')];
-                    }
-                case `/orgpage/${spliting[2]}`:
-                    {
-                    return [ 0, <OrgPage data={this.state} id={spliting[2]} />];
-                    }
-                case "/contactus":
-                    {
-                    return [ 0, <ContactUs data={this.state} />];
-                    }
-                case "/neworgpage":
-                    return [0, <NewOrgPage data={this.state} />];
-                case "/orgsearch":
-                    return [ActivePage.Organizations, <OrgSearch data={this.state} activePage={ActivePage.Organizations}/>];
-                case "/prizes":
-                    return [ActivePage.Prizes, <Prizes data={this.state} activePage={ActivePage.Prizes}/>];   
-                //The following cases will be guarded:
-                case "/adminpage":
-                    return [ActivePage.AdminPage, this.guardRoute('program_admin', (<AdminPage data={this.state} />), '/')];
-                case `/editorgpage/${spliting[2]}`:
-                    return [0, this.guardRoute('org_admin', (<EditOrgPage data={this.state} id={spliting[2]} />), '/')];
-               default:
-                    break;
-            }
+        switch (path.toLowerCase()) {
+            case "/":
+                {
+                    return [ActivePage.Home, <HomePage data={this.state} />];
+                }
+            case "/userpage":
+                {
+                    return [ActivePage.MyProfile, this.guardRoute('loggedIn', (<UserPage data={this.state} />), '/')];
+                }
+            case `/orgpage/${spliting[2]}`:
+                {
+                    return [0, <OrgPage data={this.state} id={spliting[2]} />];
+                }
+            case "/contactus":
+                {
+                    return [0, <ContactUs data={this.state} />];
+                }
+            case "/neworgpage":
+                return [0, <NewOrgPage data={this.state} />];
+            case "/orgsearch":
+                return [ActivePage.Organizations, <OrgSearch data={this.state} activePage={ActivePage.Organizations} />];
+            case "/prizes":
+                return [ActivePage.Prizes, <Prizes data={this.state} activePage={ActivePage.Prizes} />];
+            //The following cases will be guarded:
+            case "/adminpage":
+                return [ActivePage.AdminPage, this.guardRoute('program_admin', (<AdminPage data={this.state} />), '/')];
+            case `/editorgpage/${spliting[2]}`:
+                return [0, this.guardRoute('org_admin', (<EditOrgPage data={this.state} id={spliting[2]} />), '/')];
+            default:
+                break;
+        }
     }
 
     componentDidMount() {
-        // alert("window.location.pathname: \n" + window.location.pathname)
+        this.get_user_params();
     }
 
     guardRoute(activateAttributeName, componentToRender, elsePath) {
@@ -183,12 +178,12 @@ class App extends React.Component {
 
             const path = window.location.pathname;
             const [activePage, renderObject] = this.renderPageBody(path)
-            return( 
-           <div>
-            <Header data={{ loggedIn: this.state.loggedIn, program_admin: this.state.program_admin, userName: this.state.userName, activePage: activePage}}/>
-            {renderObject}
-            <Footer />
-            </div>)
+            return (
+                <div>
+                    <Header data={{ loggedIn: this.state.loggedIn, program_admin: this.state.program_admin, userName: this.state.userName, activePage: activePage }} />
+                    {renderObject}
+                    <Footer />
+                </div>)
         }
     }
 }

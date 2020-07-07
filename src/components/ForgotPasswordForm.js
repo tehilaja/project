@@ -1,9 +1,9 @@
 import React from 'react';
 import axios from "axios";
-import { Button, Dimmer, Divider, Form, Grid, Loader, Segment } from 'semantic-ui-react'
-import { Redirect } from "react-router-dom";
-
+import { Button, Dimmer, Divider, Form, Grid, Loader, Segment } from 'semantic-ui-react';
 import UserRegistrationForm from './UserRegistrationForm.js'
+
+const userLoginService = require('../cognito/user-login.service').data.userLoginService;
 
 class Status {
     static Start = 1;
@@ -34,50 +34,46 @@ class ForgotPasswordForm extends React.Component {
     }
 
     forgotPassword() {
-        (async () => {
-            const response = await axios.post(
-                '/forgot-password',
-                { user_name: this.state.userName },
-            )
-            console.log("resp", response)
-
-            if (response.data === 'success') {
-                this.setState({status: Status.PreConfirmation});
-            } else {
-                alert(response.data);
+        userLoginService.forgotPassword(this.state.userName, (err, result) => {
+            if (err) {
+                alert(err);
                 this.setState({ loading: false });
+            } else {
+                this.setState({ status: Status.PreConfirmation });
             }
-        })();
+        });
     }
 
-    cofirmForgotPassword() {
+    cofirmForgotPasswordValidation() {
         if (!this.state.pswd) {
             alert("Please fill in new password field");
-            return;
+            return false;
         }
         if (!this.state.confirm_pswd) {
             alert("Please fill in confirm new password field");
-            return;
+            return false;
         }
         if (this.state.confirm_pswd !== this.state.pswd) {
             alert("New password field and confirm new password field must be identical");
+            return false;
+        }
+
+        return true;
+    }
+
+    cofirmForgotPassword() {
+        if (!this.cofirmForgotPasswordValidation()) {
             return;
         }
 
-        (async () => {
-            const response = await axios.post(
-                '/confirm-forgot-password',
-                { user_name: this.state.userName, verification_code: this.state.code, password: this.state.pswd },
-            );
-            console.log("resp", response)
-
-            if (response.data === 'success') {
+        userLoginService.confirmNewPassword(this.state.userName, this.state.code, this.state.pswd, (err, result) => {
+            if (err) {
+                alert(err);
+            } else {
                 alert('Password reset successfully');
                 window.location.assign('/');
-            } else {
-                alert(response.data);
             }
-        })();
+        });
     }
 
     handleSubmit(e) {

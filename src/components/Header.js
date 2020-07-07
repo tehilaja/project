@@ -23,7 +23,10 @@ import {
   Sidebar,
   Step,
   Visibility,
-} from 'semantic-ui-react'
+} from 'semantic-ui-react';
+// const userLoginService = require('../../server_magdilim/cognito/user-login.service').data.userLoginService;
+
+const userLoginService = require('../cognito/user-login.service').data.userLoginService;
 
 const style = {
 	h1: {
@@ -47,21 +50,9 @@ const style = {
 	return isSSR ? Responsive.onlyTablet.minWidth : window.innerWidth
   }
 
-  const  logOutFunc = () => {
-	//logout user to server
-	(async ()=> {
-		const response = await axios.post(
-			'/logout',
-			{ headers: { 'Content-Type': 'application/json' } }
-		  )
-		  if(response.data === "logged out"){
-			  alert("user logged out");
-		  }
-		  else{
-			  alert("failed logging out")
-		  }
-		  window.location.assign('/');
-		})();
+  const  logout = () => {
+	userLoginService.logout();
+	window.location.assign('/');
 }
 
 //to know which page is open and make the navbar active
@@ -109,7 +100,7 @@ const HomepageHeading = ({ mobile }) => (
 	}}>
 	<Step color='olive' icon='user' title='Join'  />
 	<Step icon='money bill alternate outline' title='Donate' />
-	<Step icon='users' title='Reffer'/>
+	<Step icon='users' title='Refer'/>
 	<Step icon='building' title='Build' 
 	// onClick={ () => window.scrollTo({
     //         top: 1050,
@@ -256,7 +247,7 @@ render() {
 				  Sign Up
 				</Button>
 				</div>}
-				{this.state.loggedIn && <Button as='a' inverted={!fixed} onClick={logOutFunc}>
+				{this.state.loggedIn && <Button as='a' inverted={!fixed} onClick={logout}>
 				  Log out
 				</Button>}
 			  </Menu.Item>
@@ -338,7 +329,7 @@ class MobileContainer extends Component {
 			<Menu.Item as='a' onClick={() => this.setState({showLogin: true, showUser: false, showBackButton: true})}>Log in</Menu.Item> 
 			<Menu.Item as='a' onClick={() => this.setState({showLogin: false, showUser: true, showBackButton: true})}>Sign Up</Menu.Item>
 			</div>}
-			{this.state.loggedIn && <Menu.Item as='a' onClick={logOutFunc}>
+			{this.state.loggedIn && <Menu.Item as='a' onClick={logout}>
 				  Log out
 				</Menu.Item>}
 
@@ -376,7 +367,7 @@ class MobileContainer extends Component {
 				</Button>
 				</div>}
 				{this.state.showBackButton && <button name = "btnBack" onClick={() => this.setState({showLogin: false, showUser: false, showBackButton: false})}>close</button>}
-				{this.state.loggedIn && <Button as='a' onClick={logOutFunc}>
+				{this.state.loggedIn && <Button as='a' onClick={logout}>
 				  Log out
 				</Button>}
 				  </Menu.Item>
