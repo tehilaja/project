@@ -33,13 +33,6 @@ class GiftCard extends React.Component{
                         </Card.Content>
                         <Card.Content extra>
                              <br></br>
-                             {/* TODO: enter details of level */}
-                            {/* <Icon name =  'user' />
-                            min people: {this.props.gifts.min_people}
-                            
-                            <br></br>
-                            <Icon name='dollar' />
-                            min sum: {this.props.gifts.min_sum} */}
 
                             <br></br>
                             <Icon name = 'time'/>

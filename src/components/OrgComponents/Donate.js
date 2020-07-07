@@ -276,7 +276,7 @@ export default class Donate extends Component {
                                 }
                                 else if (res === "not found" || res.data.user_id === undefined) // the data is not null
                                 {
-                                    alert("there are no user in system!")
+                                    alert("There is no such user in system!")
                                     this.setState({ dThrough: '', ableDonate: false });
 
                                     // , nextAble:false});
