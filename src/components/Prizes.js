@@ -26,22 +26,20 @@ class Prizes extends React.Component{
             routeMain: false,
             check_login_status: false,
             images: [],
+            filterImeges:[],
             allgiftLevels:[],
             filterGift:[],
-            orgs:[]
+            orgs:[],
+            selectedOrg: null
            
         }
         
-        this.getImages();
-        this.handleClickBtn = this.handleClickBtn.bind(this);
+        // this.getImages();
         this.handleClickBtnOrg = this.handleClickBtnOrg.bind(this);
 
         
   }
   
-  // componentWillReceiveProps(nextProps){
-  //  nextProps= this.props
-  // }
   componentDidMount()
   {
     axios.get('/list_of_org').then(res => 
@@ -51,7 +49,6 @@ class Prizes extends React.Component{
         else if (res === "no data") // the data is not null
           alert ("no data!")
         else{
-          // alert("levels: \n"+JSON.stringify(res.data))
           this.setState({orgs: res.data})
         }	
       }).catch(error=> {
@@ -66,20 +63,21 @@ class Prizes extends React.Component{
 			else if (res === "no data") // the data is not null
 				alert ("no data!")
 			else{
-        // alert("levels: \n"+JSON.stringify(res.data))
         this.setState({allgiftLevels: res.data})
         this.setState({filterGift: res.data})
 
         // -----
         const imgs = res.data.map(gift => {
-          const image = {};
-          alert("url \n"+ JSON.stringify(res.gift_pic))
-          
+          const image = {};          
           image.original = gift.gift_pic;
           image.thumbnail = gift.gift_pic;
           return image;
         });
         this.setState({images: imgs});
+        this.setState({filterImeges: imgs});
+
+        
+        
         // ------
       
 			}	
@@ -94,7 +92,6 @@ class Prizes extends React.Component{
 
             const imgs = res.map(url => {
               const image = {};
-              alert("url \n"+ JSON.stringify(url))
               image.original = url;
               image.thumbnail = url;
               return image;
@@ -106,51 +103,35 @@ class Prizes extends React.Component{
         });
       }
 
-      // const imgs = res.map(url => {
-      //   const image = {};
-      //   alert("url \n"+ JSON.stringify(url))
-      //   image.original = url;
-      //   image.thumbnail = url;
-      //   return image;
-      // });
-      // this.setState({images: imgs});
-
-      
-      handleClickBtn(e) {
-        // if(!(this.state.dThrough !== '' & this.state.donate_req.referred_by ==='')) // mail not empty ant not valid
-        // this.setState({nextAble: false})
-        // this.setState(Object.assign(this.state.donate_req,{monthly_donation:e.target.dataset.letter}));
-      }
       handleClickBtnOrg(e, { value }){
-        this.filterChooseOrg(value)
+        this.filterChooseOrg(value);
 
       }
 
-      filterChooseOrg(filter){
-        // let listOrg = []
+      filterChooseOrg(filter)
+      {
         let obj = [];
-        if (filter === '"all organization"'){
-          this.setState({filterGift: this.state.allgiftLevels})
-            // alert("all : "+ this.state.giftShow.length)
+        if (filter === 'all organization' ){
+          this.setState({filterImeges: this.state.images});
         }
-        else
-        {
-          // TODO - the field and org
-          let indexOrg;
-          this.state.org_fieldOfActivity.forEach(orgf=>{ // find the org of this fields
-            if(orgf.field_name === filter){
-              indexOrg = this.state.orgs.findIndex(x => x.org_id === orgf.org_id);
-              obj.push(this.state.orgs[indexOrg])
-            }        
-          })
-            this.setState({filterOrg: obj})
+        else{
+          this.state.allgiftLevels.map(element =>{
+          if(element.org_name === filter)
+          {
+              const image = {};
+              image.original = element.gift_pic;
+              image.thumbnail = element.gift_pic;
+              obj.push(image)
+          }
+        })
+        this.setState({filterImeges: obj})
         }
-    
-    }
-      
+      }
     
 
   render() {
+    const { valueLevel } = this.state // level
+
     const styleBotton = 
     {
         margin: '1em',
@@ -181,8 +162,10 @@ class Prizes extends React.Component{
                   // content = "all organization"
                   key="all organization"
                   // data-letter="all organization"
-                  style = {styleBottonOrg} 
-                  onClick={this.handleClickBtnallOrg}>all organization
+                  style = {{margin: '1em',border: '0.1em solid black',size: '5em, 10em',backgroundColor: 'olive'}}
+                  value = "all organization"
+                  // lable = "All organization"
+                  onClick={this.handleClickBtnOrg}>All organization
                   {/*  floated='right'  size='tiny'  style={{ padding: '3em 3em' }}  */}
                   </Button>
               {this.state.orgs.map(org=>
@@ -191,6 +174,7 @@ class Prizes extends React.Component{
                   style = {styleBottonOrg} 
                   key={org.org_id} 
                   data-letter={org.org_id}
+                  value = {org.org_name}
                   onClick={this.handleClickBtnOrg}>
                   <Image size ='tiny' src={org.img_url}/>
                   {/*  floated='right'  size='tiny'  style={{ padding: '3em 3em' }}  */}
@@ -215,7 +199,7 @@ class Prizes extends React.Component{
               </Button>
           )}
           </div>
-            <ImageGallery items={this.state.images} />
+            <ImageGallery items={this.state.filterImeges} />
             <Segment>
             <Grid celled='internally' columns='equal' stackable>
                 <Grid.Row textAlign='center'>

@@ -422,7 +422,7 @@ app.post('/addOrg', (req, res, next) => {
 //---------------------- add doner in org - monthly donation -----------------------
 app.post('/add-doner-in-org', (req, res, next) => {
   const dio = req.body.dio;
-  const sqlQuery = `INSERT INTO Donors_in_org (org_id, user_id, referred_by, monthly_donation, d_date, d_title, d_description, status_id) VALUES(${dio.org_id},${inQutationMarks(dio.user_id)},${dio.referred_by},${dio.monthly_donation},${inQutationMarks(sqlDateString())},${inQutationMarks(dio.d_title)},${inQutationMarks(dio.d_description)},1);`
+  const sqlQuery = `INSERT INTO Donors_in_org (org_id, user_id, referred_by, monthly_donation, d_date, d_title, d_description, status_id) VALUES(${dio.org_id},${inQutationMarks(dio.user_id)},${inQutationMarks(dio.referred_by)},${dio.monthly_donation},${inQutationMarks(sqlDateString())},${inQutationMarks(dio.d_title)},${inQutationMarks(dio.d_description)},1);`
     dbUtil.callDB(db, sqlQuery, (err, result) => {
     if (!err) {
       statusCache.addDonorToOrg(dio.user_id, dio.org_id, dio.monthly_donation, dio.referred_by);
@@ -1035,11 +1035,15 @@ app.post('/update-org-data', (req, res) => {
 });
 
 app.get('/get_gift_and_levels',(req,res)=>{
-  const qGift = `select 
-    g.gift_name,g.gift_pic,g.gift_description,g.gift_name, o.org_name,o.org_id, o.img_url, l.level_name
-    from organizations o 
-    left join levels l on l.org_id = o.org_id
-    left join gifts g on g.level_num = l.level_num;`
+  const qGift = `    SELECT 	
+  l.level_name as l_name, l.min_people, l.min_sum,	     
+  g.gift_id, g.gift_name,	     
+  g.gift_description,g.gift_pic,	       
+  g.g_date, g.winner, o.org_name
+ from Levels l
+ INNER JOIN gifts g ON l.level_num = g.level_num 
+ inner join organizations o on o.org_id = g.org_id
+  group by g.gift_name;`
     dbUtil.callDB(db, qGift, (err, result) => {
       if (err) {
         console.log('error updating org data: ' + JSON.stringify(err));
