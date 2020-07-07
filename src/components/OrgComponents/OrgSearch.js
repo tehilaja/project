@@ -196,7 +196,7 @@ selectLevel (e, { value }) {
 
     return(
       <Segment style={{ padding: '5em 0em', width: '100%', background:'#F5F5F5', textAlign:'center'}}>
-        <ImageGallery items={this.state.images} />
+        {/* <ImageGallery items={this.state.images} /> */}
         <Segment textAlign='center'>
         <Label labelPosition='left' as='a' color='olive' ribbon left>
             Search Through Magdilim Organizations!

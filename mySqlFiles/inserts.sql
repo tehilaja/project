@@ -60,18 +60,24 @@ select* from Gifts;
 INSERT INTO Gifts (gift_name, gift_description, gift_pic, org_id, level_num, g_date, raffle) VALUES
 ("רכב 7 מקומות"," רכב מפואר בעל 7 מקומות של חברת הונדה BR-V","https://magdilim-organization-images.s3.amazonaws.com/prizes/1_c3584880-be52-11ea-b9f1-a1543b6468b8_giftOrg1Level4.jpg"
 ,1,4,"2020-08-23",true),
-("מחשב נייד","מחשב נייד של חברת דל","https://magdilim-organization-images.s3.amazonaws.com/prizes/5_8866dbf0-c015-11ea-a92d-d58a6f3c9a4b_laptop_hichud.jpeg",1,1,"2020-11-14",true),
+("מחשב נייד","מחשב נייד של חברת דל","https://magdilim-organization-images.s3.amazonaws.com/prizes/5_8866dbf0-c015-11ea-a92d-d58a6f3c9a4b_laptop_hichud.jpeg",
+1,1,"2020-11-14",true),
 
 ("מצלמה","מצלמה איכותית ביותר של חברת קאנון","https://magdilim-organization-images.s3.amazonaws.com/prizes/2_7a43a270-be52-11ea-a06b-4107b5c84cbb_WIN A CANON CAMERA!.jpg"
 ,2,1,"2020-10-03",false),
-("עיצוב הבית","חבילה הכוללת הום סטיילינג מהטובים בארץ בשווי של 30000 שח","https://magdilim-organization-images.s3.amazonaws.com/prizes/5_99e5ec90-c015-11ea-a92d-d58a6f3c9a4b_homeDesign_hezer.jpeg",2,3,"2020-09-04",true),
-("דירה","דירה בת 5 חגרים בפרוייקט היוקרה מגדלי הנוף","https://magdilim-organization-images.s3.amazonaws.com/prizes/5_5deb9d70-c015-11ea-a92d-d58a6f3c9a4b_aparteement_hezer.jpeg",2,4,"2020-09-01",true),
+("עיצוב הבית","חבילה הכוללת הום סטיילינג מהטובים בארץ בשווי של 30000 שח","https://magdilim-organization-images.s3.amazonaws.com/prizes/5_99e5ec90-c015-11ea-a92d-d58a6f3c9a4b_homeDesign_hezer.jpeg",
+2,3,"2020-09-04",true),
+("דירה","דירה בת 5 חגרים בפרוייקט היוקרה מגדלי הנוף","https://magdilim-organization-images.s3.amazonaws.com/prizes/5_5deb9d70-c015-11ea-a92d-d58a6f3c9a4b_aparteement_hezer.jpeg"
+,2,4,"2020-09-01",true),
 
-("חדר ילדים","חדר ילדים שיממש לכל אמא את החלום שתמיד רצתה","https://magdilim-organization-images.s3.amazonaws.com/prizes/5_71aa16c0-c015-11ea-a92d-d58a6f3c9a4b_childrenRoom_yadShara.jpeg",3,3,"2020-08-14",true),
-("חופשה חלומית","חופשה חלומית לבחירה מתוך 3 יעדים שווים במיוחד","https://magdilim-organization-images.s3.amazonaws.com/prizes/3_9c2f0e50-bfca-11ea-9b4f-b7223a148dce_vacation.jpg",3,2,"2020-09-18",true),
+("חדר ילדים","חדר ילדים שיממש לכל אמא את החלום שתמיד רצתה","https://magdilim-organization-images.s3.amazonaws.com/prizes/5_71aa16c0-c015-11ea-a92d-d58a6f3c9a4b_childrenRoom_yadShara.jpeg",
+3,3,"2020-08-14",true),
+("חופשה חלומית","חופשה חלומית לבחירה מתוך 3 יעדים שווים במיוחד","https://magdilim-organization-images.s3.amazonaws.com/prizes/3_9c2f0e50-bfca-11ea-9b4f-b7223a148dce_vacation.jpg",
+3,2,"2020-09-18",true),
 
 ("מטבח","מטבח יוקרתי ממיטב המעצבים לבחירה",
-"https://magdilim-organization-images.s3.amazonaws.com/prizes/5_53771cb0-c016-11ea-b1b6-ff6ac677a095_kitchen_hakshiva.jpeg",4,3,"2020-12-27",true);
+"https://magdilim-organization-images.s3.amazonaws.com/prizes/5_53771cb0-c016-11ea-b1b6-ff6ac677a095_kitchen_hakshiva.jpeg",
+4,3,"2020-12-27",true);
 
 -- inserting gifts with winners:
 SELECT * FROM magdilimdb.gifts;
@@ -120,10 +126,10 @@ INSERT INTO one_time_donations (user_id, org_id, referred_by, sum_donation, d_da
  -- select * from fields_of_activity
  
 INSERT INTO fields_of_activity(field_id,field_name) VALUES
-(1,"הצלת חיים"),(2,"השאלת ציוד"),(3,"בריאות -כללי"),(4,"טיפול באסונות"),(5,"עולם התורה"),(6,"מימון"),(7,"אמנים"),(8,"עזרה לנזקקים"),(9,"חלוקת מזון");
+(1,"הצלת חיים"),(2,"השאלת ציוד"),(3,"בריאות -כללי"),(4,"טיפול באסונות"),(5,"עולם התורה"),(6,"מימון"),(7,"אמנים"),(8,"עזרה לנזקקים"),(9,"חלוקת מזון"),(10,"נוער");
 
 -- select * from org_field_of_activity
-INSERT INTO org_field_of_activity(field_id,org_id) values(1,1),(3,1),(4,1),(2,2),(3,2),(1,2),(2,3),(3,3);
+INSERT INTO org_field_of_activity(field_id,org_id) values(1,1),(3,1),(4,1),(2,2),(3,2),(1,2),(2,3),(3,3),(5,4),(10,4);
 
 
 

@@ -22,7 +22,7 @@ class giftCard extends React.Component{
             <div style ={{marging: '0.8em' ,padding: '0.8em'}}>
             <Card style ={{ height:'500', mergin:'1em'}} >
                 <Label color = 'blue' attached='top'>{this.props.gifts.l_name}</Label>
-                <Image src={this.state.gifts.gift_pic} wrapped ui={false} />
+                <Image src={this.props.gifts.gift_pic} wrapped ui={false} />
 
                 <Card.Content header={this.props.gifts.gift_name} />
                 {/* <Card.Content description={this.props.gifts.gift_description} /> */}
@@ -32,7 +32,7 @@ class giftCard extends React.Component{
                 <Card.Content extra>
                     {/* description: {this.props.gifts.gift_description} */}
                     <Icon name = 'time'/>
-                            {`Raffle will take place ${moment(this.state.gifts.g_date).fromNow()}`}
+                            {`Raffle will take place ${moment(this.props.gifts.g_date).fromNow()}`}
                             <br></br>
                 </Card.Content>
             </Card>

@@ -47,6 +47,7 @@ class OrgBody extends React.Component {
             gotGiftsFlag: false,
             showLogin: false,
             showUser: false,
+            org_field_of_activity:[],
 
             // organization: orgData,
             btnDonateClicked: false,
@@ -103,10 +104,12 @@ class OrgBody extends React.Component {
         }
         else
         {
+            alert("filter: "+ filter)
             this.state.allGifts.map(element =>{
                 if(element.l_name === filter)
                     obj.push(element)
             })
+            alert("all: "+JSON.stringify(obj))
             this.setState({showGifts: obj})
             // alert("gifts: \n" + JSON.stringify(this.state.showGifts))
         }
@@ -120,20 +123,8 @@ class OrgBody extends React.Component {
           const response = await axios.get(`/orgPage/gifts/${this.props.data.orgDetails.org_id}`,
             { org_id: this.state.org_id},
             { headers: { 'Content-Type': 'application/json' } });
-            // alert("gift:\n "+ JSON.stringify(response.data))
             this.setState({allGifts: response.data})
-            this.setState({showGifts: this.state.allGifts})
-            // insert filter option
-            // { key: 'all levels',value: 'all levels', text: 'all levels' }
-            // response.data.forEach(function(gift){
-            //     let giftobj ={};
-            //     giftobj["key"]=gift.l_name;
-            //     giftobj["value"]=gift.l_name;
-            //     giftobj["text"]=gift.l_name;
-            //     levelOptions.push(giftobj);
-            // })
-            
-            // { key: 'all levels',value: 'all levels', text: 'all levels' }
+            this.setState({showGifts: response.data})
            
         })();
       }
@@ -151,7 +142,6 @@ class OrgBody extends React.Component {
 				alert ("no data!")
 			else{
 				
-                // alert("levels: \n"+JSON.stringify(res.data))
                 res.data.forEach(function(level){
                     let giftobj ={};
                     giftobj["key"]=level.level_name;
@@ -163,8 +153,23 @@ class OrgBody extends React.Component {
 		})
 		.catch(error=> {
 			alert(error);
-		})
-      
+        })
+        
+		axios.get('/orgPage/get_org_field_of_activity/'+this.props.data.id)
+		.then(res => 
+			{
+				if (res.status >= 400) {
+					throw new Error("Bad response from server");}
+				else if (res === "no data") // the data is not null
+					alert ("no data!")
+				else{
+                    this.setState({org_field_of_activity: res.data});
+				}
+			})
+			.catch(error=> {
+				alert(error);
+			
+            })
 
     }
 
@@ -322,9 +327,10 @@ class OrgBody extends React.Component {
                                            : תחום הפעילות 
                                         </Header>
                                         <p style={{ fontSize: '1em' }}>
-                                            {/*  TODO : show list of activity */}
-                                            {/* {this.state.field_of_activity} */}
-                                            {/* {this.props.data.orgDetails.field_of_activity} */}
+                                        {/* org_field_of_activity */}
+                                        {this.state.org_field_of_activity.map(field =>
+                                            <Label basic as='a' content={field.field_name} icon='tag' iconPosition='right'/>
+                                         )}
                                         </p>
                                         {/* // option to hide text */}
                                         <Accordion>
@@ -384,10 +390,14 @@ class OrgBody extends React.Component {
                                     {/* add link to organization homepage */}
                                     <Grid.Column textAlign='center'>
                                     {this.props.data.orgDetails.website&&
-                                    <Button size='huge' onClick={(e) => {
-                                    e.preventDefault();
-                                    window.location.href=`${this.props.data.orgDetails.website}`;
-                                    }}>Visit Our Website</Button>}
+                                    // content='Next' icon='right arrow' labelPosition='right'
+                                        <Button basic color='blue'
+                                            size='huge' icon='world'
+                                            onClick={(e) => {
+                                            e.preventDefault();
+                                            window.location.href=`${this.props.data.orgDetails.website}`;
+                                            }}>Visit Our Website
+                                        </Button>}
                                     </Grid.Column>
                                 </Grid.Row>
                             </Grid>

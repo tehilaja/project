@@ -243,22 +243,22 @@ app.get(`/orgPage/get_org_field_of_activity/:orgId`, (req, res, next) => {
   try {
     // TODO : try the db multi connection problem
     // conectDb();
-    console.log("in /orgPage")
+    console.log("in /orgPage/get_org_field_of_activity/:orgId c\n")
     console.log("id: " + req.params.orgId)
 
     const q_org_field_name = 
       `select f.field_name
       from Org_field_of_activity o
         inner join Fields_of_activity f ON o.field_id = f.field_id
-      where o.org_id =${inQutationMarks(req.params.orgId)};`
+      where o.org_id =${(req.params.orgId)};`
 
     console.log("query: \n" + q_org_field_name);
     db.query(q_org_field_name, (err, result, fields) => {
       if (err) throw err;
       if (result.length == 0)
-        res.send("no data")
+        res.send("no data") 
       else {
-        console.log("res:\n " + JSON.stringify(result));
+        console.log("res fields:\n " + JSON.stringify(result));
         // console.log(result[0])
         // console.log(result[0].min_donation)
 
