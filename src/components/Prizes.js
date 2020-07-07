@@ -169,8 +169,8 @@ class Prizes extends React.Component{
                   {/*  floated='right'  size='tiny'  style={{ padding: '3em 3em' }}  */}
                   </Button>
               {this.state.orgs.map(org=>
-                <Button 
-                  inverted circular 
+                <Button
+                  inverted circular
                   style = {styleBottonOrg} 
                   key={org.org_id} 
                   data-letter={org.org_id}
