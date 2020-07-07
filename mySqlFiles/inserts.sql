@@ -85,7 +85,7 @@ INSERT INTO Feed_comments (feed_type, feed_type_id, user_id, date, comment_text,
 ('org', 1, 'rachelletikva@gmail.com', "2020-03-23", "I know, they're the best", 2),
 ('org', 3, 'tehilaj97@gmail.com', "2020-03-23", 'oh! you like them too???', 3),
 ('org', 3, 'rachelletikva@gmail.com', "2020-03-23", "they are life changing:) ", 2),
-('org', 1, 'Avital05484@gmail.com', "2020-03-23", "common! get your friends!", 2)
+('org', 1, 'Avital05484@gmail.com', "2020-03-23", "common! get your friends!", 2);
 
 -- ~~~~~~~~~~~ fields_of_activity ~~~~~~~~~~``
  -- select * from fields_of_activity

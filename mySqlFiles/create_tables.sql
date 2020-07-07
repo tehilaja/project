@@ -93,7 +93,7 @@ CREATE TABLE IF NOT EXISTS Gifts (
   org_id int(11),
   level_num int(11),
   g_date DATE,
-  winnrP varchar(250),
+  winner varchar(250),
   raffle boolean
 );
 
