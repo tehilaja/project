@@ -81,7 +81,7 @@ const setCache = (donorsInOrg) => {
             organizationsTrees[orgId] = orgTree; // add reference to this tree in the organizations dict
             const donors = orgToDonors[orgId]; // an array of donors to this org
             const donorsByReferrer = groupBy(donors, 'referred_by'); // a dict where the key is a donor, and the value is an array of all the people he referred to this org
-            const rootDonors = donorsByReferrer[null];
+            const rootDonors = donorsByReferrer[null] || [];
             buildTree(orgId, rootDonors, orgTree, donorsByReferrer);
             scanTreeAndUpdateNodes(orgTree, orgToLevels[orgId]);
             orgTree.key.is_root = true; // we do not want to mistakebly give a gift to the root, which represents the entire org and not a specific donor

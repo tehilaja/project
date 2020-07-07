@@ -24,6 +24,7 @@ class AddPrizes extends React.Component {
             autowinner: 'true',
             pictures: [],
             attachments: null,
+            list_of_doners: [],
             levels: this.props.levels,
             prize: {
                 org_id: this.props.org_id,
@@ -36,6 +37,7 @@ class AddPrizes extends React.Component {
         this.handleWinnerChange = this.handleWinnerChange.bind(this);
         this.sendEmail = this.sendEmail.bind(this);
         this.uploadImage = this.uploadFirstAttachment.bind(this);
+        this.getListOfDoners = this.getListOfUsers.bind(this);
     }
 
     handleChangeInput(event) {
@@ -70,11 +72,21 @@ class AddPrizes extends React.Component {
         });
     }
 
+    async getListOfUsers() {
+        const response = await axios.post('/get-donors-of-org', { org_id: this.state.prize.org_id });
+
+        if (response.data && Array.isArray(response.data)) {
+            this.setState({ list_of_doners: response.data.map(doner => doner.user_id) });
+            alert(JSON.stringify(this.state.list_of_doners))
+            this.sendEmail();
+        }
+    }
+
     sendEmail() {
-        // TODO: get list of emails
         emailService.sendEmail(
             //'rachelletikva@gmail.com'
-            ['tehilaj97@gmail.com'],
+            // ['tehilaj97@gmail.com'],
+            this.state.list_of_doners,
             null,
             null,
             'A New Gift sent from Magdilim!!!!!!!',
@@ -118,7 +130,7 @@ class AddPrizes extends React.Component {
             this.state.prize.gift_pic = fileUrl;
             this.setState({prize: this.state.prize});
             this.savePrize(() => {
-                this.sendEmail();
+                this.getListOfDoners();
                 document.dispatchEvent(new Event('prizeAdded'));
             });
         };

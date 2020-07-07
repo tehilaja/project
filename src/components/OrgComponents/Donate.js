@@ -18,29 +18,27 @@ export default class Donate extends Component {
         this.state = {
             loggedIn: this.props.data.loggedIn,
             userName: this.props.data.userName,
-            // stef functionalety
-            coreStep: 1, // the corrent step
+
+            // step functionality
+
+            coreStep: 1, // the current step
             dicCompleteDonation: false,
             divActiveDonation: true,
             divActiveMore: false,
             divActivePayment: false,
-            // activeStep:  'select Amount',
             nextAble: false,
             prevAble: true,
 
             // step
-
             active: 'select Amount',
             completed: '',
             disabled1: '',
             disabled2: '',
             //
             sumDonate: this.props.data.initialDonation,
-            sumBtn: [10, 20, 30, 40, 50, 100, 200], // TODO : acordind min donation
-            dThrough: '', // email of came throw
+            sumBtn: [10, 20, 30, 40, 50, 100, 200], // TODO : according to min donation
+            dThrough: '', // email of came through
             showMessageReq: false,
-            // dThroughId: '',
-
 
             // set json to state
             massageErrRequireFIeld: {},
@@ -157,47 +155,26 @@ export default class Donate extends Component {
 
         switch (this.state.coreStep) {
             case 1:
-                // alert("dThrough" + this.state.dThrough)
-                // && this.state.donate_req.referred_by === '' )) // the mail doas not checkin
-                // if(this.state.donate_req.referred_by === '' )
-                // {
-                //     alert("not finish")
-                //     this.setState({massageErrRequireFIeld:true});
-                //     alert("not 1")
-                // }
-
-                // else{
                 this.setState({ divActiveDonation: false, divActiveMore: true, dicCompleteDonation: true, coreStep: 2 });
-                // activeStep:'more datails'
-
-                // }
                 break;
             case 2:
                 this.setState({ divActiveMore: false, divActivePayment: true, coreStep: 3, nextAble: true });
-                // activeStep:'payment'
                 break;
             case 3:
                 this.setState({ divActivePayment: false, nextAble: true });
                 break;
             default:
-                // this.setState({ activeStep:' select Amount', coreStep: 1 })
                 this.setState({ coreStep: 1 })
         }
     }
 
     // ~~~~~~~~~~~~ click on btn sum ~~~~~ 
     handleClickBtn(e) {
-        // if(!(this.state.dThrough !== '' & this.state.donate_req.referred_by ==='')) // mail not empty ant not valid
         this.setState({ nextAble: false })
         this.setState(Object.assign(this.state.donate_req, { monthly_donation: e.target.dataset.letter }));
     }
-    // TODO:
-    // set completes - to steps
 
 
-    //~~~~~~~~handleChange   
-    // TODO
-    // לצרף את כל השינויים לפונ' אחת עם case
 
 
     //~~~~~~~~~~~~ change sum ~~~~~~~~~~~~~~
@@ -235,10 +212,6 @@ export default class Donate extends Component {
             if (this.state.coreStep === 1) {
                 if (!this.state.oneTimeChecked) {
 
-                    // TODO: מיותר? מתי נעשת הבדיקה
-                    // if(this.state.donate_req.monthly_donation !== '') // sume field is not empty 
-                    // {
-                    // ~~ statr dThrough 
                     if (this.state.dThrough !== '')  
                     {  
                         if (this.state.donate_req.referred_by === '') 
@@ -255,11 +228,9 @@ export default class Donate extends Component {
                                 {
                                     alert("There is no such user in system!")
                                     this.setState({ dThrough: '', ableDonate: false });
-
-                                    // , nextAble:false});
-                                    // TODO: alert message in UI
                                 }
-                                else { // give a id of the donate through
+                                else { 
+                                    // give a id of the donate through
                                     this.setState(Object.assign(this.state.donate_req, { referred_by: res.data.user_id }));
                                     this.setState({ ableDonate: false }); // donate able 
                                     this.setState({ nextAble: false });
@@ -269,19 +240,15 @@ export default class Donate extends Component {
                                 alert(error);
                             })
                         }
-                        // check if finish a req
                         if (this.state.donate_req.referred_by !== '') {
                             this.setState({ ableDonate: false });
                             this.switchStep();
-
                         }
                     }
                     else { 
                         this.switchStep(); 
                     }
 
-
-                    // -> // DO: delete the option of a empty sum
                     if (this.state.donate_req.referred_by !== '')
                         this.switchStep();
                 }
@@ -290,19 +257,16 @@ export default class Donate extends Component {
                 }
             } // ~~end step 1~~~
             else   // step 2 or 3                
-                this.switchStep(); // switch step
+                this.switchStep(); 
         }
         else {
-            alert("you must loggin to donate")
+            alert("you must log in to donate")
         }
     }
 
     prevButton(e) {
         switch (this.state.coreStep) {
             case 1:
-                // this.setState({prevAble: true});
-                // activeStep:'more datails'   
-                // }
                 break;
             case 2:
                 this.setState({ divActiveDonation: false, divActiveMore: false, divActivePayment: false, coreStep: 1, prevAble: false });
@@ -312,7 +276,6 @@ export default class Donate extends Component {
                 this.setState({ divActiveDonation: false, divActiveMore: true, divActivePayment: false, coreStep: 2, nextAble: false });
                 break;
             default:
-                // this.setState({ activeStep:' select Amount', coreStep: 1 })
                 this.setState({ coreStep: 1 })
         }
     }
@@ -449,18 +412,14 @@ export default class Donate extends Component {
 
                     />
                 </Step.Group>
-                {/*       
-        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        if not login
-        {/* divActiveDonation */}
+
                 {!this.state.loggedIn
                     &&
                     <div>
-                        you need to loggedIn!
+                        Please Log In
           </div>
                 }
                 {this.state.coreStep === 1 &&
-                    // {this.state.divActiveDonation && 
                     <Segment >
                         <Grid>
                             <Grid.Row>
@@ -474,8 +433,6 @@ export default class Donate extends Component {
                             </Grid.Row>
 
                             <Grid.Row>
-
-                                {/* <h3 style = {{textAlign: 'center'}}>select amount:</h3> */}
                                 <div style={{ marginLeft: '5em' }}>
                                     {/* ~~ the sum buttons */}
                                     {this.state.sumBtn.map(sums =>
@@ -502,17 +459,8 @@ export default class Donate extends Component {
                                             content: 'restart to min sum',
                                             widths: '2em',
                                             onClick: () => {
-                                                // TODO: message that not empty- end fill the minimum sum
-
-                                                // this.setState(Object.assign(this.state.donate_req,{monthly_donation: ''}));
-                                                // this.setState({nextAble: true});
-
                                                 this.setState(Object.assign(this.state.donate_req, { monthly_donation: this.props.data.initialDonation }));
-
-                                                // alert("state: " + this.state.donate_req.monthly_donation)
-
                                             }
-                                            // {this.setState({ sumDonate: ''})}
                                         }}
                                         actionPosition='left'
                                         label={{ tag: true, content: 'your donation' }}
@@ -533,10 +481,6 @@ export default class Donate extends Component {
                                 </div>
 
                             </Grid.Row>
-                            {/* ADD ? */}
-                            {/* <label > Donation amount (per month):</label> */}
-
-                            {/* one time donation */}
                             <Grid.Row>
                                 <div style={{ paddingLeft: "10em" }}>
                                     <Checkbox toggle
@@ -547,13 +491,6 @@ export default class Donate extends Component {
                                             this.state.donate_req.oneTimeCheck = !this.state.donate_req.oneTimeCheck;
                                             this.setState({ donate_req: this.state.donate_req });
                                         } 
-                                        // this.setState(prevState => {
-                                        //     let donate_req = Object.assign({}, prevState.donate_req);  // creating copy of state variable jasper
-                                        //     donate_req.oneTimeCheck = !donate_req.oneTimeCheck;
-                                        //     // update the name property, assign a new value                 
-                                        //     return { donate_req };
-
-                                        // })
                                     }
                                     />
                                 </div>
@@ -586,50 +523,18 @@ export default class Donate extends Component {
 
                         {/* ~~ form */}
                         <Form style={{ paddingTop: '1.5em', paddingLeft: '1.5em', marginLeft: '8em' }}>
-                            {/* <Form.Input
-                        width={4}
-                        label= 'Donate through:'
-                        icon='user outline'
-                        iconPosition='left'
-                        placeholder='Donate through userName'
-                        name="dThrough"
-                        // onChange={this.handleChange.bind(this)}
-                    /> */}
+    
                             <br />
-
-                            {/* <Form.Field
-                            label = 'Last Name'
-                            width={4}
-                            input = ''
-                            placeholder='Sum donation'
-                        /> */}
                             {/* Add a dedication */}
 
                             <br />
                             <br />
-                            {/* <Button 
-                        width ={6}
-                        style = {{
-                            backgroundColor: backgroundColor,
-                            textAlign: 'center',
-                            // text-decoration: none;
-                            // display: 'inline-block',
-                            fontSize: '16px',
-                           
-                        }} 
-                        type='submit'>Submit</Button> */}
 
 
                         </Form>
-                        {/* <Grid.Row>
-                        sum of donation: {this.state.sumDonate}
-                    </Grid.Row> */}
-
 
                     </Segment>
                 }
-                {/* ~~~ step 2 - more details */}
-                {/*  // TODO: check if thesync find duser (by mail) found */}
                 {this.state.coreStep === 2 &&
                     <div>
                         <Label tag style={{ backgroundColor: '#e6f2ff', fontSize: '12px', marginTop: '2em', marginBottom: '2em' }}>
@@ -637,7 +542,6 @@ export default class Donate extends Component {
                             Add a Dedication (optional)
                 </Label>
                         <Form>
-                            {/* /// TODO ! toggel to show their namw */}
                             <Form.Input
                                 width={4}
                                 label='In Honor of:'
@@ -674,10 +578,7 @@ export default class Donate extends Component {
                     <Button.Group style={{ marginTop: '2em' }} >
                         <Button
                             name='btnPrev'
-                            // disabled = {this.disableButtons}
                             disabled={false}
-                            // active={active === 'select Amount'}
-
                             color='blue'
                             labelPosition='left'
                             icon='left arrow'
@@ -692,46 +593,10 @@ export default class Donate extends Component {
                             icon='right arrow'
                             content='Next'
                             onClick={this.nextButton}
-
-
-                        // label={{ basic: true, color: 'blue', pointing: 'right', icon:'right arrow' }}
-                        //  content: '2,048' }}
                         />
 
                     </Button.Group>
                 </div>
-                {/*  nassage of incoret value */}
-                {/* { this.state.showMessageReq && <Modal
-            trigger={this.nextButton}
-            header='Reminder!'
-            content='Call Benjamin regarding the reports.'
-            actions={['Snooze', { key: 'done', content: 'Done', positive: true }]}
-        />} */}
-
-                {/* <Modal
-            open={open}
-            closeOnEscape={closeOnEscape}
-            closeOnDimmerClick={closeOnDimmerClick}
-            onClose={this.close}
-            >
-            <Modal.Header>Delete Your Account</Modal.Header>
-            <Modal.Content>
-                <p>Are you sure you want to delete your account</p>
-            </Modal.Content>9
-            <Modal.Actions>
-                <Button onClick={this.close} negative>
-                No
-                </Button>
-                <Button
-                onClick-={this.close}
-                positive
-                labelPosition='right'
-                icon='checkmark'
-                content='Yes'
-                />
-            </Modal.Actions>
-        </Modal> */}
-                {/* ~~~ @ check ~~~ */}
             </div>
         )
     }
