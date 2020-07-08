@@ -55,7 +55,7 @@ class LastDonationCard extends React.Component{
             // <Segment>
             <div style ={{marging: '0.8em' ,padding: '0.8em'}}>
                 {/* <Segment style ={{marging: '0.8em'}}> */}
-                <Card style ={{border: '2px solid #7e2828', height:'300px'}} >
+                <Card style ={{border: '2px solid #708090', height:'300px'}} >
                     <Card.Content>
                         <Image 
                         floated='right'
