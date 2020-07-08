@@ -32,7 +32,7 @@ class giftCard extends React.Component{
                 <Card.Content extra>
                     {/* description: {this.props.gifts.gift_description} */}
                     <Icon name = 'time'/>
-                            {`Raffle will take place ${moment(this.props.gifts.g_date).fromNow()}`}
+                            {`Raffle will take place ${moment(this.state.gifts.g_date).fromNow()}`}
                             <br></br>
                 </Card.Content>
             </Card>

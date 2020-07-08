@@ -10,6 +10,9 @@ import Footer from './Footer.js';
 import ImageGallery from 'react-image-gallery';
 import "react-image-gallery/styles/css/image-gallery.css";
 
+import GiftCard from './OrgComponents/giftCard'
+
+
 import {Grid, Icon, Segment,Button,Image,Header} from 'semantic-ui-react';
 
 const s3Util = require('../utilities/upload').methods;
@@ -65,7 +68,7 @@ class Prizes extends React.Component{
 			else{
         this.setState({allgiftLevels: res.data})
         this.setState({filterGift: res.data})
-
+        
         // -----
         const imgs = res.data.map(gift => {
           const image = {};          
@@ -86,6 +89,8 @@ class Prizes extends React.Component{
 			alert(error);
 		})
   }
+
+
     getImages() {
         s3Util.getFilesFromFolder('prizes', (res) => {
           if (Array.isArray(res)) {
@@ -96,9 +101,8 @@ class Prizes extends React.Component{
               image.thumbnail = url;
               return image;
             });
-    
             this.setState({images: imgs});
-            
+
           }
         });
       }
@@ -111,25 +115,44 @@ class Prizes extends React.Component{
       filterChooseOrg(filter)
       {
         let obj = [];
+        let objG = []
         if (filter === 'all organization' ){
           this.setState({filterImeges: this.state.images});
+          this.setState({filterGift: this.state.allgiftLevels})
         }
         else{
           this.state.allgiftLevels.map(element =>{
-          if(element.org_name === filter)
-          {
-              const image = {};
-              image.original = element.gift_pic;
-              image.thumbnail = element.gift_pic;
-              obj.push(image)
-          }
-        })
+            if(element.org_name === filter)
+            {
+                objG.push(element)
+                const image = {};
+                image.original = element.gift_pic;
+                image.thumbnail = element.gift_pic;
+                obj.push(image)
+            }
+          })
         this.setState({filterImeges: obj})
+        this.setState({filterGift: objG})
         }
       }
+
+        
+      //     this.state.allgiftLevels.map(gift =>{
+      //       if(gift.l_name === filter)
+      //       objG.push(gift)
+      //   })
+      //   this.setState({showGifts: objG})
+      // }
     
 
   render() {
+
+    const giftComponents = this.state.filterGift.map(gift =>{
+      return(
+        <GiftCard gifts={gift}/>
+        )
+    })
+
     const { valueLevel } = this.state // level
 
     const styleBotton = 
@@ -219,6 +242,20 @@ class Prizes extends React.Component{
                     This time our efforts built something that <b>lasts forever</b>
                     </p>
                 </Grid.Column>
+                </Grid.Row>
+                <Grid.Row>
+                  <div style ={{padding: '1em', margin:'3em'}}>
+                    <Header as='h4' style ={{marginLeft: '20em'}}>
+                      <Icon name='hand point right' />
+                      <Header.Content>The prizes for this Organizaition Organization</Header.Content>
+                    </Header>
+                    <br/>
+                    <div style ={{display: 'flex', flexDirection: 'row', padding: '1em', margin:'1em'}}> 
+                      {giftComponents}
+                    </div>
+                    
+                  </div>
+                
                 </Grid.Row>
             </Grid>
             </Segment>
