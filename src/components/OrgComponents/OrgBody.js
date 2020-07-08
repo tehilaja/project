@@ -104,12 +104,10 @@ class OrgBody extends React.Component {
         }
         else
         {
-            alert("filter: "+ filter)
             this.state.allGifts.map(element =>{
                 if(element.l_name === filter)
                     obj.push(element)
             })
-            alert("all: "+JSON.stringify(obj))
             this.setState({showGifts: obj})
             // alert("gifts: \n" + JSON.stringify(this.state.showGifts))
         }

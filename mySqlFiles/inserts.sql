@@ -22,7 +22,9 @@ INSERT INTO Addresses(org_id, country, state, city, street, building, apartment,
 select * from Donors_in_org;
 INSERT INTO Donors_in_org (user_id, org_id, monthly_donation, referred_by,d_title, d_description,anonymous,status_id) VALUES
 ("genstil@g.jct.ac.il",3,15,null, "תודות לארגון","נתרם עקב העזרה הרבה אשר הארגון מסייע לכלל ישראל ישר כוח!",TRUE,1),
+("avital05484@gmail.com",1,100,null, "תודה מעומק הלב לארגון הנדיר","נתרם עקב העזרה הרבה אשר הארגון מסייע לכלל ישראל ישר כוח!",TRUE,1),
 ("tehilaj97@gmail.com",3,45,null, "תודות לארגון","נתרם עקב העזרה הרבה אשר הארגון מסייע לכלל ישראל ישר כוח!",TRUE,1),
+("tehilaj97@gmail.com",2,45,null, "תודות לארגון","נתרם עקב העזרה הרבה אשר הארגון מסייע לכלל ישראל ישר כוח!",TRUE,1),
 ("rachelletikva@gmail.com",3,25,"genstil@g.jct.ac.il", "תודות לארגון","נתרם עקב העזרה הרבה אשר הארגון מסייע לכלל ישראל ישר כוח!",TRUE,1),
 ("someid@id.com",3,22,"tehilaj97@gmail.com", "תודות לארגון","נתרם עקב העזרה הרבה אשר הארגון מסייע לכלל ישראל ישר כוח!",TRUE,1),
 ("hadasefr@g.jct.ac.il",3,15,"tehilaj97@gmail.com", "תודות לארגון","נתרם עקב העזרה הרבה אשר הארגון מסייע לכלל ישראל ישר כוח!",TRUE,1),
@@ -64,7 +66,7 @@ INSERT INTO Gifts (gift_name, gift_description, gift_pic, org_id, level_num, g_d
 1,1,"2020-11-14",true),
 
 ("מצלמה","מצלמה איכותית ביותר של חברת קאנון","https://magdilim-organization-images.s3.amazonaws.com/prizes/2_7a43a270-be52-11ea-a06b-4107b5c84cbb_WIN A CANON CAMERA!.jpg"
-,2,1,"2020-10-03",false),
+,2,1,"2020-06-17",false),
 ("עיצוב הבית","חבילה הכוללת הום סטיילינג מהטובים בארץ בשווי של 30000 שח","https://magdilim-organization-images.s3.amazonaws.com/prizes/5_99e5ec90-c015-11ea-a92d-d58a6f3c9a4b_homeDesign_hezer.jpeg",
 2,3,"2020-09-04",true),
 ("דירה","דירה בת 5 חגרים בפרוייקט היוקרה מגדלי הנוף","https://magdilim-organization-images.s3.amazonaws.com/prizes/5_5deb9d70-c015-11ea-a92d-d58a6f3c9a4b_aparteement_hezer.jpeg"
@@ -79,11 +81,14 @@ INSERT INTO Gifts (gift_name, gift_description, gift_pic, org_id, level_num, g_d
 "https://magdilim-organization-images.s3.amazonaws.com/prizes/5_53771cb0-c016-11ea-b1b6-ff6ac677a095_kitchen_hakshiva.jpeg",
 4,3,"2020-12-27",true);
 
+
+
+
 -- inserting gifts with winners:
 SELECT * FROM magdilimdb.gifts;
 INSERT INTO Gifts (gift_name, gift_description, gift_pic, org_id, level_num, g_date, winner, raffle) VALUES
-("דירה מפוארת","דירה בת 5 חגרים בפרוייקט היוקרה מגדלי הנוף", "https://magdilim-organization-images.s3.amazonaws.com/prizes/5_5deb9d70-c015-11ea-a92d-d58a6f3c9a4b_aparteement_hezer.jpeg", 1, 4, "2020-08-23", 'tehilaj97@gmail.com', true),
-("מצלמה","מצלמת קאנון איכותית","",2,2,"2020-08-17", 'avitalspector@gmail.com', true);
+("דירה מפוארת","דירה בת 5 חגרים בפרוייקט היוקרה מגדלי הנוף", "https://magdilim-organization-images.s3.amazonaws.com/prizes/5_5deb9d70-c015-11ea-a92d-d58a6f3c9a4b_aparteement_hezer.jpeg", 2, 4, "2020-08-23", 'tehilaj97@gmail.com', true),
+("מצלמה","מצלמת קאנון איכותית","",1,1,"2020-06-17", 'avital05484@gmail.com', true);
 
 -- inserting comments into the feed --
 select* from Feed_comments;

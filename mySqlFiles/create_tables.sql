@@ -64,22 +64,21 @@ CREATE TABLE IF NOT EXISTS Organizations (
   num_volunteers int(11),
   num_friends int(11),
   website varchar(250),
-
  
   -- make another table to do a search box --
- 
   field_of_activity varchar(200)
 );
 
 -- Levels --
 CREATE TABLE IF NOT EXISTS Levels (
   -- double key:
+  -- level_id int(11) AUTO_INCREMENT PRIMARY KEY,
   org_id int(11),
   level_num int(11),
   level_name varchar(50), -- name of level by default will be silver/gold etc - give option to change
   min_people int(11), -- will be -1 in case where the level isn't chosen by these criterias
   min_sum int(11),
-  PRIMARY KEY(org_id, level_num)
+PRIMARY KEY(org_id, level_num)
 );
 
 
@@ -96,6 +95,11 @@ CREATE TABLE IF NOT EXISTS Gifts (
   winner varchar(250),
   raffle boolean
 );
+
+-- create table if not exists gifts_levels(
+-- 	level_num int(11),
+--     gift_id int(11)
+-- );
 
 -- DROP TABLE Donors_in_org
 -- Donors_in_org --
