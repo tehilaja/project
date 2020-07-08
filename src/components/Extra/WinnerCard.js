@@ -9,26 +9,16 @@ import { Card, Feed,Header, Icon, Image, Segment, Label } from 'semantic-ui-reac
 class WinnerCard extends React.Component{
     constructor(props){
         super(props)
-        this.state ={
-            congratulate: false
-        }
+        this.state ={ }
 
     }
 
 
 //-------------render----------------
     render(){
-      if (this.state.congratulate === true){
-        return null
-        } 
     //-----------return---------------------- 
       return( 
-        <Card style ={{margin: '1em', height:'300px', border: '2px solid #F5F5F5'}} 
-          onClick = {() => this.setState(prevState => {
-            return {
-                congratulate: !prevState.congratulate}
-              })}>
-
+        <Card style ={{margin: '1em', height:'400px', border: '2px solid #F5F5F5'}} >
           <Card.Content>
             <Label color='olive' attached='top'>{`Congrats to ${this.props.winner}!`}</Label>
             <Image src={this.props.gift_pic} wrapped ui={true} />

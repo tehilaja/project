@@ -104,12 +104,16 @@ class OrgBody extends React.Component {
         }
         else
         {
-            this.state.allGifts.map(element =>{
-                if(element.l_name === filter)
-                    obj.push(element)
-            })
-            this.setState({showGifts: obj})
-            // alert("gifts: \n" + JSON.stringify(this.state.showGifts))
+            if(!this.state.allGifts.length){
+                return (<Label>No gifts yet for this organization</Label>);
+            }else{
+                this.state.allGifts.map(element =>{
+                    if(element.l_name === filter)
+                        obj.push(element)
+                })
+                this.setState({showGifts: obj})
+                // alert("gifts: \n" + JSON.stringify(this.state.showGifts))
+            }
         }
 
     }
@@ -326,9 +330,11 @@ class OrgBody extends React.Component {
                                         </Header>
                                         <p style={{ fontSize: '1em' }}>
                                         {/* org_field_of_activity */}
-                                        {this.state.org_field_of_activity.map(field =>
+                                        { this.state.org_field_of_activity.length &&
+                                        this.state.org_field_of_activity.map(field =>
                                             <Label basic as='a' content={field.field_name} icon='tag' iconPosition='right'/>
-                                         )}
+                                         )
+                                         }
                                         </p>
                                         {/* // option to hide text */}
                                         <Accordion>

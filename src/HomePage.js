@@ -200,7 +200,7 @@ getThreeOrgs(){
 			const winnerComponents = this.state.winners.map(winner =>{
 				return(
 					<div style ={{display: 'flex', flexDirection: 'row', padding: '0.5em', margin:'0.5em', color:'olive'}}>
-					<WinnerCard gift_pic={winner.girft_pic} gift_name={winner.gift_name} org_id={winner.org_id} level_num={winner.level_num} gift_desription={winner.gift_description} winner={winner.winner}
+					<WinnerCard gift_pic={winner.gift_pic} gift_name={winner.gift_name} org_id={winner.org_id} level_num={winner.level_num} gift_desription={winner.gift_description} winner={winner.winner}
 					/>
 					{/* <WinnerCard gift_pic="" gift_name="gift_name" org_id={1} level_num={2} gift_desription="description" winner="winner"
 					/> */}
