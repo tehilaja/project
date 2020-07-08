@@ -18,32 +18,46 @@ class WinnerCard extends React.Component{
     render(){
     //-----------return---------------------- 
       return( 
-        <Card style ={{margin: '1em', height:'400px', border: '2px solid #F5F5F5'}} >
-          <Card.Content>
-            <Label color='olive' attached='top'>{`Congrats to ${this.props.winner}!`}</Label>
-            <Image src={this.props.gift_pic} wrapped ui={true} />
-          </Card.Content>
-          <Card.Content extra>
-          <Card.Header>{this.props.gift_name}</Card.Header>
-          <Card.Header>{`Gift from ${this.props.org_id}`}</Card.Header>
-            <Card.Meta>
-              <Label color='olive'>
-              {`Level in Raffle: ${this.props.level_num} `}
-              </Label>
-            </Card.Meta>
-            <Card.Description>
-            {this.props.gift_description}
-            </Card.Description>
-            <a>
-              <Icon name='user' />
-              {` ${this.props.winner}`}
-            </a>
-            <br />
-            <Feed.Like>
-            <Icon name='like' /> {this.props.likes} Likes
-          </Feed.Like>
-          </Card.Content>
+
+        <Card style ={{margin: '1em',width: '600em', border: '2px solid #F5F5F5'}} >
+          {/* //  <Card.Content> */}
+          <div >
+          {/* style ={{margin: '1em', border: '2px solid #F5F5F5'}}  */}
+             <Label color='olive' attached='top'>{`Congrats to ${this.props.winner}!`}</Label>
+             <Image size = 'massive' src={this.props.gift_pic} wrapped ui={true} />
+          </div>
+        {/* </Card.Content> */}
         </Card>
+        
+
+
+
+        // <Card style ={{margin: '1em', height:'500px', border: '2px solid #F5F5F5'}} >
+        //   <Card.Content>
+        //     <Label color='olive' attached='top'>{`Congrats to ${this.props.winner}!`}</Label>
+        //     <Image src={this.props.gift_pic} wrapped ui={true} />
+        //   </Card.Content>
+        //   <Card.Content extra>
+        //   <Card.Header>{this.props.gift_name}</Card.Header>
+        //   <Card.Header>{`Gift from ${this.props.org_id}`}</Card.Header>
+        //     <Card.Meta>
+        //       <Label color='olive'>
+        //       {`Level in Raffle: ${this.props.level_num} `}
+        //       </Label>
+        //     </Card.Meta>
+        //     <Card.Description>
+        //     {this.props.gift_description}
+        //     </Card.Description>
+        //     <a>
+        //       <Icon name='user' />
+        //       {` ${this.props.winner}`}
+        //     </a>
+        //     <br />
+        //     <Feed.Like>
+        //     <Icon name='like' /> {this.props.likes} Likes
+        //   </Feed.Like>
+        //   </Card.Content>
+        // </Card>
 
         )
     }
