@@ -215,7 +215,11 @@ selectLevel (e, { value }) {
           selection
           value={valueLevel}
       />
-        <Header>Click on an Organization</Header>
+      <Header as='h4' style ={{marginLeft: '20em'}}>
+        <Icon name='hand point right' />
+        <Header.Content>Click on an Organization</Header.Content>
+      </Header>
+        {/* <Header>Click on an Organization</Header> */}
         <Carousel 
 									swipeable={true}
 									draggable={true}
@@ -234,7 +238,7 @@ selectLevel (e, { value }) {
 									dotListClass="custom-dot-list-style"
 									itemClass="carousel-item-padding-40-px">
 										{orgComponents}
-									</Carousel>	
+								</Carousel>	
                 <br/>
                 <br/>
                 <Segment textAlign='left'>
