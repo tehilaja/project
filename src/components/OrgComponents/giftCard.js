@@ -41,7 +41,6 @@ class giftCard extends React.Component{
         )
     }
 
-// declerate function
 }
 
 export default giftCard;
