@@ -430,15 +430,16 @@ app.get('/orgPage/gifts/:org_id',
 function (req, res, next) {
 
    const qGifts =	
-  ` SELECT 	
-  l.level_name as l_name, l.min_people, l.min_sum,	     
-  g.gift_id, g.gift_name,	     
-  g.gift_description,g.gift_pic,	       
-  g.g_date, g.winner, o.org_name
- from Levels l
- INNER JOIN gifts g ON l.level_num = g.level_num 
- inner join organizations o on o.org_id = g.org_id and o.org_id =${req.params.org_id} and g.winner is null
-  group by g.gift_name; `
+       
+   `SELECT 	
+   l.level_name as l_name, l.min_people, l.min_sum,	     
+   g.gift_id, g.gift_name,	     
+   g.gift_description,g.gift_pic,	       
+   g.g_date, g.winner, o.org_name
+  from gifts g
+  INNER JOIN levels l ON l.level_num = g.level_num and l.org_id = g.org_id
+  inner join organizations o on o.org_id = g.org_id and o.org_id =${req.params.org_id} and g.winner is null
+   group by g.gift_name;`
   
   console.log('in org page gifts \n');
     // const sqlQuery = `select * from Gifts WHERE org_id=${req.params.org_id} and winner IS NULL`
@@ -847,13 +848,14 @@ app.post('/update-org-data', (req, res) => {
 });
 
 app.get('/get_gift_and_levels',(req,res)=>{
-  const qGift = `    SELECT 	
+  const qGift = 
+  ` SELECT 	
   l.level_name as l_name, l.min_people, l.min_sum,	     
   g.gift_id, g.gift_name,	     
   g.gift_description,g.gift_pic,	       
   g.g_date, g.winner, o.org_name
- from Levels l
- INNER JOIN gifts g ON l.level_num = g.level_num 
+ from gifts g
+ INNER JOIN levels l ON l.level_num = g.level_num and g.org_id = l.org_id
  inner join organizations o on o.org_id = g.org_id
   group by g.gift_name;`
     dbUtil.callDB(db, qGift, (err, result) => {
