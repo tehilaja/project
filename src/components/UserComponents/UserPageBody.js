@@ -108,12 +108,13 @@ class UserPage extends React.Component {
 
      getMyDownLine(orgId) {
         const orgTree = this.state.orgsTrees && this.state.orgsTrees[orgId];
+        // document.getElementById("downlineDiv").scrollIntoView();
         window.scrollTo({
-            top: 1300,
+            top: 1550,
             left: 0,
             behavior: 'smooth'
           });
-        // console.log('organization 1:\n' + JSON.stringify(orgTree));
+        console.log('organization 1:\n' + JSON.stringify(orgTree));
         return ([orgTree]);
     }
 
@@ -213,10 +214,13 @@ class UserPage extends React.Component {
 										{orgComponents}
 									</div> */}
 								</Segment>
-                    { this.state.treeDownline && <Header as='h2'>
+                    { this.state.treeDownline && 
+                     <div id="downlineDiv">
+                    <Header as='h2'>
                     <Icon name='users'></Icon>
                     {`My downline for ${this.state.orgsTrees[this.state.orgId].org_name}:`}
-                    </Header>}
+                    </Header>
+                    </div>}
 
                             </Grid.Column>
                         </Grid.Row>

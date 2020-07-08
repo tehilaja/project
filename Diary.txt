@@ -434,3 +434,17 @@ finding bugs and fixing them:
 button to website not desplayed - not same name of field in client and in server
 client crashing when there's no gifts for org
 
+7/7/2020
+allowing only one monthly donation per user in organization - not to allow circular dependincies
+but in that case, allowing one time donations
+fixing bugs to update downline right away when a new donation monthly donation is placed
+working some more on ec2 docker
+spending more time on the document
+fixing bugs with gifts - sifting through, displaying based on organization
+finding and fixing some more bugs with cache 
+(edge cases, creating root for organization with no doners....)
+big problem with multiple users!! changing on the cognito code to be in client side, 
+server gets the token only
+
+
+
