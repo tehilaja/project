@@ -2,17 +2,12 @@ const statusCache = require('./status-cache');
 const dbUtil = require('./db');
 
 const getOrgsToPay = (db, callback) => {
-    const orgs = statusCache.getOrgsToPayTrees();
     const orgsToPay = {};
     let gotOneTimeFlag = false;
-    let gotOwedFlag = false;
+    let gotOwedFlag = false;   
 
-    Object.keys(orgs).forEach(org_id => {
-        orgsToPay[org_id] = { monthly: orgs[org_id].key.collected };
-    });
-
-    getOneTimeDonations(db, (err, result) => {
-        if (!err) {
+    getDonations(db, (err, result) => {
+        if (!err) {console.log('\ndonations:\n'+JSON.stringify(result))
             gotOneTimeFlag = true;
             result.forEach(donation => {
                 const org_id = donation.org_id;
@@ -20,11 +15,11 @@ const getOrgsToPay = (db, callback) => {
                     orgsToPay[org_id] = {};
                 }
 
-                if (!orgsToPay[org_id].one_time) {
-                    orgsToPay[org_id].one_time = 0;
+                if (!orgsToPay[org_id].sum) {
+                    orgsToPay[org_id].sum = 0;
                 }
 
-                orgsToPay[org_id].one_time += donation.sum_donation;
+                orgsToPay[org_id].sum += donation.sum_donation;
             });
 
             if (gotOwedFlag) {
@@ -77,14 +72,16 @@ const sumAmountToPay = (orgsToPay) => {
     Object.keys(orgsToPay).forEach(org_id => {
         const org = orgsToPay[org_id];
         console.log('org:' + JSON.stringify(org));
-        orgsToPay[org_id].sum = (org.monthly || 0) + (org.one_time || 0) + (org.owed || 0);
+        orgsToPay[org_id].sum = (org.sum || 0) +  (org.owed || 0);
     });
 }
 
-const getOneTimeDonations = (db, callback) => {
+const getDonations = (db, callback) => {
     const [beginningOfCurrent, beginningOfPrev] = beginningOfCurrAndPrevMonth();
-    const sqlQuery = `SELECT * FROM one_time_donations WHERE d_date < "${beginningOfCurrent}" AND d_date >= "${beginningOfPrev}"`;
-    dbUtil.callDB(db, sqlQuery, callback);
+    const condition = ` WHERE d_date < "${beginningOfCurrent}"`;
+    const sqlOneTimeQuery = `SELECT * FROM one_time_donations ${condition} AND d_date >= "${beginningOfPrev}"`;
+    const sqlDioQuery = `SELECT d_i_o_id as donation_id, user_id, org_id, d_date, anonymous, monthly_donation as sum_donations, referred_by FROM donors_in_org ${condition} AND status_id=1`;
+    dbUtil.callDB(db, `${sqlOneTimeQuery} UNION ${sqlDioQuery}`, callback);
 }
 
 const getPreviouslyOwed = (db, callback) => {
