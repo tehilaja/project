@@ -15,6 +15,9 @@ import GiftCard from './OrgComponents/giftCard'
 
 import {Grid, Icon, Segment,Button,Image,Header} from 'semantic-ui-react';
 
+import Carousel from 'react-multi-carousel';
+import 'react-multi-carousel/lib/styles.css';
+
 const s3Util = require('../utilities/upload').methods;
 const levelOptions =[{ key: 'all levels',value: 'all levels', text: 'all levels' }];
 const filterButton =[];
@@ -172,9 +175,29 @@ class Prizes extends React.Component{
       size: '5em, 10em'
       // display: 'inline-block'
     }
+    const responsive = {
+      superLargeDesktop: {
+        // the naming can be any, depends on you.
+        breakpoint: { max: 4000, min: 3000 },
+        items: 5
+      },
+      desktop: {
+        breakpoint: { max: 3000, min: 1024 },
+        items: 3
+      },
+      tablet: {
+        breakpoint: { max: 1024, min: 464 },
+        items: 2
+      },
+      mobile: {
+        breakpoint: { max: 464, min: 0 },
+        items: 1
+      }
+      };
+
     return(
-      <div>
-          <div style ={{marginTop:'2em', marginLeft:'10em'}} >
+          <Segment style={{ padding: '5em 0em', width: '100%', background:'#F5F5F5', textAlign:'center'}} vertical textAlign="center">
+          <div textAlign="center" >
             <div></div>
             <Icon size ='huge' name = 'gift'></Icon>
             <label style ={{fontSize: '40px'}} >  Prizes</label>
@@ -185,7 +208,7 @@ class Prizes extends React.Component{
                   // content = "all organization"
                   key="all organization"
                   // data-letter="all organization"
-                  style = {{margin: '1em',border: '0.1em solid black',size: '5em, 10em',backgroundColor: 'olive'}}
+                  style = {{margin: '1em',border: '0.1em solid olive',size: '10em, 10em',backgroundColor: 'olive'}}
                   value = "all organization"
                   // lable = "All organization"
                   onClick={this.handleClickBtnOrg}>All organization
@@ -223,7 +246,33 @@ class Prizes extends React.Component{
           )}
           </div>
             <ImageGallery items={this.state.filterImeges} />
-            <Segment>
+            <div style ={{padding: '1em', margin:'3em'}}>
+                    <Header as='h4' style ={{marginLeft: '20em'}}>
+                      <Icon name='hand point right' />
+                      <Header.Content>The prizes for this Organizaition</Header.Content>
+                    </Header>
+                    <br/>
+                    <Carousel 
+									swipeable={true}
+									draggable={true}
+									showDots={true}
+									responsive={responsive}
+									ssr={true} // means to render carousel on server-side.
+									infinite={true}
+									autoPlay={this.props.deviceType !== "mobile" ? true : false}
+									autoPlaySpeed={2000}
+									keyBoardControl={true}
+									// customTransition="all .5"
+									transitionDuration={500}
+									containerClass="carousel-container"
+									removeArrowOnDeviceType={["tablet", "mobile"]}
+									deviceType={this.props.deviceType}
+									dotListClass="custom-dot-list-style"
+									itemClass="carousel-item-padding-40-px">
+										{giftComponents}
+								</Carousel>	
+                    
+                  </div>
             <Grid celled='internally' columns='equal' stackable>
                 <Grid.Row textAlign='center'>
                 <Grid.Column style={{ paddingBottom: '5em', paddingTop: '5em' }}>
@@ -244,22 +293,10 @@ class Prizes extends React.Component{
                 </Grid.Column>
                 </Grid.Row>
                 <Grid.Row>
-                  <div style ={{padding: '1em', margin:'3em'}}>
-                    <Header as='h4' style ={{marginLeft: '20em'}}>
-                      <Icon name='hand point right' />
-                      <Header.Content>The prizes for this Organizaition Organization</Header.Content>
-                    </Header>
-                    <br/>
-                    <div style ={{display: 'flex', flexDirection: 'row', padding: '1em', margin:'1em'}}> 
-                      {giftComponents}
-                    </div>
-                    
-                  </div>
                 
                 </Grid.Row>
             </Grid>
             </Segment>
-      </div>
     )
   } 
 }
