@@ -122,7 +122,7 @@ class NewOrgPage extends React.Component {
             );
             if (response.data === 'success') {
                 this.sendEmail();
-                alert('Thank you for joining Magdilim. We will look into your organization and email you as soon as we approve it.');
+                alert('Thank you for joining Magdilim. We will look into your organization and email you as soon as we approve it.' + JSON.stringify(this.state));
                 window.location.assign('/');
             } else {
                 alert('Unknown problem creating organization. Please try again later');
@@ -159,9 +159,6 @@ class NewOrgPage extends React.Component {
                 >
                     <a href='#' style={{ color:'#9ACD32'}}><Icon size='big' name='edit' />Enter the Details Bellow:</a>
                 </Divider>
-                <div>
-                searchQuery:  {this.state.searchQuery}
-                </div>
                 <Form.Field>
                     <Form.Input
                         label='Name of Organization:'
@@ -211,13 +208,10 @@ class NewOrgPage extends React.Component {
                         fluid
                         // multiple
                         onChange={this.selectLevel}
-                        // onChange={this.handleChange.bind(this)}
-                        // onSearchChange={this.handleSearchChange}
                         options={fieldOptions}
                         placeholder={this.state.org.field_of_activity}
                         // search
                         selection
-                        // searchQuery={searchQuery}
                         value={value}
                     />
                 </Form.Field>

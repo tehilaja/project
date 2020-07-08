@@ -201,7 +201,7 @@ class UserPage extends React.Component {
 									autoPlay={this.props.deviceType !== "mobile" ? true : false}
 									autoPlaySpeed={2000}
 									keyBoardControl={true}
-									customTransition="all .5"
+									// customTransition="all .5"
 									// transitionDuration={500}
 									containerClass="carousel-container"
 									removeArrowOnDeviceType={["tablet", "mobile"]}

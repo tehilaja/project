@@ -341,4 +341,4 @@ exports.addDonorToOrg = addDonorToOrg;
 exports.updateDonorInOrg = updateDonorInOrg;
 exports.updateLevelInOrg = updateLevelInOrg;
 exports.updateLevelsInOrg = updateLevelsInOrg;
-// exports.updateLevelByOrgDoners = updateLevelByOrgDoners;
+// exports.updateLevelByOrgDonors = updateLevelByOrgDonors;

@@ -281,7 +281,7 @@ export default class Donate extends Component {
     }
 
     async addMonthlyDonation() {
-        const response = await axios.post('/add-doner-in-org', { dio: escapeAllStringsInObject(this.state.donate_req) });
+        const response = await axios.post('/add-donor-in-org', { dio: escapeAllStringsInObject(this.state.donate_req) });
         if (response.data === 'success') {
             alert("Subscription completed. Thank you!");
             window.location.assign('/');

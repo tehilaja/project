@@ -282,8 +282,8 @@ app.get('/orgPage/:orgId', (req, res, next) => {
 //------getting the number of donors for a specific organization ----
 app.get('/get-num-donors/:org_id', (req, res, next) => {
   const response = statusCache.getOrgTree(req.params.org_id).key.referred_donors;
-  console.log("get-num-doners:"+JSON.stringify(response))
-  res.send({num_doners: response});
+  // console.log("get-num-donors:"+JSON.stringify(response))
+  res.send({num_donors: response});
 });
 
 //-----------------get donors of org who donate monthly------------------------
@@ -394,8 +394,8 @@ app.post('/addOrg', (req, res, next) => {
   });
 });
 
-//---------------------- add doner in org - monthly donation -----------------------
-app.post('/add-doner-in-org', (req, res, next) => {
+//---------------------- add donor in org - monthly donation -----------------------
+app.post('/add-donor-in-org', (req, res, next) => {
   const dio = req.body.dio;
   const sqlQuery = `INSERT INTO Donors_in_org (org_id, user_id, referred_by, monthly_donation, d_date, d_title, d_description, status_id) VALUES(${dio.org_id},${inQutationMarks(dio.user_id)},${inQutationMarks(dio.referred_by)},${dio.monthly_donation},${inQutationMarks(sqlDateString())},${inQutationMarks(dio.d_title)},${inQutationMarks(dio.d_description)},1);`
     dbUtil.callDB(db, sqlQuery, (err, result) => {
@@ -403,7 +403,7 @@ app.post('/add-doner-in-org', (req, res, next) => {
       statusCache.addDonorToOrg(dio.user_id, dio.org_id, dio.monthly_donation, dio.referred_by);
       res.send('success');
     } else {
-      console.log('error adding doner in org:\n'+console.log(err));
+      console.log('error adding donor in org:\n'+console.log(err));
       console.log(sqlQuery);
       res.send('fail');
     }

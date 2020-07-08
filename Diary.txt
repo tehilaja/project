@@ -442,7 +442,7 @@ working some more on ec2 docker
 spending more time on the document
 fixing bugs with gifts - sifting through, displaying based on organization
 finding and fixing some more bugs with cache 
-(edge cases, creating root for organization with no doners....)
+(edge cases, creating root for organization with no donors....)
 big problem with multiple users!! changing on the cognito code to be in client side, 
 server gets the token only
 

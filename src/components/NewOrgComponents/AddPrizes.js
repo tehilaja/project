@@ -24,7 +24,7 @@ class AddPrizes extends React.Component {
             autowinner: 'true',
             pictures: [],
             attachments: null,
-            list_of_doners: [],
+            list_of_donors: [],
             levels: this.props.levels,
             prize: {
                 org_id: this.props.org_id,
@@ -37,7 +37,7 @@ class AddPrizes extends React.Component {
         this.handleWinnerChange = this.handleWinnerChange.bind(this);
         this.sendEmail = this.sendEmail.bind(this);
         this.uploadImage = this.uploadFirstAttachment.bind(this);
-        this.getListOfDoners = this.getListOfUsers.bind(this);
+        this.getListOfDonors = this.getListOfUsers.bind(this);
     }
 
     handleChangeInput(event) {
@@ -76,8 +76,8 @@ class AddPrizes extends React.Component {
         const response = await axios.post('/get-donors-of-org', { org_id: this.state.prize.org_id });
 
         if (response.data && Array.isArray(response.data)) {
-            this.setState({ list_of_doners: response.data.map(doner => doner.user_id) });
-            alert(JSON.stringify(this.state.list_of_doners))
+            this.setState({ list_of_donors: response.data.map(donor => donor.user_id) });
+            alert(JSON.stringify(this.state.list_of_donors))
             this.sendEmail();
         }
     }
@@ -86,7 +86,7 @@ class AddPrizes extends React.Component {
         emailService.sendEmail(
             //'rachelletikva@gmail.com'
             // ['tehilaj97@gmail.com'],
-            this.state.list_of_doners,
+            this.state.list_of_donors,
             null,
             null,
             'A New Gift sent from Magdilim!!!!!!!',
@@ -130,7 +130,7 @@ class AddPrizes extends React.Component {
             this.state.prize.gift_pic = fileUrl;
             this.setState({prize: this.state.prize});
             this.savePrize(() => {
-                this.getListOfDoners();
+                this.getListOfDonors();
                 document.dispatchEvent(new Event('prizeAdded'));
             });
         };
