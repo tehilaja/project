@@ -1,0 +1,36 @@
+version: "3"
+
+services:
+    mysql2:
+        image: mysqldb:1.0
+        container_name: mysql2
+        environment:
+            - MYSQL_ROOT_PASSWORD=12345678
+            - MYSQL_DATABASE=magdilimdb
+        networks:
+            magdilim:
+
+    server:
+        image: server:1.0
+        container_name: server
+        environment:
+            - MYSQL_USER='root'
+            - MYSQL_PASSWORD=12345678
+            - MYSQL_DATABASE=magdilimdb
+            - MYSQL_HOST='mysql2'
+        networks:
+            magdilim:
+        depends_on:
+            - mysql2
+
+    client:
+        image: client:1.0
+        ports:
+            - "3000:3000"
+        networks:
+            magdilim:
+        depends_on:
+            - server
+
+networks:
+    magdilim:

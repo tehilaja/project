@@ -10,8 +10,8 @@ INSERT INTO Organizations(org_name, org_admin_id, description, img_url, min_dona
 "https://yad-sarah.net/wp-content/uploads/2019/04/logoys.png",15, 20, true, 580030104,"משה אורי כהן",1983, 55,900,123456,"ציוד רפואי","https://yad-sarah.net/");
 INSERT INTO Organizations(org_name, org_admin_id, description, img_url, min_donation, one_time_donation, approved, pc_num, admin_name, founding_year, working, num_volunteers, num_friends, field_of_activity, website) VALUES
 ("Hakshiva","avital05484@gmail.com", "Mentoring and coaching for Teens at Risk and their families.",
-"https://magdilim-organization-images.s3.amazonaws.com/organizations/8_87860a40-be93-11ea-90ae-77889d74b9e4_Hakshiva.jpg",12, 30, true, 580465979, "אליהו פולק", 2006,388,231,5400, "נוער", "https://hakshiva.org/");
--- addresses
+"https://magdilim-organization-images.s3.amazonaws.com/Organizations/8_87860a40-be93-11ea-90ae-77889d74b9e4_Hakshiva.jpg",12, 30, true, 580465979, "אליהו פולק", 2006,388,231,5400, "נוער", "https://hakshiva.org/");
+-- Addresses
 select * from Addresses;
 INSERT INTO Addresses(org_id, country, state, city, street, building, apartment, suite, zip) VALUES
 (1, "Israel", null, "Jerusalem","ירמיהו", 78, null, null, 9446758),
@@ -36,7 +36,7 @@ INSERT INTO Donors_in_org (user_id, org_id, monthly_donation, referred_by,d_titl
 ("someotherid@id.com",1,80,"rachelletikva@gmail.com", "תודות לארגון","נתרם עקב העזרה הרבה אשר הארגון מסייע לכלל ישראל ישר כוח!",TRUE,1),
 ("someid@gmail.com",2,50,null,"tanks for all halpe ","...",TRUE,1);
 
--- levels
+-- Levels
 select * from Levels;
 INSERT INTO Levels (org_id, level_num, level_name, min_people, min_sum) VALUES
 (1, 1, "כסף", 5, null),
@@ -57,7 +57,7 @@ INSERT INTO Levels (org_id, level_num, level_name, min_people, min_sum) VALUES
 (3, 3, "פלטינום", null, 2000),
 (3, 4, "יהלום", null, 10000);
 
--- gifts
+-- Gifts
 select* from Gifts;
 INSERT INTO Gifts (gift_name, gift_description, gift_pic, org_id, level_num, g_date, raffle) VALUES
 ("רכב 7 מקומות"," רכב מפואר בעל 7 מקומות של חברת הונדה BR-V","https://magdilim-organization-images.s3.amazonaws.com/prizes/1_c3584880-be52-11ea-b9f1-a1543b6468b8_giftOrg1Level4.jpg"
@@ -83,17 +83,17 @@ INSERT INTO Gifts (gift_name, gift_description, gift_pic, org_id, level_num, g_d
 
 
 
-update gifts set winner = "tehilaj97@gmail.com"
+update Gifts set winner = "tehilaj97@gmail.com"
 where gift_id = 5;
-update gifts set winner = "rachelletikva@gmail.com"
+update Gifts set winner = "rachelletikva@gmail.com"
 where gift_id = 2;
 
 -- UPDATE table_name SET field1 = new-value1, field2 = new-value2
 -- [WHERE Clause]
 
 
--- i-- nserting gifts with winners:
--- SELECT * FROM magdilimdb.gifts;
+-- i-- nserting Gifts with winners:
+-- SELECT * FROM magdilimdb.Gifts;
 -- INSERT INTO Gifts (gift_name, gift_description, gift_pic, org_id, level_num, g_date, winner, raffle) VALUES
 -- ("דירה מפוארת","דירה בת 5 חגרים בפרוייקט היוקרה מגדלי הנוף", "https://magdilim-organization-images.s3.amazonaws.com/prizes/5_5deb9d70-c015-11ea-a92d-d58a6f3c9a4b_aparteement_hezer.jpeg", 2, 4, "2020-08-23", 'tehilaj97@gmail.com', true),
 -- ("מצלמה","מצלמת קאנון איכותית","",1,1,"2020-06-17", 'avital05484@gmail.com', true);
@@ -112,14 +112,14 @@ INSERT INTO Feed_comments (feed_type, feed_type_id, user_id, date, comment_text,
 ('org', 1, 'Avital05484@gmail.com', "2020-03-23", "common! get your friends!", 2);
 
 -- bank info
-INSERT INTO bank_info (org_id, branch, account_num, bank_num, account_owner) VALUES
+INSERT INTO Bank_info (org_id, branch, account_num, bank_num, account_owner) VALUES
 (1, 698, 383838, 12, 'איחוד הצלה ישראל'),
 (2, 444, 656555, 10, "הרב חנניה צ'ולק"),
 (3, 545, 324344, 12, "יד שרה");
 
 -- one time donations
-select * from one_time_donations;
-INSERT INTO one_time_donations (user_id, org_id, referred_by, sum_donation, d_date, anonymous) VALUES
+select * from One_time_donations;
+INSERT INTO One_time_donations (user_id, org_id, referred_by, sum_donation, d_date, anonymous) VALUES
 ('tehilaj97@gmail.com', 1, null, 200, '2020-05-23', false),
 ('tehilaj97@gmail.com', 1, null, 500, '2020-04-23', false),
 ('tehilaj97@gmail.com', 1, null, 200, '2020-06-23', false),
@@ -135,36 +135,36 @@ INSERT INTO one_time_donations (user_id, org_id, referred_by, sum_donation, d_da
 ('rachelletikva@gmail.com', 2, 'tehilaj97@gmail.com', 200, '2020-06-23', false),
 (null, 2, null, 2000, '2020-05-20', true);
 
--- ~~~~~~~~~~~ fields_of_activity ~~~~~~~~~~``
- -- select * from fields_of_activity
+-- ~~~~~~~~~~~ Fields_of_activity ~~~~~~~~~~``
+ -- select * from Fields_of_activity
  
-INSERT INTO fields_of_activity(field_id,field_name) VALUES
+INSERT INTO Fields_of_activity(field_id,field_name) VALUES
 (1,"הצלת חיים"),(2,"השאלת ציוד"),(3,"בריאות -כללי"),(4,"טיפול באסונות"),(5,"עולם התורה"),(6,"מימון"),(7,"אמנים"),(8,"עזרה לנזקקים"),(9,"חלוקת מזון"),(10,"נוער");
 
--- select * from org_field_of_activity
-INSERT INTO org_field_of_activity(field_id,org_id) values(1,1),(3,1),(4,1),(2,2),(3,2),(1,2),(2,3),(3,3),(5,4),(10,4);
+-- select * from Org_field_of_activity
+INSERT INTO Org_field_of_activity(field_id,org_id) values(1,1),(3,1),(4,1),(2,2),(3,2),(1,2),(2,3),(3,3),(5,4),(10,4);
 
 
 
 
--- ~~~~~~~~~~~~~~~~ gifts & level ~~~~~~~~~~~~~~~~~~~
+-- ~~~~~~~~~~~~~~~~ Gifts & level ~~~~~~~~~~~~~~~~~~~
  
- -- ~~~ whith a  gifts_levels table
--- gifts_levels ---
--- insert into gifts_levels(g_levele_id,level_name) values(1,"all Donars"),(2,"silver"),(3,"gold"),(4,"platinum");
+ -- ~~~ whith a  Gifts_Levels table
+-- Gifts_Levels ---
+-- insert into Gifts_Levels(g_levele_id,level_name) values(1,"all Donars"),(2,"silver"),(3,"gold"),(4,"platinum");
 
 -- level
 -- insert into leveled (g_levele_id,org_id,min_people,min_sum) values(2,1,50,5000),(3,1,150,50000),(4,1,1000,100000), -- org1
 -- (1,2,0,100),(2,2,150,0),(3,2,500,10),(4,2,4000,10000); -- org2
 
 -- level
--- select * from levels;
--- insert into levels (l_name,org_id,min_people,min_sum) values("silver",1,50,5000),("gold",1,150,50000),("platinum",1,1000,100000), -- org1
+-- select * from Levels;
+-- insert into Levels (l_name,org_id,min_people,min_sum) values("silver",1,50,5000),("gold",1,150,50000),("platinum",1,1000,100000), -- org1
 -- ("all Donars",2,0,100),("silver",2,150,0),("gold",2,500,10),("platinum",2,4000,10000); -- org2
 
--- gifts
--- select * from gifts;
--- insert into gifts (gift_name,gift_description,gift_pic,level_id,g_date)values
+-- Gifts
+-- select * from Gifts;
+-- insert into Gifts (gift_name,gift_description,gift_pic,level_id,g_date)values
 -- ("רכב 7 מקומות","כב מפואר עם 7 מקומותר","",3,"2020-08-23"),("מצלמה","מצלמת קאנון איכותית","",2,"2020-08-17"), -- org1
 -- ("דיסק","פרחי מיאמי","",4,"2020-07-17"),("מכונת תפירה","חדשה במחיוחד","",6,"2020-09-23"); -- org2
 

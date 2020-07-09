@@ -5,7 +5,7 @@ let usersToOrganizationTrees = {}; // usersToOrganizationTrees[user_id][org_id] 
 let orgToLevels = undefined; // 
 
 const addOrgsWithNoDonors = (db, callback) => {console.log('in add orgs with no donors')
-    const sqlQuery = `SELECT org_id FROM organizations WHERE org_id NOT IN (SELECT org_id FROM donors_in_org WHERE status_id = 1);`;
+    const sqlQuery = `SELECT org_id FROM Organizations WHERE org_id NOT IN (SELECT org_id FROM Donors_in_org WHERE status_id = 1);`;
     dbUtil.callDB(db, sqlQuery, (err, result) => {
         if (!err) {
             result.forEach(org => addOrg(org.org_id))
@@ -28,7 +28,7 @@ const getOrgsToPayTrees = () => {
 }
 
 const getDonorsFromDbAndSetCache = (db, callback) => {
-    const sqlQuery = `SELECT * FROM donors_in_org WHERE status_id=1`;
+    const sqlQuery = `SELECT * FROM Donors_in_org WHERE status_id=1`;
     try{
         db.query(sqlQuery, (err, result, fields) => {
             if (err) throw err;
@@ -150,9 +150,9 @@ const getDonorLevel = (donor, levels) => {
 //get today's gifts from db, grouped by orgs
 const getGifts = (db, callback) => {
     const currentDate = new Date().toISOString().substr(0, 10);
-    const sqlQuery = `SELECT * FROM gifts WHERE g_date LIKE '${currentDate}'`;
+    const sqlQuery = `SELECT * FROM Gifts WHERE g_date LIKE '${currentDate}'`;
 
-    //const sqlQuery = `SELECT * FROM gifts WHERE g_date = ${currentDate.getFullYear()}-${currentDate.getMonth()}-${currentDate.getDate()}`;
+    //const sqlQuery = `SELECT * FROM Gifts WHERE g_date = ${currentDate.getFullYear()}-${currentDate.getMonth()}-${currentDate.getDate()}`;
     console.log(sqlQuery);
     // db.query does not return the result. The result can only be accessed within a callback. Therefore, we accept a callback as a parameter, in order to pass down the results.
     // (if we set a global variable to the result - we will cause a race condition.)
@@ -320,7 +320,7 @@ const getOrgTreeForUser = (userId, orgId) => usersToOrganizationTrees[userId][or
 // returns a dict mapping org id to the user's node of that org tree
 const getOrgsForUser = (userId) => usersToOrganizationTrees[userId];
 
-// returns array of levels of org_id
+// returns array of Levels of org_id
 const getOrgLevels = (org_id) => orgToLevels[org_id];
 
 // maps the levels and returns the first level that equals the level num we got. if level doesn't exsist the level will be none

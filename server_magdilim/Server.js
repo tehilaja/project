@@ -114,7 +114,7 @@ const job = schedule.scheduleJob(rule, function () {
             null,
             null,
             'Congratualtions! You won a prize through Magdilim!',
-            `We are happy to tell you you won a prize from ${gift.org_name}.\n\nThe prize you won: ${gift.gift_name}.\nDescription:${gift.gift_description}\n\nWe are very gratefull to you for your donations which help keep our important organizations going.\n\nYours, the Magdilim team`,
+            `We are happy to tell you you won a prize from ${gift.org_name}.\n\nThe prize you won: ${gift.gift_name}.\nDescription:${gift.gift_description}\n\nWe are very gratefull to you for your donations which help keep our important Organizations going.\n\nYours, the Magdilim team`,
              gift.gift_pic && [{ path: gift.gift_pic, filename: gift.gift_pic.substr(gift.gift_pic.lastIndexOf('_') + 1) }]            );
         });
         
@@ -132,10 +132,10 @@ app.get('/lastDonation', (req, res, next) => {
   try {
     // const qLDonation = `SELECT d.user_id, d.org_id, u.user_name ,d.d_title,d.d_description, d.is_anonim,d.referred_by, d.d_date, o.img_url FROM Donors_in_org d 
     //   INNER JOIN users u ON u.user_id = d.user_id 
-    //   INNER JOIN organizations o ON o.org_id = d.org_id
+    //   INNER JOIN Organizations o ON o.org_id = d.org_id
     //   ORDER BY d_date DESC LIMIT 20`;
     const qLDonation = `SELECT d.user_id, d.org_id, d.d_title,d.d_description, d.anonymous,d.referred_by, d.d_date, o.img_url,o.org_name FROM Donors_in_org d 
-      INNER JOIN organizations o ON o.org_id = d.org_id
+      INNER JOIN Organizations o ON o.org_id = d.org_id
       ORDER BY d_date DESC LIMIT 20;`
     //d.referred_by,
     console.log("query: " + qLDonation);
@@ -163,7 +163,7 @@ app.get('/get_field_of_activity', (req, res, next) => {
     // conectDb();
     console.log("in //get_field_of_activity")
     const q_field_name = 
-      `select field_name from fields_of_activity`
+      `select field_name from Fields_of_activity`
     console.log("query: \n" + q_field_name);
     db.query(q_field_name, (err, result, fields) => {
       if (err) throw err;
@@ -190,10 +190,10 @@ app.get('/org_field_of_activity', (req, res, next) => {
   try {
     // TODO : try the db multi connection problem
     // conectDb();
-    console.log("in //org_field_of_activity")
+    console.log("in //Org_field_of_activity")
     const q_field_name = 
-      `select distinct f.field_name, o.org_id from fields_of_activity f
-      inner join  org_field_of_activity o on o.field_id = f.field_id`
+      `select distinct f.field_name, o.org_id from Fields_of_activity f
+      inner join  Org_field_of_activity o on o.field_id = f.field_id`
     console.log("query: \n" + q_field_name);
     db.query(q_field_name, (err, result, fields) => {
       if (err) throw err;
@@ -289,7 +289,7 @@ app.get('/get-num-donors/:org_id', (req, res, next) => {
 //-----------------get donors of org who donate monthly------------------------
 app.post('/get-donors-of-org', (req, res, next) => {
   try {
-    const sqlQuery = `SELECT user_id FROM donors_in_org WHERE org_id=${req.body.org_id};`;
+    const sqlQuery = `SELECT user_id FROM Donors_in_org WHERE org_id=${req.body.org_id};`;
     dbUtil.callDB(db, sqlQuery, (err, result) => {
       if (!err) {
         res.send(result);
@@ -327,8 +327,8 @@ app.post('/donate/findDThrouhUser', (req, res) => {
     console.log("req: "+ req.body.userMail + " "+ req.body.org_id)
     // console.log("req: "+ req.params.userMail + " "+ req.params.org_id)
     console.log("in donate/findDThrouhUser/:user_mail")
-    const qDUser = `select user_id from donors_in_org where user_id ="${req.body.userMail}" and org_id =${req.body.org_id}`;
-    // select user_id from donors_in_org where user_id ="tehilaj97@gmail.com" and org_id = 1;
+    const qDUser = `select user_id from Donors_in_org where user_id ="${req.body.userMail}" and org_id =${req.body.org_id}`;
+    // select user_id from Donors_in_org where user_id ="tehilaj97@gmail.com" and org_id = 1;
     console.log("query: \n" + qDUser + "\n");
     db.query(qDUser, (err, result, fields) => {
       if (err) throw err;
@@ -379,7 +379,7 @@ app.post('/addOrg', (req, res, next) => {
   const numberOrNull = (num) => num || null;
   const org = req.body.org;
 
-  const sqlOrgsTableQuery = `INSERT INTO organizations (org_name, description, img_url, website, min_donation, one_time_donation, field_of_activity, approved, org_admin_id, admin_name) VALUES (${inQutationMarks(org.org_name)}, ${inQutationMarks(org.description)}, ${inQutationMarks(org.img_url)}, ${inQutationMarks(org.website)}, ${numberOrNull(org.min_donation)}, ${numberOrNull(org.one_time_donation)}, ${inQutationMarks(org.field_of_activity)}, 0, ${inQutationMarks(org.org_admin_id)}, ${inQutationMarks(org.admin_name)})`;  const sqlAddressesTableQuery = `INSERT INTO addresses (org_id, country, state, city, street, building, apartment, suite, zip ) VALUES (LAST_INSERT_ID(), ${inQutationMarks(org.country)}, ${inQutationMarks(org.state)}, ${inQutationMarks(org.city)}, ${inQutationMarks(org.street)}, ${numberOrNull(org.building)}, ${numberOrNull(org.apartment)}, ${numberOrNull(org.suite)}, ${numberOrNull(org.zip)})`;
+  const sqlOrgsTableQuery = `INSERT INTO Organizations (org_name, description, img_url, website, min_donation, one_time_donation, field_of_activity, approved, org_admin_id, admin_name) VALUES (${inQutationMarks(org.org_name)}, ${inQutationMarks(org.description)}, ${inQutationMarks(org.img_url)}, ${inQutationMarks(org.website)}, ${numberOrNull(org.min_donation)}, ${numberOrNull(org.one_time_donation)}, ${inQutationMarks(org.field_of_activity)}, 0, ${inQutationMarks(org.org_admin_id)}, ${inQutationMarks(org.admin_name)})`;  const sqlAddressesTableQuery = `INSERT INTO Addresses (org_id, country, state, city, street, building, apartment, suite, zip ) VALUES (LAST_INSERT_ID(), ${inQutationMarks(org.country)}, ${inQutationMarks(org.state)}, ${inQutationMarks(org.city)}, ${inQutationMarks(org.street)}, ${numberOrNull(org.building)}, ${numberOrNull(org.apartment)}, ${numberOrNull(org.suite)}, ${numberOrNull(org.zip)})`;
   
   const query = `${sqlOrgsTableQuery};${sqlAddressesTableQuery};`;
   
@@ -414,7 +414,7 @@ app.post('/add-donor-in-org', (req, res, next) => {
 //-----------------------add one time donation to db-------------------------
 app.post('/add-one-time-donation', (req, res, next) => {
   const donation = req.body.donation;
-  const sqlQuery = `INSERT INTO one_time_donations(user_id,org_id,referred_by,sum_donation,anonymous, d_date) VALUES (${inQutationMarks(donation.user_id)},${donation.org_id},${inQutationMarks(donation.referred_by)},${donation.monthly_donation},0, ${inQutationMarks(sqlDateString())});`
+  const sqlQuery = `INSERT INTO One_time_donations(user_id,org_id,referred_by,sum_donation,anonymous, d_date) VALUES (${inQutationMarks(donation.user_id)},${donation.org_id},${inQutationMarks(donation.referred_by)},${donation.monthly_donation},0, ${inQutationMarks(sqlDateString())});`
   dbUtil.callDB(db, sqlQuery, (err, result) => {
     if (!err) {
       res.send('success');
@@ -436,12 +436,12 @@ function (req, res, next) {
    g.gift_id, g.gift_name,	     
    g.gift_description,g.gift_pic,	       
    g.g_date, g.winner, o.org_name
-  from gifts g
-  INNER JOIN levels l ON l.level_num = g.level_num and l.org_id = g.org_id
-  inner join organizations o on o.org_id = g.org_id and o.org_id =${req.params.org_id} and g.winner is null
+  from Gifts g
+  INNER JOIN Levels l ON l.level_num = g.level_num and l.org_id = g.org_id
+  inner join Organizations o on o.org_id = g.org_id and o.org_id =${req.params.org_id} and g.winner is null
    group by g.gift_name;`
   
-  console.log('in org page gifts \n');
+  console.log('in org page Gifts \n');
     // const sqlQuery = `select * from Gifts WHERE org_id=${req.params.org_id} and winner IS NULL`
     console.log(qGifts)
     db.query(qGifts, (err, result, fields) => {
@@ -458,7 +458,7 @@ function (req, res, next) {
   app.get('/orgPage/getLevels/:org_id',
   function (req, res, next) {
     console.log('in get level \n');
-      const sqlQuery = `select * from levels WHERE org_id=${req.params.org_id}`
+      const sqlQuery = `select * from Levels WHERE org_id=${req.params.org_id}`
       console.log(sqlQuery)
       db.query(sqlQuery, (err, result, fields) => {
         if (!err) {
@@ -473,7 +473,7 @@ function (req, res, next) {
     // ------------------
   app.get('/getLevels',function (req, res, next) {
     console.log('in get level \n');
-      const sqlQuery = `select distinct level_name from levels`
+      const sqlQuery = `select distinct level_name from Levels`
       console.log(sqlQuery)
       db.query(sqlQuery, (err, result, fields) => {
         if (!err) {
@@ -486,20 +486,6 @@ function (req, res, next) {
       })
     });
 
-// // ---- Gets the future gifts for specific organization page
-// app.get('/orgPage/gifts/:org_id', function (req, res, next) {
-//   q = `select * from Gifts WHERE org_id=${req.params.org_id} and winner IS NULL`;
-//     db.query(q, function (error, results, fields) {
-//       if (error) throw error;
-//           console.log("orgPage/gifts/:org_id \n " + JSON.stringify(results))
-//           res.send(JSON.stringify(results));
-//         });
-//  });
-
-
-// @ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//the function bellow checks if the user is the program Admin to enable special routing
-
 //------------is org admin--------------
 app.get('/EditOrgPage/:userId/is-org-admin/:orgId', function (req, res, next) {
   const sqlQuery = `SELECT org_admin_id FROM Organizations WHERE org_id=${inQutationMarks(req.params.orgId)} AND approved=1`;
@@ -511,7 +497,7 @@ app.get('/EditOrgPage/:userId/is-org-admin/:orgId', function (req, res, next) {
 
 
 
-// -- fetching organizations from DB:
+// -- fetching Organizations from DB:
 app.get('/data', function (req, res, next) {
   db.query('select * from Organizations WHERE approved=1', function (error, results, fields) {
     if (error) throw error;
@@ -549,7 +535,7 @@ app.get('/userOrgTrees/:user_id', function (req, res, next) {
       trees[orgId].org_name = results[0].org_name;
       trees[orgId].img_url = results[0].img_url;
 
-      //checking how many organzaionts info was returned. the request will return only once all organizations data was retrieved
+      //checking how many organzaionts info was returned. the request will return only once all Organizations data was retrieved
       index++;
 
       if (index == orgIds.length) {
@@ -568,7 +554,7 @@ app.post('/fetch_org_data', (req, res) => {
   db.query(query, (err, result, fields) => {
     if (!err) {
       console.log("the query is: \n", query)
-      console.log("found organizations")
+      console.log("found Organizations")
       //check what result actually sends...
       console.log(result)
       // console.log(fields)
@@ -672,8 +658,8 @@ app.post('/findDuser', (req, res) => {
 //------------org admin of------------------
 app.get('/:userId/org-admin-of',
   function (req, res, next) {
-    //const sqlQuery = `SELECT * FROM organizations WHERE org_admin_id = ${inQutationMarks(req.params.userId}'`;
-    const sqlQuery = `SELECT * FROM organizations WHERE org_admin_id=${inQutationMarks(req.params.userId)} AND approved=1`;
+    //const sqlQuery = `SELECT * FROM Organizations WHERE org_admin_id = ${inQutationMarks(req.params.userId}'`;
+    const sqlQuery = `SELECT * FROM Organizations WHERE org_admin_id=${inQutationMarks(req.params.userId)} AND approved=1`;
     console.log(sqlQuery);
 
     db.query(sqlQuery, (err, result, fields) => {
@@ -692,7 +678,7 @@ app.get('/:userId/org-admin-of',
 //-------------------get non approved orgs------------------
 app.get('/non-approved-orgs',
   function (req, res, next) {
-    const sqlQuery = `SELECT * FROM organizations WHERE approved=0`;
+    const sqlQuery = `SELECT * FROM Organizations WHERE approved=0`;
 
     db.query(sqlQuery, (err, result, fields) => {
       if (!err) {
@@ -733,7 +719,7 @@ app.get('/get-orgs-to-pay',
       } else {
         let index = 0;
         Object.keys(result).forEach(org_id => {
-          const sqlQuery = `SELECT o.org_id, o.org_name, o.org_admin_id, o.admin_name, o.img_url, b.branch, b.account_num, b.bank_num, b.account_owner from Organizations o Inner Join bank_info b WHERE o.org_id=${org_id} AND b.org_id=${org_id}`;
+          const sqlQuery = `SELECT o.org_id, o.org_name, o.org_admin_id, o.admin_name, o.img_url, b.branch, b.account_num, b.bank_num, b.account_owner from Organizations o Inner Join Bank_info b WHERE o.org_id=${org_id} AND b.org_id=${org_id}`;
           db.query(sqlQuery, (error, results, fields) => {
             if (!error) {
               index++;
@@ -770,8 +756,8 @@ app.post('/pay-orgs', (req, res) => {
 app.post('/get-org-donations-to-display', (req, res) => {
   const [beginningOfCurrent, beginningOfPrev] = paymentsUtil.beginningOfCurrAndPrevMonth();
   const condition = `WHERE org_id=${req.body.org_id} AND d_date < ${inQutationMarks(beginningOfCurrent)}`;
-  const sqlDioTable = `SELECT user_id, referred_by, monthly_donation as sum_donation, d_date, d_title, d_description, "Monthly" as monthly_oneTime FROM donors_in_org ${condition} AND status_id=1`;
-  const sqlOneTimeTable = `SELECT user_id, referred_by, sum_donation, d_date, '' as d_title, '' as d_description, "One Time" as monthly_oneTime FROM one_time_donations ${condition} AND d_date >= ${inQutationMarks(beginningOfPrev)}`;
+  const sqlDioTable = `SELECT user_id, referred_by, monthly_donation as sum_donation, d_date, d_title, d_description, "Monthly" as monthly_oneTime FROM Donors_in_org ${condition} AND status_id=1`;
+  const sqlOneTimeTable = `SELECT user_id, referred_by, sum_donation, d_date, '' as d_title, '' as d_description, "One Time" as monthly_oneTime FROM One_time_donations ${condition} AND d_date >= ${inQutationMarks(beginningOfPrev)}`;
   const sqlQuery = `${sqlDioTable} UNION  ${sqlOneTimeTable}`;
   console.log(sqlQuery);
 
@@ -792,7 +778,7 @@ app.post('/get-org-donations-to-display', (req, res) => {
   const org_ids = req.body.org_ids;
   console.log(JSON.stringify(req.body.org_ids));
   const condition = `WHERE org_id IN (${org_ids})`;
-  let query = `DELETE FROM Organizations ${condition}; DELETE FROM addresses ${condition}; DELETE FROM bank_info ${condition};`;  console.log(query);
+  let query = `DELETE FROM Organizations ${condition}; DELETE FROM Addresses ${condition}; DELETE FROM Bank_info ${condition};`;  console.log(query);
   console.log(query);  
   db.query(query, (err, result, fields) => {
     if (!err) {
@@ -810,7 +796,7 @@ app.post('/get-org-donations-to-display', (req, res) => {
 
 //-----------------get all org data--------------
 app.post('/get-all-org-data', (req, res) => {
-  const sqlQuery = `SELECT * FROM Organizations LEFT JOIN bank_info ON organizations.org_id = bank_info.org_id LEFT join addresses ON organizations.org_id = addresses.org_id WHERE organizations.org_id=${req.body.org_id};`;
+  const sqlQuery = `SELECT * FROM Organizations LEFT JOIN Bank_info ON Organizations.org_id = Bank_info.org_id LEFT join Addresses ON Organizations.org_id = Addresses.org_id WHERE Organizations.org_id=${req.body.org_id};`;
     dbUtil.callDB(db, sqlQuery, (err, result) => {
       if (err) {
         console.log('error getting all data: '+JSON.stringify(err))
@@ -827,9 +813,9 @@ app.post('/get-all-org-data', (req, res) => {
 app.post('/update-org-data', (req, res) => {
   const org = req.body.org;
   const condition = `WHERE org_id=${org.org_id}`;
-  const sqlOrgsTableQuery = `UPDATE organizations SET org_name=${inQutationMarks(org.org_name)}, description=${inQutationMarks(org.description)}, img_url=${inQutationMarks(org.img_url)}, website=${inQutationMarks(org.website)}, min_donation=${org.min_donation}, one_time_donation=${org.one_time_donation}, field_of_activity=${inQutationMarks(org.field_of_activity)} ${condition}`;  const sqlBankInfoTableQuery = `DELETE FROM bank_info ${condition};INSERT INTO bank_info (org_id, bank_num, branch, account_num, account_owner) VALUES (${org.org_id}, ${org.bank_num}, ${org.branch}, ${org.account_num}, ${inQutationMarks(org.account_owner)})`;
-  const sqlAddressesTableQuery = `DELETE FROM addresses ${condition};INSERT INTO addresses (org_id, country, state, city, street, building, apartment, suite, zip ) VALUES (${org.org_id}, ${inQutationMarks(org.country)}, ${inQutationMarks(org.state)}, ${inQutationMarks(org.city)}, ${inQutationMarks(org.street)}, ${org.building}, ${org.apartment}, ${org.suite}, ${org.zip})`;
-  const sqlLevelsTableQueries = org.levels && org.levels.reduce((acc, level) => `${acc}DELETE FROM levels ${condition} AND level_num=${level.level_num}; INSERT INTO levels (org_id, level_num, level_name, min_people, min_sum) VALUES (${org.org_id}, ${level.level_num}, ${inQutationMarks(level.level_name)}, ${level.min_people}, ${level.min_sum});`, '');
+  const sqlOrgsTableQuery = `UPDATE Organizations SET org_name=${inQutationMarks(org.org_name)}, description=${inQutationMarks(org.description)}, img_url=${inQutationMarks(org.img_url)}, website=${inQutationMarks(org.website)}, min_donation=${org.min_donation}, one_time_donation=${org.one_time_donation}, field_of_activity=${inQutationMarks(org.field_of_activity)} ${condition}`;  const sqlBankInfoTableQuery = `DELETE FROM Bank_info ${condition};INSERT INTO Bank_info (org_id, bank_num, branch, account_num, account_owner) VALUES (${org.org_id}, ${org.bank_num}, ${org.branch}, ${org.account_num}, ${inQutationMarks(org.account_owner)})`;
+  const sqlAddressesTableQuery = `DELETE FROM Addresses ${condition};INSERT INTO Addresses (org_id, country, state, city, street, building, apartment, suite, zip ) VALUES (${org.org_id}, ${inQutationMarks(org.country)}, ${inQutationMarks(org.state)}, ${inQutationMarks(org.city)}, ${inQutationMarks(org.street)}, ${org.building}, ${org.apartment}, ${org.suite}, ${org.zip})`;
+  const sqlLevelsTableQueries = org.levels && org.levels.reduce((acc, level) => `${acc}DELETE FROM Levels ${condition} AND level_num=${level.level_num}; INSERT INTO Levels (org_id, level_num, level_name, min_people, min_sum) VALUES (${org.org_id}, ${level.level_num}, ${inQutationMarks(level.level_name)}, ${level.min_people}, ${level.min_sum});`, '');
   
   const query = `${sqlBankInfoTableQuery};${sqlOrgsTableQuery};${sqlAddressesTableQuery};${sqlLevelsTableQueries}`;
   
@@ -854,9 +840,9 @@ app.get('/get_gift_and_levels',(req,res)=>{
   g.gift_id, g.gift_name,	     
   g.gift_description,g.gift_pic,	       
   g.g_date, g.winner, o.org_name
- from gifts g
- INNER JOIN levels l ON l.level_num = g.level_num and g.org_id = l.org_id
- inner join organizations o on o.org_id = g.org_id
+ from Gifts g
+ INNER JOIN Levels l ON l.level_num = g.level_num and g.org_id = l.org_id
+ inner join Organizations o on o.org_id = g.org_id
   group by g.gift_name;`
     dbUtil.callDB(db, qGift, (err, result) => {
       if (err) {
@@ -871,7 +857,7 @@ app.get('/get_gift_and_levels',(req,res)=>{
 
 // ------------------
 app.get('/list_of_org',(req,res)=>{
-  const qorg = 'select org_id,org_name,img_url from organizations'
+  const qorg = 'select org_id,org_name,img_url from Organizations'
   dbUtil.callDB(db, qorg, (err, result) => {
     if (err) {
       console.log('error updating org data: ' + JSON.stringify(err));
@@ -887,7 +873,7 @@ app.get('/list_of_org',(req,res)=>{
 //------------------add prize------------------
 app.post('/add-prize', (req, res) => {
   const gift = req.body.gift;
-  const sqlQuery = `INSERT INTO gifts (gift_name, gift_description, gift_pic, org_id, level_num, g_date, raffle) VALUES (${inQutationMarks(gift.gift_name)}, ${inQutationMarks(gift.gift_description)}, ${inQutationMarks(gift.gift_pic)}, ${gift.org_id}, ${gift.level_num}, ${inQutationMarks(gift.g_date)}, ${gift.raffle})`;
+  const sqlQuery = `INSERT INTO Gifts (gift_name, gift_description, gift_pic, org_id, level_num, g_date, raffle) VALUES (${inQutationMarks(gift.gift_name)}, ${inQutationMarks(gift.gift_description)}, ${inQutationMarks(gift.gift_pic)}, ${gift.org_id}, ${gift.level_num}, ${inQutationMarks(gift.g_date)}, ${gift.raffle})`;
   dbUtil.callDB(db, sqlQuery, (err, result) => {
     if (!err) {
       res.send('success');

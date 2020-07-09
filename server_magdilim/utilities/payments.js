@@ -79,14 +79,14 @@ const sumAmountToPay = (orgsToPay) => {
 const getDonations = (db, callback) => {
     const [beginningOfCurrent, beginningOfPrev] = beginningOfCurrAndPrevMonth();
     const condition = ` WHERE d_date < "${beginningOfCurrent}"`;
-    const sqlOneTimeQuery = `SELECT * FROM one_time_donations ${condition} AND d_date >= "${beginningOfPrev}"`;
-    const sqlDioQuery = `SELECT d_i_o_id as donation_id, user_id, org_id, d_date, anonymous, monthly_donation as sum_donations, referred_by FROM donors_in_org ${condition} AND status_id=1`;
+    const sqlOneTimeQuery = `SELECT * FROM One_time_donations ${condition} AND d_date >= "${beginningOfPrev}"`;
+    const sqlDioQuery = `SELECT d_i_o_id as donation_id, user_id, org_id, d_date, anonymous, monthly_donation as sum_donations, referred_by FROM Donors_in_org ${condition} AND status_id=1`;
     dbUtil.callDB(db, `${sqlOneTimeQuery} UNION ${sqlDioQuery}`, callback);
 }
 
 const getPreviouslyOwed = (db, callback) => {
     const [beginningOfCurrent, beginningOfPrev] = beginningOfCurrAndPrevMonth();
-    const sqlQuery = `SELECT * FROM payments WHERE date_paid < "${beginningOfCurrent}" AND date_paid >= "${beginningOfPrev}"`
+    const sqlQuery = `SELECT * FROM Payments WHERE date_paid < "${beginningOfCurrent}" AND date_paid >= "${beginningOfPrev}"`
     dbUtil.callDB(db, sqlQuery, callback);
 }
 
@@ -105,7 +105,7 @@ const removePaidOrgs = (db, orgsToPay, callback) => {
 
 const getPaidOrgs = (db, callback) => {
     const [beginningOfCurrent, beginningOfNext] = beginningOfCurAndNextMonth();
-    const sqlQuery = `SELECT * FROM payments WHERE date_paid >= "${beginningOfCurrent}" AND date_paid < "${beginningOfNext}"`
+    const sqlQuery = `SELECT * FROM Payments WHERE date_paid >= "${beginningOfCurrent}" AND date_paid < "${beginningOfNext}"`
     dbUtil.callDB(db, sqlQuery, callback);
 }
 
