@@ -60,7 +60,7 @@ console.log("connected")
 //  ~~~~~~~~~~~~~~~~~~~~~~ DB ~~~~~~~~~~~~~~~~~~~
 const db = mysql.createConnection({
   multipleStatements: true, //allow putting multiple statements in one query
-  host: 'localhost',
+  host: 'mysql2', //to connect to mysql2 docker container
   user: 'root',
   password: '12345678',
   database: 'magdilimdb'

@@ -45,11 +45,11 @@ const getDonorsFromDbAndSetCache = (db, callback) => {
 }
 
 const getLevels = (db, callback) => {
-    const sqlQuery = `SELECT * FROM levels`;
+    const sqlQuery = `SELECT * FROM Levels`;
     try{
         db.query(sqlQuery, (err, result, fields) => {
             if (err) throw err;
-            console.log("levels:\n" + JSON.stringify(result));
+            console.log("Levels:\n" + JSON.stringify(result));
             orgToLevels = groupBy(result, 'org_id'); //dict containing key: org_id, value: levels
             Object.keys(orgToLevels).forEach(org_id => {
                 orgToLevels[org_id].sort((x, y) => y.level_num - x.level_num);

@@ -11,8 +11,6 @@ const encrypt = (text) => {
     
     // To print or store the binary data, you may convert it to hex
     var encryptedHex = aes.utils.hex.fromBytes(encryptedBytes);
-    console.log(encryptedHex);
-
     return encryptedHex;
 }
 
@@ -26,8 +24,6 @@ const decrypt = (encryptedHex) => {
     
     // Convert our bytes back into text
     var decryptedText = aes.utils.utf8.fromBytes(decryptedBytes);
-    console.log(decryptedText);
-
     return decryptedText;
 }
 
