@@ -80,9 +80,7 @@ class NewOrgPage extends React.Component {
 
     //the following function is to send an email that a new oragnization is awaiting approval
     sendEmail() {
-        // TODO: get text to send, get list of mail
         emailService.sendEmail(
-            //'mordeyj316@gmail.com'
             ['tehilaj97@gmail.com'],
             null,
             null,
@@ -115,7 +113,8 @@ class NewOrgPage extends React.Component {
         return true;
     }
     
-    // ~~~~~~~ add new org to DB
+    // adding new org to DB, setting approved false.
+    // the value will be changed to true once the organization is approved
 
     addOrg() {
         (async () => {

@@ -144,13 +144,13 @@ class UserRegistrationForm extends React.Component {
                         onChange={this.handleChange.bind(this)}
                         required='true'
                     />
-                    <Form.Input
+                    {/* <Form.Input
                         icon='phone'
                         iconPosition='left'
                         placeholder='Phone number'
                         name="phone"
                         onChange={this.handleChange.bind(this)}
-                    />
+                    /> */}
                     <Form.Input
                         icon='envelope'
                         iconPosition='left'

@@ -39,7 +39,7 @@ class UserRegistrationService {
         attributeList.push(new CognitoUserAttribute(firstName));
         attributeList.push(new CognitoUserAttribute(lastName));
         attributeList.push(new CognitoUserAttribute(phone));
-        //TODO: send value of phone number
+        //phone number removed from front end
         console.log("AttributeList: "+JSON.stringify(attributeList));
         try {
             const const_user_pool = this.cognitoUtil.getUserPool();

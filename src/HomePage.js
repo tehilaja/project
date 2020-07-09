@@ -388,12 +388,11 @@ getThreeOrgs(){
 					<p style={{ fontSize: '1.33em' }}>
 					Yes that's right, you too can become a part of this wonderful community, helping to build something greater.
 					</p>
-					<br></br>
+					<br />
 					{!this.state.loggedIn &&
 					<div>
 					<p style={{ fontSize: '1.33em' }}>
-					If you already have a user account, please login!
-					If you don't already have an account then create a user account.
+					Once you have logged in, you will be able to move to the next step.
 					</p>
 					 <Button as='a' size='large' onClick={() =>  window.scrollTo({
             top: 0,
