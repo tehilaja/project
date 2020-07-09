@@ -33,7 +33,6 @@ class OrgCard extends React.Component{
         } 
 
       return( 
-        // {{border: '2px solid #9400D3', height:'300px'}}
         <div style ={{ padding: '0.8em', margin:'0.8em'}}>
         <Card style ={{border: '2px solid #708090', height:'300px'}} 
           onClick = {() => this.setState(prevState => {
@@ -56,33 +55,19 @@ class OrgCard extends React.Component{
                     </Statistic.Value>
                     <Statistic.Label>Supporters</Statistic.Label>
                 </Statistic>
-                {/* <Icon name = 'user'/>
-                {this.state.name} */}
+               
                 </Card.Header>
                 <br/>
                 <Icon  inverted loading circular name ='hand point up outline' size = 'large' color ='blue'></Icon>
 
         </Card.Content>
-
-{/* 
-          <Card.Content>
-            <Image src={this.state.org.img_url} wrapped ui={true} />
-
-          </Card.Content> */}
           <Card.Content extra>
 
           <Card.Header >{this.state.org.org_name}</Card.Header>
             <Card.Description>
             {this.state.org.description.substring(0, 70)}...
             </Card.Description>
-            {/* <a>
-              <Icon name='gift' />
-              last prize winner
-            </a> */}
-            <br />
-            {/* <Feed.Like>
-            <Icon name='like' /> {this.state.numDonors} Monthly Donors
-          </Feed.Like> */}
+        
           </Card.Content>
         </Card>
         </div>

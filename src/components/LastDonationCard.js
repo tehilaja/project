@@ -1,5 +1,4 @@
 
-
 //card for show gifts (in orgPage)
 
 import React from 'react';
@@ -35,7 +34,6 @@ class LastDonationCard extends React.Component{
 
     this.setState({date: this.state.timeDate.split("T")[0]});
     this.setState({time: (this.state.timeDate.split("T")[1]).split(".")[0] });
-
 
    }
 
@@ -95,39 +93,12 @@ class LastDonationCard extends React.Component{
                                     return {
                                         routeOrgPage: !prevState.routeOrgPage}
                                       })}
-                                    
-
                             />
                         </div>
-                        {/* <div className='ui two buttons'>
-                        <Button basic color='green'>
-                        <Button
-                            basic
-                            name = 'go to organitation page'
-                            // disabled ={true}
-                            color='green'
-                            labelPosition='left' 
-                            icon='left arrow'
-                            content='move to organitation page'
-                        />
-                            
-                        </Button>
-                        <Button basic color='red'>
-                            Decline
-                        </Button>
-                        </div> */}
+                       
                     </Card.Content>
                 </Card>
-                    {/* <Feed>
-                        <Feed.Event
-                            image={this.props.ldonation.img_url}
-                            date={this.props.ldonation.d_data}
-                            summary={this.props.ldonation.d_title}
-                            extraText={this.props.ldonation.d_description}
-                       />
-                    </Feed> */}
                     <br></br>
-                {/* </Segment> */}
             </div>
            
 

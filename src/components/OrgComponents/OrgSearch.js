@@ -108,11 +108,9 @@ selectLevel (e, { value }) {
 
   // filter a chosen level
   filterChooseOrg(filter){
-    // let listOrg = []
     let obj = [];
     if (filter == 'all organization'){
       this.setState({filterOrg: this.state.orgs})
-        // alert("all : "+ this.state.giftShow.length)
     }
     else
     {
@@ -124,14 +122,9 @@ selectLevel (e, { value }) {
           obj.push(this.state.orgs[indexOrg])
         }
       
-          // indexOrg = this.state.orgs.org_id === org.org_id
       })
-      // this.state.orgs.map(element =>{
-      //       if(element.org_id === filter)
-      //           obj.push(element)
-      //   })
+     
         this.setState({filterOrg: obj})
-        // alert("gifts: \n" + JSON.stringify(this.state.showGifts))
     }
 
 }
