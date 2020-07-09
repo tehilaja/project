@@ -19,6 +19,7 @@ import Prizes from './components/Prizes.js'
 import AdminPage from './components/Admin/AdminPage.js'
 
 import ContactUs from './components/Extra/ContactUs.js'
+import About from './components/Extra/About.js'
 
 const userParametersService = require('./cognito/user-parameters.service').data.userParametersService;
 
@@ -125,6 +126,10 @@ class App extends React.Component {
                 {
                     return [0, <ContactUs data={this.state} />];
                 }
+            case "/about":
+            {
+                return [0, <About data={this.state} />];
+            }
             case "/neworgpage":
                 return [0, <NewOrgPage data={this.state} />];
             case "/orgsearch":

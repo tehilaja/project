@@ -27,7 +27,8 @@ class Footer extends React.Component {
 	constructor(){
 		super()
 		this.state = {
-			contactUs: false
+			contact: false,
+			about: false
 		}
 	}
 
@@ -35,7 +36,10 @@ class Footer extends React.Component {
 	render(){
 		if(this.state.contact === true){
 				window.location.assign('/ContactUs');
-        }
+		}
+		if(this.state.about === true){
+			window.location.assign('/About');
+	}
 		return(
 			// 
 			<Segment inverted vertical style={{ padding: '5em 0em' }}>
@@ -51,6 +55,10 @@ class Footer extends React.Component {
 				  return {
 						contact: !prevState.contact
 					}})}>Contact Us</List.Item>
+					<List.Item as='a' onClick ={() => this.setState(prevState => {
+				  return {
+						about: !prevState.about
+					}})}>About Us</List.Item>
 					</List>
 				  </Grid.Column>
 				  <Grid.Column width={3}>

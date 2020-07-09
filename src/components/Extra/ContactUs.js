@@ -16,6 +16,8 @@ class ContactUs extends React.Component {
                 contact: ""
             }
         this.handleChange = this.handleChange.bind(this)
+        this.emailMessage = this.emailMessage.bind(this)
+        this.handleSubmit = this.handleSubmit.bind(this)
     }
 
     emailMessage() {
