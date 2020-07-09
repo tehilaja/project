@@ -364,10 +364,6 @@ export default class Donate extends Component {
 
         return (
             <div>
-            <button onClick={this.addMonthlyDonation.bind(this)}>dfdf</button>
-
-
-
                 <Step.Group widths={3} stackable='tablet' ordered={true} fluid >
 
                     <Step

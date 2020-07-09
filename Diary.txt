@@ -446,5 +446,15 @@ finding and fixing some more bugs with cache
 big problem with multiple users!! changing on the cognito code to be in client side, 
 server gets the token only
 
+8/7/2020
+building instances and dockers for using ec2
+fixing bugsrecording video 
+working on document and screen shots
+
+9/7/2020
+finish up touches
+fixing bugs
+finishing with ec2
+
 
 
