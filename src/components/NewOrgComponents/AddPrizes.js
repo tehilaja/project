@@ -77,15 +77,12 @@ class AddPrizes extends React.Component {
 
         if (response.data && Array.isArray(response.data)) {
             this.setState({ list_of_donors: response.data.map(donor => donor.user_id) });
-            alert(JSON.stringify(this.state.list_of_donors))
             this.sendEmail();
         }
     }
 
     sendEmail() {
         emailService.sendEmail(
-            //'rachelletikva@gmail.com'
-            // ['tehilaj97@gmail.com'],
             this.state.list_of_donors,
             null,
             null,
@@ -138,7 +135,7 @@ class AddPrizes extends React.Component {
         this.state.attachments && this.state.attachments.length && this.uploadFirstAttachment(afterUploadIfNeeded) || afterUploadIfNeeded(null);
     }
 
-    getFilePreview(src) {alert('dfdf'+src);
+    getFilePreview(src) {
         return (<div name="file_preview">
             <img src={src} style={{ height: '100px', marginTop: '30px' }} />
         </div>);
@@ -169,7 +166,6 @@ class AddPrizes extends React.Component {
     onDateChange(event, data) {
         const [currentDate, setNewDate] = useState(null);
         setNewDate(data.value);
-        alert(data.value);
     }
 
 

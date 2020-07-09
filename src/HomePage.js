@@ -61,7 +61,6 @@ class HomePage extends React.Component
 
 		}
 		this.selectOrg = this.selectOrg.bind(this)
-		this.handleClick = this.handleClick.bind(this)
 		// this.fetch_org_data = this.fetch_org_data.bind(this)
 		this.getLastDonation = this.getLastDonation.bind(this)
 
@@ -151,15 +150,6 @@ getThreeOrgs(){
         
 		const {id} = event.target
 	}
-
-	//----------------------
-	handleClick(id)
-    {
-		if (this.state.clickOrg === true)
-			alert("id: " +id )
-		
-	}
-	// logout()
 
 //--------------render------------------------
 	render()

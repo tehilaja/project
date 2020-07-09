@@ -67,7 +67,6 @@ class OrgPage extends React.Component{
 				else if (res === "no data") // the data is not null
 					alert ("no data!")
 				else{
-					// alert("res:\n "+ JSON.stringify(res.data))
 					this.setState({org_field_of_activity: res.data});
 				}
 			})

@@ -42,51 +42,13 @@ class ContactUs extends React.Component {
     }
 
     handleSubmit(e) {
-        alert(JSON.stringify(this.state))
         this.emailMessage();
-        // e.preventDefault()
-        // if (this.state.userName == "" && this.state.pswd != "") {
-        //     alert("Username Cannot be empty!");
-        //     return;
-        // }
-        // if (this.state.pswd == "" && this.state.userName != "") {
-        //     alert("please fill in password field");
-        //     return;
-        // }
-        // if (this.state.pswd == "" && this.state.userName == "") {
-        //     alert("Username and password Cannot be empty!");
-        //     return;
-        // }
-        // //login user to server
-        // this.setState({loading: true});
-        // (async () => {
-        //     const response = await axios.post(
-        //         '/login',
-        //         { userName: this.state.userName, pswd: this.state.pswd, isAdmin: this.state.isAdmin, loggedIn: false },
-        //         { headers: { 'Content-Type': 'application/json' } }
-        //     )
-        //     console.log("resp", response)
-
-        //     if (response.data === "loggedIn") {
-        //         // alert("Hello: "+this.state.userName)
-        //         this.setState({ loggedIn: true });
-        //         window.location.assign('/UserPage');;
-        //         // this.props.record(this.state.userName)
-        //     } else {
-        //         alert(response.data);
-        //         this.setState({loading: false});
-        //     }
-        // })();
         window.location.assign('/')
     }
 
     render() {
         return (
             <div>
-            {/* {this.state.loading && <Dimmer active inverted>
-                        <Loader size='massive' />
-                    </Dimmer>} */}
-            {/* {!this.state.loading && <div> */}
             <Segment placeholder>
                 <Grid columns={2} relaxed='very' stackable>
                     <Grid.Column>
@@ -114,7 +76,6 @@ class ContactUs extends React.Component {
                 </Grid>
 
             </Segment>
-            {/* } */}
             </div>
         )
     }

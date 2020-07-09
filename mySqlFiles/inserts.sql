@@ -85,9 +85,6 @@ where gift_id = 5;
 update Gifts set winner = "rachelletikva@gmail.com"
 where gift_id = 2;
 
--- UPDATE table_name SET field1 = new-value1, field2 = new-value2
--- [WHERE Clause]
-
 -- inserting comments into the feed --
 select* from Feed_comments;
 INSERT INTO Feed_comments (feed_type, feed_type_id, user_id, date, comment_text, likes) VALUES

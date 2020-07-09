@@ -34,14 +34,12 @@ getFeedComments = () => {
   this.state.comments.length = 0;
   (async () => {
     const response = await axios.post(`fetch-feed-comments/${this.state.feed_type}/${this.state.feed_type_id}`,
-    // const response = await axios.post(`/fetch-feed-comments`,
     { feed_type: this.state.feed_type,
      feed_type_id: this.state.feed_type_id },
       { headers: { 'Content-Type': 'application/json' } });
       response.data.forEach(comment => {
         this.state.comments.push(comment);
       });
-      // alert(JSON.stringify(this.state.comments))
       this.setState({gotFeedFlag: !this.state.gotFeedFlag})
   })();
 }

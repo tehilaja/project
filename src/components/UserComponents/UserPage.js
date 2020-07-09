@@ -27,7 +27,6 @@ class UserPage extends React.Component {
             phone: this.props.data.phone,
             userIsAdmin: false
         }
-        // alert(JSON.stringify(this.state))
     }
 
     render() {

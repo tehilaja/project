@@ -10,7 +10,7 @@ import { Header, Icon, Image, Label, Menu, Tab,Grid ,Segment, Button, Feed, Acco
 
 import OrgCard from './OrgCard.js'
 // import orgData from './orgData.js'
-import OrgSpechCard from './OrgSpechCard.js'
+
 
 // donate
 import Donate from './Donate.js'
@@ -100,7 +100,6 @@ class OrgBody extends React.Component {
         let obj = [];
         if (filter === 'all levels'){
             this.setState({showGifts: this.state.allGifts})
-            // alert("all : "+ this.state.giftShow.length)
         }
         else
         {
@@ -112,7 +111,6 @@ class OrgBody extends React.Component {
                         obj.push(element)
                 })
                 this.setState({showGifts: obj})
-                // alert("gifts: \n" + JSON.stringify(this.state.showGifts))
             }
         }
 
@@ -247,12 +245,12 @@ class OrgBody extends React.Component {
                         alert("the referred by is incorrect")
                     }
                     else if(response.data ==="fail1"){
-                        alert("the level")
+                        alert("failed")
                     }
                })();  
         }
         else
-            alert("please enter Referred detiles")		
+            alert("please enter Referred details")		
 	}
  
 

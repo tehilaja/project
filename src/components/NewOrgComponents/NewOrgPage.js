@@ -55,7 +55,9 @@ class NewOrgPage extends React.Component {
             }).then(respones=>
                 {
                 if(respones.data==="no data") //TODO: if no last donation///
-                    alert(respones.data)
+                   {
+                       // alert(respones.data)
+                   } 
                 else{ 
                     this.setState({fieldOfActivity: respones.data});
                     respones.data.forEach(function(field){
@@ -122,7 +124,7 @@ class NewOrgPage extends React.Component {
             );
             if (response.data === 'success') {
                 this.sendEmail();
-                alert('Thank you for joining Magdilim. We will look into your organization and email you as soon as we approve it.' + JSON.stringify(this.state));
+                alert('Thank you for joining Magdilim. We will look into your organization and email you as soon as we approve it.');
                 window.location.assign('/');
             } else {
                 alert('Unknown problem creating organization. Please try again later');

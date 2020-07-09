@@ -79,7 +79,7 @@ class UserPage extends React.Component {
                     id: orgId,
                     myMonthlyDonation: orgTree.key.donated,
                     myStatus: orgTree.level.level_name,
-                    reffered: orgTree.key.referred_donors,
+                    referred: orgTree.key.referred_donors,
                     collected: orgTree.key.collected,
                 }
             });
@@ -146,13 +146,13 @@ class UserPage extends React.Component {
             return (
                 <div style={{padding: '3em'}}>
                 <UserOrgCard key={org.key} imgUrl={org.imgUrl} orgName={org.name} orgId={org.id}
-                    myMonthlyDonation={org.myMonthlyDonation} myStatus={org.myStatus} reffered={org.reffered}
+                    myMonthlyDonation={org.myMonthlyDonation} myStatus={org.myStatus} referred={org.referred}
                     collected={org.collected}
             />
             </div>
             //     <Popup
             //     trigger={<UserOrgCard key={org.key} imgUrl={org.imgUrl} orgName={org.name} orgId={org.id}
-            //         myMonthlyDonation={org.myMonthlyDonation} myStatus={org.myStatus} reffered={org.reffered}
+            //         myMonthlyDonation={org.myMonthlyDonation} myStatus={org.myStatus} referred={org.referred}
             //         collected={org.collected}
             // />}
             // content='I am positioned to the right center'

@@ -503,7 +503,7 @@ export default class Donate extends Component {
                             <div>
                         <Label style={{ backgroundColor: '#e6f2ff', fontSize: '14px', higth: '30px', marginTop: '3em' }}>
                             <Icon name='hand point right' />
-                                were you reffered by someone?    Please enter his e-mail and upgrade his status! :)
+                                were you referred by someone?    Please enter his e-mail and upgrade his status! :)
                 </Label>
                             <br /> <br/>
                             <Dropdown text={this.state.donate_req.referred_by} placeholder='Referred By'>

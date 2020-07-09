@@ -15,14 +15,13 @@ class OrgCard extends React.Component {
       orgId: this.props.orgId,
       orgName: this.props.orgName,
       myMonthlyDonation: this.props.myMonthlyDonation,
-      reffered: this.props.reffered,
+      referred: this.props.referred,
       collected: this.props.collected,
     }
     this.user = {
       name: ""
     }
     this.handleClick = this.handleClick.bind(this)
-    // alert("in card: "+ JSON.stringify(this.state)) 
   }
 
   handleClick() {
@@ -67,7 +66,7 @@ class OrgCard extends React.Component {
           </Label>
           <Label as='a' color='olive'>
             <Icon name='users' />
-                People I Referred: {this.state.reffered} <br />
+                People I Referred: {this.state.referred} <br />
           </Label>
           <Label as='a' color='grey'>
             <Icon name='dollar' />

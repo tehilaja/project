@@ -110,9 +110,9 @@ const buildTree = (orgId, rootDonors, treeRoot, donorsByReferrer) => {
         usersToOrganizationTrees[donor.user_id] = usersToOrganizationTrees[donor.user_id] || {}; // init user's dict of org_id to tree if not initialized
         usersToOrganizationTrees[donor.user_id][orgId] = node; // add org tree to user's dict
 
-        const refferedDonors = donorsByReferrer[donor.user_id];
-        if (refferedDonors && refferedDonors.length) {
-            buildTree(orgId, refferedDonors, node, donorsByReferrer); // recursion
+        const referredDonors = donorsByReferrer[donor.user_id];
+        if (referredDonors && referredDonors.length) {
+            buildTree(orgId, referredDonors, node, donorsByReferrer); // recursion
         }
     });
 }

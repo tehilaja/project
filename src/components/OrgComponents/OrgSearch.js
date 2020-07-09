@@ -53,11 +53,8 @@ componentDidMount ()
   this.state.orgs.length = 0;
   (async () => {
     const response = await axios.get(`/data`);
-      // alert("gift:\n "+ JSON.stringify(response.data))
       this.setState({orgs: response.data})
       this.setState({filterOrg: this.state.orgs})
-      
-     
   })();
 
 
@@ -69,11 +66,9 @@ componentDidMount ()
 				return res
 			}).then(respones=>
 				{
-					// alert("lastDonation \n" + JSON.stringify(respones.data))
 					if(respones.data==="no data") //TODO: if no last donation///
             alert(respones.data)
           else{ 
-            // alert("fields: \n"+ JSON.stringify(respones.data))
             this.setState({org_fieldOfActivity: respones.data});
           }
 		}).catch(error=> {
@@ -88,12 +83,10 @@ componentDidMount ()
 				return res
 			}).then(respones=>
 				{
-					// alert("lastDonation \n" + JSON.stringify(respones.data))
 					if(respones.data==="no data") //TODO: if no last donation///
             alert(respones.data)
           else{ 
             this.setState({fieldOfActivity: respones.data});
-            // alert(" donaition: \n" + JSON.stringify(respones.data))
             respones.data.forEach(function(field){
               let giftobj ={};
               giftobj["key"]=field.field_name;
