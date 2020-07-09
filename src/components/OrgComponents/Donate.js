@@ -36,7 +36,7 @@ export default class Donate extends Component {
             disabled2: '',
             //
             sumDonate: this.props.data.initialDonation,
-            sumBtn: [10, 20, 30, 40, 50, 100, 200], // TODO : according to min donation
+            sumBtn: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], //allowing user to click on  1- 10 raffle tickets
             dThrough: '', // email of came through
             showMessageReq: false,
 
@@ -435,14 +435,14 @@ export default class Donate extends Component {
                             <Grid.Row>
                                 <div style={{ marginLeft: '5em' }}>
                                     {/* ~~ the sum buttons */}
-                                    {this.state.sumBtn.map(sums =>
+                                    {this.state.sumBtn.map(sum =>
                                         <Button
                                             inverted circular
                                             style={styleBotton}
-                                            key={sums}
-                                            data-letter={sums} o
+                                            key={sum*this.props.data.initialDonation}
+                                            data-letter={sum*this.props.data.initialDonation} o
                                             onClick={this.handleClickBtn}>
-                                            {sums}
+                                            {sum*this.props.data.initialDonation}
                                         </Button>
                                     )}
                                 </div>
