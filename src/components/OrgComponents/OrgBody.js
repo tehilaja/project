@@ -223,7 +223,7 @@ class OrgBody extends React.Component {
 	handleSubmit=(e)=>{
         e.preventDefault();
          /*add donation to dataBase */
-        if (this.state.DuserName !== "") // TODO: if find in db (func findDuser)
+        if (this.state.DuserName !== "") 
         {
             (async () => {
 		 		const response = await axios.post(

@@ -151,7 +151,6 @@ class App extends React.Component {
     }
 
     guardRoute(activateAttributeName, componentToRender, elsePath) {
-        // alert(this.state[activateAttributeName]);
         switch (this.state[activateAttributeName]) {
             case undefined:
                 return null;

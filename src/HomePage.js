@@ -61,7 +61,6 @@ class HomePage extends React.Component
 
 		}
 		this.selectOrg = this.selectOrg.bind(this)
-		// this.fetch_org_data = this.fetch_org_data.bind(this)
 		this.getLastDonation = this.getLastDonation.bind(this)
 
 		
@@ -131,9 +130,7 @@ getThreeOrgs(){
 				return res
 			}).then(respones=>
 				{
-					// alert("lastDonation \n" + JSON.stringify(respones.data))
 					if(respones.data==="no data") //TODO: if no last donation///
-						// alert(respones.data)
 					this.setState({lastDonation: respones.data});
 		}).catch(error=> {
 			// alert(error);

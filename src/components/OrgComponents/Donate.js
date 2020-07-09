@@ -58,16 +58,12 @@ export default class Donate extends Component {
             ableDonate: false,
             oneTimeChecked: false
 
-            // (user_id, org_id, monthly_donation, referred_by,d_title, d_description,anonymous,status_id
-            // TODO: 
-
         }
         this.handleClick = this.handleClick.bind(this);
 
         //
         this.handleClickBtn = this.handleClickBtn.bind(this);
 
-        // handleChange (TODO - merge all)
         this.handleChange = this.handleChange.bind(this);
         this.handleChangeMail = this.handleChangeMail.bind(this);
 
@@ -129,11 +125,8 @@ export default class Donate extends Component {
     //   onClick(event: SyntheticEvent, data: object)
 
     handleClick = (e, { title }) => {
-        // TODO:
         this.setState({ active: title })
 
-
-        // ? TODO : show the prev state        
         switch (title) {
             case 'select Amount':
                 this.setState({ coreStep: 1 });

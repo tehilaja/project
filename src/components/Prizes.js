@@ -13,7 +13,7 @@ import "react-image-gallery/styles/css/image-gallery.css";
 import GiftCard from './OrgComponents/giftCard'
 
 
-import {Grid, Icon, Segment,Button,Image,Header} from 'semantic-ui-react';
+import {Grid, Icon, Segment,Button,Image,Header,Label} from 'semantic-ui-react';
 
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
@@ -42,6 +42,7 @@ class Prizes extends React.Component{
         
         // this.getImages();
         this.handleClickBtnOrg = this.handleClickBtnOrg.bind(this);
+        this.chckGiftComponent = this.chckGiftComponent.bind(this);
 
         
   }
@@ -73,6 +74,7 @@ class Prizes extends React.Component{
         this.setState({filterGift: res.data})
         
         // -----
+        
         const imgs = res.data.map(gift => {
           const image = {};          
           image.original = gift.gift_pic;
@@ -82,7 +84,6 @@ class Prizes extends React.Component{
         this.setState({images: imgs});
         this.setState({filterImeges: imgs});
 
-        
         
         // ------
       
@@ -138,23 +139,23 @@ class Prizes extends React.Component{
         this.setState({filterGift: objG})
         }
       }
+      chckGiftComponent(){
+        if (this.state.filterGift === [])  
+          return (<Label>No gifts yet for this organization</Label>);
+        else{
+          return(this.state.filterGift.map(gift =>{
+            return(
+              <GiftCard gifts={gift}/>
+              )
+          })
+          )
 
-        
-      //     this.state.allgiftLevels.map(gift =>{
-      //       if(gift.l_name === filter)
-      //       objG.push(gift)
-      //   })
-      //   this.setState({showGifts: objG})
-      // }
-    
-
+        }
+    }
+     
   render() {
 
-    const giftComponents = this.state.filterGift.map(gift =>{
-      return(
-        <GiftCard gifts={gift}/>
-        )
-    })
+    const giftComponents = this.chckGiftComponent();
 
     const { valueLevel } = this.state // level
 
@@ -205,14 +206,11 @@ class Prizes extends React.Component{
               <div style ={{marginLeft:'5em'}}>
               <Button 
                   inverted circular 
-                  // content = "all organization"
                   key="all organization"
-                  // data-letter="all organization"
                   style = {{margin: '1em',border: '0.1em solid olive',size: '10em, 10em',backgroundColor: 'olive'}}
                   value = "all organization"
-                  // lable = "All organization"
                   onClick={this.handleClickBtnOrg}>All organization
-                  {/*  floated='right'  size='tiny'  style={{ padding: '3em 3em' }}  */}
+
                   </Button>
               {this.state.orgs.map(org=>
                 <Button

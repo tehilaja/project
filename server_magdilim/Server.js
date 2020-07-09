@@ -127,13 +127,9 @@ const job = schedule.scheduleJob(rule, function () {
 
 
 
-// TODO: make in prochedure?
 app.get('/lastDonation', (req, res, next) => {
   try {
-    // const qLDonation = `SELECT d.user_id, d.org_id, u.user_name ,d.d_title,d.d_description, d.is_anonim,d.referred_by, d.d_date, o.img_url FROM Donors_in_org d 
-    //   INNER JOIN users u ON u.user_id = d.user_id 
-    //   INNER JOIN Organizations o ON o.org_id = d.org_id
-    //   ORDER BY d_date DESC LIMIT 20`;
+    
     const qLDonation = `SELECT d.user_id, d.org_id, d.d_title,d.d_description, d.anonymous,d.referred_by, d.d_date, o.img_url,o.org_name FROM Donors_in_org d 
       INNER JOIN Organizations o ON o.org_id = d.org_id
       ORDER BY d_date DESC LIMIT 20;`
@@ -145,7 +141,6 @@ app.get('/lastDonation', (req, res, next) => {
         res.send("no data")
       else {
         console.log("res:" + JSON.stringify(result));
-        // res.send(JSON.stringify(result));
         res.send(result);
       }
     });
@@ -156,26 +151,20 @@ app.get('/lastDonation', (req, res, next) => {
   }
 });
 
-// ~~~ 30.05 ~~
+// ~~~ get_field_of_activity ~~
 app.get('/get_field_of_activity', (req, res, next) => {
   try {
-    // TODO : try the db multi connection problem
-    // conectDb();
+    
     console.log("in //get_field_of_activity")
     const q_field_name = 
       `select field_name from Fields_of_activity`
     console.log("query: \n" + q_field_name);
     db.query(q_field_name, (err, result, fields) => {
       if (err) throw err;
-      if (result.length == 0)
+      if (result.length === 0)
         res.send("no data")
       else {
         console.log("res:\n " + JSON.stringify(result));
-        // console.log(result[0])
-        // console.log(result[0].min_donation)
-
-
-        // res.send(JSON.stringify(result));
         res.send(result);
       }
     });
@@ -188,8 +177,6 @@ app.get('/get_field_of_activity', (req, res, next) => {
 });
 app.get('/org_field_of_activity', (req, res, next) => {
   try {
-    // TODO : try the db multi connection problem
-    // conectDb();
     console.log("in //Org_field_of_activity")
     const q_field_name = 
       `select distinct f.field_name, o.org_id from Fields_of_activity f
@@ -216,8 +203,6 @@ app.get('/org_field_of_activity', (req, res, next) => {
 
 app.get(`/orgPage/get_org_field_of_activity/:orgId`, (req, res, next) => {
   try {
-    // TODO : try the db multi connection problem
-    // conectDb();
     console.log("in /orgPage/get_org_field_of_activity/:orgId c\n")
     console.log("id: " + req.params.orgId)
 
@@ -234,11 +219,6 @@ app.get(`/orgPage/get_org_field_of_activity/:orgId`, (req, res, next) => {
         res.send("no data") 
       else {
         console.log("res fields:\n " + JSON.stringify(result));
-        // console.log(result[0])
-        // console.log(result[0].min_donation)
-
-
-        // res.send(JSON.stringify(result));
         res.send(result);
       }
     });
@@ -256,8 +236,6 @@ app.get(`/orgPage/get_org_field_of_activity/:orgId`, (req, res, next) => {
 // --/orgPage/:orgId 
 app.get('/orgPage/:orgId', (req, res, next) => {
   try {
-    // TODO : try the db multi connection problem
-    // conectDb();
     console.log("in /orgPage")
     console.log("id: " + req.params.orgId)
 
@@ -325,10 +303,8 @@ app.get('/get-files-of-folder/:folder', (req, res, next) => {
 app.post('/donate/findDThrouhUser', (req, res) => {
   try {
     console.log("req: "+ req.body.userMail + " "+ req.body.org_id)
-    // console.log("req: "+ req.params.userMail + " "+ req.params.org_id)
     console.log("in donate/findDThrouhUser/:user_mail")
     const qDUser = `select user_id from Donors_in_org where user_id ="${req.body.userMail}" and org_id =${req.body.org_id}`;
-    // select user_id from Donors_in_org where user_id ="tehilaj97@gmail.com" and org_id = 1;
     console.log("query: \n" + qDUser + "\n");
     db.query(qDUser, (err, result, fields) => {
       if (err) throw err;
@@ -658,7 +634,6 @@ app.post('/findDuser', (req, res) => {
 //------------org admin of------------------
 app.get('/:userId/org-admin-of',
   function (req, res, next) {
-    //const sqlQuery = `SELECT * FROM Organizations WHERE org_admin_id = ${inQutationMarks(req.params.userId}'`;
     const sqlQuery = `SELECT * FROM Organizations WHERE org_admin_id=${inQutationMarks(req.params.userId)} AND approved=1`;
     console.log(sqlQuery);
 
@@ -848,7 +823,7 @@ app.get('/get_gift_and_levels',(req,res)=>{
       if (err) {
         console.log('error updating org data: ' + JSON.stringify(err));
         console.log(qGift);
-        res.send('fail');
+        res.send('no data');
       } else {
         res.send(result);
       }

@@ -37,11 +37,9 @@ function conectDb()
   router.get('/', (req, res)=> 
     {
         try{
-            // TODO : try the db multi connection problem
-            // cone
-            ctDb();
+           
+            // ctDb();
             console.log("in /orgPage")
-            // res.json(data)
             res.send({"value": "first router - Donte!", "massege": "sucsess"})
         }
         catch(err){

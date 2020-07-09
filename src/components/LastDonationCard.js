@@ -77,8 +77,9 @@ class LastDonationCard extends React.Component{
                             <br></br> 
                             {this.props.ldonation.d_description}
                         </Card.Description>
+                        <br/>
+                        <Icon loading circular name ='heart' size = 'big' color ='olive'></Icon>
                     </Card.Content>
-
                     <Card.Content extra>
                         <div>
                             <Button

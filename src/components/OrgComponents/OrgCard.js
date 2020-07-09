@@ -52,13 +52,16 @@ class OrgCard extends React.Component{
               
 	            <Statistic size='tiny' floated='left'>
                   <Statistic.Value>
-                    <Icon name='handshake outline' />{this.state.numDonors}
+                    <Icon  name='handshake outline' />{this.state.numDonors}
                     </Statistic.Value>
                     <Statistic.Label>Supporters</Statistic.Label>
                 </Statistic>
                 {/* <Icon name = 'user'/>
                 {this.state.name} */}
                 </Card.Header>
+                <br/>
+                <Icon  inverted loading circular name ='hand point up outline' size = 'large' color ='blue'></Icon>
+
         </Card.Content>
 
 {/* 
@@ -67,7 +70,8 @@ class OrgCard extends React.Component{
 
           </Card.Content> */}
           <Card.Content extra>
-          <Card.Header>{this.state.org.org_name}</Card.Header>
+
+          <Card.Header >{this.state.org.org_name}</Card.Header>
             <Card.Description>
             {this.state.org.description.substring(0, 70)}...
             </Card.Description>
