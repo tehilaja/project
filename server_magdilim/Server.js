@@ -74,13 +74,22 @@ db.connect((err) => {
     console.log('mysql connected...');
 });
 
+
+const groupBy = (array, key) => {
+    const dict = array.reduce((acc, x) => Object.assign({}, acc, {
+      [x[key]]: (acc[x[key]] || []).concat(x)
+    }), {});
+
+    return Object.keys(dict).map(x => dict[x]);
+  }
+
 statusCache.setCache(db, () => {
   console.log(`\n\n\norg 1 before anything:\n` + JSON.stringify(statusCache.getOrgTree(1)));
   // statusCache.addDonorToOrg('anotherid@id.com', 1, 3000, 'someid@id.com');
   // console.log(`\n\n\norg 1 after adding:\n`+JSON.stringify(statusCache.getOrgTree(1)));
   // statusCache.updateDonorInOrg('someotherid@id.com', 1, 80, 500);
   // console.log(`\n\n\norg 1 after updating:\n`+JSON.stringify(statusCache.getOrgTree(1)));
-  // statusCache.updateLevelInOrg(1, {"org_id":1,"level_num":4,"level_name":"כסף","min_sum":3000});
+  // statusCache.updateLevelInOrg(1, {"org_id":1,"level_num":4,"level_name":"×›×¡×£","min_sum":3000});
   // console.log(`\n\n\norg 1 after updating level:\n`+JSON.stringify(statusCache.getOrgTree(1)));
   // statusCache.getGiftsReceivers(db, (giftReceivers) => {
   //   console.log('gift receivers: '+JSON.stringify(giftReceivers));
@@ -127,9 +136,13 @@ const job = schedule.scheduleJob(rule, function () {
 
 
 
+// TODO: make in prochedure?
 app.get('/lastDonation', (req, res, next) => {
   try {
-    
+    // const qLDonation = `SELECT d.user_id, d.org_id, u.user_name ,d.d_title,d.d_description, d.is_anonim,d.referred_by, d.d_date, o.img_url FROM Donors_in_org d 
+    //   INNER JOIN users u ON u.user_id = d.user_id 
+    //   INNER JOIN Organizations o ON o.org_id = d.org_id
+    //   ORDER BY d_date DESC LIMIT 20`;
     const qLDonation = `SELECT d.user_id, d.org_id, d.d_title,d.d_description, d.anonymous,d.referred_by, d.d_date, o.img_url,o.org_name FROM Donors_in_org d 
       INNER JOIN Organizations o ON o.org_id = d.org_id
       ORDER BY d_date DESC LIMIT 20;`
@@ -141,6 +154,7 @@ app.get('/lastDonation', (req, res, next) => {
         res.send("no data")
       else {
         console.log("res:" + JSON.stringify(result));
+        // res.send(JSON.stringify(result));
         res.send(result);
       }
     });
@@ -151,20 +165,26 @@ app.get('/lastDonation', (req, res, next) => {
   }
 });
 
-// ~~~ get_field_of_activity ~~
+// ~~~ 30.05 ~~
 app.get('/get_field_of_activity', (req, res, next) => {
   try {
-    
+    // TODO : try the db multi connection problem
+    // conectDb();
     console.log("in //get_field_of_activity")
     const q_field_name = 
       `select field_name from Fields_of_activity`
     console.log("query: \n" + q_field_name);
     db.query(q_field_name, (err, result, fields) => {
       if (err) throw err;
-      if (result.length === 0)
+      if (result.length == 0)
         res.send("no data")
       else {
         console.log("res:\n " + JSON.stringify(result));
+        // console.log(result[0])
+        // console.log(result[0].min_donation)
+
+
+        // res.send(JSON.stringify(result));
         res.send(result);
       }
     });
@@ -177,6 +197,8 @@ app.get('/get_field_of_activity', (req, res, next) => {
 });
 app.get('/org_field_of_activity', (req, res, next) => {
   try {
+    // TODO : try the db multi connection problem
+    // conectDb();
     console.log("in //Org_field_of_activity")
     const q_field_name = 
       `select distinct f.field_name, o.org_id from Fields_of_activity f
@@ -203,6 +225,8 @@ app.get('/org_field_of_activity', (req, res, next) => {
 
 app.get(`/orgPage/get_org_field_of_activity/:orgId`, (req, res, next) => {
   try {
+    // TODO : try the db multi connection problem
+    // conectDb();
     console.log("in /orgPage/get_org_field_of_activity/:orgId c\n")
     console.log("id: " + req.params.orgId)
 
@@ -219,6 +243,11 @@ app.get(`/orgPage/get_org_field_of_activity/:orgId`, (req, res, next) => {
         res.send("no data") 
       else {
         console.log("res fields:\n " + JSON.stringify(result));
+        // console.log(result[0])
+        // console.log(result[0].min_donation)
+
+
+        // res.send(JSON.stringify(result));
         res.send(result);
       }
     });
@@ -236,6 +265,8 @@ app.get(`/orgPage/get_org_field_of_activity/:orgId`, (req, res, next) => {
 // --/orgPage/:orgId 
 app.get('/orgPage/:orgId', (req, res, next) => {
   try {
+    // TODO : try the db multi connection problem
+    // conectDb();
     console.log("in /orgPage")
     console.log("id: " + req.params.orgId)
 
@@ -303,8 +334,10 @@ app.get('/get-files-of-folder/:folder', (req, res, next) => {
 app.post('/donate/findDThrouhUser', (req, res) => {
   try {
     console.log("req: "+ req.body.userMail + " "+ req.body.org_id)
+    // console.log("req: "+ req.params.userMail + " "+ req.params.org_id)
     console.log("in donate/findDThrouhUser/:user_mail")
     const qDUser = `select user_id from Donors_in_org where user_id ="${req.body.userMail}" and org_id =${req.body.org_id}`;
+    // select user_id from Donors_in_org where user_id ="tehilaj97@gmail.com" and org_id = 1;
     console.log("query: \n" + qDUser + "\n");
     db.query(qDUser, (err, result, fields) => {
       if (err) throw err;
@@ -407,24 +440,24 @@ function (req, res, next) {
 
    const qGifts =	
        
-   `SELECT 	
-   l.level_name as l_name, l.min_people, l.min_sum,	     
-   g.gift_id, g.gift_name,	     
-   g.gift_description,g.gift_pic,	       
+   `SELECT  
+   l.level_name as l_name, l.min_people, l.min_sum,      
+   g.gift_id, g.gift_name,       
+   g.gift_description,g.gift_pic,        
    g.g_date, g.winner, o.org_name
   from Gifts g
   INNER JOIN Levels l ON l.level_num = g.level_num and l.org_id = g.org_id
-  inner join Organizations o on o.org_id = g.org_id and o.org_id =${req.params.org_id} and g.winner is null
-   group by g.gift_name;`
+  inner join Organizations o on o.org_id = g.org_id and o.org_id =${req.params.org_id} and g.winner is null;`
   
   console.log('in org page Gifts \n');
     // const sqlQuery = `select * from Gifts WHERE org_id=${req.params.org_id} and winner IS NULL`
     console.log(qGifts)
     db.query(qGifts, (err, result, fields) => {
       if (!err) {
+       // const grouped = groupBy(result, 'gift_name');
         console.log('res:\n ' + JSON.stringify(result));
-        res.send(result);
-      } else {
+        res.send(result);}
+else {
         console.log('error: ' + JSON.stringify(err));
         res.send(null);
       };
@@ -495,8 +528,8 @@ app.get('/get-winners', function (req, res, next) {
 
 //-------------------get org trees from cache for user------------------------
 app.get('/userOrgTrees/:user_id', function (req, res, next) {
-  const trees = statusCache.getOrgsForUser(req.params.user_id);
-  //console.log('my trees:\n' + JSON.stringify(trees));
+  const trees = statusCache.getOrgsForUser(req.params.user_id) || {};
+  console.log('my trees:\n' + Object.keys(trees));
 
   const orgIds = Object.keys(trees);
   let index = 0;
@@ -504,6 +537,7 @@ app.get('/userOrgTrees/:user_id', function (req, res, next) {
   //after recieving all the orgs from the cache - recieving their info from the db:
   orgIds.forEach(orgId => {
     const level = statusCache.getOrgLevel(orgId, trees[orgId].key.level);
+    console.log('levels:\n' + JSON.stringify(level));
     trees[orgId].level = level;
     db.query(`SELECT img_url, org_name from Organizations WHERE org_id=${orgId}`, function (error, results, fields) {
       if (error) throw error;
@@ -634,6 +668,7 @@ app.post('/findDuser', (req, res) => {
 //------------org admin of------------------
 app.get('/:userId/org-admin-of',
   function (req, res, next) {
+    //const sqlQuery = `SELECT * FROM Organizations WHERE org_admin_id = ${inQutationMarks(req.params.userId}'`;
     const sqlQuery = `SELECT * FROM Organizations WHERE org_admin_id=${inQutationMarks(req.params.userId)} AND approved=1`;
     console.log(sqlQuery);
 
@@ -817,14 +852,15 @@ app.get('/get_gift_and_levels',(req,res)=>{
   g.g_date, g.winner, o.org_name
  from Gifts g
  INNER JOIN Levels l ON l.level_num = g.level_num and g.org_id = l.org_id
- inner join Organizations o on o.org_id = g.org_id
-  group by g.gift_name;`
+ inner join Organizations o on o.org_id = g.org_id;`
+
     dbUtil.callDB(db, qGift, (err, result) => {
       if (err) {
         console.log('error updating org data: ' + JSON.stringify(err));
         console.log(qGift);
-        res.send('no data');
+        res.send('fail');
       } else {
+	//const grouped = groupBy(result, 'gift_name');
         res.send(result);
       }
     });

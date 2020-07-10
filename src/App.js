@@ -1,8 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route, Switch } from "react-router-dom";
-import { Redirect } from "react-router-dom";
 import axios from "axios";
-import { async } from "q";
 
 import { Dimmer, Image, Loader, Segment } from 'semantic-ui-react';
 import Header from './components/Header.js'
@@ -10,7 +7,6 @@ import Footer from './components/Footer.js'
 //App being father component of all components:
 import HomePage from './HomePage.js'
 import OrgPage from './components/OrgComponents/OrgPage.js';
-import OrgBody from './components/OrgComponents/OrgBody.js';
 import UserPage from './components/UserComponents/UserPage.js'
 import NewOrgPage from './components/NewOrgComponents/NewOrgPage.js'
 import EditOrgPage from './components/NewOrgComponents/EditOrgPage.js'
@@ -112,7 +108,7 @@ class App extends React.Component {
         switch (path.toLowerCase()) {
             case "/":
                 {
-                    return [ActivePage.Home, <HomePage data={this.state} />];
+                    return [ActivePage.Home, (<HomePage data={this.state} />)];
                 }
             case "/userpage":
                 {
@@ -142,7 +138,7 @@ class App extends React.Component {
             case `/editorgpage/${spliting[2]}`:
                 return [0, this.guardRoute('org_admin', (<EditOrgPage data={this.state} id={spliting[2]} />), '/')];
             default:
-                break;
+                window.location.assign('/');
         }
     }
 

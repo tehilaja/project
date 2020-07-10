@@ -4,6 +4,7 @@ GRANT ALL ON *.* to 'root'@'%';
 CREATE DATABASE IF NOT EXISTS magdilimdb;
 USE magdilimdb;
 
+SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
 
 -- ~~~~~~~~~~~~ CREATE TABLE ~~~~~~~~~~~~~~~~ --
 
